@@ -9,6 +9,7 @@
 
 ModuleSceneGui::ModuleSceneGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	
 }
 
 ModuleSceneGui::~ModuleSceneGui()
@@ -56,6 +57,8 @@ update_status ModuleSceneGui::Update(float dt)
 
 update_status ModuleSceneGui::PostUpdate(float dt)
 {
+	
+	App->renderer3D->SetUILights();
 	ImGui::Render();
 	return UPDATE_CONTINUE;
 }

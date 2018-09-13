@@ -18,7 +18,8 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height);
-
+	void SetUILights();
+	void SetSceneLights();
 public:
 
 	Light lights[MAX_LIGHTS];
