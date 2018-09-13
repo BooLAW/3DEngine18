@@ -22,6 +22,8 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int CreateMainMenu();
-
+	void showTestWindow();
 public:
+	bool show_test_window = false;
+	bool show_console = false;
 };

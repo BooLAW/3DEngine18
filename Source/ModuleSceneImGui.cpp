@@ -3,8 +3,8 @@
 #include "ModuleSceneImGui.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_sdl.h"
 
 
 ModuleSceneGui::ModuleSceneGui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -51,7 +51,6 @@ update_status ModuleSceneGui::Update(float dt)
 		}
 	}
 
-	//ImGui::ShowTestWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -80,8 +79,24 @@ int ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Quit", "Alt + F4")) { return UPDATE_STOP; }
 				ImGui::EndMenu();
 			}
-			if (ImGui::BeginMenu("Demo")) { ImGui::EndMenu(); }
+			if (ImGui::BeginMenu("Tools")) 
+			{
+				if (ImGui::MenuItem("ImGui Demo"))
+				{
+					show_test_window = !show_test_window;
+				}
+				ImGui::EndMenu(); 
+			}
 			ImGui::EndMainMenuBar();
 		}
 	}
+	if (show_test_window)showTestWindow();
 }
+
+void ModuleSceneGui::showTestWindow() 
+{
+	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_Always);
+	ImGui::ShowTestWindow(&show_test_window);
+
+}
+
