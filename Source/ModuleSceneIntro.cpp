@@ -24,8 +24,6 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	srand(time(NULL));
-
-	//App->audio->PlayMusic("F-Zero_-_Mute_City.ogg");
 	
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
@@ -44,15 +42,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	//Why have you commented this?
-	/*Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();*/
-
-
-	for (p2List_item<Cylinder>* aux = Cylinders.getFirst(); aux != nullptr; aux = aux->next) {
-		aux->data.Render();
-	}
 
 	return UPDATE_CONTINUE;
 }
