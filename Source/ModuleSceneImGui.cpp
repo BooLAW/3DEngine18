@@ -80,6 +80,7 @@ int ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Quit", "Alt + F4")) { return UPDATE_STOP; }
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Demo")) { ImGui::EndMenu(); }
 			ImGui::EndMainMenuBar();
 		}
 	}
