@@ -71,6 +71,7 @@ void ModuleSceneGui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 int ModuleSceneGui::CreateMainMenu()
 {
 	//Creates the example window
+
 	// Menu
 	static bool show_app_main_menu_bar = true;
 	if (show_app_main_menu_bar)
@@ -93,6 +94,14 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 
 				}
+				if (ImGui::MenuItem("Sphere Creator"))
+				{
+					show_sphere_creator = !show_sphere_creator;
+				}
+				if (ImGui::MenuItem("Check Collisions"))
+				{
+					App->physics->GetSphereCollisions();
+				}
 				ImGui::EndMenu(); 
 			}
 			if (ImGui::BeginMenu("About..."))
@@ -111,11 +120,36 @@ int ModuleSceneGui::CreateMainMenu()
 		}
 	}
 	if (show_test_window)showTestWindow();
+	if (show_sphere_creator)showSphereCreator();
 }
 
 void ModuleSceneGui::showTestWindow() 
 {
 	ImGui::ShowTestWindow(&show_test_window);
 
+}
+
+void ModuleSceneGui::showSphereCreator()
+{
+		if (ImGui::Begin("Sphere Creator"))
+		{
+			ImGui::InputInt("Radius", &rad_aux);
+			ImGui::InputInt("Position X", &x_aux);
+			ImGui::InputInt("Position Y", &y_aux);
+			ImGui::InputInt("Position Z", &z_aux);
+			if (ImGui::SmallButton("Create"))
+			{
+				pos_aux.Set(x_aux, y_aux, z_aux);
+				App->physics->CreateSphere(pos_aux, rad_aux);
+
+			}
+			if (ImGui::SmallButton("Reset"))
+			{
+				x_aux = y_aux = z_aux = rad_aux = 0;
+			}
+
+			ImGui::End();
+		}
+	
 }
 

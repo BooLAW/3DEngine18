@@ -70,7 +70,6 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
-	
 
 	return UPDATE_CONTINUE;
 }
@@ -89,6 +88,40 @@ bool ModulePhysics3D::CleanUp()
 	
 
 	return true;
+}
+
+void ModulePhysics3D::CreateSphere(vec position, int radius)
+{
+	Sphere new_sphere;
+	new_sphere.pos = position;
+	new_sphere.r = radius;
+	spheres_list.push_back(new_sphere);
+}
+
+std::list<vec2> ModulePhysics3D::GetSphereCollisions()
+{
+	int listener = 0;
+	int candidate = 0;
+	
+	std::list<vec2> collisions_list;
+
+	for (listener; listener < spheres_list.size(); listener++)
+	{
+		bool collided = false;
+		for (candidate; candidate < spheres_list.size(); candidate++)
+		{
+			if (listener == candidate)
+				continue;
+			collided = spheres_list[listener].Intersects(spheres_list[candidate]);
+			if (collided)
+			{
+				collisions_list.push_back({(float) listener,(float)candidate });
+				LOG("Body %d collides with body %d", listener, candidate);
+			}
+		}
+		candidate = 0;
+	}
+	return collisions_list;
 }
 
 

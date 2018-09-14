@@ -26,6 +26,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	void CreateSphere(vec position, int radius);
+	std::list<vec2> GetSphereCollisions();
 	
 	private:
 
@@ -39,8 +41,8 @@ public:
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	DebugDrawer*						debug_draw;
 
-	std::list<AABB> cube_list;
-	std::list<Sphere> spheres_list;
+	std::vector<AABB> cube_list;
+	std::vector<Sphere> spheres_list;
 };
 
 class DebugDrawer : public btIDebugDraw

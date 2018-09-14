@@ -3,7 +3,6 @@
 #include "Globals.h"
 #include "Primitive.h"
 
-
 struct PhysBody3D;
 
 class ModuleSceneGui : public Module
@@ -21,7 +20,15 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int CreateMainMenu();
 	void showTestWindow();
+	void showSphereCreator();
 public:
+	//flags
 	bool show_test_window = false;
 	bool show_console = false;
+	bool show_sphere_creator = false;
+
+	//Geometry Creator
+	int rad_aux = 0;
+	int x_aux = 0, y_aux = 0, z_aux = 0;
+	vec pos_aux;
 };

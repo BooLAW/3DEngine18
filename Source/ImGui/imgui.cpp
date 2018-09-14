@@ -7852,7 +7852,7 @@ bool ImGui::Combo(const char* label, int* current_item, const char* items_separa
 }
 
 // Combo box function.
-bool ImGui::Combo(const char* label, int* current_item, bool (*items_getter)(void*, int, const char**), void* data, int items_count, int height_in_items)
+bool ImGui::	Combo(const char* label, int* current_item, bool (*items_getter)(void*, int, const char**), void* data, int items_count, int height_in_items)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
