@@ -1,10 +1,8 @@
 #pragma once
 #include "Module.h"
-#include "p2DynArray.h"
 #include "Globals.h"
 #include "Primitive.h"
 
-#define MAX_SNAKE 8
 
 struct PhysBody3D;
 
