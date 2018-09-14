@@ -1,4 +1,6 @@
 #pragma once
+#include "Globals.h"
+#include "MathGeoLib\MathGeoLib.h"
 
 class Application;
 struct PhysBody3D;

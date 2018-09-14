@@ -39,7 +39,8 @@ public:
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	DebugDrawer*						debug_draw;
 
-	
+	std::list<AABB> cube_list;
+	std::list<Sphere> spheres_list;
 };
 
 class DebugDrawer : public btIDebugDraw
@@ -56,6 +57,6 @@ public:
 	int	 getDebugMode() const;
 
 	DebugDrawModes mode;
-	Line line;
+	PLine line;
 	Primitive point;
 };
