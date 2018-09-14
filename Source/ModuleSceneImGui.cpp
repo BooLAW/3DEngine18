@@ -99,9 +99,9 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 					show_sphere_creator = !show_sphere_creator;
 				}
-				if (ImGui::MenuItem("Square Creator"))
+				if (ImGui::MenuItem("Cube Creator"))
 				{
-					show_square_creator = !show_square_creator;
+					show_cube_creator = !show_cube_creator;
 				}
 				if (ImGui::MenuItem("Check Collisions"))
 				{
@@ -126,6 +126,7 @@ int ModuleSceneGui::CreateMainMenu()
 	}
 	if (show_test_window)showTestWindow();
 	if (show_sphere_creator)showSphereCreator();
+	if (show_cube_creator)showCubeCreator();
 }
 
 void ModuleSceneGui::showTestWindow() 
@@ -136,25 +137,25 @@ void ModuleSceneGui::showTestWindow()
 
 void ModuleSceneGui::showSphereCreator()
 {
-		if (ImGui::Begin("Sphere Creator"))
+	if (ImGui::Begin("Sphere Creator"))
+	{
+		ImGui::InputInt("Radius", &rad_aux);
+		ImGui::InputInt("Position X", &x_aux);
+		ImGui::InputInt("Position Y", &y_aux);
+		ImGui::InputInt("Position Z", &z_aux);
+		if (ImGui::SmallButton("Create"))
 		{
-			ImGui::InputInt("Radius", &rad_aux);
-			ImGui::InputInt("Position X", &x_aux);
-			ImGui::InputInt("Position Y", &y_aux);
-			ImGui::InputInt("Position Z", &z_aux);
-			if (ImGui::SmallButton("Create"))
-			{
-				pos_aux.Set(x_aux, y_aux, z_aux);
-				App->physics->CreateSphere(pos_aux, rad_aux);
+			pos_aux.Set(x_aux, y_aux, z_aux);
+			App->physics->CreateSphere(pos_aux, rad_aux);
 
-			}
-			if (ImGui::SmallButton("Reset"))
-			{
-				x_aux = y_aux = z_aux = rad_aux = 0;
-			}
-
-			ImGui::End();
 		}
+		if (ImGui::SmallButton("Reset"))
+		{
+			x_aux = y_aux = z_aux = rad_aux = 0;
+		}
+
+		ImGui::End();
+	}
 	
 }
 
@@ -168,9 +169,9 @@ void ModuleSceneGui::showCubeCreator()
 		ImGui::InputInt("Position Z", &z_aux);
 		ImGui::Spacing();
 		ImGui::Text("maxPoint");
-		ImGui::InputInt("Position X", &x_aux2);
-		ImGui::InputInt("Position Y", &y_aux2);
-		ImGui::InputInt("Position Z", &z_aux2);
+		ImGui::InputInt("Position X2", &x_aux2);
+		ImGui::InputInt("Position Y2", &y_aux2);
+		ImGui::InputInt("Position Z2", &z_aux2);
 
 		if (ImGui::SmallButton("Create"))
 		{

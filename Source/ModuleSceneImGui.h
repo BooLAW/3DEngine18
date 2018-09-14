@@ -28,7 +28,7 @@ public:
 	bool show_test_window = false;
 	bool show_console = false;
 	bool show_sphere_creator = false;
-	bool show_square_creator = false;
+	bool show_cube_creator = false;
 
 	//Geometry Creator
 	int rad_aux = 0;
