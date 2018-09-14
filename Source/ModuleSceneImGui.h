@@ -21,14 +21,20 @@ public:
 	int CreateMainMenu();
 	void showTestWindow();
 	void showSphereCreator();
+	void showCubeCreator();
+
 public:
 	//flags
 	bool show_test_window = false;
 	bool show_console = false;
 	bool show_sphere_creator = false;
+	bool show_square_creator = false;
 
 	//Geometry Creator
 	int rad_aux = 0;
 	int x_aux = 0, y_aux = 0, z_aux = 0;
+	int x_aux2 = 0, y_aux2 = 0, z_aux2 = 0;
 	vec pos_aux;
+	vec min_pos_aux;
+	vec max_pos_aux;
 };

@@ -98,6 +98,14 @@ void ModulePhysics3D::CreateSphere(vec position, int radius)
 	spheres_list.push_back(new_sphere);
 }
 
+void ModulePhysics3D::CreateCube(vec minPoint, vec maxPoint)
+{
+	AABB new_cube;
+	new_cube.minPoint = minPoint;
+	new_cube.maxPoint = maxPoint;
+	cube_list.push_back(new_cube);
+}
+
 std::list<vec2> ModulePhysics3D::GetSphereCollisions()
 {
 	int listener = 0;

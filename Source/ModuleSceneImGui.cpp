@@ -72,6 +72,7 @@ int ModuleSceneGui::CreateMainMenu()
 {
 	//Creates the example window
 
+
 	// Menu
 	static bool show_app_main_menu_bar = true;
 	if (show_app_main_menu_bar)
@@ -97,6 +98,10 @@ int ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Sphere Creator"))
 				{
 					show_sphere_creator = !show_sphere_creator;
+				}
+				if (ImGui::MenuItem("Square Creator"))
+				{
+					show_square_creator = !show_square_creator;
 				}
 				if (ImGui::MenuItem("Check Collisions"))
 				{
@@ -151,5 +156,36 @@ void ModuleSceneGui::showSphereCreator()
 			ImGui::End();
 		}
 	
+}
+
+void ModuleSceneGui::showCubeCreator()
+{
+	if (ImGui::Begin("Cube Creator"))
+	{
+		ImGui::Text("minPoint");
+		ImGui::InputInt("Position X", &x_aux);
+		ImGui::InputInt("Position Y", &y_aux);
+		ImGui::InputInt("Position Z", &z_aux);
+		ImGui::Spacing();
+		ImGui::Text("maxPoint");
+		ImGui::InputInt("Position X", &x_aux2);
+		ImGui::InputInt("Position Y", &y_aux2);
+		ImGui::InputInt("Position Z", &z_aux2);
+
+		if (ImGui::SmallButton("Create"))
+		{
+			min_pos_aux.Set(x_aux, y_aux, z_aux);
+			max_pos_aux.Set(x_aux2, y_aux2, z_aux2);
+			App->physics->CreateCube(pos_aux, max_pos_aux);
+
+		}
+		if (ImGui::SmallButton("Reset"))
+		{
+			x_aux = y_aux = z_aux = 0;
+			x_aux2 = y_aux2 = z_aux2 = 0;
+		}
+
+		ImGui::End();
+	}
 }
 

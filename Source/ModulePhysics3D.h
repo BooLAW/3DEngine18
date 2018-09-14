@@ -27,6 +27,7 @@ public:
 	bool CleanUp();
 
 	void CreateSphere(vec position, int radius);
+	void CreateCube(vec minPoint, vec maxPoint);
 	std::list<vec2> GetSphereCollisions();
 	
 	private:
@@ -43,6 +44,7 @@ public:
 
 	std::vector<AABB> cube_list;
 	std::vector<Sphere> spheres_list;
+
 };
 
 class DebugDrawer : public btIDebugDraw
