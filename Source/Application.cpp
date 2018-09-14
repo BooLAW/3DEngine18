@@ -127,6 +127,12 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::OpenWebPage(const char * url )
+{
+	ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+	
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.add(mod);

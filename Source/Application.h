@@ -39,6 +39,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	void OpenWebPage(const char* url );
 
 private:
 

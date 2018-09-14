@@ -86,9 +86,26 @@ int ModuleSceneGui::CreateMainMenu()
 			{
 				if (ImGui::MenuItem("ImGui Demo"))
 				{
+					ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_Always);
 					show_test_window = !show_test_window;
 				}
+				if (ImGui::MenuItem("Random Number Generator"))
+				{
+
+				}
 				ImGui::EndMenu(); 
+			}
+			if (ImGui::BeginMenu("About..."))
+			{
+				if (ImGui::MenuItem("Link to Repository"))
+				{
+					App->OpenWebPage("https://github.com/BooLAW/3DEngine18");
+				}
+				if (ImGui::MenuItem("License"))
+				{
+					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/blob/master/LICENSE");
+				}
+				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
 		}
@@ -98,7 +115,6 @@ int ModuleSceneGui::CreateMainMenu()
 
 void ModuleSceneGui::showTestWindow() 
 {
-	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_Always);
 	ImGui::ShowTestWindow(&show_test_window);
 
 }
