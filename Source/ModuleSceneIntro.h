@@ -18,6 +18,7 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int RandInt(int min, int max);
+	float RandFloat(float min, float max);
 
 public:
 	
