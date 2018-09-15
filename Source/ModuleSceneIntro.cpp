@@ -47,10 +47,22 @@ update_status ModuleSceneIntro::Update(float dt)
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render(); 
+	int randomint = RandInt(1,100);
+	LOG("%i", randomint);
 
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+
 }
+
+int ModuleSceneIntro::RandInt(int min, int max)
+{
+	LCG aux;
+	int ret;
+	ret = aux.Int(min, max);
+	return ret;
+}
+
