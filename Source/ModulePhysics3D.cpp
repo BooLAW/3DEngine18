@@ -124,7 +124,33 @@ std::list<vec2> ModulePhysics3D::GetSphereCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({(float) listener,(float)candidate });
-				LOG("Body %d collides with body %d", listener, candidate);
+				LOG("Sphere %d collides with Sphere %d", listener, candidate);
+			}
+		}
+		candidate = 0;
+	}
+	return collisions_list;
+}
+
+std::list<vec2> ModulePhysics3D::GetCubeCollisions()
+{
+	int listener = 0;
+	int candidate = 0;
+
+	std::list<vec2> collisions_list;
+
+	for (listener; listener < cube_list.size(); listener++)
+	{
+		bool collided = false;
+		for (candidate; candidate < cube_list.size(); candidate++)
+		{
+			if (listener == candidate)
+				continue;
+			collided = cube_list[listener].Intersects(cube_list[candidate]);
+			if (collided)
+			{
+				collisions_list.push_back({ (float)listener,(float)candidate });
+				LOG("Cube %d collides with Cube %d", listener, candidate);
 			}
 		}
 		candidate = 0;

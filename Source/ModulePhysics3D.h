@@ -29,6 +29,7 @@ public:
 	void CreateSphere(vec position, int radius);
 	void CreateCube(vec minPoint, vec maxPoint);
 	std::list<vec2> GetSphereCollisions();
+	std::list<vec2> GetCubeCollisions();
 	
 	private:
 

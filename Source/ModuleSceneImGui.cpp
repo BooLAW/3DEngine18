@@ -106,6 +106,7 @@ int ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Check Collisions"))
 				{
 					App->physics->GetSphereCollisions();
+					App->physics->GetCubeCollisions();
 				}
 				ImGui::EndMenu(); 
 			}
