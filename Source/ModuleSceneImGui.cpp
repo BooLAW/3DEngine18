@@ -125,6 +125,10 @@ int ModuleSceneGui::CreateMainMenu()
 			}
 			if (ImGui::BeginMenu("About..."))
 			{
+				ImGui::Text("Creative Worlds");
+				ImGui::Text("by Pau Bonet & Josep Pi");
+				ImGui::Text("Creative World is a game engine to create 3D world with realisitic physics.");
+				ImGui::Spacing();				
 				if (ImGui::MenuItem("Link to Repository"))
 				{
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18");
@@ -133,6 +137,7 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/blob/master/LICENSE");
 				}
+
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
