@@ -44,6 +44,7 @@ update_status ModuleSceneGui::PreUpdate(float dt)
 // Update
 update_status ModuleSceneGui::Update(float dt)
 {
+	//RICARD: For a cleaner code, we decided to have a switch with the CreateMainMenu.
 	switch (CreateMainMenu())
 	{
 		case UPDATE_STOP:
@@ -70,8 +71,6 @@ void ModuleSceneGui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 int ModuleSceneGui::CreateMainMenu()
 {
-	//Creates the example window
-
 	// Menu
 	static bool show_app_main_menu_bar = true;
 	if (show_app_main_menu_bar)
