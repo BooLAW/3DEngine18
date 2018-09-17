@@ -81,9 +81,6 @@
     <ClInclude Include="PhysBody3D.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleSceneImGui.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>Sources\ImGui</Filter>
     </ClInclude>
@@ -303,6 +300,9 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleSceneImGui.h">
+      <Filter>Sources\Modules\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -352,9 +352,6 @@
     </ClCompile>
     <ClCompile Include="PhysBody3D.cpp">
       <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleSceneImGui.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Sources\ImGui</Filter>
@@ -481,6 +478,9 @@
     </ClCompile>
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Sources\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneImGui.cpp">
+      <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
