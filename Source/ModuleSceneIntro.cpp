@@ -52,6 +52,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render(); 
+
 	//Blit all the Panels
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
@@ -93,4 +94,5 @@ float ModuleSceneIntro::RandFloat(float min, float max)
 	ret = aux.Float(min, max);
 	return ret;
 }
+
 

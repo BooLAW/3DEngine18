@@ -91,7 +91,7 @@ int ModuleSceneGui::CreateMainMenu()
 				}
 				if (ImGui::MenuItem("Random Number Generator"))
 				{
-					
+					show_random_number_generator = !show_random_number_generator;
 				}
 				if (ImGui::MenuItem("Sphere Creator"))
 				{
@@ -145,6 +145,7 @@ int ModuleSceneGui::CreateMainMenu()
 	if (show_test_window)showTestWindow();
 	if (show_sphere_creator)showSphereCreator();
 	if (show_cube_creator)showCubeCreator();
+	if (show_random_number_generator)showRandomNumberGenerator();
 }
 
 void ModuleSceneGui::showTestWindow() 
@@ -180,6 +181,30 @@ void ModuleSceneGui::showSphereCreator()
 		ImGui::End();
 	}
 	
+}
+
+void ModuleSceneGui::showRandomNumberGenerator()
+{
+
+	if (ImGui::Begin("Random Number Generator"))
+	{
+		ImGui::InputInt("Max Number ", &aux2);
+		ImGui::InputInt("Min Number", &aux1);
+		ImGui::Spacing();
+		if (ImGui::SmallButton("Generate Random Int"))
+		{
+			random_int = App->scene_intro->RandInt(aux1, aux2);
+		}
+		ImGui::Text("%i", random_int);
+		ImGui::Spacing();
+		if (ImGui::SmallButton("Generate Random Float"))
+		{
+			random_float = App->scene_intro->RandFloat(aux1, aux2);
+		}
+		ImGui::Text("%f", random_float);
+		ImGui::End();
+	}
+
 }
 
 void ModuleSceneGui::showCubeCreator()

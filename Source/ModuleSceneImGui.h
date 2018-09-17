@@ -23,6 +23,7 @@ public:
 	void showConfigurationWindow();
 	void showConsoleWindow();
 	void showSphereCreator();
+	void showRandomNumberGenerator();
 	void showCubeCreator();
 
 public:
@@ -31,11 +32,17 @@ public:
 	bool show_console = false;
 	bool show_sphere_creator = false;
 	bool show_cube_creator = false;
+	bool show_random_number_generator = false;
 
 	//Geometry Creator
 	int rad_aux = 0;
 	int x_aux = 0, y_aux = 0, z_aux = 0;
 	int x_aux2 = 0, y_aux2 = 0, z_aux2 = 0;
+	int aux1 = 0, aux2 = 0;
+	int aux3 = 0, aux4 = 0;
+	int random_int = 0;
+	float random_float = 0.0f;
+	
 	vec pos_aux;
 	vec min_pos_aux;
 	vec max_pos_aux;
