@@ -3,10 +3,12 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
+#include "PanelConsole.h"
 
 
 #include <stdlib.h>
 #include <time.h>
+
 
 #define RADIUS 44
 
@@ -22,8 +24,11 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
+	//Add Panels HERE
+	console = new PanelConsole();
+	panels.push_back(console);
 
-
+	//-----------------------------
 	srand(time(NULL));
 	
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
@@ -47,7 +52,23 @@ update_status ModuleSceneIntro::Update(float dt)
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render(); 
+	//Blit all the Panels
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		if ((*item)->IsActive())
+		{
+			ImVec2 pos;
+			ImVec2 size;
+			pos.x = (*item)->pos_x;
+			pos.y = (*item)->pos_y;
+			size.x = (*item)->width;
+			size.y = (*item)->height;
 
+			ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(size, ImGuiSetCond_Always);
+			(*item)->Draw();
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 

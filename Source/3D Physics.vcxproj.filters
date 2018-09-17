@@ -25,6 +25,9 @@
     <Filter Include="Sources\MathGeolib">
       <UniqueIdentifier>{d999f6e6-2462-4197-bc1e-262706da8cc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Panels">
+      <UniqueIdentifier>{aaf89ebf-9dcd-4362-8ae2-686f0edde658}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -294,6 +297,12 @@
     <ClInclude Include="MathGeoLib\Geometry\TriangleMesh.h">
       <Filter>Sources\MathGeolib</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -466,6 +475,12 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\TriangleMesh.cpp">
       <Filter>Sources\MathGeolib</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Sources\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsole.cpp">
+      <Filter>Sources\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

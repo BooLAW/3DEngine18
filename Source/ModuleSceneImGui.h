@@ -20,6 +20,8 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int CreateMainMenu();
 	void showTestWindow();
+	void showConfigurationWindow();
+	void showConsoleWindow();
 	void showSphereCreator();
 	void showCubeCreator();
 

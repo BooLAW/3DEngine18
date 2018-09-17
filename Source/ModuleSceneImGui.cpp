@@ -72,7 +72,6 @@ int ModuleSceneGui::CreateMainMenu()
 {
 	//Creates the example window
 
-
 	// Menu
 	static bool show_app_main_menu_bar = true;
 	if (show_app_main_menu_bar)
@@ -93,7 +92,7 @@ int ModuleSceneGui::CreateMainMenu()
 				}
 				if (ImGui::MenuItem("Random Number Generator"))
 				{
-
+					
 				}
 				if (ImGui::MenuItem("Sphere Creator"))
 				{
@@ -109,6 +108,20 @@ int ModuleSceneGui::CreateMainMenu()
 					App->physics->GetCubeCollisions();
 				}
 				ImGui::EndMenu(); 
+			}
+			if (ImGui::BeginMenu("Panels"))
+			{
+				if (ImGui::MenuItem("Console"))
+				{
+					App->scene_intro->panels[0]->Activate();
+				}
+				/*
+				if (ImGui::MenuItem("Configuration"))
+				{
+					App->scene_intro->panels[1]->Activate();
+				}*/
+			
+				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("About..."))
 			{
@@ -133,6 +146,11 @@ int ModuleSceneGui::CreateMainMenu()
 void ModuleSceneGui::showTestWindow() 
 {
 	ImGui::ShowTestWindow(&show_test_window);
+
+}
+
+void ModuleSceneGui::showConsoleWindow()
+{
 
 }
 

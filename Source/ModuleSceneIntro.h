@@ -2,9 +2,10 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
+#include "Panel.h"
+#include "PanelConsole.h"
 
 struct PhysBody3D;
-struct PhysMotor3D;
 
 class ModuleSceneIntro : public Module
 {
@@ -21,5 +22,8 @@ public:
 	float RandFloat(float min, float max);
 
 public:
-	
+	std::vector<Panel*> panels;
+public:
+	PanelConsole* console = nullptr;
+
 };
