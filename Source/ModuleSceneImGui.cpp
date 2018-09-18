@@ -54,6 +54,7 @@ update_status ModuleSceneGui::Update(float dt)
 			return UPDATE_STOP;
 		}
 	}
+	//ImGui::ShowMetricsWindow();
 
 	return UPDATE_CONTINUE;
 }
