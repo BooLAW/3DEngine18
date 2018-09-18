@@ -1,8 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneImGui.h"
-#include "Primitive.h"
-#include "PhysBody3D.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl.h"
 #include "PCG/pcg_basic.h"

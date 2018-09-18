@@ -1,8 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include "Primitive.h"
-#include "PhysBody3D.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 
@@ -34,8 +32,8 @@ bool ModuleSceneIntro::Start()
 	//-----------------------------
 	srand(time(NULL));
 	
-	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	App->camera->Move(float3(1.0f, 5.0f, 0.0f));
+	App->camera->LookAt(float3(0, 0, 0));
 
 	return ret;
 }
@@ -52,9 +50,10 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	//Render the Plane
-	PPlane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render(); 
+	/* PAU
+	Plane p({0, 1, 0}, 0);
+	p..axis = true;
+	p.Render(); */
 
 	//Blit all the Panels
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
