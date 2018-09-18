@@ -5,6 +5,8 @@
 #include "PhysBody3D.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl.h"
+#include "PCG/pcg_basic.h"
+
 
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
@@ -159,6 +161,34 @@ void ModuleSceneGui::showConsoleWindow()
 
 }
 
+void ModuleSceneGui::showRandomNumberGenerator()
+{
+
+	if (ImGui::Begin("Random Number Generator"))
+	{
+		ImGui::InputInt("Max Number ", &aux2);
+		ImGui::InputInt("Min Number", &aux1);
+		ImGui::Spacing();
+		if (ImGui::SmallButton("Generate Random Int"))
+		{
+			random_int = (" %i", (int)pcg32_boundedrand_r(&rng, aux2) + aux1);			
+		}
+		ImGui::SameLine();
+		ImGui::Text("%i", random_int);
+		
+		ImGui::Spacing();
+		if (ImGui::SmallButton("Generate Random Float"))
+		{
+			random_float = ldexp(pcg32_random_r(&rng), -32);
+		}
+		ImGui::SameLine();
+		ImGui::Text("%f", random_float*aux2);
+
+		ImGui::End();
+	}
+
+}
+
 void ModuleSceneGui::showSphereCreator()
 {
 	if (ImGui::Begin("Sphere Creator"))
@@ -181,32 +211,6 @@ void ModuleSceneGui::showSphereCreator()
 		ImGui::End();
 	}
 	
-}
-
-void ModuleSceneGui::showRandomNumberGenerator()
-{
-
-	if (ImGui::Begin("Random Number Generator"))
-	{
-		ImGui::InputInt("Max Number ", &aux2);
-		ImGui::InputInt("Min Number", &aux1);
-		ImGui::Spacing();
-		if (ImGui::SmallButton("Generate Random Int"))
-		{
-			random_int = App->scene_intro->RandInt(aux1, aux2);
-		}
-		ImGui::SameLine();
-		ImGui::Text("%i", random_int);
-		ImGui::Spacing();
-		if (ImGui::SmallButton("Generate Random Float"))
-		{
-			random_float = App->scene_intro->RandFloat(aux1, aux2);
-		}
-		ImGui::SameLine();
-		ImGui::Text("%f", random_float);
-		ImGui::End();
-	}
-
 }
 
 void ModuleSceneGui::showCubeCreator()
