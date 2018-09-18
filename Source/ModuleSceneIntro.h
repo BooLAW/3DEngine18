@@ -3,9 +3,10 @@
 #include "Globals.h"
 #include "Primitive.h"
 #include "Panel.h"
-#include "PanelConsole.h"
 
 struct PhysBody3D;
+class PanelConsole;
+class PanelConfiguration;
 
 class ModuleSceneIntro : public Module
 {
@@ -27,5 +28,6 @@ public:
 
 public:
 	PanelConsole* console = nullptr;
+	PanelConfiguration* configuration = nullptr;
 
 };

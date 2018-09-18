@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 #include "PanelConsole.h"
+#include "PanelConfiguration.h"
 
 
 #include <stdlib.h>
@@ -26,7 +27,9 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 	//Add Panels HERE
 	console = new PanelConsole();
+	configuration = new PanelConfiguration();
 	panels.push_back(console);
+	panels.push_back(configuration);
 
 	//-----------------------------
 	srand(time(NULL));
