@@ -195,12 +195,14 @@ void ModuleSceneGui::showRandomNumberGenerator()
 		{
 			random_int = App->scene_intro->RandInt(aux1, aux2);
 		}
+		ImGui::SameLine();
 		ImGui::Text("%i", random_int);
 		ImGui::Spacing();
 		if (ImGui::SmallButton("Generate Random Float"))
 		{
 			random_float = App->scene_intro->RandFloat(aux1, aux2);
 		}
+		ImGui::SameLine();
 		ImGui::Text("%f", random_float);
 		ImGui::End();
 	}
