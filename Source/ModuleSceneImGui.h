@@ -38,8 +38,7 @@ public:
 	int rad_aux = 0;
 	int x_aux = 0, y_aux = 0, z_aux = 0;
 	int x_aux2 = 0, y_aux2 = 0, z_aux2 = 0;
-	int aux1 = 0, aux2 = 0;
-	int aux3 = 0, aux4 = 0;
+	int aux1 = 0, aux2 = 1;
 	int random_int = 0;
 	float random_float = 0.0f;
 	
