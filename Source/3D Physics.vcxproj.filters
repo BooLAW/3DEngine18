@@ -28,6 +28,9 @@
     <Filter Include="Sources\Panels">
       <UniqueIdentifier>{aaf89ebf-9dcd-4362-8ae2-686f0edde658}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\PCG">
+      <UniqueIdentifier>{d2187f24-af80-45be-bef5-6534397767e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -306,6 +309,10 @@
     <ClInclude Include="PanelConfiguration.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PCG\include\utime.h" />
+    <ClInclude Include="PCG\pcg_basic.h">
+      <Filter>Sources\PCG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -487,6 +494,9 @@
     </ClCompile>
     <ClCompile Include="PanelConfiguration.cpp">
       <Filter>Sources\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PCG\pcg_basic.c">
+      <Filter>Sources\PCG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
