@@ -7,7 +7,7 @@
 #include "ImGui\imgui_impl_sdl.h"
 
 
-ModuleSceneGui::ModuleSceneGui(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
 	
 }
@@ -108,7 +108,7 @@ int ModuleSceneGui::CreateMainMenu()
 				}
 				ImGui::EndMenu(); 
 			}
-			if (ImGui::BeginMenu("Panels"))
+			if (ImGui::BeginMenu("View"))
 			{
 				if (ImGui::MenuItem("Console"))
 				{

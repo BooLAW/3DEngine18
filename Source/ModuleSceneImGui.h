@@ -8,7 +8,7 @@ struct PhysBody3D;
 class ModuleSceneGui : public Module
 {
 public:
-	ModuleSceneGui(Application* app, bool start_enabled = true);
+	ModuleSceneGui(bool start_enabled = true);
 	~ModuleSceneGui();
 
 	bool Start();

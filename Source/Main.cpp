@@ -14,6 +14,7 @@ enum main_states
 	MAIN_FINISH,
 	MAIN_EXIT
 };
+Application* App = nullptr;
 
 int main(int argc, char ** argv)
 {
@@ -21,7 +22,6 @@ int main(int argc, char ** argv)
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
-	Application* App = NULL;
 
 	while (state != MAIN_EXIT)
 	{
@@ -29,8 +29,8 @@ int main(int argc, char ** argv)
 		{
 		case MAIN_CREATION:
 
-			LOG("-------------- Application Creation --------------");
 			App = new Application();
+			LOG("-------------- Application Creation --------------");
 			state = MAIN_START;
 			break;
 

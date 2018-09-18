@@ -14,7 +14,7 @@
 	#pragma comment (lib, "Bullet/libx86/LinearMath.lib")
 #endif
 
-ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 {
 	debug = true;
 
@@ -124,7 +124,7 @@ std::list<vec2> ModulePhysics3D::GetSphereCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({(float) listener,(float)candidate });
-				LOG("Sphere %d collides with Sphere %d", listener, candidate);
+				CONSOLE_LOG("Sphere %d collides with Sphere %d", listener, candidate);
 			}
 		}
 		candidate = 0;
@@ -150,7 +150,7 @@ std::list<vec2> ModulePhysics3D::GetCubeCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({ (float)listener,(float)candidate });
-				LOG("Cube %d collides with Cube %d", listener, candidate);
+				CONSOLE_LOG("Cube %d collides with Cube %d", listener, candidate);
 			}
 		}
 		candidate = 0;

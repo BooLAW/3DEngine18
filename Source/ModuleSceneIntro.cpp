@@ -12,7 +12,7 @@
 
 #define RADIUS 44
 
-ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneIntro::ModuleSceneIntro( bool start_enabled) : Module( start_enabled)
 {
 }
 
@@ -93,6 +93,12 @@ float ModuleSceneIntro::RandFloat(float min, float max)
 	float ret;
 	ret = aux.Float(min, max);
 	return ret;
+}
+
+void ModuleSceneIntro::Log(char * text)
+{
+	if (console != nullptr)
+		console->LogToConsole(text);
 }
 
 

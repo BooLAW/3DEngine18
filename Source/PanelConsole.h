@@ -13,6 +13,7 @@ public:
 
 	void LogToConsole(const char* text);
 	void ClearConsole();
+	bool show_debug_text = true;
 public:
 	ImGuiTextBuffer text_buffer;
 };

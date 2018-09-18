@@ -15,8 +15,18 @@ PanelConsole::~PanelConsole()
 void PanelConsole::Draw()
 {
 	ImGui::Begin("Console", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);
-	ImGui::TextUnformatted(text_buffer.begin());
 
+	if(ImGui::Button("Debug"))
+	{
+		show_debug_text = !show_debug_text;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Clear"))
+	{
+		text_buffer.clear();
+	}
+	if (show_debug_text)
+		ImGui::TextUnformatted(text_buffer.begin());
 	ImGui::End();
 }
 

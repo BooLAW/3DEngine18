@@ -11,9 +11,8 @@ private :
 	bool enabled;
 
 public:
-	Application* App;
 
-	Module(Application* parent, bool start_enabled = true) : App(parent)
+	Module( bool start_enabled = true)
 	{}
 
 	virtual ~Module()
@@ -52,3 +51,4 @@ public:
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
 };
+extern Application* App;

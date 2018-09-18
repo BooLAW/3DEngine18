@@ -10,7 +10,7 @@ struct PhysBody3D;
 class ModuleSceneIntro : public Module
 {
 public:
-	ModuleSceneIntro(Application* app, bool start_enabled = true);
+	ModuleSceneIntro(bool start_enabled = true);
 	~ModuleSceneIntro();
 
 	bool Start();
@@ -21,9 +21,10 @@ public:
 	int RandInt(int min, int max);
 	float RandFloat(float min, float max);
 	void DisplayRandNumber(bool isActive);
-
+	void Log(char* text);
 public:
 	std::vector<Panel*> panels;
+
 public:
 	PanelConsole* console = nullptr;
 
