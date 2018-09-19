@@ -53,7 +53,7 @@ update_status ModuleSceneGui::Update(float dt)
 		}
 	}
 	//ImGui::ShowMetricsWindow();
-	ImGui::ShowTestWindow();
+	//ImGui::ShowTestWindow();
 
 	return UPDATE_CONTINUE;
 }

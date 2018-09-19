@@ -4,8 +4,7 @@
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "PanelApplication.h"
-
-
+#include "ImGui\imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -63,6 +62,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		if ((*item)->IsActive())
 		{
+			
 			ImVec2 pos;
 			ImVec2 size;
 			pos.x = (*item)->pos_x;
