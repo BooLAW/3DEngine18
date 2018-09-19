@@ -16,9 +16,6 @@
     <Filter Include="Sources\Helpers">
       <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\Game">
-      <UniqueIdentifier>{83f46af7-e02f-40c0-9e56-41d76082527b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\ImGui">
       <UniqueIdentifier>{c74dd38b-f8fb-42a9-ada9-b9b373e3bf54}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="Sources\PCG">
       <UniqueIdentifier>{d2187f24-af80-45be-bef5-6534397767e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\Editor">
+      <UniqueIdentifier>{83f46af7-e02f-40c0-9e56-41d76082527b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +64,7 @@
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="ModuleSceneIntro.h">
-      <Filter>Sources\Modules\Game</Filter>
+      <Filter>Sources\Modules\Editor</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Sources\Tools</Filter>
@@ -292,7 +292,7 @@
       <Filter>Sources\Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleSceneImGui.h">
-      <Filter>Sources\Modules\Game</Filter>
+      <Filter>Sources\Modules\Editor</Filter>
     </ClInclude>
     <ClInclude Include="PanelConfiguration.h">
       <Filter>Sources\Panels</Filter>
@@ -337,7 +337,7 @@
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="ModuleSceneIntro.cpp">
-      <Filter>Sources\Modules\Game</Filter>
+      <Filter>Sources\Modules\Editor</Filter>
     </ClCompile>
     <ClCompile Include="ModulePhysics3D.cpp">
       <Filter>Sources\Modules</Filter>
@@ -469,7 +469,7 @@
       <Filter>Sources\Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleSceneImGui.cpp">
-      <Filter>Sources\Modules\Game</Filter>
+      <Filter>Sources\Modules\Editor</Filter>
     </ClCompile>
     <ClCompile Include="PanelConfiguration.cpp">
       <Filter>Sources\Panels</Filter>
