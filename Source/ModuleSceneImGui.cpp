@@ -185,7 +185,7 @@ void ModuleSceneGui::showRandomNumberGenerator()
 			random_float = ldexp(pcg32_random_r(&rng), -32);
 		}
 		ImGui::SameLine();
-		ImGui::Text("%f", random_float*aux2);
+		ImGui::Text("%f", random_float);
 
 		ImGui::End();
 	}

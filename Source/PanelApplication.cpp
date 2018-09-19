@@ -23,6 +23,7 @@ void PanelApplication::Draw()
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::Text("Framerate AVG: %.1f FPS", ImGui::GetIO().Framerate);
 	ImGui::LabelText("UPC","Organization");
+	ImGui::Separator();
 	int arr_size = 7;
 	static float arr[7] = { 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f };
 	if (arr[0] != ImGui::GetIO().Framerate)
