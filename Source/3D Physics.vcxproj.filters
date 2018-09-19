@@ -301,6 +301,9 @@
     <ClInclude Include="PCG\pcg_basic.h">
       <Filter>Sources\PCG</Filter>
     </ClInclude>
+    <ClInclude Include="PanelApplication.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -476,6 +479,9 @@
     </ClCompile>
     <ClCompile Include="PCG\pcg_basic.c">
       <Filter>Sources\PCG</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelApplication.cpp">
+      <Filter>Sources\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

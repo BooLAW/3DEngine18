@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
+#include "PanelApplication.h"
 
 
 #include <stdlib.h>
@@ -26,8 +27,10 @@ bool ModuleSceneIntro::Start()
 	//Add Panels HERE
 	console = new PanelConsole();
 	configuration = new PanelConfiguration();
+	application = new PanelApplication();
 	panels.push_back(console);
 	panels.push_back(configuration);
+	panels.push_back(application);
 
 	//-----------------------------
 	srand(time(NULL));

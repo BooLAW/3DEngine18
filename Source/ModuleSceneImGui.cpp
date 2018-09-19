@@ -53,6 +53,7 @@ update_status ModuleSceneGui::Update(float dt)
 		}
 	}
 	//ImGui::ShowMetricsWindow();
+	ImGui::ShowTestWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -120,7 +121,10 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 					App->scene_intro->panels[1]->Activate();
 				}*/
-			
+				if (ImGui::MenuItem("Application"))
+				{
+					App->scene_intro->panels[2]->Activate();
+				}
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("About..."))

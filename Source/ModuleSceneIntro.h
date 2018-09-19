@@ -6,6 +6,7 @@
 struct PhysBody3D;
 class PanelConsole;
 class PanelConfiguration;
+class PanelApplication;
 
 class ModuleSceneIntro : public Module
 {
@@ -20,7 +21,7 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int RandInt(int min, int max);
 	float RandFloat(float min, float max);
-	void DisplayRandNumber(bool isActive);
+	//void DisplayRandNumber(bool isActive);
 	void Log(char* text);
 public:
 	std::vector<Panel*> panels;
@@ -28,5 +29,6 @@ public:
 public:
 	PanelConsole* console = nullptr;
 	PanelConfiguration* configuration = nullptr;
+	PanelApplication* application = nullptr;
 
 };

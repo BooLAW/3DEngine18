@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "PCG/pcg_basic.h"
 
+
 struct PhysBody3D;
 
 class ModuleSceneGui : public Module
@@ -34,6 +35,9 @@ public:
 	bool show_sphere_creator = false;
 	bool show_cube_creator = false;
 	bool show_random_number_generator = false;
+
+	//states
+	bool isVsyncActive = true;
 
 	//Geometry Creator
 	int rad_aux = 0;
