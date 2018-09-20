@@ -4,7 +4,7 @@
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "PanelApplication.h"
-#include "ImGui\imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
 

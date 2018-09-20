@@ -22,7 +22,7 @@
 
 #ifdef MATH_URHO3D_INTEROP
 #include <Urho3D/Math/Sphere.h>
-#include "..\..\Element.h"
+#include "../../Element.h"
 #endif
 
 MATH_BEGIN_NAMESPACE

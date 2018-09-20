@@ -1,6 +1,6 @@
 #pragma once
 #include "Panel.h"
-#include "ImGui\imgui.h"
+#include "ImGui/imgui.h"
 
 class PanelConfiguration :
 	public Panel

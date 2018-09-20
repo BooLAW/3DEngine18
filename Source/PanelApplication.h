@@ -1,6 +1,6 @@
 #pragma once
 #include "Panel.h"
-#include "ImGui\imgui.h"
+#include "ImGui/imgui.h"
 #include "ModuleSceneImGui.h"
 #include "Application.h"
 #include "../Source/ImGui/imgui_internal.h"
