@@ -36,6 +36,10 @@ bool ModulePhysics3D::Start()
 	return true;
 }
 
+void ModulePhysics3D::DrawModuleConfig()
+{
+}
+
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {

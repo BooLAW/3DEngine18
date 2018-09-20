@@ -20,6 +20,10 @@ void PanelConfiguration::Draw()
 {
 	ImGui::Begin("Configuration", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);	
 	Application();
+	for (int i = 0; App->GetModule(i) != nullptr; i++)
+	{
+		App->GetModule(i)->DrawModuleConfig();
+	}
 	ImGui::End();
 }
 
@@ -77,6 +81,11 @@ void PanelConfiguration::Application()
 		ImGui::PlotHistogram("##miliseconds", mms_log, IM_ARRAYSIZE(mms_log), 0, tmp_string2, 0.0f, 120.0f, ImVec2(310, 100));
 
 	}
+}
+
+void PanelConfiguration::Window()
+{
+
 }
 
 void PanelConfiguration::Hardware()

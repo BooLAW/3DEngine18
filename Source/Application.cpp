@@ -119,6 +119,31 @@ void Application::OpenWebPage(const char * url )
 	
 }
 
+void Application::BroadcastEvent(SDL_Event & event)
+{
+	for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); it++)
+	{
+		(*it)->BroadcastEvent(event);
+	}
+}
+
+Module * Application::GetModule(int index)
+{
+	if (index <= list_modules.size())
+	{
+		int i = 0;
+
+		for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
+		{
+			if (i == index)
+				return (*item);
+
+			i++;
+		}
+	}
+	return nullptr;
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);

@@ -39,7 +39,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OpenWebPage(const char* url );
-
+	void BroadcastEvent(SDL_Event & event);
+	Module* GetModule(int index);
 private:
 
 	void AddModule(Module* mod);

@@ -1,5 +1,7 @@
 #pragma once
 #include "Globals.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
 #include "MathGeoLib\MathGeoLib.h"
 
 class Application;
@@ -47,7 +49,8 @@ public:
 	{ 
 		return true; 
 	}
-
+	virtual void DrawModuleConfig() {}
+	virtual void BroadcastEvent(SDL_Event & event) {}
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
 };

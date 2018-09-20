@@ -10,6 +10,7 @@ public:
 
 	bool Init();
 	bool Start();
+	void DrawModuleConfig()override;
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);

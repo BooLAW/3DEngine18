@@ -16,6 +16,7 @@ public:
 	void LookAt(const float3 &Spot);
 	void Move(const float3 &Movement);
 	float* GetViewMatrix();
+	void DrawModuleConfig()override;
 
 private:
 

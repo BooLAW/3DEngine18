@@ -27,8 +27,8 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		 width = SCREEN_WIDTH * SCREEN_SIZE;
+		 height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -91,4 +91,67 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+void ModuleWindow::DrawModuleConfig()
+{
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	if (ImGui::CollapsingHeader("Window"))
+	{
+
+		ImGui::Text("Size configuration:");
+
+		ImGui::SliderInt("Width", &width, 600, DM.w);
+		ImGui::SliderInt("Height", &height, 600, DM.h);
+
+		SDL_SetWindowSize(window, width, height);
+
+		if (SDL_UpdateWindowSurface(window)) //(?)
+			screen_surface = SDL_GetWindowSurface(window);
+
+		if (ImGui::Button("Center Window"))
+		{
+			SDL_SetWindowPosition(window, DM.w / 2 - width / 2, DM.h / 2 - height / 2);
+		}
+		ImGui::Separator();
+		// Auto adjustments -----------------------------
+
+		ImGui::Text("Auto adjustments: ");
+
+		ImGui::Checkbox("Fullscreen", &fullscreen); ImGui::SameLine();
+		ImGui::Checkbox("Borderless", &borderless);
+
+		if (fullscreen)
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		else
+			SDL_SetWindowFullscreen(window, 0);
+
+		if (borderless)
+			SDL_SetWindowBordered(window, SDL_bool(false));
+		else
+			SDL_SetWindowBordered(window, SDL_bool(true));
+		ImGui::Separator();
+		// ------------------------------------------
+	}
+}
+
+void ModuleWindow::BroadcastEvent(SDL_Event & event)
+{
+	switch (event.window.event)
+	{
+	case SDL_WINDOWEVENT_RESIZED:
+	case SDL_WINDOWEVENT_SIZE_CHANGED:
+	{
+		if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+		{
+			width = event.window.data1;
+			height = event.window.data2;
+
+			App->renderer3D->OnResize(width, height);
+		}
+
+	}
+	break;
+	}
 }

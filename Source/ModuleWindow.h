@@ -19,13 +19,21 @@ public:
 	bool CleanUp();
 
 	void SetTitle(const char* title);
-
+	void DrawModuleConfig()override;
+	void BroadcastEvent(SDL_Event & event)override;
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
+	//Windows config
+	int width = 0;
+	int height = 0;
+
+	bool fullscreen = false;
+	bool borderless = false;
 };
 
 #endif // __ModuleWindow_H__

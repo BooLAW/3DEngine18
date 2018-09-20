@@ -22,6 +22,7 @@ public:
 	bool Init();
 	update_status PreUpdate(float dt);
 	bool CleanUp();
+	void DrawModuleConfig()override;
 
 	KEY_STATE GetKey(int id) const
 	{

@@ -68,6 +68,10 @@ bool ModuleAudio::CleanUp()
 	return true;
 }
 
+void ModuleAudio::DrawModuleConfig()
+{
+}
+
 // Play a music file
 bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 {

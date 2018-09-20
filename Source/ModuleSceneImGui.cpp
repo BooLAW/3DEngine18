@@ -67,9 +67,7 @@ update_status ModuleSceneGui::PostUpdate(float dt)
 }
 
 
-void ModuleSceneGui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{
-}
+
 
 int ModuleSceneGui::CreateMainMenu()
 {

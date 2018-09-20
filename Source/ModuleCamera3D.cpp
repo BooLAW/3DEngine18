@@ -149,6 +149,10 @@ float* ModuleCamera3D::GetViewMatrix()
 	return (float*)ViewMatrix.v;
 }
 
+void ModuleCamera3D::DrawModuleConfig()
+{
+}
+
 // -----------------------------------------------------------------
 void ModuleCamera3D::CalculateViewMatrix()
 {

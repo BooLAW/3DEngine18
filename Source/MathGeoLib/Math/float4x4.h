@@ -157,7 +157,7 @@ public:
 	/// Creates a new transformation matrix that translates by the given offset.
 	static TranslateOp Translate(float tx, float ty, float tz);
 	static TranslateOp Translate(const float3 &offset);
-
+	static float4x4 perspective(float fovy, float aspect, float n, float f);
 	/// Creates a new float4x4 that rotates about one of the principal axes. [indexTitle: RotateX/Y/Z]
 	/** Calling RotateX, RotateY or RotateZ is slightly faster than calling the more generic RotateAxisAngle function.
 		@param angleRadians The angle to rotate by, in radians. For example, Pi/4.f equals to 45 degrees, Pi/2.f is 90 degrees, and Pi is 180 degrees.

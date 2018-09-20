@@ -4,9 +4,6 @@
 #include <stdint.h>
 #include "PCG/pcg_basic.h"
 
-
-struct PhysBody3D;
-
 class ModuleSceneGui : public Module
 {
 public:
@@ -19,7 +16,6 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int CreateMainMenu();
 	void showTestWindow();
 	void showConfigurationWindow();
