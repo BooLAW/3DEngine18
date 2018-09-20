@@ -4,11 +4,14 @@
 #include "Application.h"
 #include "../Source/ImGui/imgui_internal.h"
 
+
 class PanelConfiguration :
 	public Panel
 {
 public:
-	char charbuffer;
+	//Application
+	float fps_log[7] = { 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f };
+	float mms_log[7] = { 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f };
 
 public:
 	PanelConfiguration();

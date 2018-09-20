@@ -297,8 +297,10 @@
     <ClInclude Include="PanelConfiguration.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="PCG\include\utime.h" />
     <ClInclude Include="PCG\pcg_basic.h">
+      <Filter>Sources\PCG</Filter>
+    </ClInclude>
+    <ClInclude Include="PCG\include\utime.h">
       <Filter>Sources\PCG</Filter>
     </ClInclude>
   </ItemGroup>
