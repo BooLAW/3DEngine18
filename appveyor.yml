@@ -4,10 +4,10 @@ configuration:
 - Debug
 - Release
 build:
-  project: Source\Living Worlds.sln
+  project: Source\Living_Worlds.sln
   verbosity: normal
 before_package:
-- ps: Copy-Item C:\projects\3dengine18\Source\$env:CONFIGURATION\Living Worlds.exe C:\projects\3dengine18\Game\.
+- ps: Copy-Item C:\projects\3DEngine18\Source\$env:CONFIGURATION\Living_Worlds.exe C:\projects\3DEngine18\Game\.
 artifacts:
 - path: Game
   name: Release
