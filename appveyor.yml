@@ -10,20 +10,20 @@ configuration:
 environment:
   platform: x86
 build:
-  project: Source\Living Worlds.sln
+  project: Source\LivingWorlds.sln
   verbosity: minimal
-before_package:
+before_build:
 - ps: >-
     Copy-Item C:\projects\3DEngine18\$env:CONFIGURATION\Living Worlds.exe C:\projects\3DEngine18\Game\.
     Copy-Item C:\projects\3DEngine18\README.md C:\projects\3dmotor18\Game\
 artifacts:
 - path: Game
-  name: Living Worlds
+  name: LivingWorlds
 deploy:
 - provider: GitHub
   auth_token:
     secure: GeYx4HYpDpN6dKUH00nJz0Yzbe9g98uB74ulCIMOCcsPighlNM5m/E5mGnCuLo+r
-  artifact: Living Worlds
+  artifact: LivingWorlds
   force_update: true
   on:
     branch: master
