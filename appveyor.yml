@@ -1,4 +1,4 @@
-version: LivingWorlds-{branch} 0.1.{build}
+version: Living Worlds-{branch} 0.1.{build}
 branches:
   only:
   - master
@@ -10,12 +10,10 @@ configuration:
 environment:
   platform: x86
 build:
-  project: Source\LivingWorlds.sln
   verbosity: minimal
-before_build:
+before_package:
 - ps: >-
     Copy-Item C:\projects\3DEngine18\$env:CONFIGURATION\Living Worlds.exe C:\projects\3DEngine18\Game\.
-    Copy-Item C:\projects\3DEngine18\README.md C:\projects\3dmotor18\Game\
 artifacts:
 - path: Game
   name: LivingWorlds
@@ -28,3 +26,6 @@ deploy:
   on:
     branch: master
     CONFIGURATION: Release
+
+
+	
