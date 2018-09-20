@@ -6,7 +6,7 @@ configuration:
 build:
   verbosity: minimal
 before_package:
-- ps: Copy-Item C:\projects\3DEngine18\Source\$env:CONFIGURATION\Living Worlds.exe C:\projects\3DEngine18\Game\.
+- ps: Copy-Item C:\projects\3DEngine18\Source\$env:CONFIGURATION\LivingWorlds.exe C:\projects\3DEngine18\Game\.
 artifacts:
 - path: Game
   name: LivingWorlds
