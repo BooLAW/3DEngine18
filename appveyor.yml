@@ -14,5 +14,6 @@ deploy:
 - provider: GitHub
   description: LivingWorlds
   auth_token:
-	secure: O6vYuDSfZO+GWdAE0Md/aNrEtYzpq2NEDhFvJyE4FTDlPiBEzASGVbv7K4JbY7Au  draft: true
+	secure: O6vYuDSfZO+GWdAE0Md/aNrEtYzpq2NEDhFvJyE4FTDlPiBEzASGVbv7K4JbY7Au  
+draft: true
  
