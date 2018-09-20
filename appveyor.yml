@@ -10,12 +10,12 @@ configuration:
 environment:
   platform: x86
 build:
-  project: Living Worlds.sln
+  project: Source\Living Worlds.sln
   verbosity: minimal
 before_package:
 - ps: >-
-    Copy-Item C:\projects\3dmotor18\$env:CONFIGURATION\Living Worlds.exe C:\projects\3dmotor18\Game\.
-    Copy-Item C:\projects\3dmotor18\README.md C:\projects\3dmotor18\Game\
+    Copy-Item C:\projects\3DEngine18\$env:CONFIGURATION\Living Worlds.exe C:\projects\3DEngine18\Game\.
+    Copy-Item C:\projects\3DEngine18\README.md C:\projects\3dmotor18\Game\
 artifacts:
 - path: Game
   name: Living Worlds
