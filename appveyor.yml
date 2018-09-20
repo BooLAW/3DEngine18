@@ -1,31 +1,18 @@
-version: Living Worlds-{branch} 0.1.{build}
-branches:
-  only:
-  - master
-skip_tags: true
+version: LivingWorlds 0.1.{build}
 image: Visual Studio 2017
 configuration:
 - Debug
 - Release
-environment:
-  platform: x86
 build:
   verbosity: minimal
 before_package:
-- ps: >-
-    Copy-Item C:\projects\3DEngine18\$env:CONFIGURATION\Living Worlds.exe C:\projects\3DEngine18\Game\.
+- ps: Copy-Item C:\projects\3DEngine18\$env:CONFIGURATION\Source\Living Worlds.exe C:\projects\3DEngine18\Game\.
 artifacts:
 - path: Game
   name: LivingWorlds
 deploy:
 - provider: GitHub
+  description: LivingWorlds
   auth_token:
-    secure: GeYx4HYpDpN6dKUH00nJz0Yzbe9g98uB74ulCIMOCcsPighlNM5m/E5mGnCuLo+r
-  artifact: LivingWorlds
-  force_update: true
-  on:
-    branch: master
-    CONFIGURATION: Release
-
-
-	
+    secure: piE1WY+KQYZkBVZ0eaCkCJJru7Wzo0OObLas5xrwYWRROcQivrqnrCrK++IW59H9
+  draft: true
