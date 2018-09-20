@@ -1,0 +1,22 @@
+version: '{branch}- 0.0.{build}'
+skip_tags: true
+configuration:
+- Debug
+- Release
+build:
+  project: Source\Living-Worlds.sln
+  verbosity: normal
+before_package:
+- ps: Copy-Item C:\projects\3DEngine18\Source\$env:CONFIGURATION\Living-Worlds.exe C:\projects\3DEngine18\Game\.
+artifacts:
+- path: Game
+  name: Release
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: TTSVGqQ2AwzvL6lROWpObpmbm99AIwvsAd9DVs7C+wttC15wftjIle7G1gjAJGyQ
+  artifact: Release
+  draft: true
+  prerelease: false
+  on:
+    CONFIGURATION: Release
