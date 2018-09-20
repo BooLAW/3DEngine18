@@ -1,5 +1,4 @@
-version: LivingWorlds 0.1.{build}
-image: Visual Studio 2017
+version: 1.0.{build}
 configuration:
 - Debug
 - Release
@@ -9,12 +8,12 @@ before_package:
 - ps: Copy-Item C:\projects\3DEngine18\Source\$env:CONFIGURATION\3DGameEngine.exe C:\projects\3DEngine18\Game\.
 artifacts:
 - path: Game
-  name: LivingWorlds
+  name: GameAssets
+  type: WebDeployPackage
 deploy:
 - provider: GitHub
-  description: LivingWorlds
+  description: AutoRelease
   auth_token:
-	secure: O6vYuDSfZO+GWdAE0Md/aNrEtYzpq2NEDhFvJyE4FTDlPiBEzASGVbv7K4JbY7Au  
-
+    secure: SCslfI2j/1N3gCQm0QLMH5+1bphYhHgSWx3IB9lAi05Mdsz9J6RHRRuWhAQeFrHDT64cv2NusTbPzySIval8r0ar67oRapaS9NjO/1P0Mqk=
   draft: true
  
