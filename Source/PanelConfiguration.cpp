@@ -14,6 +14,7 @@ PanelConfiguration::PanelConfiguration():Panel("Configuration")
 
 PanelConfiguration::~PanelConfiguration()
 {
+	delete fps_log;
 }
 
 void PanelConfiguration::Draw()
@@ -53,31 +54,43 @@ void PanelConfiguration::Application()
 		ImGui::SliderInt("Max FPS", &fps_slider, 0, 120);
 		ImGui::Text("Limit Framerate: %i FPS", fps_slider);
 
-		int fps_log_size = 7;
-		if (fps_log[0] != ImGui::GetIO().Framerate)
+;
+		if (fps_log[IM_ARRAYSIZE(fps_log)] != ImGui::GetIO().Framerate)
 		{
-			fps_log[0] = ImGui::GetIO().Framerate;
-			for (int i = 0; i < fps_log_size; i++)
+
+			if (i > 0)
 			{
-				fps_log[i + 1] = fps_log[i];
+				fps_log[i - 1] = fps_log[i];
+				i--;
 			}
+			else
+			{
+				i = IM_ARRAYSIZE(fps_log);
+			}
+			fps_log[IM_ARRAYSIZE(fps_log)] = ImGui::GetIO().Framerate;
 		}
 
 		static char tmp_string[4096];
-		sprintf_s(tmp_string, 4096, "Framerate: %.1f", ImGui::GetIO().Framerate);
+		sprintf_s(tmp_string, 4096, "Framerate: %.2f", ImGui::GetIO().Framerate);
 		ImGui::PlotHistogram("##framerate", fps_log, IM_ARRAYSIZE(fps_log), 0, tmp_string, 0.0f, 120.0f, ImVec2(310, 100));
 
-		int mms_log_size = 7;
-		if (mms_log[0] != (1000.0f / ImGui::GetIO().Framerate))
+		float mss = (1000.0f / ImGui::GetIO().Framerate);
+		if (mms_log[IM_ARRAYSIZE(mms_log)] != mss)
 		{
-			mms_log[0] = (1000.0f / ImGui::GetIO().Framerate);
-			for (int i = 0; i < mms_log_size; i++)
+
+			if (i2 > 0)
 			{
-				mms_log[i + 1] = mms_log[i];
+				//mms_log[i2 - 1] = mms_log[i2];
+				i2--;
 			}
+			else
+			{
+				i2 = IM_ARRAYSIZE(fps_log);
+			}
+			mms_log[IM_ARRAYSIZE(mms_log)] = mss;
 		}
 		static char tmp_string2[4096];
-		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", 1000 / ImGui::GetIO().Framerate);
+		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", mss);
 		ImGui::PlotHistogram("##miliseconds", mms_log, IM_ARRAYSIZE(mms_log), 0, tmp_string2, 0.0f, 120.0f, ImVec2(310, 100));
 
 	}

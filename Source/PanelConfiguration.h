@@ -10,8 +10,13 @@ class PanelConfiguration :
 {
 public:
 	//Application
-	float fps_log[7] = { 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f };
-	float mms_log[7] = { 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f, 60.0f };
+	//FPS Display
+	int i = 32;
+	float fps_log[32];
+
+	//Milisecons Display
+	int i2 = 32;
+	float mms_log[32];
 
 public:
 	PanelConfiguration();
