@@ -22,6 +22,8 @@ int main(int argc, char ** argv)
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
+		
+	int fps = 0;
 
 	while (state != MAIN_EXIT)
 	{
@@ -62,6 +64,7 @@ int main(int argc, char ** argv)
 
 			if (update_return == UPDATE_STOP)
 				state = MAIN_FINISH;
+
 		}
 			break;
 

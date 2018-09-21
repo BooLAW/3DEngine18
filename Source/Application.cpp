@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "ImGui/imgui.h"
 
 Application::Application()
 {
@@ -56,7 +57,6 @@ bool Application::Init()
 	{
 		ret = (*item)->Start();
 	}
-	
 	ms_timer.Start();
 	return ret;
 }
@@ -71,11 +71,26 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	double fps60 = 1000.0f / 60.0f;
+
+	if (fps > 60)
+	{
+		if (App->dt > fps60)
+		{
+			fps = 0;
+		}
+		else
+		{
+			float sleeping_time = 1000.0f - App->dt;
+		}
+	}
+		
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
+	++fps;
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	

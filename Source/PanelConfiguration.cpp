@@ -37,7 +37,7 @@ void PanelConfiguration::Application()
 		if (App->imgui->isVsyncActive == true)
 		{
 			//Activate Vsync
-			if (SDL_GL_SetSwapInterval(1))
+			if (SDL_GL_SetSwapInterval(0))
 				LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 		}
 		else
