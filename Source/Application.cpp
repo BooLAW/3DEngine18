@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
+#include "PanelConfiguration.h"
 
 Application::Application()
 {
@@ -71,20 +72,10 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	double fps60 = 1000.0f / 60.0f;
+	maxfps = 1000.0f / (float)App->imgui->fps_slider;
+	sleeping_time = maxfps - dt-3;
+	Sleep(sleeping_time);
 
-	if (fps > 60)
-	{
-		if (App->dt > fps60)
-		{
-			fps = 0;
-		}
-		else
-		{
-			float sleeping_time = 1000.0f - App->dt;
-		}
-	}
-		
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

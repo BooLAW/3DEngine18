@@ -29,6 +29,8 @@ private:
 	Timer	ms_timer;
 	float	dt;
 	int		fps = 0;
+	float	maxfps = 0;
+	float	sleeping_time = 0;
 	
 	std::list<Module*> list_modules;
 

@@ -34,6 +34,7 @@ public:
 
 	//states
 	bool isVsyncActive = true;
+	int fps_slider = 60;
 
 	//Geometry Creator
 	int rad_aux = 0;

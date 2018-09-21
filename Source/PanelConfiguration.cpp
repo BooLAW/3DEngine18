@@ -51,9 +51,9 @@ void PanelConfiguration::Application()
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::InputText("App Name", "Living Worlds", 14);
 		ImGui::InputText("Organization", "UPC CITM", 9);
-		static int fps_slider = 60;
-		ImGui::SliderInt("Max FPS", &fps_slider, 0, 120);
-		ImGui::Text("Limit Framerate: %i FPS", fps_slider);
+		
+		ImGui::SliderInt("Max FPS", &App->imgui->fps_slider, 0, 120);
+		ImGui::Text("Limit Framerate: %i FPS", App->imgui->fps_slider);
 
 		static int i = 32;
 		if (fps_log[IM_ARRAYSIZE(fps_log)] != ImGui::GetIO().Framerate)
