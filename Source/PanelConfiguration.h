@@ -11,11 +11,11 @@ class PanelConfiguration :
 public:
 	//Application
 	//FPS Display
-	int i = 32;
+
 	float fps_log[32];
 
 	//Milisecons Display
-	int i2 = 32;
+
 	float mms_log[32];
 
 public:
