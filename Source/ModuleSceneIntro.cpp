@@ -3,6 +3,8 @@
 #include "ModuleSceneIntro.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
+#include "PanelHierarchy.h"
+#include "PanelComponents.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
@@ -25,8 +27,13 @@ bool ModuleSceneIntro::Start()
 	//Add Panels HERE
 	console = new PanelConsole();
 	configuration = new PanelConfiguration();
+	components = new PanelComponents();
+	hierarchy = new PanelHierarchy();
+
 	panels.push_back(console);
 	panels.push_back(configuration);
+	panels.push_back(components);
+	panels.push_back(hierarchy);
 
 	//-----------------------------
 	srand(time(NULL));

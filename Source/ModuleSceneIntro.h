@@ -7,6 +7,8 @@ struct PhysBody3D;
 class PanelConsole;
 class PanelConfiguration;
 class PanelApplication;
+class PanelComponents;
+class PanelHierarchy;
 
 class ModuleSceneIntro : public Module
 {
@@ -30,5 +32,7 @@ public:
 	PanelConsole* console = nullptr;
 	PanelConfiguration* configuration = nullptr;
 	PanelApplication* application = nullptr;
+	PanelComponents* components = nullptr;
+	PanelHierarchy* hierarchy = nullptr;
 
 };
