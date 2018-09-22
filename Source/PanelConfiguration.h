@@ -18,6 +18,7 @@ public:
 
 	float mms_log[32];
 
+	
 
 public:
 	PanelConfiguration();
