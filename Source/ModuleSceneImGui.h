@@ -32,9 +32,11 @@ public:
 	bool show_cube_creator = false;
 	bool show_random_number_generator = false;
 
-	//states
+	//Application
 	bool isVsyncActive = true;
 	int fps_slider = 60;
+
+	char* organization_name = "UPC CITM";
 
 	//Geometry Creator
 	int rad_aux = 0;
