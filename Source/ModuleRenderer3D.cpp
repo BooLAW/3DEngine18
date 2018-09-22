@@ -89,81 +89,16 @@ void ModuleRenderer3D::DrawModuleConfig()
 		SDL_version compiler;
 		SDL_VERSION(&compiler);
 		
-		ImGui::Text("SDL Version: "); ImGui::SameLine(0, 20);
+		ImGui::Text("SDL Version:"); ImGui::SameLine(0, 10);
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d", compiler.major,compiler.minor,compiler.patch);
 
-		ImGui::Text("CPUs: "); ImGui::SameLine(0, 20);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i ( Cache: %ikb )", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+		ImGui::Text("CPUs: "); ImGui::SameLine(0, 5);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i (Cache: %ikb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
 
-		ImGui::Text("System RAM: "); ImGui::SameLine(0, 20);
+		ImGui::Text("System RAM: "); ImGui::SameLine(0, 10);
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i", SDL_GetSystemRAM());
-		char* rdtsc = nullptr;
-		char* mmx = nullptr;
-		char* sse = nullptr;
-		char* sse2 = nullptr;
-		char* sse3 = nullptr;
-		char* sse41 = nullptr;
-		char* sse42 = nullptr;
-		char* avx = nullptr;
-		
-		std::vector<char*> title;
-		if (SDL_HasRDTSC())
-		{
-			char* rdtsc = "RDTSC";
-			title.push_back(rdtsc);
-		}
-		if (SDL_HasMMX())
-		{
-			char* mmx = "MMX";
-			title.push_back(mmx);
-		}
-		if (SDL_HasSSE())
-		{
-			char* sse = "SSE";
-			title.push_back(sse);
-		}
-		if (SDL_HasSSE2())
-		{
-			char* sse2 = "SSE2";
-			title.push_back(sse2);
-		}
-		if (SDL_HasSSE3())
-		{
-			char* sse3 = "SSE3";
-			title.push_back(sse3);
-		}
-		if (SDL_HasSSE41())
-		{
-			char* sse41 = "SSE41";
-			title.push_back(sse41);
-		}
-		if (SDL_HasSSE42())
-		{
-			sse42 = "SSE42";
-			title.push_back(sse42);
-		}
-		if (SDL_HasAVX())
-		{
-			avx = "AVX";
-			title.push_back(avx);
-		}
-		
-		ImGui::Text("Caps: "); ImGui::SameLine(0, 20);
-		for (int i = 0; i < title.size(); i++)
-		{
-			if (i == 0)
-			{
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", title[i]);
-				ImGui::SameLine(0, 0);
-			}
-			else
-			{
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), ", %s", title[i]);
-				ImGui::SameLine(0, 0);
-			}
-		}
-		
 
+		CPUCapabilities();
 	}
 
 }
@@ -259,5 +194,74 @@ void ModuleRenderer3D::SetSceneLights()
 	lights[0].Active(true);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
+}
+
+void ModuleRenderer3D::CPUCapabilities()
+{
+	char* rdtsc = nullptr;
+	char* mmx = nullptr;
+	char* sse = nullptr;
+	char* sse2 = nullptr;
+	char* sse3 = nullptr;
+	char* sse41 = nullptr;
+	char* sse42 = nullptr;
+	char* avx = nullptr;
+
+	std::vector<char*> cpu_title;
+	if (SDL_HasRDTSC())
+	{
+		char* rdtsc = "RDTSC";
+		cpu_title.push_back(rdtsc);
+	}
+	if (SDL_HasMMX())
+	{
+		char* mmx = "MMX";
+		cpu_title.push_back(mmx);
+	}
+	if (SDL_HasSSE())
+	{
+		char* sse = "SSE";
+		cpu_title.push_back(sse);
+	}
+	if (SDL_HasSSE2())
+	{
+		char* sse2 = "SSE2";
+		cpu_title.push_back(sse2);
+	}
+	if (SDL_HasSSE3())
+	{
+		char* sse3 = "SSE3";
+		cpu_title.push_back(sse3);
+	}
+	if (SDL_HasSSE41())
+	{
+		char* sse41 = "SSE41";
+		cpu_title.push_back(sse41);
+	}
+	if (SDL_HasSSE42())
+	{
+		sse42 = "SSE42";
+		cpu_title.push_back(sse42);
+	}
+	if (SDL_HasAVX())
+	{
+		avx = "AVX";
+		cpu_title.push_back(avx);
+	}
+
+	ImGui::Text("Caps:"); ImGui::SameLine(0, 5);
+	for (int i = 0; i < cpu_title.size(); i++)
+	{
+		if (i == 0)
+		{
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", cpu_title[i]);
+			ImGui::SameLine(0, 0);
+		}
+		else
+		{
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), ", %s", cpu_title[i]);
+			ImGui::SameLine(0, 0);
+		}
+	}
 }
 

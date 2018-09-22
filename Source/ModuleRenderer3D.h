@@ -20,6 +20,7 @@ public:
 	void OnResize(int width, int height);
 	void SetUILights();
 	void SetSceneLights();
+	void CPUCapabilities();
 public:
 
 	Light lights[MAX_LIGHTS];
