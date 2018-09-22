@@ -84,6 +84,7 @@
     <ClInclude Include="ImGui\stb_rect_pack.h" />
     <ClInclude Include="ImGui\stb_textedit.h" />
     <ClInclude Include="ImGui\stb_truetype.h" />
+    <ClInclude Include="JSON.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MathGeoLib\Algorithm\GJK.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelHierarchy.h" />
+    <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PCG\include\utime.h" />
     <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="Timer.h" />
@@ -174,6 +176,7 @@
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="JSON.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -226,6 +229,7 @@
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
+    <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
@@ -237,6 +241,7 @@
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="MathGeoLib\Math\float2.inl" />
     <None Include="MathGeoLib\Math\Matrix.inl" />
+    <None Include="Parson\config.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
