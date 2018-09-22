@@ -14,9 +14,6 @@ class json_file
 		 json_file();
 		 ~json_file();
 
-		
-		
-	
 		 void Save(); 
 		 void CleanUp();
 		 void Delete();

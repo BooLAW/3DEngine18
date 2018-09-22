@@ -8,6 +8,7 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
+#include "JSON.h"
 
 
 #define RADIUS 44
@@ -34,6 +35,10 @@ bool ModuleSceneIntro::Start()
 	panels.push_back(configuration);
 	panels.push_back(components);
 	panels.push_back(hierarchy);
+
+	JSON file1(true);
+	file1.LoadJSONFile("config.json");
+
 
 	//-----------------------------
 	srand(time(NULL));

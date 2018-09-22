@@ -18,6 +18,16 @@ bool JSON::Awake()
 	return ret;
 	}
 
+json_file * JSON::LoadJSONFile(const char * path)
+{
+	JSON_Value* root_value;
+	JSON_Array* commits;
+	JSON_Array* commit;
+	CONSOLE_LOG("hola");
+
+	return nullptr;
+}
+
 bool JSON::CleanUp()
 {
 	return false;
