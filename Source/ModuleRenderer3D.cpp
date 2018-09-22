@@ -32,6 +32,7 @@ bool ModuleRenderer3D::Init()
 	
 	if(ret == true)
 	{
+		
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

@@ -21,7 +21,7 @@ void PanelConfiguration::Draw()
 {
 	ImGui::Begin("Configuration", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);	
 	Application();
-	ImGui::ShowTestWindow();;
+	//ImGui::ShowTestWindow();;
 	for (int i = 0; App->GetModule(i) != nullptr; i++)
 	{
 		App->GetModule(i)->DrawModuleConfig();

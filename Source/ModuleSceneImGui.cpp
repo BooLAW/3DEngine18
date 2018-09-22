@@ -240,3 +240,8 @@ void ModuleSceneGui::showCubeCreator()
 	}
 }
 
+void ModuleSceneGui::ManageInput(SDL_Event * e) const
+{
+	ImGui_ImplSdl_ProcessEvent(e);
+}
+
