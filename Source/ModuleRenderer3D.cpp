@@ -4,10 +4,12 @@
 #include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "SDL/include/SDL_version.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
+struct SDL_version;
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module( start_enabled)
 {
 }
@@ -82,6 +84,88 @@ bool ModuleRenderer3D::Init()
 
 void ModuleRenderer3D::DrawModuleConfig()
 {
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		SDL_version compiler;
+		SDL_VERSION(&compiler);
+		
+		ImGui::Text("SDL Version: "); ImGui::SameLine(0, 20);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d", compiler.major,compiler.minor,compiler.patch);
+
+		ImGui::Text("CPUs: "); ImGui::SameLine(0, 20);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i ( Cache: %ikb )", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+
+		ImGui::Text("System RAM: "); ImGui::SameLine(0, 20);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i", SDL_GetSystemRAM());
+		char* rdtsc = nullptr;
+		char* mmx = nullptr;
+		char* sse = nullptr;
+		char* sse2 = nullptr;
+		char* sse3 = nullptr;
+		char* sse41 = nullptr;
+		char* sse42 = nullptr;
+		char* avx = nullptr;
+		
+		std::vector<char*> title;
+		if (SDL_HasRDTSC())
+		{
+			char* rdtsc = "RDTSC";
+			title.push_back(rdtsc);
+		}
+		if (SDL_HasMMX())
+		{
+			char* mmx = "MMX";
+			title.push_back(mmx);
+		}
+		if (SDL_HasSSE())
+		{
+			char* sse = "SSE";
+			title.push_back(sse);
+		}
+		if (SDL_HasSSE2())
+		{
+			char* sse2 = "SSE2";
+			title.push_back(sse2);
+		}
+		if (SDL_HasSSE3())
+		{
+			char* sse3 = "SSE3";
+			title.push_back(sse3);
+		}
+		if (SDL_HasSSE41())
+		{
+			char* sse41 = "SSE41";
+			title.push_back(sse41);
+		}
+		if (SDL_HasSSE42())
+		{
+			sse42 = "SSE42";
+			title.push_back(sse42);
+		}
+		if (SDL_HasAVX())
+		{
+			avx = "AVX";
+			title.push_back(avx);
+		}
+		
+		ImGui::Text("Caps: "); ImGui::SameLine(0, 20);
+		for (int i = 0; i < title.size(); i++)
+		{
+			if (i == 0)
+			{
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", title[i]);
+				ImGui::SameLine(0, 0);
+			}
+			else
+			{
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), ", %s", title[i]);
+				ImGui::SameLine(0, 0);
+			}
+		}
+		
+
+	}
+
 }
 
 // PreUpdate: clear buffer

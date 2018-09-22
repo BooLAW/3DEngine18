@@ -21,7 +21,7 @@ void PanelConfiguration::Draw()
 {
 	ImGui::Begin("Configuration", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);	
 	Application();
-	//ImGui::ShowTestWindow();;
+
 	for (int i = 0; App->GetModule(i) != nullptr; i++)
 	{
 		App->GetModule(i)->DrawModuleConfig();
@@ -37,7 +37,7 @@ void PanelConfiguration::Application()
 		if (App->imgui->isVsyncActive == true)
 		{
 			//Activate Vsync
-			if (SDL_GL_SetSwapInterval(0))
+			if (SDL_GL_SetSwapInterval(1))
 				LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 		}
 		else
@@ -52,6 +52,7 @@ void PanelConfiguration::Application()
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::InputText("App Name", app_name, IM_ARRAYSIZE(app_name));
 		ImGui::InputText("Organization", org_name, IM_ARRAYSIZE(org_name));
+
 		
 		ImGui::SliderInt("Max FPS", &App->imgui->fps_slider, 0, 120);
 		ImGui::Text("Limit Framerate: %i FPS", App->imgui->fps_slider);
