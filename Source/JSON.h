@@ -5,7 +5,7 @@
 #include "Parson\parson.h"
 #include<string>
 #include<list>
-
+class root_value;
 class json_file
 	 {
 	 public:
@@ -36,7 +36,7 @@ public:
 	JSON(bool enabled);
 	~JSON();
 	bool Awake();
-	json_file* LoadJSONFile(const char* path);
+	JSON_Value* LoadJSONFile(const char* path);
 	json_file* CreateNewJSON(const char* path);
 	json_file* GetFile(const char* name);
 	bool CleanUp();

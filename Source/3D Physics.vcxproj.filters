@@ -535,7 +535,7 @@
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Sources\External Tools\MathGeolib</Filter>
     </None>
-    <None Include="Parson\config.json">
+    <None Include="Parson\testconfig.json">
       <Filter>Sources\External Tools\Parson</Filter>
     </None>
   </ItemGroup>

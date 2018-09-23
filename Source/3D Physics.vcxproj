@@ -241,7 +241,7 @@
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="MathGeoLib\Math\float2.inl" />
     <None Include="MathGeoLib\Math\Matrix.inl" />
-    <None Include="Parson\config.json" />
+    <None Include="Parson\testconfig.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

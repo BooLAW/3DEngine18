@@ -11,6 +11,7 @@
 #include "JSON.h"
 
 
+
 #define RADIUS 44
 
 ModuleSceneIntro::ModuleSceneIntro( bool start_enabled) : Module( start_enabled)
@@ -36,8 +37,6 @@ bool ModuleSceneIntro::Start()
 	panels.push_back(components);
 	panels.push_back(hierarchy);
 
-	JSON file1(true);
-	file1.LoadJSONFile("config.json");
 
 
 	//-----------------------------
@@ -65,7 +64,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p({0, 1, 0}, 0);
 	p..axis = true;
 	p.Render(); */
-
+	JSON file1(true);
+	file1.LoadJSONFile("testconfig.json");
 	//Blit all the Panels
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
