@@ -20,22 +20,23 @@ bool ModuleJSON::Awake()
 
 JSON_Value * ModuleJSON::LoadJSONFile(const char * path)
 {
-	JSON_Value* root_value;
-	root_value = json_parse_file(path);
-	if (root_value == NULL)
-	{
-		CONSOLE_LOG("Error Json file with path %s not found",path);
-		return nullptr;
-	}
-	else
-	{
-		return root_value;
-	}
+	JSON_Value* root_value = json_parse_file(path);
+
+	return root_value;
+
 }
 
-json_file * ModuleJSON::CreateNewJSON(const char * path)
+JSON_Value * ModuleJSON::CreateNewJSON(const char * path)
 {
-	return nullptr;
+	JSON_Value* root_value = json_parse_file(path);
+	const char* name = "josep";
+
+	root_value = json_value_init_object();
+	json_object_set_string(json_object(root_value), "name", "holaaa");
+	json_serialize_to_file(root_value, path);
+	name = json_object_get_string(json_object(root_value), "name");
+
+	return root_value;
 }
 
 bool ModuleJSON::CleanUp()

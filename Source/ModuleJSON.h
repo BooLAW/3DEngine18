@@ -37,7 +37,7 @@ public:
 	~ModuleJSON();
 	bool Awake();
 	JSON_Value* LoadJSONFile(const char* path);
-	json_file* CreateNewJSON(const char* path);
+	JSON_Value* CreateNewJSON(const char* path);
 	json_file* GetFile(const char* name);
 	bool CleanUp();
 private:

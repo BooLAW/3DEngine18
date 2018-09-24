@@ -38,10 +38,11 @@ bool ModuleSceneIntro::Start()
 	panels.push_back(hierarchy);
 
 
-	ModuleJSON file1(true);
-	file1.LoadJSONFile("testconfig.json");
+	//ModuleJSON file1(true);
+	//file1.LoadJSONFile("testconfig.json");
 
-	ModuleJSON file2 = App->json->LoadJSONFile("config.json");
+	ModuleJSON file2 = App->json->CreateNewJSON("config.json");
+
 
 
 	//-----------------------------
