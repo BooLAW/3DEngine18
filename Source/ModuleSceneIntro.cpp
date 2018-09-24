@@ -38,10 +38,14 @@ bool ModuleSceneIntro::Start()
 	panels.push_back(hierarchy);
 
 
-	//ModuleJSON file1(true);
-	//file1.LoadJSONFile("testconfig.json");
 
-	ModuleJSON file2 = App->json->CreateNewJSON("config.json");
+	//App->json->CreateNewJSON("testconfig.json");
+
+	json_file file1("testconfig.json");
+	const char* name_output = file1.ReadString("name");
+	int age_output = file1.ReadInt("age");
+
+	//for testing -> //App->json->print_commits_info("torvalds", "linux");
 
 
 

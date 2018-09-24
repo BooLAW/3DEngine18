@@ -11,17 +11,18 @@ class json_file
 	 public:
 		 json_file(JSON_Value* value, JSON_Object* object, const char* path);
 		 json_file(JSON_Object* Entry);
+		 json_file(const char* path);
 		 json_file();
 		 ~json_file();
 
 		 void Save(); 
 		 void CleanUp();
 		 void Delete();
-	 private:
-		 bool FindValue(const char* str, json_value_type type,int index)const;
-		 JSON_Value * GetValue(const char * field, int index) const;
+		 const char* ReadString(const char* object_name);
+		 int ReadInt(const char* int_name);
+		 json_file json_file::GetArray(const char * field, int index) const;
 
-	 private:
+	 public:
 		JSON_Value* value = nullptr;
 		JSON_Object* object = nullptr;
 		JSON_Object* root = nullptr;
@@ -36,9 +37,8 @@ public:
 	ModuleJSON(bool enabled);
 	~ModuleJSON();
 	bool Awake();
-	JSON_Value* LoadJSONFile(const char* path);
 	JSON_Value* CreateNewJSON(const char* path);
-	json_file* GetFile(const char* name);
+	void print_commits_info(const char*username, const char *repository);
 	bool CleanUp();
 private:
 	std::list<json_file*> j_files;
