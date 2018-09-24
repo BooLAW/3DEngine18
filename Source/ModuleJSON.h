@@ -30,11 +30,11 @@ class json_file
 };
 
 
-class JSON : public Module
+class ModuleJSON : public Module
 {
 public:
-	JSON(bool enabled);
-	~JSON();
+	ModuleJSON(bool enabled);
+	~ModuleJSON();
 	bool Awake();
 	JSON_Value* LoadJSONFile(const char* path);
 	json_file* CreateNewJSON(const char* path);

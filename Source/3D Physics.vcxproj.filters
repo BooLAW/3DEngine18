@@ -321,8 +321,8 @@
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="JSON.h">
-      <Filter>Sources\External Tools\JSON</Filter>
+    <ClInclude Include="ModuleJSON.h">
+      <Filter>Sources\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,8 +509,8 @@
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Sources\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp">
-      <Filter>Sources\External Tools\JSON</Filter>
+    <ClCompile Include="ModuleJSON.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

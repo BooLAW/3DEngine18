@@ -8,7 +8,7 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
-#include "JSON.h"
+#include "ModuleJSON.h"
 
 
 
@@ -38,7 +38,8 @@ bool ModuleSceneIntro::Start()
 	panels.push_back(hierarchy);
 
 
-
+	ModuleJSON file1(true);
+	file1.LoadJSONFile("testconfig.json");
 	//-----------------------------
 	srand(time(NULL));
 	
@@ -52,7 +53,6 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-
 	return true;
 }
 
@@ -64,8 +64,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p({0, 1, 0}, 0);
 	p..axis = true;
 	p.Render(); */
-	JSON file1(true);
-	file1.LoadJSONFile("testconfig.json");
+	
 	//Blit all the Panels
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
