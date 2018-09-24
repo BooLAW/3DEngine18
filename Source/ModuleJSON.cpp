@@ -33,6 +33,11 @@ JSON_Value * ModuleJSON::LoadJSONFile(const char * path)
 	}
 }
 
+json_file * ModuleJSON::CreateNewJSON(const char * path)
+{
+	return nullptr;
+}
+
 bool ModuleJSON::CleanUp()
 {
 	return false;

@@ -40,6 +40,10 @@ bool ModuleSceneIntro::Start()
 
 	ModuleJSON file1(true);
 	file1.LoadJSONFile("testconfig.json");
+
+	ModuleJSON file2 = App->json->LoadJSONFile("config.json");
+
+
 	//-----------------------------
 	srand(time(NULL));
 	
