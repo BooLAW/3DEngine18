@@ -88,8 +88,8 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 	assert(document["i"].IsInt());
 	CONSOLE_LOG("i = %d\n", document["i"].GetInt());
 	// Alternative (int)document["i"]
-	assert(document["pi"].IsNumber());
-	assert(document["pi"].IsDouble());
+	document["pi"].IsNumber();
+	document["pi"].IsDouble();
 	CONSOLE_LOG("pi = %g\n", document["pi"].GetDouble());
 
 	const Value& a = document["a"];
@@ -100,7 +100,7 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 	fclose(fp);
 
 	Document d;
-	d.Parse(json);
+	d.Parse(readBuffer);
 	// ...
 	FILE* fp2 = fopen("output.json", "wb"); // non-Windows use "w"
 	char writeBuffer[500];
@@ -108,7 +108,7 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 	FileWriteStream os(fp2, writeBuffer, sizeof(writeBuffer));
 	Writer<FileWriteStream> writer(os);
 	Value& s = d["t"];
-	s.SetBool(false);
+	s.SetBool(true);
 
 	d.Accept(writer);
 	fclose(fp2);

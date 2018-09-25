@@ -1,7 +1,4 @@
 {
-  "app": {
-    "engine_name": "3D Engine"
-  },
   "hello": "world",
   "t": true,
   "f": false,
