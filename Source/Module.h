@@ -4,8 +4,16 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "MathGeoLib\MathGeoLib.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/filereadstream.h"
+#include "rapidjson/filewritestream.h"
+#include "rapidjson/writer.h"
+
+using namespace rapidjson;
+
 class Application;
 struct PhysBody3D;
+
 
 class Module
 {
@@ -53,5 +61,7 @@ public:
 	virtual void BroadcastEvent(SDL_Event & event) {}
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+	virtual bool Save() { return true; }
+	virtual bool Load() { return true; }
 };
 extern Application* App;

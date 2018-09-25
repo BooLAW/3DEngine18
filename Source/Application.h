@@ -14,7 +14,6 @@
 #include "ModuleJSON.h"
 #include "Profiler.h"
 
-
 class Application
 {
 public:
@@ -27,6 +26,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
+	Document testconfig;
 
 	Profiler profiler;
 
@@ -37,6 +37,10 @@ private:
 	int		fps = 0;
 	float	maxfps = 0;
 	float	sleeping_time = 0;
+	bool	isSaving = false;
+
+
+
 	
 	std::list<Module*> list_modules;
 public:
@@ -50,13 +54,13 @@ public:
 	void OpenWebPage(const char* url );
 	void BroadcastEvent(SDL_Event & event);
 	Module* GetModule(int index);
-	FILE* readconfig = fopen("config.json", "rb");
-	char readBuffer[500];
-
+	bool Save();
+	bool Load();
 
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
 };
