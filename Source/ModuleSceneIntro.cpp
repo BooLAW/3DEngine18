@@ -8,15 +8,6 @@
 
 #include "ModuleJSON.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/filereadstream.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/writer.h"
-#include <cstdio>
-
-using namespace rapidjson;
-
-
 #define RADIUS 44
 
 ModuleSceneIntro::ModuleSceneIntro( bool start_enabled) : Module( start_enabled)
@@ -72,33 +63,37 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 	const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
 	Document document;
 	document.ParseStream(is);
-	assert(document.IsObject());
-	assert(document.HasMember("hello"));
-	assert(document["hello"].IsString());
-	CONSOLE_LOG("hello = %s\n", document["hello"].GetString());
-	//hello = world
-	assert(document["t"].IsBool());
-	CONSOLE_LOG("t = %s\n", document["t"].GetBool() ? "true" : "false");
-	//t=true;
-	CONSOLE_LOG("n = %s\n", document["n"].IsNull() ? "null" : "?");
+	document.IsObject();
+
+	//TEST START
+	{
+		document.HasMember("hello");
+		document["hello"].IsString();
+		CONSOLE_LOG("hello = %s\n", document["hello"].GetString());
+		//hello = world
+		document["t"].IsBool();
+		CONSOLE_LOG("t = %s\n", document["t"].GetBool() ? "true" : "false");
+		//t=true;
+		CONSOLE_LOG("n = %s\n", document["n"].IsNull() ? "null" : "?");
+		document["i"].IsNumber();
+		// In this case, IsUint()/IsInt64()/IsUInt64() also return true.
+		document["i"].IsInt();
+		CONSOLE_LOG("i = %d\n", document["i"].GetInt());
+		// Alternative (int)document["i"]
+		document["pi"].IsNumber();
+		document["pi"].IsDouble();
+		CONSOLE_LOG("pi = %g\n", document["pi"].GetDouble());
+
+		const Value& a = document["a"];
+		a.IsArray();
+		for (SizeType i = 0; i < a.Size(); i++) // Uses SizeType instead of size_t
+			CONSOLE_LOG("a[%d] = %d\n", i, a[i].GetInt());
+	}
+	//TEST END
 
 
-	assert(document["i"].IsNumber());
-	// In this case, IsUint()/IsInt64()/IsUInt64() also return true.
-	assert(document["i"].IsInt());
-	CONSOLE_LOG("i = %d\n", document["i"].GetInt());
-	// Alternative (int)document["i"]
-	document["pi"].IsNumber();
-	document["pi"].IsDouble();
-	CONSOLE_LOG("pi = %g\n", document["pi"].GetDouble());
-
-	const Value& a = document["a"];
-	assert(a.IsArray());
-	for (SizeType i = 0; i < a.Size(); i++) // Uses SizeType instead of size_t
-		CONSOLE_LOG("a[%d] = %d\n", i, a[i].GetInt());
-	// ...
 	fclose(fp);
-
+	
 	Document d;
 	d.Parse(readBuffer);
 	// ...
@@ -107,6 +102,7 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 
 	FileWriteStream os(fp2, writeBuffer, sizeof(writeBuffer));
 	Writer<FileWriteStream> writer(os);
+
 	Value& s = d["t"];
 	s.SetBool(true);
 

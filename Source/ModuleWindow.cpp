@@ -136,6 +136,20 @@ void ModuleWindow::DrawModuleConfig()
 	}
 }
 
+bool ModuleWindow::Save()
+{
+	return true;
+}
+bool ModuleWindow::Load()
+{
+	width = App->testconfig["window"]["width"].GetInt();
+	height = App->testconfig["window"]["width"].GetInt();
+	fullscreen = App->testconfig["window"]["fullscreen"].GetBool();
+
+	screen_surface = SDL_GetWindowSurface(window);
+
+	return true;
+}
 void ModuleWindow::BroadcastEvent(SDL_Event & event)
 {
 	switch (event.window.event)

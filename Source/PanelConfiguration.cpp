@@ -20,8 +20,8 @@ PanelConfiguration::~PanelConfiguration()
 void PanelConfiguration::Draw()
 {
 	ImGui::Begin("Configuration", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);	
-	Application();
 
+	Application();
 	for (int i = 0; App->GetModule(i) != nullptr; i++)
 	{
 		App->GetModule(i)->DrawModuleConfig();
@@ -47,7 +47,7 @@ void PanelConfiguration::Application()
 				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 			
 		}
-		static char app_name[128] = "Living worlds";
+		static char app_name[128] = "Living Worlds";
 		static char org_name[128] = "UPC CITM";
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::InputText("App Name", app_name, IM_ARRAYSIZE(app_name));
@@ -103,16 +103,6 @@ void PanelConfiguration::Application()
 		static char tmp_string2[4096];
 		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", mss);
 		ImGui::PlotHistogram("##miliseconds", mms_log, IM_ARRAYSIZE(mms_log), 0, tmp_string2, 0.0f, 120.0f, ImVec2(310, 100));
-
 	}
 }
 
-void PanelConfiguration::Window()
-{
-
-}
-
-void PanelConfiguration::Hardware()
-{
-
-}

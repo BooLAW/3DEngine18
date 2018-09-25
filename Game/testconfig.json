@@ -1,0 +1,12 @@
+{
+  "app": {
+    "engine_name": "Living Worlds",
+    "organization": "UPC CITM",
+    "max_fps": 30
+  },
+  "window": {
+    "width": 500,
+    "height": 720,
+    "fullscreen": false
+  }
+}

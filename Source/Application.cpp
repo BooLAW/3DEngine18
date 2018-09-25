@@ -2,6 +2,9 @@
 #include "ImGui/imgui.h"
 #include "PanelConfiguration.h"
 
+
+
+
 Application::Application()
 {
 	window = new ModuleWindow();
@@ -46,6 +49,8 @@ bool Application::Init()
 {
 	bool ret = true;
 
+
+
 	// Call Init() in all modules
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
@@ -59,7 +64,10 @@ bool Application::Init()
 	{
 		ret = (*item)->Start();
 	}
+	//App->Save();
+	App->Load();
 	ms_timer.Start();
+
 	return ret;
 }
 
@@ -73,9 +81,13 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	maxfps = 1000.0f / (float)App->imgui->fps_slider;
-	sleeping_time = maxfps - dt-3;
-	Sleep(sleeping_time);
+	if (App->imgui->isVsyncActive == false)
+	{
+		maxfps = 1000.0f / (float)App->imgui->fps_slider;
+		sleeping_time = maxfps - dt - 3;
+		Sleep(sleeping_time);
+	}
+
 
 }
 
@@ -149,6 +161,55 @@ Module * Application::GetModule(int index)
 		}
 	}
 	return nullptr;
+}
+
+bool Application::Save()
+{
+	bool ret = true;
+
+	FILE* fp2 = fopen("testconfig.json", "wb"); // non-Windows use "w"
+	char writeBuffer[500];
+
+	FileWriteStream os(fp2, writeBuffer, sizeof(writeBuffer));
+	Writer<FileWriteStream> writer(os);
+
+	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
+	{
+		ret = (*item)->Save();
+	}
+	testconfig.Accept(writer);
+	fclose(fp2);
+	return ret;
+}
+
+bool Application::Load()
+{
+	bool ret = true;
+	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
+	FILE* fp = fopen("testconfig.json", "rb"); // non-Windows use "r"
+	char readBuf[10000];
+	FileReadStream is(fp, readBuf, sizeof(readBuf));
+	testconfig.ParseStream(is);
+
+	maxfps = testconfig["app"]["max_fps"].GetInt();
+	App->imgui->fps_slider = maxfps;
+
+	std::string title;
+	title.append(testconfig["app"]["engine_name"].GetString());
+	title.append(" - ");
+	title.append(testconfig["app"]["organization"].GetString());
+
+	SDL_SetWindowTitle(App->window->window, title.c_str());
+
+	
+
+	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
+	{
+		ret = (*item)->Load();
+	}
+	fclose(fp);
+
+	return ret;
 }
 
 void Application::AddModule(Module* mod)
