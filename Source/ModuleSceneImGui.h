@@ -4,13 +4,18 @@
 #include <stdint.h>
 #include "PCG/pcg_basic.h"
 
+class PanelConsole;
+class PanelConfiguration;
+class PanelApplication;
+class PanelComponents;
+class PanelHierarchy;
 class ModuleSceneGui : public Module
 {
 public:
 	ModuleSceneGui(bool start_enabled = true);
 	~ModuleSceneGui();
 
-	bool Start();
+	bool Init();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -24,6 +29,8 @@ public:
 	void showRandomNumberGenerator();
 	void showCubeCreator();
 	void ManageInput(SDL_Event* e)const;
+	void Log(const std::string text);
+
 public:
 	//flags
 	bool show_test_window = false;
@@ -50,4 +57,13 @@ public:
 	vec pos_aux;
 	vec min_pos_aux;
 	vec max_pos_aux;
+public:
+	std::vector<Panel*> panels;
+
+public:
+	PanelConsole * console = nullptr;
+	PanelConfiguration* configuration = nullptr;
+	PanelApplication* application = nullptr;
+	PanelComponents* components = nullptr;
+	PanelHierarchy* hierarchy = nullptr;
 };

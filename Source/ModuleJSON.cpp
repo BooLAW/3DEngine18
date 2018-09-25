@@ -14,7 +14,7 @@ bool ModuleJSON::Awake()
  {
 	bool ret = true;
 	
-		LOG("Module JSON loading...");
+	CONSOLE_LOG("Module JSON loading...");
 	return ret;
 	}
 
