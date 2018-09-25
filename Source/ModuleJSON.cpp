@@ -111,6 +111,31 @@ json_file json_file::GetArray(const char * field, int index) const
 	return json_file((JSON_Object*) nullptr);
 }
 
+bool json_file::FindValue(const char * str, json_value_type type, int index) const
+{
+	bool ret = false;
+
+	JSON_Value* val = GetValue(str, index);
+
+	if (val != nullptr && json_value_get_type(val) == type)
+		ret = true;
+
+	return ret;
+
+}
+
+JSON_Value * json_file::GetValue(const char * field, int index) const
+{
+	//index are -1 by default
+	if (index < 0)
+		return json_object_get_value(object, field);
+
+	JSON_Array* array = json_object_get_array(object, field);
+	if (array != nullptr)
+		return json_array_get_value(array, index);
+	return nullptr;
+}
+
 const char * json_file::ReadString(const char * object_name)
 {
 	JSON_Value* root_value = json_parse_file(this->path.c_str());
@@ -131,4 +156,14 @@ int json_file::ReadInt(const char * int_name)
 
 	return number;
 
+}
+
+int json_file::GetInt(const char * set, int defaul, int id) const
+{
+	int ret = defaul;
+
+	if (FindValue(set, json_value_type::JSONNumber, id))
+		ret = json_object_dotget_number(object, set);
+
+	return ret;
 }

@@ -20,7 +20,10 @@ class json_file
 		 void Delete();
 		 const char* ReadString(const char* object_name);
 		 int ReadInt(const char* int_name);
+		 int GetInt(const char* set, int defaul, int id = -1)const;
 		 json_file json_file::GetArray(const char * field, int index) const;
+		 bool json_file::FindValue(const char * str, json_value_type type, int index)const;
+		 JSON_Value * GetValue(const char * field, int index) const;
 
 	 public:
 		JSON_Value* value = nullptr;

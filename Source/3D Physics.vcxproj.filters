@@ -37,9 +37,6 @@
     <Filter Include="Sources\External Tools\Parson">
       <UniqueIdentifier>{af0ad1ad-4c73-4660-8aae-20fa18a6e18c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\External Tools\JSON">
-      <UniqueIdentifier>{f81b3330-d1b3-41be-bd8b-3288a17ed53c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">

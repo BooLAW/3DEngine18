@@ -42,8 +42,15 @@ bool ModuleSceneIntro::Start()
 	//App->json->CreateNewJSON("testconfig.json");
 
 	json_file file1("testconfig.json");
+
+	//int age_output = file1.ReadInt("age");
+
+	JSON_Value *user_data = json_parse_file("testconfig.json");
+	JSON_Object *root_object = json_value_get_object(user_data);
+	json_file* file2 = new json_file(user_data, root_object, "testconfig.json");
 	const char* name_output = file1.ReadString("name");
-	int age_output = file1.ReadInt("age");
+	int age_output2 = file2->GetInt("age", 900);
+	int heigh_output = file2->GetInt("heigh", 900);
 
 	//for testing -> //App->json->print_commits_info("torvalds", "linux");
 
