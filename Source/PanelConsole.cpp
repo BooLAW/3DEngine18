@@ -6,6 +6,7 @@ PanelConsole::PanelConsole() :Panel("Console")
 	height = 150;
 	pos_x = 250;
 	pos_y = 800;
+	active = true;
 }
 PanelConsole::~PanelConsole()
 {
@@ -23,20 +24,25 @@ void PanelConsole::Draw()
 	ImGui::SameLine();
 	if (ImGui::Button("Clear"))
 	{
-		text_buffer.clear();
+		text_debug_buffer.clear();
 	}
 	if (show_debug_text)
-		ImGui::TextUnformatted(text_buffer.begin());
-	ImGui::End();
+		for (int i = 0; i < text_debug_buffer.size(); i++)
+		{
+			ImGui::Text(text_debug_buffer[i].c_str());
+		}
+
+	ImGui::SetScrollY(ImGui::GetScrollMaxY());
+	ImGui::End();	
 }
 
-void PanelConsole::LogToConsole(const char * text)
+void PanelConsole::LogToConsole(const std::string text)
 {
-	text_buffer.append(text);
+	text_debug_buffer.push_back(text);
 
 }
 
 void PanelConsole::ClearConsole()
 {
-	text_buffer.clear();
+	text_debug_buffer.clear();
 }

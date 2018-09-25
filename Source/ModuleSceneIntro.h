@@ -4,11 +4,7 @@
 #include "Panel.h"
 
 struct PhysBody3D;
-class PanelConsole;
-class PanelConfiguration;
-class PanelApplication;
-class PanelComponents;
-class PanelHierarchy;
+
 
 class ModuleSceneIntro : public Module
 {
@@ -24,15 +20,7 @@ public:
 	int RandInt(int min, int max);
 	float RandFloat(float min, float max);
 	//void DisplayRandNumber(bool isActive);
-	void Log(char* text);
-public:
-	std::vector<Panel*> panels;
+	void Log(const std::string text);
 
-public:
-	PanelConsole* console = nullptr;
-	PanelConfiguration* configuration = nullptr;
-	PanelApplication* application = nullptr;
-	PanelComponents* components = nullptr;
-	PanelHierarchy* hierarchy = nullptr;
 
 };

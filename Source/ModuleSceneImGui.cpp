@@ -5,8 +5,10 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "PCG/pcg_basic.h"
 
-
-
+#include "PanelConsole.h"
+#include "PanelConfiguration.h"
+#include "PanelHierarchy.h"
+#include "PanelComponents.h"
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
 	
@@ -16,13 +18,22 @@ ModuleSceneGui::~ModuleSceneGui()
 {}
 
 // Load assets
-bool ModuleSceneGui::Start()
+bool ModuleSceneGui::Init()
 {
-	LOG("Loading gui assets");
+	CONSOLE_LOG("Loading gui assets");
 	bool ret = true;
 	ImGui_ImplSdl_Init(App->window->window);
 
+	//Add Panels HERE
+	console = new PanelConsole();
+	configuration = new PanelConfiguration();
+	components = new PanelComponents();
+	hierarchy = new PanelHierarchy();
 
+	panels.push_back(console);
+	panels.push_back(configuration);
+	panels.push_back(components);
+	panels.push_back(hierarchy);
 
 	return ret;
 }
@@ -30,7 +41,7 @@ bool ModuleSceneGui::Start()
 // Load assets
 bool ModuleSceneGui::CleanUp()
 {
-	LOG("Unloading gui scene");
+	CONSOLE_LOG("Unloading gui scene");
 	ImGui_ImplSdl_Shutdown();
 
 	return true;
@@ -60,13 +71,34 @@ update_status ModuleSceneGui::Update(float dt)
 
 update_status ModuleSceneGui::PostUpdate(float dt)
 {
-	
+	//Blit all the Panels
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		if ((*item)->IsActive())
+		{
+			ImVec2 pos;
+			ImVec2 size;
+			pos.x = (*item)->pos_x;
+			pos.y = (*item)->pos_y;
+			size.x = (*item)->width;
+			size.y = (*item)->height;
+
+			ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(size, ImGuiSetCond_Always);
+			(*item)->Draw();
+		}
+	}
 	App->renderer3D->SetUILights();
 	ImGui::Render();
 	return UPDATE_CONTINUE;
 }
 
 
+void ModuleSceneGui::Log(const std::string text)
+{
+	if (console != nullptr)
+		console->LogToConsole(text);
+}
 
 
 int ModuleSceneGui::CreateMainMenu()
@@ -112,19 +144,19 @@ int ModuleSceneGui::CreateMainMenu()
 			{
 				if (ImGui::MenuItem("Console"))
 				{
-					App->scene_intro->panels[0]->Activate();
+					console->Activate();
 				}
 				if (ImGui::MenuItem("Configuration"))
 				{
-					App->scene_intro->panels[1]->Activate();
+					configuration->Activate();
 				}
 				if (ImGui::MenuItem("Components"))
 				{
-					App->scene_intro->panels[2]->Activate();
+					components->Activate();
 				}
 				if (ImGui::MenuItem("Hierarchy"))
 				{
-					App->scene_intro->panels[3]->Activate();
+					hierarchy->Activate();
 				}
 				ImGui::EndMenu();
 			}

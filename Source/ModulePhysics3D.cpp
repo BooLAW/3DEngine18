@@ -18,7 +18,7 @@ ModulePhysics3D::~ModulePhysics3D()
 // Render not available yet----------------------------------
 bool ModulePhysics3D::Init()
 {
-	LOG("Creating 3D Physics simulation");
+	CONSOLE_LOG("Creating 3D Physics simulation");
 	bool ret = true;
 
 	return ret;
@@ -27,7 +27,7 @@ bool ModulePhysics3D::Init()
 // ---------------------------------------------------------
 bool ModulePhysics3D::Start()
 {
-	LOG("Creating Physics environment");
+	CONSOLE_LOG("Creating Physics environment");
 
 
 
@@ -64,7 +64,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 // Called before quitting
 bool ModulePhysics3D::CleanUp()
 {
-	LOG("Destroying 3D Physics simulation");
+	CONSOLE_LOG("Destroying 3D Physics simulation");
 
 	
 
