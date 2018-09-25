@@ -15,6 +15,7 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	void rapidjsonexamplecode();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int RandInt(int min, int max);

@@ -48,6 +48,10 @@ public:
 	void OpenWebPage(const char* url );
 	void BroadcastEvent(SDL_Event & event);
 	Module* GetModule(int index);
+	FILE* readconfig = fopen("config.json", "rb");
+	char readBuffer[500];
+
+
 private:
 
 	void AddModule(Module* mod);

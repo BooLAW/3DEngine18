@@ -538,5 +538,14 @@
     <None Include="Parson\testconfig.json">
       <Filter>Sources\External Tools\Parson</Filter>
     </None>
+    <None Include="..\Game\big.json">
+      <Filter>Sources</Filter>
+    </None>
+    <None Include="..\Game\output.json">
+      <Filter>Sources</Filter>
+    </None>
+    <None Include="..\Game\config.json">
+      <Filter>Sources</Filter>
+    </None>
   </ItemGroup>
 </Project>

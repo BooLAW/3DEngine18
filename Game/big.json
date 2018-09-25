@@ -1,0 +1,12 @@
+{
+  "app": {
+    "engine_name": "3D Engine"
+  },
+  "hello": "world",
+  "t": true,
+  "f": false,
+  "n": null,
+  "i": 123,
+  "pi": 3.1416,
+  "a": [ 1, 2, 3, 4 ]
+}
