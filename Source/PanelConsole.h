@@ -9,12 +9,13 @@ public:
 	PanelConsole();
 	virtual ~PanelConsole();
 
+
 	void Draw()override;
 
-	void LogToConsole(const char* text);
+	void LogToConsole(const std::string text);
 	void ClearConsole();
 	bool show_debug_text = true;
 public:
-	ImGuiTextBuffer text_buffer;
+	std::vector<std::string> text_debug_buffer;
 };
 #endif
