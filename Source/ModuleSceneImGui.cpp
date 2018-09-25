@@ -162,18 +162,63 @@ int ModuleSceneGui::CreateMainMenu()
 			}
 			if (ImGui::BeginMenu("About..."))
 			{
-				ImGui::Text("Creative Worlds");
-				ImGui::Text("by Pau Bonet & Josep Pi");
-				ImGui::Text("Creative World is a game engine to create 3D world with realisitic physics.");
-				ImGui::Spacing();				
+				//put links in  our names
+				ImGui::Text("Living Worlds");
+				ImGui::Text("by Pau Bonet");
+				ImGui::SameLine();
+				if (ImGui::Button("REPO"))
+					App->OpenWebPage("https://github.com/BooLAW");
+				ImGui::SameLine();
+				ImGui::Text("& Josep Pi");
+				ImGui::SameLine();
+				if (ImGui::Button("REPO"))
+					App->OpenWebPage("https://github.com/joseppi");
+				ImGui::Text("License");
+				ImGui::Separator();
+				ImGui::Spacing();
+				ImGui::Text("MIT License");
+				ImGui::Spacing();
+
+
+
+					ImGui::Text("Copyright(c) 2018 Pau Bonet Vall Llebrera & Josep Pi");
+					ImGui::Spacing();
+					ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy");
+					ImGui::Text("of this software and associated documentation files(the Software), to deal");
+					ImGui::Text("in the Software without restriction, including without limitation the rights");
+					ImGui::Text("to use, copy, modify, merge, publish, distribute, sublicense, and/or sell");
+					ImGui::Text("copies of the Software, and to permit persons to whom the Software is");
+					ImGui::Text("furnished to do so, subject to the following conditions :");
+					ImGui::Spacing();
+					ImGui::Text("The above copyright notice and this permission notice shall be included in all");
+					ImGui::Text("copies or substantial portions of the Software.");
+					ImGui::Spacing();
+					ImGui::Text("THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR");
+						ImGui::Text("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,");
+						ImGui::Text("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE");
+						ImGui::Text("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER");
+						ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
+						ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE");
+						ImGui::Text("SOFTWARE.");
+						ImGui::Spacing();
+						ImGui::Separator();
+				ImGui::Text("Living Worlds is a game engine to create 3D world with realisitic physics.");
+				ImGui::Spacing();
+				ImGui::Separator();
+
 				if (ImGui::MenuItem("Link to Repository"))
 				{
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18");
 				}
-				if (ImGui::MenuItem("License"))
+				if (ImGui::MenuItem("Link to Wiki"))
 				{
-					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/blob/master/LICENSE");
+					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/wiki");
 				}
+				if (ImGui::MenuItem("Report a Bug"))
+				{
+					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/issues");
+				}
+
 
 				ImGui::EndMenu();
 			}
