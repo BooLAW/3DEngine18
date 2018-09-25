@@ -9,6 +9,7 @@ class PanelConfiguration;
 class PanelApplication;
 class PanelComponents;
 class PanelHierarchy;
+class Panel;
 class ModuleSceneGui : public Module
 {
 public:
@@ -38,6 +39,7 @@ public:
 	bool show_sphere_creator = false;
 	bool show_cube_creator = false;
 	bool show_random_number_generator = false;
+	bool show_profiler = false;
 
 	//Application
 	bool isVsyncActive = true;

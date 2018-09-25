@@ -21,6 +21,7 @@ ModuleInput::~ModuleInput()
 bool ModuleInput::Init()
 {
 	CONSOLE_LOG("Init SDL input event system");
+	App->profiler.StartTimer("Input");
 	bool ret = true;
 	SDL_Init(0);
 
@@ -29,13 +30,14 @@ bool ModuleInput::Init()
 		CONSOLE_LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-
+	App->profiler.SaveInitData("Input");
 	return ret;
 }
 
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
+	App->profiler.StartTimer("Input");
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -116,7 +118,7 @@ update_status ModuleInput::PreUpdate(float dt)
 			break;
 		}
 	}
-
+	App->profiler.SaveRunTimeData("Input");
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
 

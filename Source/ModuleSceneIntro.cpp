@@ -30,6 +30,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	CONSOLE_LOG("Loading Intro assets");
+	App->profiler.SaveInitData("Scene");
 	bool ret = true;
 	{
 		//App->json->CreateNewJSON("testconfig.json");
@@ -54,6 +55,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(float3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
+	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
 

@@ -12,6 +12,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleSceneImGui.h"
 #include "ModuleJSON.h"
+#include "Profiler.h"
 
 
 class Application
@@ -27,6 +28,8 @@ public:
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
 
+	Profiler profiler;
+
 private:
 
 	Timer	ms_timer;
@@ -36,7 +39,6 @@ private:
 	float	sleeping_time = 0;
 	
 	std::list<Module*> list_modules;
-
 public:
 
 	Application();

@@ -21,6 +21,7 @@ ModuleSceneGui::~ModuleSceneGui()
 bool ModuleSceneGui::Init()
 {
 	CONSOLE_LOG("Loading gui assets");
+	App->profiler.StartTimer("UI");
 	bool ret = true;
 	ImGui_ImplSdl_Init(App->window->window);
 
@@ -34,7 +35,7 @@ bool ModuleSceneGui::Init()
 	panels.push_back(configuration);
 	panels.push_back(components);
 	panels.push_back(hierarchy);
-
+	App->profiler.SaveInitData("UI");
 	return ret;
 }
 
@@ -55,6 +56,7 @@ update_status ModuleSceneGui::PreUpdate(float dt)
 // Update
 update_status ModuleSceneGui::Update(float dt)
 {
+	App->profiler.StartTimer("UI");
 	//RICARD: For a cleaner code, we decided to have a switch with the CreateMainMenu.
 	switch (CreateMainMenu())
 	{
@@ -65,7 +67,7 @@ update_status ModuleSceneGui::Update(float dt)
 	}
 	//ImGui::ShowMetricsWindow();
 	//ImGui::ShowTestWindow();
-
+	App->profiler.SaveRunTimeData("UI");
 	return UPDATE_CONTINUE;
 }
 
@@ -132,6 +134,10 @@ int ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Cube Creator"))
 				{
 					show_cube_creator = !show_cube_creator;
+				}
+				if (ImGui::MenuItem("Profiler"))
+				{
+					show_profiler = !show_profiler;
 				}
 				if (ImGui::MenuItem("Check Collisions"))
 				{
@@ -228,6 +234,7 @@ int ModuleSceneGui::CreateMainMenu()
 	if (show_test_window)showTestWindow();
 	if (show_sphere_creator)showSphereCreator();
 	if (show_cube_creator)showCubeCreator();
+	if (show_profiler)App->profiler.Draw(show_profiler);
 	if (show_random_number_generator)showRandomNumberGenerator();
 }
 

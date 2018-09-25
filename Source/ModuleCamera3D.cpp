@@ -20,9 +20,11 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
+	App->profiler.StartTimer("Camera");
 	CONSOLE_LOG("Setting up the camera");
 	bool ret = true;
 
+	App->profiler.SaveInitData("Camera");
 	return ret;
 }
 
@@ -37,12 +39,13 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	App->profiler.StartTimer("Camera");
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
 	float3 newPos(0,0,0);
 	float speed = 3.0f * dt;
-	/*if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 8.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
@@ -53,7 +56,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;*/
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 
 	Position += newPos;
 	Reference += newPos;
@@ -97,7 +100,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
-
+	App->profiler.SaveRunTimeData("Camera");
 	return UPDATE_CONTINUE;
 }
 

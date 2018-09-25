@@ -14,13 +14,21 @@ public:
 	void Start();
 	void Stop();
 
+	void Pause();
+	void Resume();
+
 	Uint32 Read();
 
 private:
 
-	bool	running;
+
+	bool	paused = false;
+	bool	running = false;
+
 	Uint32	started_at;
 	Uint32	stopped_at;
+	// In case of having in count pre and post update
+	Uint32  amount;
 };
 
 #endif //__TIMER_H__

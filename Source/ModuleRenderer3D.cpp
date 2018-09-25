@@ -22,6 +22,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 bool ModuleRenderer3D::Init()
 {
 	CONSOLE_LOG("Creating 3D Renderer context");
+	App->profiler.StartTimer("Render");
 	bool ret = true;
 	
 	//Create context
@@ -78,7 +79,7 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	App->profiler.SaveInitData("Render");
 	return ret;
 }
 
@@ -106,6 +107,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	App->profiler.StartTimer("Render");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -119,6 +121,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	App->profiler.SaveRunTimeData("Render");
 	return UPDATE_CONTINUE;
 }
 

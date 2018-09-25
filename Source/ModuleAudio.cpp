@@ -14,6 +14,7 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
+	App->profiler.StartTimer("Audio");
 	CONSOLE_LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -40,7 +41,7 @@ bool ModuleAudio::Init()
 		CONSOLE_LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		ret = false;
 	}
-
+	App->profiler.SaveInitData("Audio");
 	return ret;
 }
 
