@@ -40,6 +40,8 @@ public:
 	bool show_cube_creator = false;
 	bool show_random_number_generator = false;
 	bool show_profiler = false;
+	bool want_to_save = false;
+	bool want_to_load = false;
 
 	//Application
 	bool isVsyncActive = true;

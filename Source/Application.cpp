@@ -65,7 +65,7 @@ bool Application::Init()
 		ret = (*item)->Start();
 	}
 	App->Save();
-	App->Load();
+
 
 
 	ms_timer.Start();
@@ -89,8 +89,14 @@ void Application::FinishUpdate()
 		sleeping_time = maxfps - dt - 3;
 		Sleep(sleeping_time);
 	}
-
-
+	if (App->imgui->want_to_save == true)
+	{
+		Save();
+	}
+	if (App->imgui->want_to_load == true)
+	{
+		Load();
+	}
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
