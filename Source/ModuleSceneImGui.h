@@ -31,7 +31,7 @@ public:
 	void showCubeCreator();
 	void ManageInput(SDL_Event* e)const;
 	void Log(const std::string text);
-
+	void DrawImGui();
 public:
 	//flags
 	bool show_test_window = false;

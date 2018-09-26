@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
+#include "Primitive.h"
 
 #define MAX_LIGHTS 8
 struct RenderAttributes{
@@ -28,6 +29,9 @@ public:
 	void SetSceneLights();
 	void CPUCapabilities();
 	void UpdateAttributes();
+	//DEBUG OPTIONS
+	void SetDebugAttributes();
+	void SetNormalAttributes();
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -35,4 +39,7 @@ public:
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	RenderAttributes attributes;
+	//RENDERING FLAGS
+	bool show_plane = true;
+	bool debug_draw = false;
 };

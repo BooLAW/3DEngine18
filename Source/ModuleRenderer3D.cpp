@@ -5,6 +5,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "SDL/include/SDL_version.h"
+#include "Primitive.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -127,10 +128,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	App->profiler.StartTimer("Render");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	
 
-	glMatrixMode(GL_MODELVIEW);
+	Color c = { 0,0,0,1 };
+	glClearColor(c.r, c.g, c.b, c.a); 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW); 
 	glLoadMatrixf(App->camera->GetViewMatrix());
-
 
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
@@ -145,6 +151,27 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+
+	//Base Plane
+	if (show_plane == true)
+	{
+		PPlane base_plane(0, 1, 0, 0);
+		base_plane.axis = true;	
+		base_plane.Render();
+	}
+	
+	//Draw Scene
+	//App->scene_intro->Update(dt);
+	//Debug Draw
+	if (debug_draw == true)
+	{
+		SetDebugAttributes();
+		//DRAW FUTURE SCENE GAMEOBJECTS
+		//App->DebugDraw();
+		SetNormalAttributes();
+	}
+	App->imgui->DrawImGui();
+	
 	SetSceneLights();
 	SDL_GL_SwapWindow(App->window->window);
 
@@ -313,5 +340,24 @@ void ModuleRenderer3D::UpdateAttributes()
 	else
 		glDisable(GL_CULL_FACE);
 
+}
+
+void ModuleRenderer3D::SetDebugAttributes()
+{
+	glPushMatrix();
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_CULL_FACE);
+	glColor4f(1.f, 1.f, 1.f, 1.f);
+}
+
+void ModuleRenderer3D::SetNormalAttributes()
+{
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
 }
 

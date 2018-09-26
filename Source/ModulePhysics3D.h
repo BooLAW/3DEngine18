@@ -26,7 +26,6 @@ public:
 	bool debug;
 
 	
-
 	std::vector<AABB> cube_list;
 	std::vector<Sphere> spheres_list;
 

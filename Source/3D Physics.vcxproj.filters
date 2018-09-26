@@ -327,6 +327,10 @@
     <ClInclude Include="Profiler.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -518,6 +522,10 @@
     <ClCompile Include="Profiler.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">
