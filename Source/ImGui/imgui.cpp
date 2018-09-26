@@ -2320,7 +2320,7 @@ void ImGui::EndFrame()
     }
 
     // Hide implicit "Debug" window if it hasn't been used
-    IM_ASSERT(g.CurrentWindowStack.Size == 1);    // Mismatched Begin/End
+	IM_ASSERT(g.CurrentWindowStack.Size == 1);    // Mismatched Begin/End
     if (g.CurrentWindow && !g.CurrentWindow->Accessed)
         g.CurrentWindow->Active = false;
     ImGui::End();

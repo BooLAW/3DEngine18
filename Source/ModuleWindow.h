@@ -22,7 +22,7 @@ public:
 	void DrawModuleConfig()override;
 	void BroadcastEvent(SDL_Event & event)override;
 
-	bool Save(Document* config_w);
+	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
 	void Resize(int w, int h);
 

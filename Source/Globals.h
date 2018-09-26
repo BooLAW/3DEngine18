@@ -45,6 +45,7 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define TITLE "Living Worlds"
+#define ORGANIZATION "UPC CITM"
 
 
 

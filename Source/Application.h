@@ -14,6 +14,8 @@
 #include "ModuleJSON.h"
 #include "Profiler.h"
 
+
+
 class Application
 {
 public:
@@ -27,11 +29,12 @@ public:
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
 
+
+
 	char readBuf[10000];
 
 
 
-	Document testconfig_w;
 
 	Profiler profiler;
 

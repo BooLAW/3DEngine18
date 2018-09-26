@@ -39,7 +39,6 @@ bool ModuleSceneIntro::Start()
 	
 
 
-	rapidjsonexamplecode();
 
 
 

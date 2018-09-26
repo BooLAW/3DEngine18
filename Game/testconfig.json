@@ -1,13 +1,1 @@
-{
-  "app": 
-  {
-    "engine_name": "3D Engine",
-    "organization": "UPC",
-    "max_fps": 60
-  },
-  "window": {
-    "fullscreen": false,
-    "height": 1024,
-    "width": 1280
-  }
-}
+{"app":{"engine_name":"Living Worlds","organization":"UPC CITM","max_fps":0.0},"window":{"fullscreen":false,"width":1280,"height":1024}}
