@@ -4,7 +4,13 @@
 #include "Light.h"
 
 #define MAX_LIGHTS 8
-
+struct RenderAttributes{
+	bool wireframe = false;
+	bool depth_test = false;
+	bool cull_face = false;
+	bool lighting = false;
+	bool color_material = false;
+};
 class ModuleRenderer3D : public Module
 {
 public:
@@ -21,10 +27,12 @@ public:
 	void SetUILights();
 	void SetSceneLights();
 	void CPUCapabilities();
+	void UpdateAttributes();
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	RenderAttributes attributes;
 };

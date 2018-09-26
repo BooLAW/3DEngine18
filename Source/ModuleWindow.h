@@ -21,8 +21,11 @@ public:
 	void SetTitle(const char* title);
 	void DrawModuleConfig()override;
 	void BroadcastEvent(SDL_Event & event)override;
+
 	bool Save(Document* config_w);
 	bool Load(Document* config_r);
+	void Resize(int w, int h);
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
@@ -31,11 +34,12 @@ public:
 	SDL_Surface* screen_surface;
 
 	//Windows config
-	int width = 0;
-	int height = 0;
+	int width;
+	int height;
 
 	bool fullscreen = false;
 	bool borderless = false;
+	bool size_modified = false;
 };
 
 #endif // __ModuleWindow_H__

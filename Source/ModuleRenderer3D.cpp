@@ -12,6 +12,7 @@
 struct SDL_version;
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module( start_enabled)
 {
+	
 }
 
 // Destructor
@@ -32,11 +33,17 @@ bool ModuleRenderer3D::Init()
 		CONSOLE_LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-	
+	//Init GLEW
+	glewInit();
+	//Info LOG
+	CONSOLE_LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	CONSOLE_LOG("Vendor: %s", glGetString(GL_VENDOR));
+	CONSOLE_LOG("Renderer: %s", glGetString(GL_RENDERER));
+	CONSOLE_LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	CONSOLE_LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	if(ret == true)
 	{
-		
-		//Initialize Projection Matrix
+		//Reset Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
@@ -48,7 +55,7 @@ bool ModuleRenderer3D::Init()
 			ret = false;
 		}
 
-		//Initialize Modelview Matrix
+		//Reset Modelview Matrix
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
@@ -87,6 +94,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
+		
 		SDL_version compiler;
 		SDL_VERSION(&compiler);
 		
@@ -99,6 +107,15 @@ void ModuleRenderer3D::DrawModuleConfig()
 		ImGui::Text("System RAM: "); ImGui::SameLine(0, 10);
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i", SDL_GetSystemRAM());
 
+		bool attribute_modified = false;
+		if (ImGui::Checkbox("Wireframe", &attributes.wireframe)) attribute_modified = true;
+		if(ImGui::Checkbox("DepthTest", &attributes.depth_test))attribute_modified = true;
+		if(ImGui::Checkbox("CullTest", &attributes.cull_face))attribute_modified = true;
+		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
+		if(ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
+
+		if (attribute_modified)
+			UpdateAttributes();
 		CPUCapabilities();
 	}
 
@@ -266,5 +283,35 @@ void ModuleRenderer3D::CPUCapabilities()
 			ImGui::SameLine(0, 0);
 		}
 	}
+}
+
+void ModuleRenderer3D::UpdateAttributes()
+{
+	//wireframe
+	if (attributes.wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else 		
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//color_material
+	if (attributes.color_material)
+		glEnable(GL_COLOR_MATERIAL);
+	else
+		glDisable(GL_COLOR_MATERIAL);
+	//depth test
+	if (attributes.depth_test)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
+	//lighting
+	if (attributes.lighting)
+		glEnable(GL_LIGHTING);
+	else
+		glDisable(GL_LIGHTING);
+	//cull test
+	if (attributes.cull_face)
+		glEnable(GL_CULL_FACE);
+	else
+		glDisable(GL_CULL_FACE);
+
 }
 
