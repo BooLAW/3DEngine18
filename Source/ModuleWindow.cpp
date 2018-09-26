@@ -102,9 +102,11 @@ void ModuleWindow::DrawModuleConfig()
 
 		ImGui::Text("Size configuration:");
 
-		ImGui::SliderInt("Width", &width, 600, DM.w);
-		ImGui::SliderInt("Height", &height, 600, DM.h);
+		if (ImGui::DragInt("Width", &width, 1, 1, 10000))
+			size_modified = true;
 
+		if (ImGui::DragInt("Height", &height, 1, 1, 10000))
+			size_modified = true;
 		SDL_SetWindowSize(window, width, height);
 
 		if (SDL_UpdateWindowSurface(window)) //(?)
@@ -118,7 +120,7 @@ void ModuleWindow::DrawModuleConfig()
 		// Auto adjustments -----------------------------
 
 		ImGui::Text("Auto adjustments: ");
-
+		
 		ImGui::Checkbox("Fullscreen", &fullscreen); ImGui::SameLine();
 		ImGui::Checkbox("Borderless", &borderless);
 
@@ -142,8 +144,8 @@ bool ModuleWindow::Save()
 }
 bool ModuleWindow::Load()
 {
-	width = App->testconfig["window"]["width"].GetInt();
-	height = App->testconfig["window"]["width"].GetInt();
+	//width = App->testconfig["window"]["width"].GetInt();
+	//height = App->testconfig["window"]["width"].GetInt();
 	fullscreen = App->testconfig["window"]["fullscreen"].GetBool();
 
 	screen_surface = SDL_GetWindowSurface(window);

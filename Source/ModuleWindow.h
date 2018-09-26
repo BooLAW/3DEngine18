@@ -31,11 +31,12 @@ public:
 	SDL_Surface* screen_surface;
 
 	//Windows config
-	int width = 0;
-	int height = 0;
+	int width;
+	int height;
 
 	bool fullscreen = false;
 	bool borderless = false;
+	bool size_modified = false;
 };
 
 #endif // __ModuleWindow_H__
