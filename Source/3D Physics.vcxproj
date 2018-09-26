@@ -14,7 +14,7 @@
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
     <ProjectName>3DGameEngine</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -240,6 +240,7 @@
     <None Include="..\Game\big.json" />
     <None Include="..\Game\config.json" />
     <None Include="..\Game\output.json" />
+    <None Include="..\Game\testconfig.json" />
     <None Include="MathGeoLib\Geometry\KDTree.inl" />
     <None Include="MathGeoLib\Geometry\QuadTree.inl" />
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl" />

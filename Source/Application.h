@@ -26,7 +26,12 @@ public:
 	ModulePhysics3D* physics;
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
-	Document testconfig;
+
+	char readBuf[10000];
+
+
+
+	Document testconfig_w;
 
 	Profiler profiler;
 

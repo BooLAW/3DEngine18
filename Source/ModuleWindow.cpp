@@ -136,17 +136,20 @@ void ModuleWindow::DrawModuleConfig()
 	}
 }
 
-bool ModuleWindow::Save()
+bool ModuleWindow::Save(Document* config_w)
 {
 	return true;
 }
-bool ModuleWindow::Load()
+bool ModuleWindow::Load(Document* config_r)
 {
-	width = App->testconfig["window"]["width"].GetInt();
-	height = App->testconfig["window"]["width"].GetInt();
-	fullscreen = App->testconfig["window"]["fullscreen"].GetBool();
+	Document ret;
+	ret.Parse(App->readBuf);
+	width = ret["window"]["width"].GetInt();
+	height = ret["window"]["height"].GetInt();
+	fullscreen = ret["window"]["fullscreen"].GetBool();
 
-	screen_surface = SDL_GetWindowSurface(window);
+
+	//screen_surface = SDL_GetWindowSurface(window);
 
 	return true;
 }

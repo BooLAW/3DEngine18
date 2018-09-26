@@ -62,13 +62,14 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 	FILE* fp = fopen("big.json", "rb"); // non-Windows use "r"
 	char readBuffer[500];
 	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-	const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
+	
 	Document document;
 	document.ParseStream(is);
 	document.IsObject();
 
 	//TEST START
 	{
+		//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
 		document.HasMember("hello");
 		document["hello"].IsString();
 		CONSOLE_LOG("hello = %s\n", document["hello"].GetString());

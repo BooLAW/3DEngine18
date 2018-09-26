@@ -553,5 +553,8 @@
     <None Include="..\Game\config.json">
       <Filter>Sources</Filter>
     </None>
+    <None Include="..\Game\testconfig.json">
+      <Filter>Sources</Filter>
+    </None>
   </ItemGroup>
 </Project>

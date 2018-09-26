@@ -168,16 +168,16 @@ bool Application::Save()
 	bool ret = true;
 
 	FILE* fp2 = fopen("testconfig.json", "wb"); // non-Windows use "w"
-	char writeBuffer[500];
-
+	char writeBuffer[10000];
+	Document testconfig_w;
 	FileWriteStream os(fp2, writeBuffer, sizeof(writeBuffer));
 	Writer<FileWriteStream> writer(os);
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
-		ret = (*item)->Save();
+		ret = (*item)->Save(&testconfig_w);
 	}
-	testconfig.Accept(writer);
+	testconfig_w.Accept(writer);
 	fclose(fp2);
 	return ret;
 }
@@ -187,17 +187,18 @@ bool Application::Load()
 	bool ret = true;
 	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
 	FILE* fp = fopen("testconfig.json", "rb"); // non-Windows use "r"
-	char readBuf[10000];
-	FileReadStream is(fp, readBuf, sizeof(readBuf));
-	testconfig.ParseStream(is);
 
-	maxfps = testconfig["app"]["max_fps"].GetInt();
+	Document testconfig_r;
+	FileReadStream is(fp, readBuf, sizeof(readBuf));
+	testconfig_r.ParseStream(is);
+	testconfig_r.IsObject();
+	maxfps = testconfig_r["app"]["max_fps"].GetInt();
 	App->imgui->fps_slider = maxfps;
 
 	std::string title;
-	title.append(testconfig["app"]["engine_name"].GetString());
+	title.append(testconfig_r["app"]["engine_name"].GetString());
 	title.append(" - ");
-	title.append(testconfig["app"]["organization"].GetString());
+	title.append(testconfig_r["app"]["organization"].GetString());
 
 	SDL_SetWindowTitle(App->window->window, title.c_str());
 
@@ -205,7 +206,7 @@ bool Application::Load()
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
-		ret = (*item)->Load();
+		ret = (*item)->Load(&testconfig_r);
 	}
 	fclose(fp);
 

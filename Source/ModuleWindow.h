@@ -21,8 +21,8 @@ public:
 	void SetTitle(const char* title);
 	void DrawModuleConfig()override;
 	void BroadcastEvent(SDL_Event & event)override;
-	bool Save();
-	bool Load();
+	bool Save(Document* config_w);
+	bool Load(Document* config_r);
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
