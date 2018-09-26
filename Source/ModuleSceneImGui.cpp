@@ -90,9 +90,12 @@ update_status ModuleSceneGui::PostUpdate(float dt)
 			(*item)->Draw();
 		}
 	}
+	
+	return UPDATE_CONTINUE;
+}
+void ModuleSceneGui::DrawImGui() {
 	App->renderer3D->SetUILights();
 	ImGui::Render();
-	return UPDATE_CONTINUE;
 }
 
 

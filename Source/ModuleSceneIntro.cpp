@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include "Primitive.h"
 
 #include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
@@ -35,6 +36,8 @@ bool ModuleSceneIntro::Start()
 		//int age_output2 = file2->GetInt("age", 900);
 		//int heigh_output = file2->GetInt("heigh", 900);
 	}
+	
+
 
 	rapidjsonexamplecode();
 
@@ -42,7 +45,13 @@ bool ModuleSceneIntro::Start()
 
 	//-----------------------------
 	srand(time(NULL));
-	
+	//Base Plane
+	if (App->renderer3D->show_plane == true)
+	{
+		PPlane base_plane(0, 1, 0, 0);
+		base_plane.axis = true;
+		base_plane.Render();
+	}
 	App->camera->Move(float3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
@@ -116,11 +125,8 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	//Render the Plane
-	/* PAU
-	Plane p({0, 1, 0}, 0);
-	p..axis = true;
-	p.Render(); */
+
+
 
 	return UPDATE_CONTINUE;
 }
