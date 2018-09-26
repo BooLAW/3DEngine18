@@ -34,6 +34,15 @@ protected:
 	PrimitiveTypes type;
 };
 
+class PCube : public Primitive {
+public:
+	PCube();
+	PCube(float x, float y, float z);
+	void InnerRender() const override;
+public:
+	vec3 dimensions;
+};
+
 class PPlane : public Primitive
 {
 public:
