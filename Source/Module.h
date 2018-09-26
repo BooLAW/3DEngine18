@@ -61,7 +61,12 @@ public:
 	virtual void BroadcastEvent(SDL_Event & event) {}
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
-	virtual bool Save(Document* config_w) { return true; }
+	virtual bool Save(Document& config_w, FileWriteStream& os) 
+	{ 
+		//Document::AllocatorType& allocator = config_w.GetAllocator();
+		//Writer<rapidjson::FileWriteStream> writer(os);
+		return true;
+	}
 	virtual bool Load(Document* config_r) { return true; }
 };
 extern Application* App;

@@ -36,7 +36,6 @@ bool ModuleSceneIntro::Start()
 		//int heigh_output = file2->GetInt("heigh", 900);
 	}
 
-	rapidjsonexamplecode();
 
 
 

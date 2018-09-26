@@ -137,9 +137,19 @@ void ModuleWindow::DrawModuleConfig()
 	}
 }
 
-bool ModuleWindow::Save(Document* config_w)
+bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
 {
-	
+
+	Document::AllocatorType& allocator = config_w.GetAllocator();
+
+	Value test(kObjectType);
+
+
+	test.AddMember("fullscreen", false, allocator);
+	test.AddMember("width", width, allocator);
+	test.AddMember("height", height, allocator);
+	config_w.AddMember("window", test, allocator);
+
 	return true;
 }
 bool ModuleWindow::Load(Document* config_r)

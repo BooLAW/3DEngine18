@@ -46,6 +46,7 @@ public:
 	int fps_slider = 60;
 
 	char* organization_name = "UPC CITM";
+	char* engine_name = TITLE;
 
 	//Geometry Creator
 	int rad_aux = 0;

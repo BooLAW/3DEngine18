@@ -64,8 +64,10 @@ bool Application::Init()
 	{
 		ret = (*item)->Start();
 	}
-	//App->Save();
+	App->Save();
 	App->Load();
+
+
 	ms_timer.Start();
 
 	return ret;
@@ -167,18 +169,31 @@ bool Application::Save()
 {
 	bool ret = true;
 
-	FILE* fp2 = fopen("testconfig.json", "wb"); // non-Windows use "w"
+	FILE* fp = fopen("testconfig.json", "wb"); // non-Windows use "w"
 	char writeBuffer[10000];
 	Document testconfig_w;
-	FileWriteStream os(fp2, writeBuffer, sizeof(writeBuffer));
-	Writer<FileWriteStream> writer(os);
+	testconfig_w.Parse(readBuf);
+	testconfig_w.SetObject();
+	FileWriteStream os(fp, readBuf, sizeof(readBuf));
+
+	Document::AllocatorType& allocator = testconfig_w.GetAllocator();
+
+	Value app(kObjectType);
+
+
+	app.AddMember("engine_name", TITLE, allocator);
+	app.AddMember("organization", ORGANIZATION, allocator);
+	app.AddMember("max_fps", App->maxfps, allocator);
+	testconfig_w.AddMember("app", app, allocator);
+
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
-		ret = (*item)->Save(&testconfig_w);
+		ret = (*item)->Save(testconfig_w,os);
 	}
+	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
-	fclose(fp2);
+	fclose(fp);
 	return ret;
 }
 
@@ -187,12 +202,14 @@ bool Application::Load()
 	bool ret = true;
 	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
 	FILE* fp = fopen("testconfig.json", "rb"); // non-Windows use "r"
-
+	
 	Document testconfig_r;
 	FileReadStream is(fp, readBuf, sizeof(readBuf));
 	testconfig_r.ParseStream(is);
 	testconfig_r.IsObject();
-	maxfps = testconfig_r["app"]["max_fps"].GetInt();
+
+
+	maxfps = testconfig_r["app"]["max_fps"].GetFloat();
 	App->imgui->fps_slider = maxfps;
 
 	std::string title;
