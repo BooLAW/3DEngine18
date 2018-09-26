@@ -156,7 +156,8 @@ bool ModuleWindow::Load(Document* config_r)
 {
 
 	Document ret;
-	ret.Parse(App->readBuf);
+	ret.Parse(App->loadBuf);
+	ret.IsObject();
 	width = ret["window"]["width"].GetInt();
 	height = ret["window"]["height"].GetInt();
 	fullscreen = ret["window"]["fullscreen"].GetBool();

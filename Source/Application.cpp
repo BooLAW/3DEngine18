@@ -189,7 +189,7 @@ bool Application::Save()
 
 	app.AddMember("engine_name", TITLE, allocator);
 	app.AddMember("organization", ORGANIZATION, allocator);
-	app.AddMember("max_fps", App->maxfps, allocator);
+	app.AddMember("max_fps", App->imgui->fps_slider, allocator);
 	testconfig_w.AddMember("app", app, allocator);
 
 
@@ -208,14 +208,14 @@ bool Application::Load()
 	bool ret = true;
 	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
 	FILE* fp = fopen("testconfig.json", "rb"); // non-Windows use "r"
-	
+
 	Document testconfig_r;
-	FileReadStream is(fp, readBuf, sizeof(readBuf));
+	FileReadStream is(fp, loadBuf, sizeof(loadBuf));
 	testconfig_r.ParseStream(is);
 	testconfig_r.IsObject();
 
 
-	maxfps = testconfig_r["app"]["max_fps"].GetFloat();
+	maxfps = testconfig_r["app"]["max_fps"].GetInt();
 	App->imgui->fps_slider = maxfps;
 
 	std::string title;
@@ -223,7 +223,7 @@ bool Application::Load()
 	title.append(" - ");
 	title.append(testconfig_r["app"]["organization"].GetString());
 
-	SDL_SetWindowTitle(App->window->window, title.c_str());
+
 
 	
 
@@ -232,7 +232,7 @@ bool Application::Load()
 		ret = (*item)->Load(&testconfig_r);
 	}
 	fclose(fp);
-
+	App->imgui->want_to_load = false;
 	return ret;
 }
 

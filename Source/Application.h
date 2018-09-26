@@ -29,12 +29,11 @@ public:
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
 
-
-
 	char readBuf[10000];
+	char loadBuf[10000];
 
-
-
+	static char organization_name[128];
+	static char title_name[128];
 
 	Profiler profiler;
 
@@ -46,6 +45,8 @@ private:
 	float	maxfps = 0;
 	float	sleeping_time = 0;
 	bool	isSaving = false;
+
+
 
 
 
