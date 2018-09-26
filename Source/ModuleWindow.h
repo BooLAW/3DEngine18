@@ -23,6 +23,7 @@ public:
 	void BroadcastEvent(SDL_Event & event)override;
 	bool Save();
 	bool Load();
+	void Resize(int w, int h);
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;

@@ -101,16 +101,15 @@ void ModuleWindow::DrawModuleConfig()
 	{
 
 		ImGui::Text("Size configuration:");
-
+		if (size_modified == true)
+			Resize(width, height);
 		if (ImGui::DragInt("Width", &width, 1, 1, 10000))
 			size_modified = true;
 
 		if (ImGui::DragInt("Height", &height, 1, 1, 10000))
 			size_modified = true;
-		SDL_SetWindowSize(window, width, height);
 
-		if (SDL_UpdateWindowSurface(window)) //(?)
-			screen_surface = SDL_GetWindowSurface(window);
+
 
 		if (ImGui::Button("Center Window"))
 		{
@@ -151,6 +150,13 @@ bool ModuleWindow::Load()
 	screen_surface = SDL_GetWindowSurface(window);
 
 	return true;
+}
+void ModuleWindow::Resize(int w, int h)
+{
+	SDL_SetWindowSize(window, w, h);
+	width = w;
+	height = h;
+	size_modified = false;
 }
 void ModuleWindow::BroadcastEvent(SDL_Event & event)
 {
