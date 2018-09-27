@@ -151,7 +151,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-
+	if (attributes.wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	//Base Plane
 	if (show_plane == true)
 	{
@@ -159,7 +162,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		base_plane.axis = true;	
 		base_plane.Render();
 	}
-	
+	PCube my_cube(5, 5, 5);
+	my_cube.Render();
 	//Draw Scene
 	//App->scene_intro->Update(dt);
 	//Debug Draw
@@ -169,7 +173,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		//DRAW FUTURE SCENE GAMEOBJECTS
 		//App->DebugDraw();
 		SetNormalAttributes();
-	}
+	}
+
 	App->imgui->DrawImGui();
 	
 	SetSceneLights();
@@ -213,6 +218,8 @@ void ModuleRenderer3D::SetUILights()
 	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_LIGHTING);
@@ -236,11 +243,12 @@ void ModuleRenderer3D::SetSceneLights()
 	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	if (attributes.wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
 	lights[0].Active(true);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_COLOR_MATERIAL);
 }
 
 void ModuleRenderer3D::CPUCapabilities()

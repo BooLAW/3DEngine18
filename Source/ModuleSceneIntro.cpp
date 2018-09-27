@@ -51,6 +51,7 @@ bool ModuleSceneIntro::Start()
 		base_plane.axis = true;
 		base_plane.Render();
 	}
+
 	App->camera->Move(float3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 

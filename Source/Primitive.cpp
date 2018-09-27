@@ -1,5 +1,8 @@
 #include "Primitive.h"
 #include "OpenGL.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
+#include "Module.h"
 
 
 
@@ -49,20 +52,17 @@ void Primitive::Render() const
 	}
 
 	glColor3f(color.r, color.g, color.b);
-
-	if (wire)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	InnerRender();
-	if (wire) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glEnable(GL_CULL_FACE);
-	}
-
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
+	
+	if (App->renderer3D->attributes.lighting)
+		glEnable(GL_LIGHTING);
+	else
+		glDisable(GL_LIGHTING);	
+	
+	InnerRender();
+
+
+
 	glPopMatrix();
 }
 
