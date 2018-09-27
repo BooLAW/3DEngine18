@@ -367,3 +367,33 @@ void ModuleRenderer3D::SetNormalAttributes()
 	glPopMatrix();
 }
 
+bool ModuleRenderer3D::Save(Document& testconfig_w, FileWriteStream& os)
+{
+	Document::AllocatorType& allocator = testconfig_w.GetAllocator();
+
+	Value app(kObjectType);
+	
+	app.AddMember("Wireframe", attributes.wireframe, allocator);
+	app.AddMember("DepthTest", attributes.depth_test, allocator);
+	app.AddMember("CullTest", attributes.cull_face, allocator);
+	app.AddMember("Lighting", attributes.lighting, allocator);
+	app.AddMember("Color Material", attributes.color_material, allocator);
+	testconfig_w.AddMember("renderer", app, allocator);
+	
+	return true;
+}
+
+bool ModuleRenderer3D::Load(Document* testconfig_r)
+{
+	Document ret;
+	ret.Parse(App->loadBuf);
+	ret.IsObject();
+	attributes.wireframe = ret["renderer"]["Wireframe"].GetBool();
+	attributes.depth_test = ret["renderer"]["DepthTest"].GetBool();
+	attributes.cull_face = ret["renderer"]["CullTest"].GetBool();
+	attributes.lighting = ret["renderer"]["Lighting"].GetBool();
+	attributes.color_material = ret["renderer"]["Color Material"].GetBool();
+
+	return true;
+}
+

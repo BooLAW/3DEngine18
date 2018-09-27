@@ -32,6 +32,9 @@ public:
 	//DEBUG OPTIONS
 	void SetDebugAttributes();
 	void SetNormalAttributes();
+	bool Save(Document& config_w, FileWriteStream& os);
+	bool Load(Document* config_r);
+
 public:
 
 	Light lights[MAX_LIGHTS];

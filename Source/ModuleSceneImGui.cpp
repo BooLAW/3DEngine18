@@ -117,8 +117,7 @@ int ModuleSceneGui::CreateMainMenu()
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("Quit", "Alt + F4")) { return UPDATE_STOP; }
-				if (ImGui::MenuItem("Save")) 
-				{ want_to_save = true; }
+				if (ImGui::MenuItem("Save")) { want_to_save = true; }
 				if (ImGui::MenuItem("Load")) { want_to_load = true; }
 				ImGui::EndMenu();
 			}

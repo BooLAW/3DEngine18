@@ -97,6 +97,18 @@ void ModuleWindow::DrawModuleConfig()
 {
 	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
+
+	if (fullscreen)
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	else
+		SDL_SetWindowFullscreen(window, 0);
+
+	if (borderless)
+		SDL_SetWindowBordered(window, SDL_bool(false));
+	else
+		SDL_SetWindowBordered(window, SDL_bool(true));
+
+
 	if (ImGui::CollapsingHeader("Window"))
 	{
 
@@ -122,15 +134,6 @@ void ModuleWindow::DrawModuleConfig()
 		ImGui::Checkbox("Fullscreen", &fullscreen); ImGui::SameLine();
 		ImGui::Checkbox("Borderless", &borderless);
 
-		if (fullscreen)
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		else
-			SDL_SetWindowFullscreen(window, 0);
-
-		if (borderless)
-			SDL_SetWindowBordered(window, SDL_bool(false));
-		else
-			SDL_SetWindowBordered(window, SDL_bool(true));
 		ImGui::Separator();
 		// ------------------------------------------
 	}
@@ -144,7 +147,7 @@ bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
 	Value test(kObjectType);
 
 
-	test.AddMember("fullscreen", false, allocator);
+	test.AddMember("fullscreen", fullscreen, allocator);
 	test.AddMember("width", width, allocator);
 	test.AddMember("height", height, allocator);
 	config_w.AddMember("window", test, allocator);
@@ -161,7 +164,7 @@ bool ModuleWindow::Load(Document* config_r)
 	height = ret["window"]["height"].GetInt();
 	fullscreen = ret["window"]["fullscreen"].GetBool();
 
-	//screen_surface = SDL_GetWindowSurface(window);
+	screen_surface = SDL_GetWindowSurface(window);
 
 	return true;
 }

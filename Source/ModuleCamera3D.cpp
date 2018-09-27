@@ -198,9 +198,36 @@ bool ModuleCamera3D::IsLocked()
 	return locked;
 }
 
+bool ModuleCamera3D::Save(Document & config_w, FileWriteStream & os)
+{
+	Document::AllocatorType& allocator = config_w.GetAllocator();
+
+	Value test(kObjectType);
+
+
+	test.AddMember("SpeedBase", speed_base, allocator);
+	test.AddMember("MouseSensitivity", mouse_sensitivity, allocator);
+	config_w.AddMember("camera", test, allocator);
+
+	return true;
+}
+
+bool ModuleCamera3D::Load(Document * config_r)
+{
+	Document ret;
+	ret.Parse(App->loadBuf);
+	ret.IsObject();
+	speed_base = ret["camera"]["SpeedBase"].GetFloat();
+	mouse_sensitivity = ret["camera"]["MouseSensitivity"].GetFloat();
+
+
+	return true;
+}
+
 // -----------------------------------------------------------------
 void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
+

@@ -35,6 +35,9 @@ public:
 	void UnlockCamera(); 
 	bool IsLocked(); 
 
+	bool Save(Document& config_w, FileWriteStream& os);
+	bool Load(Document* config_r);
+
 private:
 
 	void CalculateViewMatrix();

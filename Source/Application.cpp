@@ -64,7 +64,7 @@ bool Application::Init()
 	{
 		ret = (*item)->Start();
 	}
-	App->Save();
+	Load();
 
 
 
@@ -200,6 +200,7 @@ bool Application::Save()
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
 	fclose(fp);
+	App->imgui->want_to_save = false;
 	return ret;
 }
 
