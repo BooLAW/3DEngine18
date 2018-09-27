@@ -26,10 +26,11 @@ public:
 public:
 	float3 color;
 	MESH_TYPE type;
-	float3* vertex;
+
+	float3* vertices;
 	int* indices;
 
-	uint num_vertex;
+	uint num_vertices;
 	uint num_indices;
 
 	uint vertex_id;
