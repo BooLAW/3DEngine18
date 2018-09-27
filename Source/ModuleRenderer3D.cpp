@@ -145,6 +145,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	App->profiler.SaveRunTimeData("Render");
+
 	return UPDATE_CONTINUE;
 }
 
@@ -243,10 +244,7 @@ void ModuleRenderer3D::SetSceneLights()
 	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
-	if (attributes.wireframe)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	UpdateAttributes();
 	
 	lights[0].Active(true);
 }
