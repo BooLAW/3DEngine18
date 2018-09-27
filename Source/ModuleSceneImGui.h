@@ -32,6 +32,11 @@ public:
 	void ManageInput(SDL_Event* e)const;
 	void Log(const std::string text);
 	void DrawImGui();
+	void BlitPanels();
+	bool Save(Document& config_w, FileWriteStream& os);
+	bool Load(Document* config_r);
+	
+
 public:
 	//flags
 	bool show_test_window = false;

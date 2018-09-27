@@ -9,6 +9,7 @@
 #include "PanelConfiguration.h"
 #include "PanelHierarchy.h"
 #include "PanelComponents.h"
+
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
 	
@@ -74,28 +75,48 @@ update_status ModuleSceneGui::Update(float dt)
 update_status ModuleSceneGui::PostUpdate(float dt)
 {
 	//Blit all the Panels
-	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
-	{
-		if ((*item)->IsActive())
-		{
-			ImVec2 pos;
-			ImVec2 size;
-			pos.x = (*item)->pos_x;
-			pos.y = (*item)->pos_y;
-			size.x = (*item)->width;
-			size.y = (*item)->height;
-
-			ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
-			ImGui::SetNextWindowSize(size, ImGuiSetCond_Always);
-			(*item)->Draw();
-		}
-	}
+	BlitPanels();
 	
 	return UPDATE_CONTINUE;
 }
 void ModuleSceneGui::DrawImGui() {
 	App->renderer3D->SetUILights();
 	ImGui::Render();
+}
+
+bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
+{
+	Document::AllocatorType& allocator = config_w.GetAllocator();
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		Value test(kObjectType);
+		test.AddMember("posx", (*item)->pos_x, allocator);
+		test.AddMember("posy", (*item)->pos_y, allocator);
+		test.AddMember("sizex", (*item)->width, allocator);
+		test.AddMember("sizey", (*item)->height, allocator);
+
+		Value n((*item)->name.c_str(), config_w.GetAllocator());
+		config_w.AddMember(n, test,allocator);
+	}
+
+	return true;
+}
+
+bool ModuleSceneGui::Load(Document * config_r)
+{
+	Document ret;
+	ret.Parse(App->loadBuf);
+	ret.IsObject();
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		Value n((*item)->name.c_str(), ret.GetAllocator());
+		(*item)->pos_x = ret[n]["posx"].GetInt();
+		(*item)->pos_y = ret[n]["posy"].GetInt();
+		(*item)->width = ret[n]["posy"].GetInt();
+		(*item)->height = ret[n]["sizey"].GetInt();
+	}
+
+	return true;
 }
 
 
@@ -189,9 +210,6 @@ int ModuleSceneGui::CreateMainMenu()
 				ImGui::Spacing();
 				ImGui::Text("MIT License");
 				ImGui::Spacing();
-
-
-
 					ImGui::Text("Copyright(c) 2018 Pau Bonet Vall Llebrera & Josep Pi");
 					ImGui::Spacing();
 					ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy");
@@ -229,8 +247,6 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/issues");
 				}
-
-
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -342,3 +358,24 @@ void ModuleSceneGui::ManageInput(SDL_Event * e) const
 	ImGui_ImplSdl_ProcessEvent(e);
 }
 
+void ModuleSceneGui::BlitPanels()
+{
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		if ((*item)->IsActive())
+		{
+			ImVec2 pos;
+			ImVec2 size;
+			pos.x = (*item)->pos_x;
+			pos.y = (*item)->pos_y;
+			size.x = (*item)->width;
+			size.y = (*item)->height;
+
+			ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(size, ImGuiSetCond_Always);
+			(*item)->Draw();
+		}
+
+
+	}
+}

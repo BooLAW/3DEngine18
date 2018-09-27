@@ -143,9 +143,7 @@ bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
 {
 
 	Document::AllocatorType& allocator = config_w.GetAllocator();
-
 	Value test(kObjectType);
-
 
 	test.AddMember("fullscreen", fullscreen, allocator);
 	test.AddMember("width", width, allocator);

@@ -29,6 +29,8 @@ public:
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
 
+
+
 	char readBuf[10000];
 	char loadBuf[10000];
 
@@ -63,6 +65,7 @@ public:
 	void OpenWebPage(const char* url );
 	void BroadcastEvent(SDL_Event & event);
 	Module* GetModule(int index);
+
 	bool Save();
 	bool Load();
 

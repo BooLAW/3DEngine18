@@ -212,26 +212,30 @@ bool Application::Load()
 
 	Document testconfig_r;
 	FileReadStream is(fp, loadBuf, sizeof(loadBuf));
-	testconfig_r.ParseStream(is);
-	testconfig_r.IsObject();
-
-
-	maxfps = testconfig_r["app"]["max_fps"].GetInt();
-	App->imgui->fps_slider = maxfps;
-
-	std::string title;
-	title.append(testconfig_r["app"]["engine_name"].GetString());
-	title.append(" - ");
-	title.append(testconfig_r["app"]["organization"].GetString());
-
-
-
-	
-
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
+	if (is.Peek() == 0)
 	{
-		ret = (*item)->Load(&testconfig_r);
+		App->imgui->want_to_save = true;
+
 	}
+	else
+	{
+		testconfig_r.ParseStream(is);
+		testconfig_r.IsObject();
+
+
+		maxfps = testconfig_r["app"]["max_fps"].GetInt();
+		App->imgui->fps_slider = maxfps;
+
+		std::string title;
+		title.append(testconfig_r["app"]["engine_name"].GetString());
+		title.append(" - ");
+		title.append(testconfig_r["app"]["organization"].GetString());
+		for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
+		{
+			ret = (*item)->Load(&testconfig_r);
+		}
+	}
+
 	fclose(fp);
 	App->imgui->want_to_load = false;
 	return ret;
