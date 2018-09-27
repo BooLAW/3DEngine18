@@ -37,6 +37,9 @@
     <Filter Include="Sources\External Tools\Parson">
       <UniqueIdentifier>{af0ad1ad-4c73-4660-8aae-20fa18a6e18c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects">
+      <UniqueIdentifier>{0c0ecbf4-0f08-4bb4-93ff-a77538b49e5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -331,6 +334,9 @@
       <Filter>Sources\Containers</Filter>
     </ClInclude>
     <ClInclude Include="glmath.h" />
+    <ClInclude Include="Mesh.h">
+      <Filter>Sources\Modules\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -526,6 +532,9 @@
       <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="glmath.cpp" />
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Sources\Modules\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

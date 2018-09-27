@@ -41,7 +41,7 @@ public:
 private:
 
 	void CalculateViewMatrix();
-	float speed_base = 1.0f;
+	float speed_base = 4.0f;
 	float mouse_sensitivity = 0.5f;
 	bool locked; 
 
