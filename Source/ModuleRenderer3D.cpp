@@ -162,8 +162,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		base_plane.axis = true;	
 		base_plane.Render();
 	}
-	PCube my_cube(5, 5, 5);
-	my_cube.Render();
+	//PCube my_cube(5, 5, 5);
+	//my_cube.Render();
 	//Draw Scene
 	//App->scene_intro->Update(dt);
 	//Debug Draw

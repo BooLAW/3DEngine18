@@ -62,6 +62,28 @@ void Primitive::Render() const
 	InnerRender();
 
 
+	//Draw Line
+	glLineWidth(5.0f);
+	glBegin(GL_TRIANGLES);
+	glVertex3f(0.f, 0.f, 20.f);
+	glVertex3f(0.f, 5.f, 20.f);
+	glVertex3f(5.f, 0.f, 20.f);
+
+	glVertex3f(0.f, 5.f, 20.f);
+	glVertex3f(5.f, 5.f, 20.f);
+	glVertex3f(5.f, 0.f, 20.f);
+
+	glVertex3f(5.f, 5.f, 20.f);
+	glVertex3f(5.f, 0.f, 20.f);
+	glVertex3f(5.f, 0.f, 25.f);
+
+	glVertex3f(0.f, 0.f, 20.f);
+	glVertex3f(5.f, 0.f, 25.f);
+	glVertex3f(0.f, 0.f, 25.f);
+	glEnd();
+
+	glLineWidth(1.0f);
+
 
 	glPopMatrix();
 }
