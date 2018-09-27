@@ -1,6 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "glmath.h"
+#include "MathGeoLib\MathGeoLib.h"
+
+class TextureMSAA; 
 
 class ModuleCamera3D : public Module
 {
@@ -12,21 +16,38 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const float3 &Spot);
-	void Move(const float3 &Movement);
-	float* GetViewMatrix();
 	void DrawModuleConfig()override;
+
+	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
+	void LookAt(const vec3 &Spot);
+	void Move(const vec3 &Movement);
+	float* GetViewMatrix();
+
+	void SetSpeed(float new_speed); 
+	float GetSpeed() const;
+
+	void SetMouseSensitivity(float new_sensitivity);
+	float GetMouseSensitivity() const;
+
+	TextureMSAA* GetViewportTexture(); 
+
+	void LockCamera(); 
+	void UnlockCamera(); 
+	bool IsLocked(); 
 
 private:
 
 	void CalculateViewMatrix();
+	float speed_base = 1.0f;
+	float mouse_sensitivity = 0.5f;
+	bool locked; 
 
 public:
 	
-	float3 X, Y, Z, Position, Reference;
+	vec3 X, Y, Z, Position, Reference;
 
 private:
 
-	float4x4 ViewMatrix, ViewMatrixInverse;
+	mat4x4 ViewMatrix, ViewMatrixInverse;
+	TextureMSAA* viewport_texture; 
 };

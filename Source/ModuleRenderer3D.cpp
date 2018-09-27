@@ -198,11 +198,11 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	float4x4 aux;
+	mat4x4 aux;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix =  aux.perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf((float*)ProjectionMatrix.v);
+	ProjectionMatrix = ProjectionMatrix.perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

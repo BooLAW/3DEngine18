@@ -36,11 +36,11 @@ public:
 	static char title_name[128];
 
 	Profiler profiler;
+	float	dt;
 
 private:
 
 	Timer	ms_timer;
-	float	dt;
 	int		fps = 0;
 	float	maxfps = 0;
 	float	sleeping_time = 0;

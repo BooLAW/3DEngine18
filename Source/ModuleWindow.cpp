@@ -110,7 +110,6 @@ void ModuleWindow::DrawModuleConfig()
 			size_modified = true;
 
 
-
 		if (ImGui::Button("Center Window"))
 		{
 			SDL_SetWindowPosition(window, DM.w / 2 - width / 2, DM.h / 2 - height / 2);

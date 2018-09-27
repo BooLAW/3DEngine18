@@ -36,11 +36,6 @@ bool ModuleSceneIntro::Start()
 		//int age_output2 = file2->GetInt("age", 900);
 		//int heigh_output = file2->GetInt("heigh", 900);
 	}
-	
-
-
-
-
 
 	//-----------------------------
 	srand(time(NULL));
@@ -52,8 +47,8 @@ bool ModuleSceneIntro::Start()
 		base_plane.Render();
 	}
 
-	App->camera->Move(float3(1.0f, 5.0f, 0.0f));
-	App->camera->LookAt(float3(0, 0, 0));
+	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
+	App->camera->LookAt(vec3(0, 0, 0));
 
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;

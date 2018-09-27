@@ -37,7 +37,7 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
-	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	RenderAttributes attributes;
 	//RENDERING FLAGS
 	bool show_plane = true;
