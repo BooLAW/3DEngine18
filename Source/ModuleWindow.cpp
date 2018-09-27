@@ -152,6 +152,7 @@ bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
 	test.AddMember("height", height, allocator);
 	config_w.AddMember("window", test, allocator);
 
+
 	return true;
 }
 bool ModuleWindow::Load(Document* config_r)
@@ -164,7 +165,11 @@ bool ModuleWindow::Load(Document* config_r)
 	height = ret["window"]["height"].GetInt();
 	fullscreen = ret["window"]["fullscreen"].GetBool();
 
-	screen_surface = SDL_GetWindowSurface(window);
+	//Set Window size
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	Resize(width, height);
+	SDL_SetWindowPosition(window, DM.w / 2 - width / 2, DM.h / 2 - height / 2);
 
 	return true;
 }
