@@ -48,7 +48,7 @@ bool ModuleSceneIntro::Start()
 	}
 	//DRAW CUBE WITH INDICES
 	Mesh Cube;
-	Cube.DefineSphereVertices(5,10,10);
+	Cube.DefineCubeVertices();
 	go_list.push_back(Cube);
 
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
