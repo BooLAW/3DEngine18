@@ -46,6 +46,10 @@ bool ModuleSceneIntro::Start()
 		base_plane.axis = true;
 		base_plane.Render();
 	}
+	//DRAW CUBE WITH INDICES
+	Mesh Cube;
+	Cube.DefineCubeVertices();
+	go_list.push_back(Cube);
 
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
@@ -121,7 +125,11 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 update_status ModuleSceneIntro::Update(float dt)
 {
 
-
+	//make a for in the future
+	for (int i = 0; i < go_list.size(); i++)
+	{
+		go_list[i].Draw();
+	}
 
 	return UPDATE_CONTINUE;
 }

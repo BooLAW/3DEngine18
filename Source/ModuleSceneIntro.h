@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Panel.h"
+#include "Mesh.h"
 
 struct PhysBody3D;
 
@@ -22,6 +23,8 @@ public:
 	float RandFloat(float min, float max);
 	//void DisplayRandNumber(bool isActive);
 	void Log(const std::string text);
-
+public:
+	//Scene GameObjects(Now only meshes)
+	std::vector<Mesh> go_list;
 
 };

@@ -16,8 +16,10 @@ void Mesh::Draw()
 	//Enable Client
 	glEnableClientState(GL_VERTEX_ARRAY);
 	//Bind Vertices
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);	//Bind Indices	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	//Bind Indices
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 	//Draw
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 	//Unbind
@@ -30,13 +32,125 @@ void Mesh::Draw()
 void Mesh::DefineCubeVertices()
 {
 
+	glGenBuffers(1, (GLuint*) &(vertices_id));
+	glGenBuffers(1, (GLuint*) &(indices_id));
+
+	type = MESH_TYPE::CUBE_M;
+
+	num_vertices = 8;
+	vertices = new float3[num_vertices];
+
+	//A
+	vertices[0].x = 0.0f;
+	vertices[0].y = 0.0f;
+	vertices[0].z = 0.0f;
+	//B
+	vertices[1].x = 1.0f;
+	vertices[1].y = 0.0f;
+	vertices[1].z = 0.0f;
+	//C
+	vertices[2].x = 0.0f;
+	vertices[2].y = 1.0f;
+	vertices[2].z = 0.0f;
+	//D
+	vertices[3].x = 1.0f;
+	vertices[3].y = 1.0f;
+	vertices[3].z = 0.0f;
+	//E
+	vertices[4].x = 0.0f;
+	vertices[4].y = 0.0f;
+	vertices[4].z = 1.0f;
+	//F
+	vertices[5].x = 1.0f;
+	vertices[5].y = 0.0f;
+	vertices[5].z = 1.0f;
+	//G
+	vertices[6].x = 0.0f;
+	vertices[6].y = 1.0f;
+	vertices[6].z = 1.0f;
+	//H
+	vertices[7].x = 1.0f;
+	vertices[7].y = 1.0f;
+	vertices[7].z = 1.0f;
+
+	//--------------
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	num_indices = 36;
+	indices = new int[num_indices];
+	//
+	indices[0] = 0;	
+	indices[1] = 1;	
+	indices[2] = 2;	
+
+	indices[3] = 2;	
+	indices[4] = 1;	
+	indices[5] = 3,
+	
+	indices[6] = 1;	
+	indices[7] = 3;	
+	indices[8] = 5;	
+	
+	indices[9] = 3;	
+	indices[10] = 5;
+	indices[11] = 7;
+
+	indices[12] = 1; 
+	indices[13] = 0; 
+	indices[14] = 4;
+
+	indices[15] = 1; 
+	indices[16] = 4;
+	indices[17] = 5;
+
+	indices[18] = 7; 
+	indices[19] = 5; 
+	indices[20] = 4;
+
+	indices[21] = 7; 
+	indices[22] = 4; 
+	indices[23] = 6;
+
+	indices[24] = 3; 
+	indices[25] = 7; 
+	indices[26] = 2;
+
+	indices[27] = 2; 
+	indices[28] = 7; 
+	indices[29] = 6;
+
+	indices[30] = 6; 
+	indices[31] = 4; 
+	indices[32] = 0;
+
+	indices[33] = 6; 
+	indices[34] = 0;
+	indices[35] = 2;
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*num_indices, indices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	CONSOLE_LOG("CUBE LOADED BUFFER_ID: %d", vertices_id);
+
 }
 
 void Mesh::DefinePlaneVertices()
 {
+	uint new_buffer;
+	glGenBuffers(1, (GLuint*)&new_buffer);
 	//Create Buffers
-	glGenBuffers(1, (GLuint*) &(vertex_id));
-	glGenBuffers(1, (GLuint*) &(indices_id));
+	vertices_id = new_buffer;
+
+	uint new_buffer2;
+	glGenBuffers(1, (GLuint*)&new_buffer2);
+	indices_id = new_buffer2;
+	//glGenBuffers(1, (GLuint*) &(vertices_id));
+	//glGenBuffers(1, (GLuint*) &(indices_id));
 
 	//Define Type
 
@@ -64,7 +178,7 @@ void Mesh::DefinePlaneVertices()
 	vertices[3].z = 1.0f;
 
 	//--------------
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

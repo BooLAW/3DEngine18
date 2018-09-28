@@ -18,10 +18,13 @@ public:
 	virtual ~Mesh();
 
 
-	void Draw();
-
 	void DefineCubeVertices();
 	void DefinePlaneVertices();
+
+
+	void Draw();
+
+
 
 public:
 	float3 color;
@@ -33,7 +36,7 @@ public:
 	uint num_vertices;
 	uint num_indices;
 
-	uint vertex_id;
+	uint vertices_id;
 	uint indices_id;
 };
 
