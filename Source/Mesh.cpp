@@ -13,6 +13,22 @@ Mesh::~Mesh()
 
 void Mesh::Draw()
 {
+	if (type == SPHERE_M)
+	{
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glTranslatef(x, y, z);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+		glNormalPointer(GL_FLOAT, 0, &normals[0]);
+		glTexCoordPointer(2, GL_FLOAT, 0, &texcoords[0]);
+		glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+		glPopMatrix();
+	}
 	//Enable Client
 	glEnableClientState(GL_VERTEX_ARRAY);
 	//Bind Vertices
@@ -202,4 +218,48 @@ void Mesh::DefinePlaneVertices()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
+}
+
+void Mesh::DefineSphereVertices(float radius, uint rings, uint sectors)
+{
+	uint new_buffer;
+	glGenBuffers(1, (GLuint*)&new_buffer);
+	//Create Buffers
+	vertices_id = new_buffer;
+
+	uint new_buffer2;
+	glGenBuffers(1, (GLuint*)&new_buffer2);
+	indices_id = new_buffer2;
+
+	type = MESH_TYPE::SPHERE_M;
+
+	float const R = 1. / (float)(rings - 1);
+	float const S = 1. / (float)(sectors - 1);
+	int r, s;
+	int count = 0;
+
+	for (r = 0; r < rings; r++)
+	{
+		for (s = 0; s < sectors; s++)
+		{
+			float const z = sin(-HALF_PI + PI * r * R);
+			float const x = cos(2 * PI * s * S) * sin(PI * r * R);
+			float const y = sin(2 * PI * s * S) * sin(PI * r * R);
+
+			vertices[count].x = x * radius;
+			vertices[count].y = y * radius;
+			vertices[count].z = z * radius;
+
+			count++;
+		}
+	}
+
+	for (r = 0; r < rings - 1; r++) for (s = 0; s < sectors - 1; s++) {
+		*indices++ = r * sectors + s;
+		*indices++ = r * sectors + (s + 1);
+		*indices++ = (r + 1) * sectors + (s + 1);
+		*indices++ = (r + 1) * sectors + s;
+	}
+
+	glGenBuffers(1, (GLuint*)&vertices_id);
 }

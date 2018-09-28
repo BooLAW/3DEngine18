@@ -41,7 +41,7 @@ void ModuleCamera3D::DrawModuleConfig()
 	if (ImGui::CollapsingHeader("Camera"))
 	{
 		ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f);
-		ImGui::DragFloat("Rotation Speed", &mouse_sensitivity);
+		ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f);
 	}
 
 

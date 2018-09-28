@@ -20,7 +20,7 @@ public:
 
 	void DefineCubeVertices();
 	void DefinePlaneVertices();
-
+	void DefineSphereVertices(float radius, uint rings, uint sectors);
 
 	void Draw();
 
