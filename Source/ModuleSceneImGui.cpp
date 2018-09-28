@@ -109,11 +109,11 @@ bool ModuleSceneGui::Load(Document * config_r)
 	ret.IsObject();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
-		Value n((*item)->name.c_str(), ret.GetAllocator());
-		(*item)->pos_x = ret[n]["posx"].GetInt();
-		(*item)->pos_y = ret[n]["posy"].GetInt();
-		(*item)->width = ret[n]["posy"].GetInt();
-		(*item)->height = ret[n]["sizey"].GetInt();
+		//Value n((*item)->name.c_str(), ret.GetAllocator());
+		//(*item)->pos_x = ret[n]["posx"].GetInt();
+		//(*item)->pos_y = ret[n]["posy"].GetInt();
+		//(*item)->width = ret[n]["posy"].GetInt();
+		//(*item)->height = ret[n]["sizey"].GetInt();
 	}
 
 	return true;
