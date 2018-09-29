@@ -2,10 +2,10 @@
 
 PanelConsole::PanelConsole() :Panel("Console")
 {
-	width = 800;
-	height = 150;
 	pos_x = 250;
 	pos_y = 800;
+	width = 800;
+	height = 150;
 	active = true;
 }
 PanelConsole::~PanelConsole()
@@ -15,7 +15,7 @@ PanelConsole::~PanelConsole()
 
 void PanelConsole::Draw()
 {
-	ImGui::Begin("Console", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);
+	ImGui::Begin("Console", &active, ImGuiWindowFlags_NoFocusOnAppearing);
 
 	if(ImGui::Button("Debug"))
 	{

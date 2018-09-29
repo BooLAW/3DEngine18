@@ -7,6 +7,7 @@ PanelComponents::PanelComponents():Panel("Components")
 	height = 800;
 	pos_x = 800;
 	pos_y = 20;
+	active = false;
 }
 
 PanelComponents::~PanelComponents()

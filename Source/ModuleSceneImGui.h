@@ -54,6 +54,9 @@ public:
 
 	char* organization_name = "UPC CITM";
 	char* engine_name = TITLE;
+	int isBlitedWTF = panels.size();
+	ImVec2 panel_pos;
+	ImVec2 panel_size;
 
 
 	//Geometry Creator
@@ -77,4 +80,5 @@ public:
 	PanelApplication* application = nullptr;
 	PanelComponents* components = nullptr;
 	PanelHierarchy* hierarchy = nullptr;
+	
 };

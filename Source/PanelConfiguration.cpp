@@ -6,10 +6,10 @@
 
 PanelConfiguration::PanelConfiguration():Panel("Configuration")
 {
-	width = 475;
-	height = 800;
 	pos_x = 800;
 	pos_y = 20;
+	width = 475;
+	height = 800;
 }
 
 
@@ -20,7 +20,7 @@ PanelConfiguration::~PanelConfiguration()
 
 void PanelConfiguration::Draw()
 {
-	ImGui::Begin("Configuration", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing);	
+	ImGui::Begin("Configuration", &active);	
 
 	Application();
 	for (int i = 0; App->GetModule(i) != nullptr; i++)

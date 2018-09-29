@@ -74,7 +74,6 @@ update_status ModuleSceneGui::Update(float dt)
 
 update_status ModuleSceneGui::PostUpdate(float dt)
 {
-	//Blit all the Panels
 	BlitPanels();
 	
 	return UPDATE_CONTINUE;
@@ -89,11 +88,15 @@ bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 	Document::AllocatorType& allocator = config_w.GetAllocator();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
+
 		Value test(kObjectType);
+
 		test.AddMember("posx", (*item)->pos_x, allocator);
 		test.AddMember("posy", (*item)->pos_y, allocator);
 		test.AddMember("sizex", (*item)->width, allocator);
 		test.AddMember("sizey", (*item)->height, allocator);
+
+
 
 		Value n((*item)->name.c_str(), config_w.GetAllocator());
 		config_w.AddMember(n, test,allocator);
@@ -109,11 +112,13 @@ bool ModuleSceneGui::Load(Document * config_r)
 	ret.IsObject();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
-		//Value n((*item)->name.c_str(), ret.GetAllocator());
-		//(*item)->pos_x = ret[n]["posx"].GetInt();
-		//(*item)->pos_y = ret[n]["posy"].GetInt();
-		//(*item)->width = ret[n]["posy"].GetInt();
-		//(*item)->height = ret[n]["sizey"].GetInt();
+
+		Value n((*item)->name.c_str(), ret.GetAllocator());
+		(*item)->pos_x = ret[n]["posx"].GetFloat();
+		(*item)->pos_y = ret[n]["posy"].GetFloat();
+		(*item)->width = ret[n]["sizex"].GetFloat();
+		(*item)->height = ret[n]["sizey"].GetFloat();
+		isBlitedWTF = 0;
 	}
 
 	return true;
@@ -364,18 +369,16 @@ void ModuleSceneGui::BlitPanels()
 	{
 		if ((*item)->IsActive())
 		{
-			ImVec2 pos;
-			ImVec2 size;
-			pos.x = (*item)->pos_x;
-			pos.y = (*item)->pos_y;
-			size.x = (*item)->width;
-			size.y = (*item)->height;
+			if (isBlitedWTF < panels.size())
+			{
+				ImGui::SetNextWindowPos(ImVec2((*item)->pos_x, (*item)->pos_y), ImGuiSetCond_Always);
+				ImGui::SetNextWindowSize(ImVec2((*item)->width, (*item)->height), ImGuiSetCond_Always);
+				isBlitedWTF++;
+			}
+			
 
-			ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
-			ImGui::SetNextWindowSize(size, ImGuiSetCond_Always);
 			(*item)->Draw();
+			
 		}
-
-
 	}
 }
