@@ -47,9 +47,9 @@ bool ModuleSceneIntro::Start()
 		base_plane.Render();
 	}
 	//DRAW CUBE WITH INDICES
-	Mesh Cube;
-	Cube.DefineCubeVertices();
-	go_list.push_back(Cube);
+	/*Mesh Cube;
+	Cube.DefineCubeVertices({ 1,2,3 });
+	go_list.push_back(Cube);*/
 
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));

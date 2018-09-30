@@ -331,22 +331,22 @@ void ModuleSceneGui::showCubeCreator()
 {
 	if (ImGui::Begin("Cube Creator"))
 	{
-		ImGui::Text("minPoint");
+		ImGui::Text("Position");
 		ImGui::InputInt("Position X", &x_aux);
 		ImGui::InputInt("Position Y", &y_aux);
 		ImGui::InputInt("Position Z", &z_aux);
 		ImGui::Spacing();
-		ImGui::Text("maxPoint");
-		ImGui::InputInt("Position X2", &x_aux2);
-		ImGui::InputInt("Position Y2", &y_aux2);
-		ImGui::InputInt("Position Z2", &z_aux2);
+		ImGui::InputInt("Size", &x_aux2);
+
 
 		if (ImGui::SmallButton("Create"))
 		{
-			min_pos_aux.Set(x_aux, y_aux, z_aux);
-			max_pos_aux.Set(x_aux2, y_aux2, z_aux2);
-			App->physics->CreateCube(pos_aux, max_pos_aux);
-
+			//min_pos_aux.Set(x_aux, y_aux, z_aux);
+			//max_pos_aux.Set(x_aux2, y_aux2, z_aux2);
+			//App->physics->CreateCube(pos_aux, max_pos_aux);
+			Mesh new_mesh;
+			new_mesh.DefineCubeVertices(float3(x_aux,y_aux,z_aux));
+			App->scene_intro->go_list.push_back(new_mesh);
 		}
 		if (ImGui::SmallButton("Reset"))
 		{

@@ -47,7 +47,7 @@ private:
 	float speed_base = 4.0f;
 	float wheel_speed_base = 4.0f;
 	float mouse_sensitivity = 0.5f;
-	bool locked; 
+	bool locked = false; 
 
 public:
 	

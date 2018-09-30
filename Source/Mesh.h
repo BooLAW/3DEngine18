@@ -18,8 +18,9 @@ public:
 	virtual ~Mesh();
 
 
-	void DefineCubeVertices();
-	void DefinePlaneVertices();
+	void DefineCubeVertices(float3 new_position);
+	void DefinePlaneVertices(float3 new_position);
+	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);
 
 	void Draw();
@@ -29,7 +30,12 @@ public:
 public:
 	float3 color;
 	MESH_TYPE type;
+	//transform
+	float3 position = float3::zero;
+	Quat rotation = Quat::identity;
+	float3 scale = float3::one;
 
+	//gl
 	float3* vertices;
 	int* indices;
 
