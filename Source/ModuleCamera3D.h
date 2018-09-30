@@ -18,17 +18,20 @@ public:
 
 	void DrawModuleConfig()override;
 
+	void CameraMovement(float dt);
+
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
-	void Move(const vec3 &Movement);
+	void Move(const vec3 &speed);
+	void WheelMove(const vec3 &mouse_speed,int direction);
+	void HandleMouse();
 	float* GetViewMatrix();
 
 	void SetSpeed(float new_speed); 
 	float GetSpeed() const;
 
-	void SetMouseSensitivity(float new_sensitivity);
+	void SetMouseSensitivity(float new1_sensitivity);
 	float GetMouseSensitivity() const;
-
 	TextureMSAA* GetViewportTexture(); 
 
 	void LockCamera(); 
@@ -42,6 +45,7 @@ private:
 
 	void CalculateViewMatrix();
 	float speed_base = 4.0f;
+	float wheel_speed_base = 4.0f;
 	float mouse_sensitivity = 0.5f;
 	bool locked; 
 

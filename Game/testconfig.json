@@ -1,5 +1,4 @@
 {
-  
   "app": {
     "engine_name": "Living Worlds",
     "organization": "UPC CITM",
@@ -38,7 +37,8 @@
   },
   "camera": {
     "SpeedBase": 4.0,
-    "MouseSensitivity": 0.5
+    "MouseSensitivity": 0.5,
+    "MouseWheelSpeed": 4.0
   },
   "window": {
     "fullscreen": false,

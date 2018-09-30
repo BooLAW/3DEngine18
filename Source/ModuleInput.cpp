@@ -143,10 +143,13 @@ void ModuleInput::DrawModuleConfig()
 		ImGui::Text("Mouse Position:");
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "X: %d", App->input->mouse_x);
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Y: %d", App->input->mouse_y);
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Mouse Wheel: %d", App->input->mouse_z);
+
+
 		ImGui::Text("Mouse Motion:");
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "X: %d", App->input->mouse_x_motion);
-
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Y: %d", App->input->mouse_y_motion);
+
 
 		ImGui::Text("Keys down:");      for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (io.KeysDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d (%.02f secs)", i, io.KeysDownDuration[i]); }
 		ImGui::Text("Keys pressed:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyPressed(i)) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", i); }
