@@ -30,7 +30,7 @@ void Mesh::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void Mesh::DefineCubeVertices(float3 new_position)
+void Mesh::DefineCubeVertices(float3 new_position,float size)
 {
 	position = new_position;
 	glGenBuffers(1, (GLuint*) &(vertices_id));
@@ -40,39 +40,44 @@ void Mesh::DefineCubeVertices(float3 new_position)
 
 	num_vertices = 8;
 	vertices = new float3[num_vertices];
+	{
+		//A
+		vertices[0].x = position.x + 0.0f;
+		vertices[0].y = position.y + 0.0f;
+		vertices[0].z = position.z + 0.0f;
+		//B
+		vertices[1].x = position.x + size;
+		vertices[1].y = position.y + 0.0f;
+		vertices[1].z = position.z + 0.0f;
+		//C
+		vertices[2].x = position.x + 0.0f;
+		vertices[2].y = position.y + size;
+		vertices[2].z = position.z + 0.0f;
+		//D
+		vertices[3].x = position.x + size;
+		vertices[3].y = position.y + size;
+		vertices[3].z = position.z + 0.0f;
+		//E
+		vertices[4].x = position.x + 0.0f;
+		vertices[4].y = position.y + 0.0f;
+		vertices[4].z = position.z + size;
+		//F
+		vertices[5].x = position.x + size;
+		vertices[5].y = position.y + 0.0f;
+		vertices[5].z = position.z + size;
+		//G
+		vertices[6].x = position.x + 0.0f;
+		vertices[6].y = position.y + size;
+		vertices[6].z = position.z + size;
+		//H
+		vertices[7].x = position.x + size;
+		vertices[7].y = position.y + size;
+		vertices[7].z = position.z + size;
 
-	//A
-	vertices[0].x = position.x + 0.0f;
-	vertices[0].y = position.y + 0.0f;
-	vertices[0].z = position.z + 0.0f;
-	//B
-	vertices[1].x = position.x + 1.0f;
-	vertices[1].y = position.y + 0.0f;
-	vertices[1].z = position.z + 0.0f;
-	//C
-	vertices[2].x = position.x + 0.0f;
-	vertices[2].y = position.y + 1.0f;
-	vertices[2].z = position.z + 0.0f;
-	//D
-	vertices[3].x = position.x + 1.0f;
-	vertices[3].y = position.y + 1.0f;
-	vertices[3].z = position.z + 0.0f;
-	//E
-	vertices[4].x = position.x + 0.0f;
-	vertices[4].y = position.y + 0.0f;
-	vertices[4].z = position.z + 1.0f;
-	//F
-	vertices[5].x = position.x + 1.0f;
-	vertices[5].y = position.y + 0.0f;
-	vertices[5].z = position.z + 1.0f;
-	//G
-	vertices[6].x = position.x + 0.0f;
-	vertices[6].y = position.y + 1.0f;
-	vertices[6].z = position.z + 1.0f;
-	//H
-	vertices[7].x = position.x + 1.0f;
-	vertices[7].y = position.y + 1.0f;
-	vertices[7].z = position.z + 1.0f;
+	}
+
+	
+	
 
 	//--------------
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);

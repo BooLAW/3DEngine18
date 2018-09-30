@@ -18,7 +18,7 @@ public:
 	virtual ~Mesh();
 
 
-	void DefineCubeVertices(float3 new_position);
+	void DefineCubeVertices(float3 new_position,float size);
 	void DefinePlaneVertices(float3 new_position);
 	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);

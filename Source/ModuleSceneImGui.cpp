@@ -341,11 +341,8 @@ void ModuleSceneGui::showCubeCreator()
 
 		if (ImGui::SmallButton("Create"))
 		{
-			//min_pos_aux.Set(x_aux, y_aux, z_aux);
-			//max_pos_aux.Set(x_aux2, y_aux2, z_aux2);
-			//App->physics->CreateCube(pos_aux, max_pos_aux);
 			Mesh new_mesh;
-			new_mesh.DefineCubeVertices(float3(x_aux,y_aux,z_aux));
+			new_mesh.DefineCubeVertices(float3(x_aux,y_aux,z_aux), x_aux2);
 			App->scene_intro->go_list.push_back(new_mesh);
 		}
 		if (ImGui::SmallButton("Reset"))
