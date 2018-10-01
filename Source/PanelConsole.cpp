@@ -2,10 +2,10 @@
 
 PanelConsole::PanelConsole() :Panel("Console")
 {
-	pos_x = 250;
-	pos_y = 800;
-	width = 800;
-	height = 150;
+	ini_pos_x = 250;
+	ini_pos_y = 800;
+	ini_width = 800;
+	ini_height = 150;
 	active = true;
 }
 PanelConsole::~PanelConsole()
@@ -33,6 +33,8 @@ void PanelConsole::Draw()
 		}
 
 	ImGui::SetScrollY(ImGui::GetScrollMaxY());
+	render_pos = ImGui::GetWindowPos();
+	render_size = ImGui::GetWindowSize();
 	ImGui::End();	
 }
 

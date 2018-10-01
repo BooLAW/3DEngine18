@@ -3,6 +3,10 @@
 #define __PANEL__H__
 #include "Globals.h"
 #include <string>
+#include "ImGui/imgui.h"
+
+
+
 class Panel
 {
 public:
@@ -14,7 +18,9 @@ public:
 	virtual void Draw();
 public:
 	bool active = true;
-	int width, height, pos_x, pos_y;
+	int ini_width, ini_height, ini_pos_x, ini_pos_y;
+	ImVec2 render_pos;
+	ImVec2 render_size;
 	std::string name;
 
 

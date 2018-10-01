@@ -22,6 +22,7 @@ bool Panel::IsActive()
 
 void Panel::Draw()
 {
+
 }
 
 

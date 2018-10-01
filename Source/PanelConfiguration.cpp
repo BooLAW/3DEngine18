@@ -6,10 +6,12 @@
 
 PanelConfiguration::PanelConfiguration():Panel("Configuration")
 {
-	pos_x = 800;
-	pos_y = 20;
-	width = 475;
-	height = 800;
+	ini_pos_x = 800;
+	ini_pos_y = 20;
+	ini_width = 475;
+	ini_height = 800;
+	render_pos = { 800,20 };
+	render_size = { 800,20 };
 }
 
 
@@ -21,7 +23,8 @@ PanelConfiguration::~PanelConfiguration()
 void PanelConfiguration::Draw()
 {
 	ImGui::Begin("Configuration", &active);	
-
+	render_pos = ImGui::GetWindowPos();
+	render_size = ImGui::GetWindowSize();
 	Application();
 	for (int i = 0; App->GetModule(i) != nullptr; i++)
 	{

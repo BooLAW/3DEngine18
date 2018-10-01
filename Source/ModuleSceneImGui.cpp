@@ -34,8 +34,8 @@ bool ModuleSceneGui::Init()
 
 	panels.push_back(console);
 	panels.push_back(configuration);
-	panels.push_back(components);
-	panels.push_back(hierarchy);
+	//panels.push_back(components);
+	//panels.push_back(hierarchy);
 	App->profiler.SaveInitData("UI");
 	return ret;
 }
@@ -91,10 +91,10 @@ bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 
 		Value test(kObjectType);
 
-		test.AddMember("posx", (*item)->pos_x, allocator);
-		test.AddMember("posy", (*item)->pos_y, allocator);
-		test.AddMember("sizex", (*item)->width, allocator);
-		test.AddMember("sizey", (*item)->height, allocator);
+		test.AddMember("posx", (*item)->render_pos.x, allocator);
+		test.AddMember("posy", (*item)->render_pos.y, allocator);
+		test.AddMember("sizex", (*item)->render_size.x, allocator);
+		test.AddMember("sizey", (*item)->render_size.y, allocator);
 
 
 
@@ -112,13 +112,12 @@ bool ModuleSceneGui::Load(Document * config_r)
 	ret.IsObject();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
-
 		Value n((*item)->name.c_str(), ret.GetAllocator());
-		(*item)->pos_x = ret[n]["posx"].GetFloat();
-		(*item)->pos_y = ret[n]["posy"].GetFloat();
-		(*item)->width = ret[n]["sizex"].GetFloat();
-		(*item)->height = ret[n]["sizey"].GetFloat();
-		isBlitedWTF = 0;
+		(*item)->render_pos.x = ret[n]["posx"].GetFloat();
+		(*item)->render_pos.y = ret[n]["posy"].GetFloat();
+		(*item)->render_size.x = ret[n]["sizex"].GetFloat();
+		(*item)->render_size.y = ret[n]["sizey"].GetFloat();
+		isBlitedDisplay = 0;
 	}
 
 	return true;
@@ -369,11 +368,11 @@ void ModuleSceneGui::BlitPanels()
 	{
 		if ((*item)->IsActive())
 		{
-			if (isBlitedWTF < panels.size())
+			//if (isBlitedDisplay < panels.size())
 			{
-				ImGui::SetNextWindowPos(ImVec2((*item)->pos_x, (*item)->pos_y), ImGuiSetCond_Always);
-				ImGui::SetNextWindowSize(ImVec2((*item)->width, (*item)->height), ImGuiSetCond_Always);
-				isBlitedWTF++;
+				ImGui::SetNextWindowPos((*item)->render_pos, ImGuiSetCond_Always);
+				ImGui::SetNextWindowSize((*item)->render_size, ImGuiSetCond_Always);
+				isBlitedDisplay++;
 			}
 			
 
