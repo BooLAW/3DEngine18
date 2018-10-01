@@ -3,6 +3,8 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include "Assimp.h"
+
 enum MESH_TYPE {
 	CUBE_M = 0,
 	PLANE_M,
@@ -17,13 +19,15 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
+	void Draw();
 
+public:
+	//Predefined Geometry
 	void DefineCubeVertices(float3 new_position,float size);
 	void DefinePlaneVertices(float3 new_position);
 	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);
 
-	void Draw();
 
 
 

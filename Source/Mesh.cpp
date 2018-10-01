@@ -11,6 +11,7 @@ Mesh::~Mesh()
 
 }
 
+
 void Mesh::Draw()
 {
 	
@@ -75,9 +76,6 @@ void Mesh::DefineCubeVertices(float3 new_position,float size)
 		vertices[7].z = position.z + size;
 
 	}
-
-	
-	
 
 	//--------------
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
