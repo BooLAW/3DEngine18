@@ -40,6 +40,9 @@
     <Filter Include="Sources\Modules\GameObjects">
       <UniqueIdentifier>{0c0ecbf4-0f08-4bb4-93ff-a77538b49e5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Loaders">
+      <UniqueIdentifier>{23629567-7700-4e5a-9b6e-c0c2e17bf6f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -337,6 +340,13 @@
     <ClInclude Include="Mesh.h">
       <Filter>Sources\Modules\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Assimp.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshLoader.h">
+      <Filter>Sources\Modules\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -535,6 +545,10 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Sources\Modules\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="MeshLoader.cpp">
+      <Filter>Sources\Modules\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

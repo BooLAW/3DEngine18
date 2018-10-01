@@ -93,6 +93,11 @@ update_status ModuleInput::PreUpdate(float dt)
 		App->imgui->ManageInput(&e);
 		switch(e.type)
 		{
+			case SDL_DROPFILE:
+			{
+				std::string file = e.drop.file;
+				//App->resource_manager->Load(file.c_str());
+			}
 			case SDL_MOUSEWHEEL:
 			mouse_z = e.wheel.y;
 			break;
