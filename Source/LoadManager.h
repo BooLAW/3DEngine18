@@ -27,11 +27,13 @@ public:
 	LoadManager();
 	 ~LoadManager();
 
+	void Load(const char* path);
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
 public:
-		std::list<Resource> resources;
+	std::list<Resource> resources;
+
 };
 
 #endif

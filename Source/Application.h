@@ -12,7 +12,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleSceneImGui.h"
 #include "ModuleJSON.h"
-#include "LoadManager.h"+
+#include "LoadManager.h"
 #include "Profiler.h"
 
 
@@ -70,6 +70,9 @@ public:
 
 	bool Save();
 	bool Load();
+	//File path string
+	std::string GetTermination(const char* path);
+	std::string GetFileName(const char* path);
 
 private:
 

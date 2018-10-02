@@ -243,6 +243,26 @@ bool Application::Load()
 	return ret;
 }
 
+std::string Application::GetTermination(const char * path)
+{
+	std::string ret;
+
+	std::string fn = path;
+	ret = fn.substr(fn.find_last_of(".") + 1);
+	CONSOLE_LOG("%s",ret.c_str());
+
+	return ret;
+}
+
+std::string Application::GetFileName(const char * path)
+{
+	std::string ret;
+
+
+
+	return ret;
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);

@@ -1,7 +1,9 @@
 #include "LoadManager.h"
-
-
-
+#include "Assimp.h"
+#include "Module.h"
+#include "Globals.h"
+#include "Application.h"
+#include "Profiler.h"
 LoadManager::LoadManager()
 {
 }
@@ -11,8 +13,19 @@ LoadManager::~LoadManager()
 {
 }
 
+void LoadManager::Load(const char * path)
+{
+
+}
+
 bool LoadManager::Start()
 {
+	CONSOLE_LOG("---LOAD MANAGER START ---");
+	App->profiler.SaveInitData("LoadManager");
+	struct aiLogStream stream;
+
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	aiAttachLogStream(&stream);
 	return false;
 }
 
@@ -23,6 +36,8 @@ update_status LoadManager::Update(float dt)
 
 bool LoadManager::CleanUp()
 {
+	CONSOLE_LOG("---LOAD MANAGER CLEANUP ---")
+
 	return false;
 }
 
