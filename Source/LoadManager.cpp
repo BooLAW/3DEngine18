@@ -18,7 +18,7 @@ bool LoadManager::Start()
 
 update_status LoadManager::Update(float dt)
 {
-	return update_status();
+	return UPDATE_CONTINUE;
 }
 
 bool LoadManager::CleanUp()
@@ -28,6 +28,9 @@ bool LoadManager::CleanUp()
 
 Resource::Resource(const char * name, resourceType type)
 {
+	this->type = type;
+	this->name = name;
+
 }
 
 Resource::~Resource()

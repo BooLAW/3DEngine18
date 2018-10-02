@@ -28,9 +28,6 @@ public:
 	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);
 
-
-
-
 public:
 	float3 color;
 	MESH_TYPE type;

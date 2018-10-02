@@ -14,7 +14,6 @@ Mesh::~Mesh()
 
 void Mesh::Draw()
 {
-	
 	//Enable Client
 	glEnableClientState(GL_VERTEX_ARRAY);
 	//Bind Vertices

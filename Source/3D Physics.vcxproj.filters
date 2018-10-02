@@ -43,6 +43,21 @@
     <Filter Include="Sources\Modules\Loaders">
       <UniqueIdentifier>{23629567-7700-4e5a-9b6e-c0c2e17bf6f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Loaders\Manager">
+      <UniqueIdentifier>{9babe243-9c7f-4f1e-94e4-90b23e77055c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\Loaders\Mesh">
+      <UniqueIdentifier>{9a8aecda-bc73-4d75-bb99-c8cf79e2b122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\BaseClasses">
+      <UniqueIdentifier>{32560a14-99df-4764-a403-8056866439f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components">
+      <UniqueIdentifier>{a2c6d5fd-82c7-4c06-89db-6860b8021dad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\GO">
+      <UniqueIdentifier>{b35fe972-bcaa-489f-ba3e-a931794bafed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -337,16 +352,18 @@
       <Filter>Sources\Containers</Filter>
     </ClInclude>
     <ClInclude Include="glmath.h" />
-    <ClInclude Include="Mesh.h">
-      <Filter>Sources\Modules\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Assimp.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="MeshLoader.h">
-      <Filter>Sources\Modules\Loaders</Filter>
+    <ClInclude Include="LoadManager.h">
+      <Filter>Sources\Modules\Loaders\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="LoadManager.h" />
+    <ClInclude Include="MeshLoader.h">
+      <Filter>Sources\Modules\Loaders\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Sources\Modules\GameObjects\BaseClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -542,13 +559,15 @@
       <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="glmath.cpp" />
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Sources\Modules\GameObjects</Filter>
+    <ClCompile Include="LoadManager.cpp">
+      <Filter>Sources\Modules\Loaders\Manager</Filter>
     </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
-      <Filter>Sources\Modules\Loaders</Filter>
+      <Filter>Sources\Modules\Loaders\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="LoadManager.cpp" />
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Sources\Modules\GameObjects\BaseClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">
