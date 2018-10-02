@@ -25,6 +25,6 @@ public:
 	void Log(const std::string text);
 public:
 	//Scene GameObjects(Now only meshes)
-	std::vector<Mesh> go_list;
+	std::vector<Mesh*> go_list;
 
 };

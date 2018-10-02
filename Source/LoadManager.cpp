@@ -15,7 +15,8 @@ LoadManager::~LoadManager()
 
 void LoadManager::Load(const char * path)
 {
-
+	if(App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
+		mesh_loader->LoadMesh(path);
 }
 
 bool LoadManager::Start()

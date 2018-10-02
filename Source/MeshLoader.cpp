@@ -1,6 +1,8 @@
 #include "MeshLoader.h"
 #include "Mesh.h"
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleSceneIntro.h"
 #include <stdio.h>
 
 MeshLoader::MeshLoader()
@@ -35,7 +37,6 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 
 void MeshLoader::Render()
 {
-
 }
 
 void MeshLoader::CleanUp()
@@ -85,8 +86,7 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 
 	CONSOLE_LOG("%d indices", new_mesh->indices);
 
-	scene_meshes.push_back(new_mesh);
-
+	App->scene_intro->go_list.push_back(new_mesh);
 
 	return true;
 }

@@ -96,7 +96,7 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 				std::string file = e.drop.file;
-				//App->resource_manager->Load(file.c_str());
+				App->loading_manager->Load(file.c_str());
 			}
 			case SDL_MOUSEWHEEL:
 			mouse_z = e.wheel.y;

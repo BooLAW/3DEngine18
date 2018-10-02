@@ -124,7 +124,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	//make a for in the future
 	for (int i = 0; i < go_list.size(); i++)
 	{
-		go_list[i].Draw();
+		go_list[i]->Draw();
 	}
 
 	return UPDATE_CONTINUE;

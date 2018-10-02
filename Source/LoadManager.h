@@ -1,6 +1,7 @@
 #ifndef __LOAD_MANAGER_H__
 #define __LOAD_MANAGER_H__
 #include "Module.h"
+#include "MeshLoader.h"
 
 enum resourceType
 {
@@ -33,6 +34,7 @@ public:
 	bool CleanUp();
 public:
 	std::list<Resource> resources;
+	MeshLoader* mesh_loader;
 
 };
 
