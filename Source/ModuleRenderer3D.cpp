@@ -129,8 +129,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
-	App->GetTermination("JAJAJA.FBX");
-
 	Color c = { 0,0,0,1 };
 	glClearColor(c.r, c.g, c.b, c.a); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
