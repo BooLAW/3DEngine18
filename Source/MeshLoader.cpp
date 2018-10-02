@@ -77,14 +77,46 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 				memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 			}
 		}
-	}
-	glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->indices_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_indices, new_mesh->indices, GL_STATIC_DRAW);
-	//reset buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->indices_id);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_indices, new_mesh->indices, GL_STATIC_DRAW);
+		//reset buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	CONSOLE_LOG("%d indices", new_mesh->indices);
+		CONSOLE_LOG("%d indices", new_mesh->num_indices);
+
+
+	}
+	else
+		CONSOLE_LOG("Mesh has no Faces");
+	
+	//PAU
+	//Tex Coords
+	//if (mesh->HasTextureCoords(0))
+	//{
+	//	new_mesh->num_tex_coords = mesh->mNumVertices;
+	//	new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
+	//	memcpy(&new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
+
+
+	//	glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
+	//	glBindBuffer(GL_ARRAY_BUFFER, new_mesh->tex_coords_id);
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords*3, new_mesh->tex_coords, GL_STATIC_DRAW);
+	//	//reset buffer
+	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//	CONSOLE_LOG("%d tex coords", new_mesh->num_tex_coords);
+
+	//}
+	//else
+	//{
+	//	CONSOLE_LOG("Mesh has no Texture Coords");
+	//}
+
+
+
+
+
+
 
 	App->scene_intro->go_list.push_back(new_mesh);
 

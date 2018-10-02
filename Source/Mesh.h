@@ -36,15 +36,26 @@ public:
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;
 
-	//gl
+	//GL--------------------
+
+	//Vertices
 	float3* vertices;
-	int* indices;
-
 	uint num_vertices;
-	uint num_indices;
-
 	uint vertices_id;
+
+	//Indices
+	int* indices;
+	uint num_indices;
 	uint indices_id;
+
+	//Tex Coords
+	float* tex_coords;
+	uint num_tex_coords;
+	uint tex_coords_id;
+
+
+
+	//
 };
 
 #endif
