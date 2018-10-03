@@ -10,9 +10,9 @@ public:
 	Component(ComponentType t);
 
 	virtual void DrawInfo();
-
-	void Enable();
-	void Disable();
+	virtual bool Update();
+	virtual void Enable();
+	virtual void Disable();
 	void SetOwner(GameObject* new_owner);
 	bool IsActive()const;
 	GameObject* GetOwner()const;

@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "OpenGL.h"
+#include "DebugDraw.h"
 
 
 Mesh::Mesh()
@@ -28,6 +29,9 @@ void Mesh::Draw()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//Disable Client
 	glDisableClientState(GL_VERTEX_ARRAY);
+	
+	if (show_bb)
+		DebugDraw(bounding_box, Red);
 }
 
 void Mesh::DefineCubeVertices(float3 new_position,float size)

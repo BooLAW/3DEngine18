@@ -15,6 +15,11 @@ void Component::DrawInfo()
 {
 }
 
+bool Component::Update()
+{
+	return true;
+}
+
 void Component::Enable()
 {
 	active = true;

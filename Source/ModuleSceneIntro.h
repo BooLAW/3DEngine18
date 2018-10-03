@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Panel.h"
 #include "Mesh.h"
+#include "GameObject.h"
 
 struct PhysBody3D;
 
@@ -25,6 +26,8 @@ public:
 	void Log(const std::string text);
 public:
 	//Scene GameObjects(Now only meshes)
+	//std::vector<GameObject*> go_list;
 	std::vector<Mesh*> go_list;
+
 
 };

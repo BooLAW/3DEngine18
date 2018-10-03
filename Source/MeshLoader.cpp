@@ -113,6 +113,7 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 	//	CONSOLE_LOG("Mesh has no Texture Coords");
 	//}
 
+	//Set the Bounding Box for the DEBUG DRAW
 	AABB bb;
 	bb.SetNegativeInfinity();
 	bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);

@@ -17,6 +17,15 @@ void ComponentMesh::AddMesh(Mesh * new_mesh)
 	mesh = new_mesh;
 }
 
+bool ComponentMesh::Update()
+{
+	return false;
+}
+
+void ComponentMesh::CleanUp()
+{
+}
+
 
 ComponentMesh::~ComponentMesh()
 {
