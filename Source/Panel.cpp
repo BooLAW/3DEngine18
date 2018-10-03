@@ -2,7 +2,7 @@
 
 Panel::Panel(const char * _name)
 {
-	name = _name;
+	panel_name = _name;
 }
 
 Panel::~Panel()
