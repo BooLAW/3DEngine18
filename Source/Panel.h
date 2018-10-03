@@ -21,7 +21,7 @@ public:
 	int ini_width, ini_height, ini_pos_x, ini_pos_y;
 	ImVec2 render_pos;
 	ImVec2 render_size;
-	std::string name;
+	const char* panel_name = nullptr;
 
 
 };

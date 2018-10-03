@@ -34,8 +34,9 @@ bool ModuleSceneGui::Init()
 
 	panels.push_back(console);
 	panels.push_back(configuration);
-	//panels.push_back(components);
-	//panels.push_back(hierarchy);
+
+	panels.push_back(components);
+	panels.push_back(hierarchy);
 	App->profiler.SaveInitData("UI");
 	return ret;
 }
@@ -85,6 +86,8 @@ void ModuleSceneGui::DrawImGui() {
 
 bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 {
+
+
 	Document::AllocatorType& allocator = config_w.GetAllocator();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
@@ -98,7 +101,7 @@ bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 
 
 
-		Value n((*item)->name.c_str(), config_w.GetAllocator());
+		Value n((*item)->panel_name, config_w.GetAllocator());
 		config_w.AddMember(n, test,allocator);
 	}
 
@@ -112,7 +115,7 @@ bool ModuleSceneGui::Load(Document * config_r)
 	ret.IsObject();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
-		Value n((*item)->name.c_str(), ret.GetAllocator());
+		Value n((*item)->panel_name, ret.GetAllocator());
 		(*item)->render_pos.x = ret[n]["posx"].GetFloat();
 		(*item)->render_pos.y = ret[n]["posy"].GetFloat();
 		(*item)->render_size.x = ret[n]["sizex"].GetFloat();
