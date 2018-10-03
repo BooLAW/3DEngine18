@@ -71,7 +71,7 @@ void PanelConfiguration::Application()
 		if (fps_log[IM_ARRAYSIZE(fps_log)] != ImGui::GetIO().Framerate)
 		{
 
-			if (i >= 0)
+			if (i > 0)
 			{
 				fps_log[i - 1] = fps_log[i];
 				i--;
