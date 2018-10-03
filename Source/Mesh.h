@@ -33,8 +33,7 @@ public:
 	MESH_TYPE type;
 	//transform
 	float3 position = float3::zero;
-	Quat rotation = Quat::identity;
-	float3 scale = float3::one;
+
 
 	//GL--------------------
 
@@ -53,9 +52,12 @@ public:
 	uint num_tex_coords;
 	uint tex_coords_id;
 
+	//AABB
+	AABB bounding_box;
+	uint id;
 
+	bool show_bb;
 
-	//
 };
 
 #endif

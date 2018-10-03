@@ -41,11 +41,13 @@ void MeshLoader::Render()
 
 void MeshLoader::CleanUp()
 {
+	aiDetachAllLogStreams();
 }
 
 bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 {
 	Mesh* new_mesh = new Mesh();
+
 	//Vertices----------------------
 	new_mesh->num_vertices = mesh->mNumVertices;
 	new_mesh->vertices = new float3[new_mesh->num_vertices];
@@ -70,7 +72,6 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 			if (mesh->mFaces[i].mNumIndices != 3)
 			{
 				CONSOLE_LOG("WARNING, face indices != 3");
-
 			}
 			else
 			{
@@ -112,11 +113,10 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 	//	CONSOLE_LOG("Mesh has no Texture Coords");
 	//}
 
-
-
-
-
-
+	AABB bb;
+	bb.SetNegativeInfinity();
+	bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+	new_mesh->bounding_box = bb;
 
 	App->scene_intro->go_list.push_back(new_mesh);
 
