@@ -86,6 +86,9 @@ void ModuleSceneGui::DrawImGui() {
 bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 {
 	Document::AllocatorType& allocator = config_w.GetAllocator();
+	//JOSEP: I need to change this.
+	App->imgui->panels[1]->name.empty();
+	App->imgui->panels[1]->name.append("Configuration");
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
 

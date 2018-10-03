@@ -187,7 +187,7 @@ bool Application::Save()
 	Document::AllocatorType& allocator = testconfig_w.GetAllocator();
 
 	Value app(kObjectType);
-
+	App->imgui->panels[1]->name;
 
 	app.AddMember("engine_name", TITLE, allocator);
 	app.AddMember("organization", ORGANIZATION, allocator);
