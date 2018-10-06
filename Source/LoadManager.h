@@ -38,7 +38,7 @@ public:
 public:
 	std::list<Resource> resources;
 	MeshLoader* mesh_loader;
-	//MaterialLoader* material_loader;
+	MaterialLoader* material_loader;
 
 };
 

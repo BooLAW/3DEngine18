@@ -17,8 +17,10 @@ LoadManager::~LoadManager()
 
 void LoadManager::Load(const char * path)
 {
-	if(App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
+	if (App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
 		mesh_loader->LoadMesh(path);
+	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG")
+		material_loader->LoadPNG(path);
 }
 
 bool LoadManager::Start()
@@ -27,11 +29,7 @@ bool LoadManager::Start()
 	App->profiler.SaveInitData("LoadManager");
 	struct aiLogStream stream;
 
-	std::string tex_path;
-	tex_path.append("Assets/Textures/Baker_house.png");
-	//GLuint final_tex = material_loader->LoadPNG(tex_path);
 	
-
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 	return false;

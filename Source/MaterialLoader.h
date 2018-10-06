@@ -7,9 +7,9 @@
 #include "DevIL\include\ilut.h"
 #include "Module.h"
 
-//#pragma comment( lib, "../Source/DevIL/libx86/DevIL.lib")
-//#pragma comment( lib, "../Source/DevIL/libx86/ILU.lib")
-//#pragma comment( lib, "../Source/DevIL/libx86/ILUT.lib")
+#pragma comment( lib, "../Source/DevIL/lib/DevIL.lib")
+#pragma comment( lib, "../Source/DevIL/lib/ILU.lib")
+#pragma comment( lib, "../Source/DevIL/lib/ILUT.lib")
 
 
 class MaterialLoader
@@ -19,7 +19,7 @@ public:
 	MaterialLoader();
 	bool Start();
 	virtual ~MaterialLoader();
-	//GLuint LoadPNG(std::string& file_name);
+	GLuint LoadPNG(const char* file_name);
 	void Render();
 	void CleanUp();
 
