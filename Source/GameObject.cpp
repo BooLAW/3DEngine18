@@ -26,6 +26,18 @@ void GameObject::Draw()
 	}
 }
 
+AABB GameObject::GetBB()
+{
+	ComponentMesh* aux;
+	if (HasMesh())
+	{
+		aux = (ComponentMesh*)GetComponent(MESH);
+		return aux->mesh->bounding_box;
+	}
+	else
+		CONSOLE_LOG("Can't return BB without a mesh");
+}
+
 Component * GameObject::GetComponent(ComponentType type)
 {
 	for (std::vector<Component*>::iterator item = components_list.begin(); item != components_list.end(); item++)
@@ -43,4 +55,15 @@ void GameObject::PushComponent(Component * new_component)
 void GameObject::RemoveComponent(ComponentType type)
 {
 
+}
+
+bool GameObject::HasMesh() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::MESH)
+			ret = true;
+	}
+	return ret;
 }

@@ -58,6 +58,9 @@
     <Filter Include="Sources\Modules\GameObjects\GO">
       <UniqueIdentifier>{b35fe972-bcaa-489f-ba3e-a931794bafed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Loaders\Material">
+      <UniqueIdentifier>{b30ca22c-1e37-470c-b576-7a84cdcaee63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -351,7 +354,6 @@
     <ClInclude Include="Primitive.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="glmath.h" />
     <ClInclude Include="Assimp.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
@@ -377,6 +379,9 @@
       <Filter>Sources\Modules\GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="DebugDraw.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
   </ItemGroup>
@@ -573,7 +578,6 @@
     <ClCompile Include="Primitive.cpp">
       <Filter>Sources\Containers</Filter>
     </ClCompile>
-    <ClCompile Include="glmath.cpp" />
     <ClCompile Include="LoadManager.cpp">
       <Filter>Sources\Modules\Loaders\Manager</Filter>
     </ClCompile>
@@ -596,6 +600,9 @@
       <Filter>Sources\Modules\Loaders\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="DebugDraw.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
   </ItemGroup>

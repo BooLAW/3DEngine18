@@ -15,13 +15,16 @@ public:
 	//AABB
 	AABB GetBB();
 	void ResizeBB(GameObject* bb_owner);
+
 	//COMPONENTS
 	Component* GetComponent(ComponentType type);
 	void PushComponent(Component* new_component);
 	void RemoveComponent(ComponentType type);
+	bool HasMesh()const;
 public:
 	GameObject* parent;
 	std::string name = "GO_NAME";
+	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
 	//flags
 	bool active = true;

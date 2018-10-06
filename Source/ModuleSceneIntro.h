@@ -24,10 +24,11 @@ public:
 	float RandFloat(float min, float max);
 	//void DisplayRandNumber(bool isActive);
 	void Log(const std::string text);
+	GameObject* CreateNewGameObject();
 public:
 	//Scene GameObjects(Now only meshes)
 	//std::vector<GameObject*> go_list;
 	std::vector<Mesh*> go_list;
-
+	GameObject* scene_root;
 
 };

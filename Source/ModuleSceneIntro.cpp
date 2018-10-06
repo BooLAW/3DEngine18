@@ -154,5 +154,10 @@ float ModuleSceneIntro::RandFloat(float min, float max)
 	return ret;
 }
 
+GameObject * ModuleSceneIntro::CreateNewGameObject()
+{
+	return nullptr;
+}
+
 
 
