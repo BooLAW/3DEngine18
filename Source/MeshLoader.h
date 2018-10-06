@@ -18,7 +18,7 @@ public:
 	MeshLoader();
 	virtual ~MeshLoader();
 	bool LoadMesh(const std::string& file_name);
-	vec3 CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
+	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
 	void Render();
 	void CleanUp();
 private:

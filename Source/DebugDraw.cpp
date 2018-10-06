@@ -24,6 +24,7 @@ void CleanUp()
 
 void DebugDraw(const AABB & bb, Color color, const float4x4 & transform)
 {
+	//TODO with lines
 	static float3 points[8];//is a box
 	bb.GetCornerPoints(points);
 
