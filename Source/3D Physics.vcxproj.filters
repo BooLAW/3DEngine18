@@ -61,6 +61,9 @@
     <Filter Include="Sources\Modules\Loaders\Material">
       <UniqueIdentifier>{b30ca22c-1e37-470c-b576-7a84cdcaee63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\External Tools\DevIL">
+      <UniqueIdentifier>{4028e36b-fda7-49bf-9dc1-198526d7c4c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -384,7 +387,9 @@
     <ClInclude Include="glmath.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialLoader.h" />
+    <ClInclude Include="MaterialLoader.h">
+      <Filter>Sources\Modules\Loaders\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -606,7 +611,9 @@
     <ClCompile Include="glmath.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialLoader.cpp" />
+    <ClCompile Include="MaterialLoader.cpp">
+      <Filter>Sources\Modules\Loaders\Material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

@@ -1,5 +1,5 @@
-#ifndef __MESH__LOADER_H__
-#define __MESH__LOADER_H__
+#ifndef __MESH_LOADER_H__
+#define __MESH_LOADER_H__
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
