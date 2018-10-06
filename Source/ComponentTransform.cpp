@@ -1,10 +1,6 @@
 #include "ComponentTransform.h"
 
 
-
-
-
-
 ComponentTransform::ComponentTransform(GameObject * owner)
 {
 	this->SetOwner(owner);

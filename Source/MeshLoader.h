@@ -1,5 +1,5 @@
-#ifndef __MESH__LOADER_H__
-#define __MESH__LOADER_H__
+#ifndef __MESH_LOADER_H__
+#define __MESH_LOADER_H__
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -18,7 +18,7 @@ public:
 	MeshLoader();
 	virtual ~MeshLoader();
 	bool LoadMesh(const std::string& file_name);
-	vec3 CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
+	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
 	void Render();
 	void CleanUp();
 private:

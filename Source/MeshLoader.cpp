@@ -35,9 +35,11 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 	return ret;
 }
 
-vec3 MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
+LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
-	vec3 ret;
+	LineSegment ret;
+	ret.a = p1;
+	ret.b = p2;
 
 	return ret;
 }
@@ -86,7 +88,7 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 			else
 			{
 				memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
-				vec3 normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[i+1], new_mesh->vertices[i+2]);
+				LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[i+1], new_mesh->vertices[i+2]);
 				
 			}
 		}
@@ -101,37 +103,28 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 	else
 		CONSOLE_LOG("Mesh has no Faces");
 
-	//for (int i = 0; i < mesh->mNumFaces; i++)
-	//{
-	//	memcpy(&new_mesh->tangents[i*2], mesh->mFaces[i].mIndices, sizeof(int) * 2);
-	//}
-	//glGenBuffers(1, (GLuint*)&new_mesh->tangents);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (GLuint)new_mesh->tangents);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_indices, new_mesh->indices, GL_STATIC_DRAW);
-	////reset buffer
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 	//PAU
 	//Tex Coords
-	//if (mesh->HasTextureCoords(0))
-	//{
-	//	new_mesh->num_tex_coords = mesh->mNumVertices;
-	//	new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
-	//	memcpy(&new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
+	/*if (mesh->HasTextureCoords(0))
+	{
+		new_mesh->num_tex_coords = mesh->mNumVertices;
+		new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
+		memcpy(&new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
 
 
-	//	glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
-	//	glBindBuffer(GL_ARRAY_BUFFER, new_mesh->tex_coords_id);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords*3, new_mesh->tex_coords, GL_STATIC_DRAW);
-	//	//reset buffer
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//	CONSOLE_LOG("%d tex coords", new_mesh->num_tex_coords);
+		glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
+		glBindBuffer(GL_ARRAY_BUFFER, new_mesh->tex_coords_id);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords*3, new_mesh->tex_coords, GL_STATIC_DRAW);
 
-	//}
-	//else
-	//{
-	//	CONSOLE_LOG("Mesh has no Texture Coords");
-	//}
+		//reset buffer
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		CONSOLE_LOG("%d tex coords", new_mesh->num_tex_coords);
+
+	}
+	else
+	{
+		CONSOLE_LOG("Mesh has no Texture Coords");
+	}*/
 
 	//Set the Bounding Box for the DEBUG DRAW
 	AABB bb;

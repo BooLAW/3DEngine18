@@ -4,6 +4,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Profiler.h"
+
+
 LoadManager::LoadManager()
 {
 }
@@ -24,6 +26,11 @@ bool LoadManager::Start()
 	CONSOLE_LOG("---LOAD MANAGER START ---");
 	App->profiler.SaveInitData("LoadManager");
 	struct aiLogStream stream;
+
+	std::string tex_path;
+	tex_path.append("Assets/Textures/Baker_house.png");
+	//GLuint final_tex = material_loader->LoadPNG(tex_path);
+	
 
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);

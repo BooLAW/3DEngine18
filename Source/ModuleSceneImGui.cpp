@@ -343,7 +343,7 @@ void ModuleSceneGui::showCubeCreator()
 
 		if (ImGui::SmallButton("Create"))
 		{
-			Mesh* new_mesh;
+			Mesh* new_mesh = new Mesh();
 			new_mesh->DefineCubeVertices(float3(x_aux,y_aux,z_aux), x_aux2);
 			App->scene_intro->go_list.push_back(new_mesh);
 		}

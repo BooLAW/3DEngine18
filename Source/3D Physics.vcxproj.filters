@@ -61,6 +61,7 @@
     <Filter Include="Sources\Modules\Loaders\Material">
       <UniqueIdentifier>{b30ca22c-1e37-470c-b576-7a84cdcaee63}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="Sources\Modules\GameObjects\Components\Mesh">
       <UniqueIdentifier>{ca722d3c-25c4-491b-89cd-615d70b00bd9}</UniqueIdentifier>
     </Filter>
@@ -72,6 +73,10 @@
     </Filter>
     <Filter Include="Sources\json">
       <UniqueIdentifier>{0172f92d-e1c4-42fd-9b09-8fd2c97ddb56}</UniqueIdentifier>
+=======
+    <Filter Include="Sources\External Tools\DevIL">
+      <UniqueIdentifier>{4028e36b-fda7-49bf-9dc1-198526d7c4c9}</UniqueIdentifier>
+>>>>>>> f7dffbb140296f93ad06222f972bc716889a04b3
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +392,7 @@
     <ClInclude Include="MaterialLoader.h">
       <Filter>Sources\Modules\Loaders\Material</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ComponentMesh.h">
       <Filter>Sources\Modules\GameObjects\Components\Mesh</Filter>
     </ClInclude>
@@ -401,6 +407,8 @@
     </ClInclude>
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="Transform.h" />
+=======
+>>>>>>> f7dffbb140296f93ad06222f972bc716889a04b3
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -613,6 +621,7 @@
     <ClCompile Include="MaterialLoader.cpp">
       <Filter>Sources\Modules\Loaders\Material</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ComponentMesh.cpp">
       <Filter>Sources\Modules\GameObjects\Components\Mesh</Filter>
     </ClCompile>
@@ -627,6 +636,8 @@
     </ClCompile>
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="Transform.cpp" />
+=======
+>>>>>>> f7dffbb140296f93ad06222f972bc716889a04b3
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

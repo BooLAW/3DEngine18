@@ -2,6 +2,9 @@
 #define __LOAD_MANAGER_H__
 #include "Module.h"
 #include "MeshLoader.h"
+#include "MaterialLoader.h"
+
+
 
 enum resourceType
 {
@@ -35,6 +38,7 @@ public:
 public:
 	std::list<Resource> resources;
 	MeshLoader* mesh_loader;
+	//MaterialLoader* material_loader;
 
 };
 
