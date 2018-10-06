@@ -173,6 +173,10 @@ Module * Application::GetModule(int index)
 	return nullptr;
 }
 
+void Application::DebugDraw()
+{
+}
+
 bool Application::Save()
 {
 	bool ret = true;

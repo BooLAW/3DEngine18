@@ -37,8 +37,8 @@ update_status LoadManager::Update(float dt)
 
 bool LoadManager::CleanUp()
 {
-	CONSOLE_LOG("---LOAD MANAGER CLEANUP ---")
-
+	CONSOLE_LOG("---LOAD MANAGER CLEANUP ---");
+	aiDetachAllLogStreams();
 	return false;
 }
 

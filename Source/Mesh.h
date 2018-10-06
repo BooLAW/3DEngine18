@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Module.h"
 #include "Assimp.h"
+#include "MathGeoLib/Geometry/Line.h"
 
 enum MESH_TYPE {
 	CUBE_M = 0,
@@ -42,6 +43,9 @@ public:
 	uint num_vertices;
 	uint vertices_id;
 
+	//Normal
+
+		
 	//Indices
 	int* indices;
 	uint num_indices;

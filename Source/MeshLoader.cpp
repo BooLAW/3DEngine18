@@ -35,6 +35,16 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 	return ret;
 }
 
+vec3 MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
+{
+	vec3 ret;
+
+	return ret;
+}
+
+
+
+
 void MeshLoader::Render()
 {
 }
@@ -58,7 +68,7 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 	glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * new_mesh->num_vertices, new_mesh->vertices, GL_STATIC_DRAW);
 
-	CONSOLE_LOG("%d vertices", new_mesh->num_vertices);
+	CONSOLE_LOG("New mesh with %d vertices", new_mesh->num_vertices);
 	//reset buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -69,13 +79,15 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 		new_mesh->indices = new int[new_mesh->num_indices];
 		for (int i = 0; i < mesh->mNumFaces; ++i)
 		{
-			if (mesh->mFaces[i].mNumIndices != 3)
+			if (mesh->mFaces[i].mNumIndices != 3) //Detects if there is something that is not a triangle
 			{
 				CONSOLE_LOG("WARNING, face indices != 3");
 			}
 			else
 			{
 				memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
+				vec3 normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[i+1], new_mesh->vertices[i+2]);
+				
 			}
 		}
 		glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
@@ -85,12 +97,20 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		CONSOLE_LOG("%d indices", new_mesh->num_indices);
-
-
 	}
 	else
 		CONSOLE_LOG("Mesh has no Faces");
-	
+
+	//for (int i = 0; i < mesh->mNumFaces; i++)
+	//{
+	//	memcpy(&new_mesh->tangents[i*2], mesh->mFaces[i].mIndices, sizeof(int) * 2);
+	//}
+	//glGenBuffers(1, (GLuint*)&new_mesh->tangents);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (GLuint)new_mesh->tangents);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_indices, new_mesh->indices, GL_STATIC_DRAW);
+	////reset buffer
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	//PAU
 	//Tex Coords
 	//if (mesh->HasTextureCoords(0))
