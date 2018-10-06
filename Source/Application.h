@@ -50,11 +50,6 @@ private:
 	float	sleeping_time = 0;
 	bool	isSaving = false;
 
-
-
-
-
-	
 	std::list<Module*> list_modules;
 public:
 

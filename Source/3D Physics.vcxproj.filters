@@ -61,6 +61,18 @@
     <Filter Include="Sources\Modules\Loaders\Material">
       <UniqueIdentifier>{b30ca22c-1e37-470c-b576-7a84cdcaee63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Mesh">
+      <UniqueIdentifier>{ca722d3c-25c4-491b-89cd-615d70b00bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Transform">
+      <UniqueIdentifier>{ccf335c9-ed1f-4bc3-a756-d94672e2a6dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Core">
+      <UniqueIdentifier>{22ba7708-d69c-4c27-8a51-d19a29102a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\json">
+      <UniqueIdentifier>{0172f92d-e1c4-42fd-9b09-8fd2c97ddb56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -80,12 +92,6 @@
     </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Sources\Containers</Filter>
@@ -372,19 +378,29 @@
     <ClInclude Include="PanelInspector.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Sources\Modules\GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentMesh.h">
-      <Filter>Sources\Modules\GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="DebugDraw.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
     <ClInclude Include="glmath.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialLoader.h" />
+    <ClInclude Include="MaterialLoader.h">
+      <Filter>Sources\Modules\Loaders\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Sources\Modules\GameObjects\Components\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Sources\Modules\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -407,12 +423,6 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Sources\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Sources\Containers</Filter>
@@ -591,12 +601,6 @@
     <ClCompile Include="PanelInspector.cpp">
       <Filter>Sources\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Sources\Modules\GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentMesh.cpp">
-      <Filter>Sources\Modules\GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
       <Filter>Sources\Modules\Loaders\Mesh</Filter>
     </ClCompile>
@@ -606,7 +610,23 @@
     <ClCompile Include="glmath.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialLoader.cpp" />
+    <ClCompile Include="MaterialLoader.cpp">
+      <Filter>Sources\Modules\Loaders\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Sources\Modules\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">
@@ -634,16 +654,16 @@
       <Filter>Sources\External Tools\Parson</Filter>
     </None>
     <None Include="..\Game\big.json">
-      <Filter>Sources</Filter>
-    </None>
-    <None Include="..\Game\output.json">
-      <Filter>Sources</Filter>
+      <Filter>Sources\json</Filter>
     </None>
     <None Include="..\Game\config.json">
-      <Filter>Sources</Filter>
+      <Filter>Sources\json</Filter>
+    </None>
+    <None Include="..\Game\output.json">
+      <Filter>Sources\json</Filter>
     </None>
     <None Include="..\Game\testconfig.json">
-      <Filter>Sources</Filter>
+      <Filter>Sources\json</Filter>
     </None>
   </ItemGroup>
 </Project>

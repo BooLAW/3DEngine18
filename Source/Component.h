@@ -15,6 +15,7 @@ public:
 	virtual void Disable();
 	void SetOwner(GameObject* new_owner);
 	bool IsActive()const;
+	void SetActive(bool active);
 	GameObject* GetOwner()const;
 	ComponentType GetType()const;
 

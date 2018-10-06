@@ -115,6 +115,8 @@ void ModuleRenderer3D::DrawModuleConfig()
 		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
 		if(ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
 
+		if (ImGui::Checkbox("Debug Draw", &debug_draw)) debug_draw = true;
+
 		if (attribute_modified)
 			UpdateAttributes();
 		CPUCapabilities();
@@ -171,7 +173,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	{
 		SetDebugAttributes();
 		//DRAW FUTURE SCENE GAMEOBJECTS
-		//App->DebugDraw();
+		App->DebugDraw();
+		debug_draw = false;
 		SetNormalAttributes();
 	}
 

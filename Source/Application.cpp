@@ -175,6 +175,9 @@ Module * Application::GetModule(int index)
 
 void Application::DebugDraw()
 {
+	//change to active GO
+	for (int i = 0; i < scene_intro->go_list.size(); i++)
+		scene_intro->go_list[i]->show_bb = !scene_intro->go_list[i]->show_bb;
 }
 
 bool Application::Save()
@@ -253,7 +256,6 @@ std::string Application::GetTermination(const char * path)
 
 	std::string fn = path;
 	ret = fn.substr(fn.find_last_of(".") + 1);
-	CONSOLE_LOG("%s",ret.c_str());
 
 	return ret;
 }

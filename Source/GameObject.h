@@ -5,6 +5,7 @@
 
 class Component;
 enum ComponentType;
+class ComponentTransform;
 class GameObject
 {
 public:
@@ -21,11 +22,28 @@ public:
 	void PushComponent(Component* new_component);
 	void RemoveComponent(ComponentType type);
 	bool HasMesh()const;
+	//flags interaction
+	void SetActive(bool active);
+	bool IsActive()const;
+	void SetStatic(bool is_static);
+	bool IsStatic()const;
+	bool IsRoot()const;
+	//Parent
+	GameObject* GetParent()const;
+	void SetParent(GameObject* new_parent);
+	void AddChild(GameObject* new_child);
+	GameObject* GetChild(int id);
+
+	//Info
+	const char* GetName()const;
+	void SetName(const char* name);
+
 public:
 	GameObject* parent;
 	std::string name = "GO_NAME";
 	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
+	ComponentTransform* transform;
 	//flags
 	bool active = true;
 	bool static_go = false;

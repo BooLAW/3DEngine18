@@ -40,6 +40,11 @@ bool Component::IsActive() const
 	return active;
 }
 
+void Component::SetActive(bool active)
+{
+	this->active = active;
+}
+
 GameObject * Component::GetOwner() const
 {
 	return owner;
