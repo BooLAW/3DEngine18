@@ -67,6 +67,7 @@ public:
 	void OpenWebPage(const char* url );
 	void BroadcastEvent(SDL_Event & event);
 	Module* GetModule(int index);
+	void DebugDraw();
 
 	bool Save();
 	bool Load();
