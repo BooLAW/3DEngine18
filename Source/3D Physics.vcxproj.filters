@@ -384,6 +384,7 @@
     <ClInclude Include="glmath.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -605,6 +606,7 @@
     <ClCompile Include="glmath.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">
