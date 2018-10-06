@@ -8,10 +8,13 @@ MaterialLoader::MaterialLoader()
 
 bool MaterialLoader::Start()
 {
-	//iluInit();
-	//ilInit();
-	//ilutInit();
-	//ilutRenderer(ILUT_OPENGL);
+	iluInit();
+	ilInit();
+	ilutInit();
+	ilutRenderer(ILUT_OPENGL);
+
+	ilEnable(IL_CONV_PAL);
+	ilutEnable(ILUT_OPENGL_CONV);
 	return true;
 }
 
@@ -21,8 +24,8 @@ MaterialLoader::~MaterialLoader()
 }
 
 
-	/*
-	GLuint MaterialLoader::LoadPNG(std::string & file_name)
+	
+	GLuint MaterialLoader::LoadPNG(const char* file_name)
 	{
 	GLuint textureID;
 		ILuint imageID;
@@ -31,7 +34,7 @@ MaterialLoader::~MaterialLoader()
 	ILenum error;
 	ilGenImages(1, &imageID);
 	//iLBindImage(imageID);
-	success = ilLoadImage(file_name.c_str());
+	success = ilLoadImage(file_name);
 
 
 	if (success)
@@ -91,7 +94,7 @@ MaterialLoader::~MaterialLoader()
 
 	return textureID;
 	}
-	*/
+	
 
 
 
