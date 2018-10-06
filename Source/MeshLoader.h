@@ -23,6 +23,7 @@ public:
 	void CleanUp();
 private:
 	bool InitMesh(uint i, const aiMesh* mesh);
+	void Absolute(LineSegment& line);
 public:
 	//change to list when we have to load more than one mesh
 	std::vector<Mesh*> scene_meshes;

@@ -37,9 +37,16 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 
 LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
-	LineSegment ret;
-	ret.a = p1;
-	ret.b = p2;
+	LineSegment ret; //a = N, b = A
+	float3 v = p2 - p1;
+	float3 w = p3 - p1;
+	ret.a.x = (v.y * w.z) - (v.z * w.y);
+	ret.a.y = (v.z * w.x) - (v.x * w.z);
+	ret.a.z = (v.x * w.y) - (v.y * w.x);
+
+	ret.b.x = ret.a.x / (ret.a.x + ret.a.y + ret.a.z);
+	ret.b.y = ret.a.y / (ret.a.x + ret.a.y + ret.a.z);
+	ret.b.z = ret.a.z / (ret.a.x + ret.a.y + ret.a.z);
 
 	return ret;
 }
@@ -88,8 +95,13 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 			else
 			{
 				memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
-				LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[i+1], new_mesh->vertices[i+2]);
 				
+				if (i % 3 == 0)
+				{
+					LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i].Abs(), new_mesh->vertices[i + 1].Abs(), new_mesh->vertices[i + 2].Abs());
+					Absolute(normal);			
+					new_mesh->normal.push_back(normal);
+				}
 			}
 		}
 		glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
@@ -135,4 +147,33 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 	App->scene_intro->go_list.push_back(new_mesh);
 
 	return true;
+}
+
+void MeshLoader::Absolute(LineSegment& line)
+{
+	if (line.a.x < 0)
+	{
+		line.a.x = line.a.x * -1;
+	}
+	if (line.a.y < 0)
+	{
+		line.a.y = line.a.y * -1;
+	}
+	if (line.a.z < 0)
+	{
+		line.a.z = line.a.z * -1;
+	}
+
+	if (line.b.x < 0)
+	{
+		line.b.x = line.b.x * -1;
+	}
+	if (line.b.y < 0)
+	{
+		line.b.y = line.b.y * -1;
+	}
+	if (line.b.z < 0)
+	{
+		line.b.z = line.b.z * -1;
+	}
 }

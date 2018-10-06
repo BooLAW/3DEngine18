@@ -31,7 +31,11 @@ void Mesh::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	if (show_bb)
-		DebugDraw(bounding_box, Red);
+	{
+		DebugDraw(this, Red);
+	}
+		
+
 }
 
 void Mesh::DefineCubeVertices(float3 new_position,float size)

@@ -178,6 +178,7 @@ void Application::DebugDraw()
 	//change to active GO
 	for (int i = 0; i < scene_intro->go_list.size(); i++)
 		scene_intro->go_list[i]->show_bb = !scene_intro->go_list[i]->show_bb;
+
 }
 
 bool Application::Save()

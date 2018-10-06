@@ -44,6 +44,7 @@ public:
 	uint vertices_id;
 
 	//Normal
+	std::vector<LineSegment> normal;
 
 		
 	//Indices
@@ -61,6 +62,7 @@ public:
 	uint id;
 
 	bool show_bb;
+	bool show_normal;
 
 };
 
