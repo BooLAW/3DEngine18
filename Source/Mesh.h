@@ -45,6 +45,8 @@ public:
 
 	//Normal
 	std::vector<LineSegment> normal;
+	uint num_normals;
+	uint normalsorg;
 
 		
 	//Indices
