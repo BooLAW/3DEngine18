@@ -18,9 +18,17 @@ LoadManager::~LoadManager()
 void LoadManager::Load(const char * path)
 {
 	if (App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
+	{
+		CONSOLE_LOG("FBX dropped");
 		mesh_loader->LoadMesh(path);
+
+	}
 	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG")
+	{
+		CONSOLE_LOG("Texture Dropped");
 		material_loader->LoadPNG(path);
+
+	}
 }
 
 bool LoadManager::Start()
@@ -31,6 +39,7 @@ bool LoadManager::Start()
 
 	
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	material_loader->Start();
 	aiAttachLogStream(&stream);
 	return false;
 }

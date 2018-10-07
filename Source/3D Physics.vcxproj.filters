@@ -52,20 +52,11 @@
     <Filter Include="Sources\Modules\GameObjects\BaseClasses">
       <UniqueIdentifier>{32560a14-99df-4764-a403-8056866439f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\GameObjects\Components">
-      <UniqueIdentifier>{a2c6d5fd-82c7-4c06-89db-6860b8021dad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Modules\GameObjects\GO">
       <UniqueIdentifier>{b35fe972-bcaa-489f-ba3e-a931794bafed}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\Modules\Loaders\Material">
       <UniqueIdentifier>{b30ca22c-1e37-470c-b576-7a84cdcaee63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\Modules\GameObjects\Components\Mesh">
-      <UniqueIdentifier>{ca722d3c-25c4-491b-89cd-615d70b00bd9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\Modules\GameObjects\Components\Transform">
-      <UniqueIdentifier>{ccf335c9-ed1f-4bc3-a756-d94672e2a6dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\Core">
       <UniqueIdentifier>{22ba7708-d69c-4c27-8a51-d19a29102a84}</UniqueIdentifier>
@@ -75,6 +66,27 @@
     </Filter>
     <Filter Include="Sources\External Tools\DevIL">
       <UniqueIdentifier>{4028e36b-fda7-49bf-9dc1-198526d7c4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components">
+      <UniqueIdentifier>{a2c6d5fd-82c7-4c06-89db-6860b8021dad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Mesh">
+      <UniqueIdentifier>{ca722d3c-25c4-491b-89cd-615d70b00bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Transform">
+      <UniqueIdentifier>{ccf335c9-ed1f-4bc3-a756-d94672e2a6dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\BaseClasses\Mesh">
+      <UniqueIdentifier>{6be17ca9-7cb4-42cf-8ed1-558bc5b922a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\BaseClasses\Transform">
+      <UniqueIdentifier>{4286befa-d28e-4033-a5d7-3044b55e39c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\BaseClasses\Material">
+      <UniqueIdentifier>{9779af00-29e4-4e36-9beb-6317770a2e57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Material">
+      <UniqueIdentifier>{bef7a542-607b-4903-a2d1-0c139718d74c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -372,9 +384,6 @@
     <ClInclude Include="MeshLoader.h">
       <Filter>Sources\Modules\Loaders\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Sources\Modules\GameObjects\BaseClasses</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Sources\Modules\GameObjects\GO</Filter>
     </ClInclude>
@@ -402,8 +411,21 @@
     <ClInclude Include="Application.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentTransform.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>Sources\Modules\GameObjects\Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Sources\Modules\GameObjects\Components\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -595,9 +617,6 @@
     <ClCompile Include="LoadManager.cpp">
       <Filter>Sources\Modules\Loaders\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Sources\Modules\GameObjects\BaseClasses</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Sources\Modules\GameObjects\GO</Filter>
     </ClCompile>
@@ -628,8 +647,21 @@
     <ClCompile Include="Application.cpp">
       <Filter>Sources\Core</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentTransform.cpp" />
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">
