@@ -6,6 +6,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include <stdio.h>
+#include "glmath.h"
 
 MeshLoader::MeshLoader()
 {
@@ -38,15 +39,32 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
 	LineSegment ret; //a = N, b = A
-	float3 v = p2 - p1;
-	float3 w = p3 - p1;
-	ret.a.x = (v.y * w.z) - (v.z * w.y);
-	ret.a.y = (v.z * w.x) - (v.x * w.z);
-	ret.a.z = (v.x * w.y) - (v.y * w.x);
 
-	ret.b.x = ret.a.x / (ret.a.x + ret.a.y + ret.a.z);
-	ret.b.y = ret.a.y / (ret.a.x + ret.a.y + ret.a.z);
-	ret.b.z = ret.a.z / (ret.a.x + ret.a.y + ret.a.z);
+	vec3 pv1;
+	pv1.x = p1.x;
+	pv1.y = p1.y;
+	pv1.z = p1.z;
+
+	vec3 pv2;
+	pv2.x = p2.x;
+	pv2.y = p2.y;
+	pv2.z = p2.z;
+
+	vec3 pv3;
+	pv3.x = p3.x;
+	pv3.y = p3.y;
+	pv3.z = p3.z;
+
+	float3 u = p2 - p1;
+	float3 v = p3 - p1;
+
+	vec3 retcros = cross(pv2 - pv1, pv3 - pv1);
+	retcros = normalize(retcros);
+	ret.b = (vec)&retcros;
+
+	ret.a.x = (p1.x + p2.x + p3.x) / 3;
+	ret.a.y = (p1.y + p2.y + p3.y) / 3;
+	ret.a.z = (p1.z + p2.z + p3.z) / 3;
 
 	return ret;
 }
@@ -133,12 +151,12 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						{
 							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 
-							////if (i % 3 == 0)
-							//{
-							//	LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[i + 1], new_mesh->vertices[i + 2]);
-							//	Absolute(normal);
-							//	new_mesh->normal.push_back(normal);
-							//}
+							int u = i + 1;
+							int w = i + 2;
+							LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
+							Absolute(normal);
+
+							new_mesh->normal.push_back(normal);
 						}
 					}
 					glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
@@ -148,6 +166,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 					CONSOLE_LOG("%d indices", new_mesh->num_indices);
+
 				}
 				else
 					CONSOLE_LOG("Mesh has no Faces");
@@ -239,7 +258,7 @@ void MeshLoader::Absolute(LineSegment& line)
 {
 	if (line.a.x < 0)
 	{
-		line.a.x = line.a.x * -1;
+		//line.a.x = line.a.x * -1;
 	}
 	if (line.a.y < 0)
 	{
@@ -247,10 +266,10 @@ void MeshLoader::Absolute(LineSegment& line)
 	}
 	if (line.a.z < 0)
 	{
-		line.a.z = line.a.z * -1;
+		//line.a.z = line.a.z * -1;
 	}
-
-	if (line.b.x < 0)
+	/*
+		if (line.b.x < 0)
 	{
 		line.b.x = line.b.x * -1;
 	}
@@ -262,4 +281,6 @@ void MeshLoader::Absolute(LineSegment& line)
 	{
 		line.b.z = line.b.z * -1;
 	}
+	*/
+
 }

@@ -34,20 +34,23 @@ void DebugDraw(const Mesh* mesh, Color color, const float4x4 & transform)
 	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 	BoxDD(points, color);
 	//Normals
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glLineWidth(6.0f);
-	//glDisable(GL_CULL_FACE);
 
-	//glColor3f(color.r, color.g, color.b);
-	///*
-	//for (uint i = 0; i < mesh->normal.size()-1; i++)
-	//{
-	//	LineSegmentDraw(&mesh->normal[i].a, &mesh->normal[i].b,Red);
-	//}*/
-	//glLineWidth(1.0f);
-	//glColor3f(255, 255, 255);
-	////glEnable(GL_CULL_FACE);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(1.0f);
+	glDisable(GL_CULL_FACE);
+
+	glColor3f(color.r, color.g, color.b);
+
+	for (uint i = 0; i < mesh->normal.size()-1; i++)
+	{
+		LineSegmentDraw(&mesh->normal[i].a, &mesh->normal[i].b,Red);
+	}
+	glLineWidth(1.0f);
+	glColor3f(255, 255, 255);
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
 	glPopMatrix();
 }
@@ -55,7 +58,7 @@ void DebugDraw(const Mesh* mesh, Color color, const float4x4 & transform)
 void BoxDD(const float3 * points, Color color, bool debug)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(4.0f);
+	glLineWidth(1.0f);
 	glDisable(GL_CULL_FACE);
 
 	glColor3f(color.r, color.g, color.b);
