@@ -179,6 +179,9 @@ void Application::DebugDraw()
 	for (int i = 0; i < scene_intro->go_list.size(); i++)
 		scene_intro->go_list[i]->show_bb = !scene_intro->go_list[i]->show_bb;
 
+	for (int i = 0; i < scene_intro->go_list.size(); i++)
+		scene_intro->go_list[i]->show_normal = !scene_intro->go_list[i]->show_normal;
+
 }
 
 bool Application::Save()

@@ -33,25 +33,29 @@ void DebugDraw(const Mesh* mesh, Color color, const float4x4 & transform)
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 	BoxDD(points, color);
-	glPopMatrix();
-
 	//Normals
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(6.0f);
+	glDisable(GL_CULL_FACE);
 
+	glColor3f(color.r, color.g, color.b);
 
 	for (uint i = 0; i < mesh->normal.size()-1; i++)
 	{
-
-		LineSegmentDraw(mesh->normal[i].a, mesh->normal[i].b*5, Red);
-		
-
+		LineSegmentDraw(&mesh->normal[i].a, &mesh->normal[i].b,Red);
 	}
-	
+	glLineWidth(1.0f);
+	glColor3f(255, 255, 255);
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glPopMatrix();
 }
 
 void BoxDD(const float3 * points, Color color, bool debug)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(2.0f);
+	glLineWidth(4.0f);
 	glDisable(GL_CULL_FACE);
 
 	glColor3f(color.r, color.g, color.b);
@@ -88,29 +92,21 @@ void BoxDD(const float3 * points, Color color, bool debug)
 	glVertex3fv((GLfloat*)&points[5]); //glVertex3f( sx, -sy,  sz);
 	glVertex3fv((GLfloat*)&points[1]); //glVertex3f(-sx, -sy,  sz);
 
-	glEnd();
+
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void LineSegmentDraw(const vec origin,const vec direction, Color color, bool debug)
+
+void LineSegmentDraw(const float3* origin,const float3* direction, Color color, bool debug)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(6.0f);
-	glDisable(GL_CULL_FACE);
 
-	glColor3f(color.r, color.g, color.b);
-
-	glBegin(GL_LINEAR);
-
-	glVertex3fv((GLfloat*)&origin);
-	glVertex3fv((GLfloat*)&direction);
-
+	glBegin(GL_LINES);
+	glVertex3fv((GLfloat*)&float3(origin->x, origin->y, origin->z));
+	glVertex3fv((GLfloat*)&float3(direction->x, direction->y, direction->z));
 	glEnd();
-	glLineWidth(1.0f);
-	glColor3f(255, 255, 255);
-	glEnable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
+
 }

@@ -96,9 +96,9 @@ bool MeshLoader::InitMesh(uint i, const aiMesh * mesh)
 			{
 				memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 				
-				if (i % 3 == 0)
+				//if (i % 3 == 0)
 				{
-					LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i].Abs(), new_mesh->vertices[i + 1].Abs(), new_mesh->vertices[i + 2].Abs());
+					LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[i + 1], new_mesh->vertices[i + 2]);
 					Absolute(normal);			
 					new_mesh->normal.push_back(normal);
 				}
