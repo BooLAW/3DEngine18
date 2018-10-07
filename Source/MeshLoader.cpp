@@ -182,7 +182,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 
 				//	glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
-				//	glBindBuffer(GL_ARRAY_BUFFER, new_mesh->tex_coords_id);
+				//	glBindBuffer(GL_ARRAY_BUFFER, (GLuint)new_mesh->tex_coords_id);
 				//	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords * 3, new_mesh->tex_coords, GL_STATIC_DRAW);
 
 				//	//reset buffer

@@ -87,7 +87,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 		// Specify the texture specification
 		glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
 			0,				// Pyramid level (for mip-mapping) - 0 is the top level
-			ilGetInteger(IL_IMAGE_FORMAT),	// Internal pixel format to use. Can be a generic type like GL_RGB or GL_RGBA, or a sized type
+			GL_RGB,	// Internal pixel format to use. Can be a generic type like GL_RGB or GL_RGBA, or a sized type
 			ilGetInteger(IL_IMAGE_WIDTH),	// Image width
 			ilGetInteger(IL_IMAGE_HEIGHT),	// Image height
 			0,				// Border width in pixels (can either be 1 or 0)
@@ -97,11 +97,12 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 	}
 	else // If we failed to open the image file in the first place...
 	{
-		error = ilGetError();
+		textureID = 0;
+		//error = ilGetError();
 		CONSOLE_LOG("%s not found", App->GetFileName(file_name));
-		exit(-1);
+		//exit(-1);
 	}
-	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we
+	//ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we
 
 	return comp;
 	}

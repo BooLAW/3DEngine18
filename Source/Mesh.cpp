@@ -15,25 +15,7 @@ Mesh::~Mesh()
 
 void Mesh::Draw()
 {
-	//Enable Client
-	glEnableClientState(GL_VERTEX_ARRAY);
-	//Bind Vertices
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	//Bind Indices
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-	//Draw
-	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-	//Unbind
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//Disable Client
-	glDisableClientState(GL_VERTEX_ARRAY);
 	
-	if (show_bb)
-	{
-		DebugDraw(this, Red);
-	}
 		
 
 }
