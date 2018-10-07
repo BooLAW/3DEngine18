@@ -9,6 +9,7 @@
 #include "PanelConfiguration.h"
 #include "PanelHierarchy.h"
 #include "PanelComponents.h"
+#include "ComponentMesh.h"
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
@@ -345,7 +346,13 @@ void ModuleSceneGui::showCubeCreator()
 		{
 			Mesh* new_mesh = new Mesh();
 			new_mesh->DefineCubeVertices(float3(x_aux,y_aux,z_aux), x_aux2);
-			App->scene_intro->go_list.push_back(new_mesh);
+			ComponentMesh* new_cmp = new ComponentMesh();
+			new_cmp->mesh = new_mesh;
+			new_cmp->Enable();
+			new_cmp->type = ComponentType::MESH;
+			
+			GameObject* tmp_go = App->scene_intro->CreateNewGameObject();
+			tmp_go->components_list.push_back(new_cmp);
 		}
 		if (ImGui::SmallButton("Reset"))
 		{

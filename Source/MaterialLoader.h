@@ -11,7 +11,7 @@
 #pragma comment( lib, "../Source/DevIL/lib/ILU.lib")
 #pragma comment( lib, "../Source/DevIL/lib/ILUT.lib")
 
-
+class ComponentMaterial;
 class MaterialLoader
 {
 public:
@@ -19,7 +19,7 @@ public:
 	MaterialLoader();
 	bool Start();
 	virtual ~MaterialLoader();
-	GLuint LoadPNG(const char* file_name);
+	ComponentMaterial* LoadPNG(const char* file_name);
 	void Render();
 	void CleanUp();
 

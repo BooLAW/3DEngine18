@@ -26,7 +26,7 @@ MaterialLoader::~MaterialLoader()
 
 
 	
-GLuint MaterialLoader::LoadPNG(const char* file_name)
+ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 {
 	
 	GLuint textureID;
@@ -103,7 +103,7 @@ GLuint MaterialLoader::LoadPNG(const char* file_name)
 	}
 	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we
 
-	return textureID;
+	return comp;
 	}
 	
 

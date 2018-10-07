@@ -32,8 +32,12 @@ public:
 	GameObject* GetParent()const;
 	void SetParent(GameObject* new_parent);
 	void AddChild(GameObject* new_child);
+	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
 
+	//MEsh functionalities
+	void ActivateBB();
+	
 	//Info
 	const char* GetName()const;
 	void SetName(const char* name);

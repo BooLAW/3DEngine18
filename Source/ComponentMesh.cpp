@@ -19,7 +19,8 @@ void ComponentMesh::AddMesh(Mesh * new_mesh)
 
 bool ComponentMesh::Update()
 {
-	return false;
+	mesh->Draw();
+	return true;
 }
 
 void ComponentMesh::CleanUp()

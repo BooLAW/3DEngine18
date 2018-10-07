@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
+#include "Component.h"
 #include "PanelConfiguration.h"
 
 
@@ -177,11 +178,11 @@ void Application::DebugDraw()
 {
 	//change to active GO
 	for (int i = 0; i < scene_intro->go_list.size(); i++)
-		scene_intro->go_list[i]->show_bb = !scene_intro->go_list[i]->show_bb;
+		scene_intro->go_list[i]->ActivateBB();
 
-	for (int i = 0; i < scene_intro->go_list.size(); i++)
+	/*for (int i = 0; i < scene_intro->go_list.size(); i++)
 		scene_intro->go_list[i]->show_normal = !scene_intro->go_list[i]->show_normal;
-
+*/
 }
 
 bool Application::Save()
@@ -266,11 +267,22 @@ std::string Application::GetTermination(const char * path)
 
 std::string Application::GetFileName(const char * path)
 {
+	std::string full_path_str(path);
 	std::string ret;
 
+	//DeleteEndBars(full_path_str);
 
+	if (full_path_str.find('\\') != 0)
+	{
+		uint cut = full_path_str.find_last_of('\\');
+
+	
+		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
+	}
 
 	return ret;
+
+
 }
 
 void Application::AddModule(Module* mod)

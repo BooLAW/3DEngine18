@@ -46,6 +46,10 @@ bool ModuleSceneIntro::Start()
 		base_plane.axis = true;
 		base_plane.Render();
 	}
+	scene_root = new GameObject();
+	scene_root->SetName("ROOT");
+	scene_root->root_go = true;
+	go_list.push_back(scene_root);
 
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
@@ -120,7 +124,8 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-
+	if (go_list.size()<2)
+		return UPDATE_CONTINUE;
 	//make a for in the future
 	for (int i = 0; i < go_list.size(); i++)
 	{
@@ -156,7 +161,11 @@ float ModuleSceneIntro::RandFloat(float min, float max)
 
 GameObject * ModuleSceneIntro::CreateNewGameObject()
 {
-	return nullptr;
+	GameObject* tmp_GO = new GameObject();
+	tmp_GO->SetParent(scene_root);
+	go_list.push_back(tmp_GO);
+
+	return tmp_GO;
 }
 
 

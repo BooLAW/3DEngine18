@@ -27,8 +27,8 @@ public:
 	GameObject* CreateNewGameObject();
 public:
 	//Scene GameObjects(Now only meshes)
-	//std::vector<GameObject*> go_list;
-	std::vector<Mesh*> go_list;
-	GameObject* scene_root;
+	std::vector<GameObject*> go_list;
+	//std::vector<Mesh*> go_list;
+	GameObject* scene_root = nullptr;
 
 };

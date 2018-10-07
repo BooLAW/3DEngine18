@@ -12,6 +12,7 @@
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 class Mesh;
+class GameObject;
 class MeshLoader
 {
 public:
@@ -22,7 +23,7 @@ public:
 	void Render();
 	void CleanUp();
 private:
-	bool InitMesh(uint i, const aiMesh* mesh);
+	bool InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent,const char* path);
 	void Absolute(LineSegment& line);
 public:
 	//change to list when we have to load more than one mesh

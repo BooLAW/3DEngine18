@@ -18,6 +18,7 @@ public:
 	void SetActive(bool active);
 	GameObject* GetOwner()const;
 	ComponentType GetType()const;
+	void SetType(ComponentType type);
 
 	virtual ~Component();
 public:

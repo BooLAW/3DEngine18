@@ -64,6 +64,7 @@ Component * GameObject::GetComponent(ComponentType type)
 
 void GameObject::PushComponent(Component * new_component)
 {
+	components_list.push_back(new_component);
 }
 
 void GameObject::RemoveComponent(ComponentType type)
@@ -127,9 +128,9 @@ GameObject * GameObject::GetParent()const
 
 void GameObject::SetParent(GameObject * new_parent)
 {
-	float3 parent_pos = GetBB().CenterPoint() - new_parent->GetBB().CenterPoint();
+	//float3 parent_pos = GetBB().CenterPoint() - new_parent->GetBB().CenterPoint();
 	//PAU Update transform
-	new_parent->AddChild(this);
+	new_parent->SetChild(this);
 	parent = new_parent;
 }
 
@@ -142,9 +143,28 @@ void GameObject::AddChild(GameObject * new_child)
 	}
 }
 
+void GameObject::SetChild(GameObject * child)
+{
+	if (child != nullptr)
+	{
+		child->parent = this;
+		childs_list.push_back(child);
+	}
+}
+
 GameObject * GameObject::GetChild(int id)
 {
 	return childs_list[id];
+}
+
+void GameObject::ActivateBB()
+{
+	if (this->IsActive())
+	{
+		ComponentMesh* mesh_tmp = (ComponentMesh*)GetComponent(ComponentType::MESH);
+		if(mesh_tmp != nullptr)
+			mesh_tmp->mesh->show_bb = !mesh_tmp->mesh->show_bb;
+	}
 }
 
 const char * GameObject::GetName() const

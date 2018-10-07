@@ -55,6 +55,11 @@ ComponentType Component::GetType() const
 	return type;
 }
 
+void Component::SetType(ComponentType type)
+{
+	this->type = type;
+}
+
 
 Component::~Component()
 {
