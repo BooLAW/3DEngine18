@@ -110,6 +110,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 
 		bool attribute_modified = false;
 		if (ImGui::Checkbox("Wireframe", &attributes.wireframe)) attribute_modified = true;
+		if (ImGui::Checkbox("Texture", &attributes.texture)) attribute_modified = true;
 		if(ImGui::Checkbox("DepthTest", &attributes.depth_test))attribute_modified = true;
 		if(ImGui::Checkbox("CullTest", &attributes.cull_face))attribute_modified = true;
 		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
@@ -227,6 +228,7 @@ void ModuleRenderer3D::SetUILights()
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_COLOR_MATERIAL);
+	glDisable(GL_TEXTURE_2D);
 }
 
 void ModuleRenderer3D::SetSceneLights()
@@ -247,6 +249,7 @@ void ModuleRenderer3D::SetSceneLights()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
 	UpdateAttributes();
+	
 	
 	lights[0].Active(true);
 }
@@ -347,6 +350,11 @@ void ModuleRenderer3D::UpdateAttributes()
 		glEnable(GL_CULL_FACE);
 	else
 		glDisable(GL_CULL_FACE);
+	//texture
+	if (attributes.texture)
+		glEnable(GL_TEXTURE_2D);
+	else
+		glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -376,6 +384,7 @@ bool ModuleRenderer3D::Save(Document& testconfig_w, FileWriteStream& os)
 	Value app(kObjectType);
 	
 	app.AddMember("Wireframe", attributes.wireframe, allocator);
+	app.AddMember("Texture", attributes.texture, allocator);
 	app.AddMember("DepthTest", attributes.depth_test, allocator);
 	app.AddMember("CullTest", attributes.cull_face, allocator);
 	app.AddMember("Lighting", attributes.lighting, allocator);
@@ -391,6 +400,7 @@ bool ModuleRenderer3D::Load(Document* testconfig_r)
 	ret.Parse(App->loadBuf);
 	ret.IsObject();
 	attributes.wireframe = ret["renderer"]["Wireframe"].GetBool();
+	attributes.texture = ret["renderer"]["Texture"].GetBool();
 	attributes.depth_test = ret["renderer"]["DepthTest"].GetBool();
 	attributes.cull_face = ret["renderer"]["CullTest"].GetBool();
 	attributes.lighting = ret["renderer"]["Lighting"].GetBool();

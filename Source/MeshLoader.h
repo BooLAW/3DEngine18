@@ -13,6 +13,7 @@
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 class Mesh;
 class GameObject;
+class Material;
 class MeshLoader
 {
 public:
@@ -28,6 +29,7 @@ private:
 public:
 	//change to list when we have to load more than one mesh
 	std::vector<Mesh*> scene_meshes;
+	Material* mat;
 };
 
 

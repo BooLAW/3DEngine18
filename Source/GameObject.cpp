@@ -2,6 +2,10 @@
 #include "Component.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+#include "Material.h"
+#include "OpenGL.h"
+
 
 
 
@@ -31,11 +35,52 @@ void GameObject::Draw()
 {
 	if (!active)
 		return;
-	if (!components_list.empty())
+	if (!childs_list.empty())
 	{
-		for (int i = 0; i < components_list.size(); i++)
+		for (std::vector<GameObject*>::iterator  it = childs_list.begin(); it != childs_list.end(); it++)
 		{
-			components_list[i]->Update();
+			//Enable Client
+			glEnableClientState(GL_VERTEX_ARRAY);
+			ComponentMesh* aux_mesh = (ComponentMesh*)(*it)->GetComponent(MESH);
+			ComponentMaterial* aux_material = (ComponentMaterial*)(*it)->GetComponent(MATERIAL);
+
+			//Bind Vertices
+			if (aux_mesh != nullptr)
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->vertices_id);
+				glVertexPointer(3, GL_FLOAT, 0, NULL);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
+
+				//BindMaterial
+
+				if (aux_mesh->mesh->num_tex_coords != 0)
+				{
+					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+					glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->tex_coords_id);
+					glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+				}
+				//Bind Indices
+				if (aux_material != nullptr)
+					glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
+
+
+				//Draw
+				glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
+			}
+			
+			
+			
+			//Unbind
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			//Disable Client
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+
+			
 		}
 	}
 }

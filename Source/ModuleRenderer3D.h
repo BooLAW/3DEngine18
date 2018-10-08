@@ -11,6 +11,7 @@ struct RenderAttributes{
 	bool cull_face = false;
 	bool lighting = false;
 	bool color_material = false;
+	bool texture = false;
 };
 class ModuleRenderer3D : public Module
 {

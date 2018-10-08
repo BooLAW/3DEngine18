@@ -7,6 +7,7 @@
 #include "ComponentMesh.h"
 #include <stdio.h>
 #include "glmath.h"
+#include "Material.h"
 
 MeshLoader::MeshLoader()
 {
@@ -173,26 +174,26 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//TODO fix tex coords
 
 				//Tex Coords-------------------
-				//if (mesh->HasTextureCoords(0))
-				//{
-				//	new_mesh->num_tex_coords = mesh->mNumVertices;
-				//	new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
-				//	memcpy(&new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
+				if (mesh->HasTextureCoords(0))
+				{
+					
+					new_mesh->num_tex_coords = mesh->mNumVertices;
+					new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
+					memcpy(new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
 
 
-				//	glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
-				//	glBindBuffer(GL_ARRAY_BUFFER, (GLuint)new_mesh->tex_coords_id);
-				//	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords * 3, new_mesh->tex_coords, GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)new_mesh->tex_coords_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords * 3, new_mesh->tex_coords, GL_STATIC_DRAW);
 
-				//	//reset buffer
-				//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-				//	CONSOLE_LOG("%d tex coords", new_mesh->num_tex_coords);
+					//reset buffer
+					CONSOLE_LOG("%d tex coords", new_mesh->num_tex_coords);
 
-				//}
-				//else
-				//{
-				//	CONSOLE_LOG("Mesh has no Texture Coords");
-				//}
+				}
+				else
+				{
+					CONSOLE_LOG("Mesh has no Texture Coords");
+				}
 
 				//Set the Bounding Box for the DEBUG DRAW
 				AABB bb;
@@ -209,24 +210,26 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				new_comp_mesh->Enable();
 
 				new_child->PushComponent((Component*)new_comp_mesh);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 				//Materials
-				if (scene != nullptr && scene->HasMaterials())
-				{
-					aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-					aiString aipath;
+				//if (scene != nullptr && scene->HasMaterials())
+				//{
+				//	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+				//	aiString aipath;
 
-					ComponentMaterial* aux_mat = new ComponentMaterial();
-					material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath);
-					std::string path = aipath.C_Str();
-					uint name_pos = path.find_last_of("\\");
+				//	ComponentMaterial* aux_mat = new ComponentMaterial();
+				//	material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath);
+				//	std::string path = aipath.C_Str();
+				//	uint name_pos = path.find_last_of("\\");
 
-					aux_mat->type = ComponentType::MATERIAL;
-					aux_mat->Enable();
-					//set component owner
-					aux_mat->SetOwner(new_child);
-					//Add component to child
-					new_child->PushComponent(aux_mat);
-				}
+				//	aux_mat->type = ComponentType::MATERIAL;
+				//	aux_mat->Enable();
+				//	//set component owner
+				//	aux_mat->SetOwner(new_child);
+				//	//Add component to child
+				//	new_child->PushComponent(aux_mat);
+				//}
 				//Add child to parent
 				parent->AddChild(new_child);
 				//Transform

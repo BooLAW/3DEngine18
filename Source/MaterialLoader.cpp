@@ -28,7 +28,6 @@ MaterialLoader::~MaterialLoader()
 	
 ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 {
-	
 	GLuint textureID;
 	ILuint imageID;
 
@@ -39,6 +38,8 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 
 	ComponentMaterial* comp = new ComponentMaterial(nullptr);
 	comp->data = new Material();
+	comp->SetActive(true);
+	comp->Enable();
 	success = ilLoadImage(file_name);
 	
 

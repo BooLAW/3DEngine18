@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Profiler.h"
+#include "ComponentMaterial.h"
 
 
 LoadManager::LoadManager()
@@ -25,8 +26,12 @@ void LoadManager::Load(const char * path)
 	}
 	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG")
 	{
-		CONSOLE_LOG("Texture Dropped");
-		material_loader->LoadPNG(path);
+		CONSOLE_LOG("Texture Dropped");	
+		ComponentMaterial* aux = material_loader->LoadPNG(path);
+		GameObject* auxgo = App->scene_intro->go_list[0];
+		App->scene_intro->go_list[2]->PushComponent((Component*)aux);
+		App->scene_intro->go_list[3]->PushComponent((Component*)aux);
+
 
 	}
 }
