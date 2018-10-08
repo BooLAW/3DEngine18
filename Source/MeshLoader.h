@@ -14,6 +14,7 @@
 class Mesh;
 class GameObject;
 class Material;
+
 class MeshLoader
 {
 public:
@@ -21,6 +22,7 @@ public:
 	virtual ~MeshLoader();
 	bool LoadMesh(const std::string& file_name);
 	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
+
 	void Render();
 	void CleanUp();
 private:

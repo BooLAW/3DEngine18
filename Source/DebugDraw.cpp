@@ -33,18 +33,17 @@ void DebugDraw(const Mesh* mesh, Color color, const float4x4 & transform)
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 	BoxDD(points, color);
+
 	//Normals
-
-
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glLineWidth(1.0f);
 	glDisable(GL_CULL_FACE);
 
 	glColor3f(color.r, color.g, color.b);
 
-	for (uint i = 0; i < mesh->normal.size()-1; i++)
+	for (uint i = 0; i < mesh->face_normal.size()-1; i++)
 	{
-		LineSegmentDraw(&mesh->normal[i].b, &mesh->normal[i].a,Red);
+		LineSegmentDraw(&mesh->face_normal[i].b, &mesh->face_normal[i].a,Red);
 	}
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);

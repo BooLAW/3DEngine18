@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Assimp.h"
 #include "MathGeoLib/Geometry/Line.h"
+#include "MathGeoLib/Geometry/LineSegment.h"
 
 enum MESH_TYPE {
 	CUBE_M = 0,
@@ -28,7 +29,7 @@ public:
 	void DefinePlaneVertices(float3 new_position);
 	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);
-
+	void CalculateVertexNormal();
 public:
 	float3 color;
 	MESH_TYPE type;
@@ -44,9 +45,12 @@ public:
 	uint vertices_id;
 
 	//Normal
-	std::vector<LineSegment> normal;
-	uint num_normals;
-	uint normalsorg;
+	std::vector<LineSegment> face_normal;
+	std::vector<LineSegment> normals;
+	float* normal;
+	uint num_normal = 0;
+
+
 
 		
 	//Indices

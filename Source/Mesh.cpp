@@ -258,3 +258,23 @@ void Mesh::DefineSphereVertices(float radius, uint rings, uint sectors)
 
 	glGenBuffers(1, (GLuint*)&vertices_id);
 }
+
+void Mesh::CalculateVertexNormal()
+{
+	for (int i = 0; i < num_indices; i++)
+	{
+		if (i % 3 == 0)
+		{
+			//p1.x.y.z = mesh.vertices[mesh.indices[i] * 3], mesh.vertices[mesh.indices[i] * 3 + 1], mesh.vertices[mesh.indices[i] * 3 + 2]
+			float* p1x = nullptr;
+				
+			//p1 = { vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i]     * 3 + 2] };
+			p1x = (float*)&vertices[indices[i] * 3];
+
+			//p2 = { vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2] };
+			//p3 = { vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2] };
+
+		}
+	}
+
+}

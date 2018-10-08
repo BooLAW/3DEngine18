@@ -36,7 +36,6 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 
 	return ret;
 }
-
 LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
 	LineSegment ret; //a = N, b = A
@@ -71,7 +70,6 @@ LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 
 	return ret;
 }
-
 void MeshLoader::Render()
 {
 }
@@ -126,7 +124,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				new_mesh->num_vertices = mesh->mNumVertices;
 				new_mesh->vertices = new float3[new_mesh->num_vertices];
 				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
-
+				memcpy(new_mesh->normal, mesh->mNormals, sizeof(float)*new_mesh->num_normal * 3);
 
 				glGenBuffers(1, (GLuint*)&new_mesh->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
@@ -140,7 +138,10 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				if (mesh->HasFaces())
 				{
 					new_mesh->num_indices = mesh->mNumFaces * 3;
+					new_mesh->num_normal = mesh->mNumVertices * 3;
 					new_mesh->indices = new int[new_mesh->num_indices];
+					new_mesh->normal = new float[new_mesh->num_normal];
+
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{
 						if (mesh->mFaces[i].mNumIndices != 3) //Detects if there is something that is not a triangle
@@ -150,13 +151,15 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						else
 						{
 							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
+							
 
 							int u = i + 1;
 							int w = i + 2;
-							LineSegment normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
-							Absolute(normal);
-
-							new_mesh->normal.push_back(normal);
+							LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
+							Absolute(face_normal);
+							
+							
+							new_mesh->face_normal.push_back(face_normal);
 						}
 					}
 					glGenBuffers(1, (GLuint*)&new_mesh->indices_id);

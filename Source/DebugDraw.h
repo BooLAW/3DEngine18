@@ -8,7 +8,7 @@
 #include <math.h>
 
 class Mesh;
-class LineSegment;
+
 
 
 void Init();
