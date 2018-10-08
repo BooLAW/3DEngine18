@@ -21,6 +21,7 @@ void LoadManager::Load(const char * path)
 	if (App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
 	{
 		CONSOLE_LOG("FBX dropped");
+		App->scene_intro->ClearScene();
 		mesh_loader->LoadMesh(path);
 
 	}

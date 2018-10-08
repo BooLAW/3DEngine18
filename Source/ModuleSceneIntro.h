@@ -25,6 +25,7 @@ public:
 	//void DisplayRandNumber(bool isActive);
 	void Log(const std::string text);
 	GameObject* CreateNewGameObject();
+	void ClearScene();
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;

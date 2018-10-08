@@ -124,8 +124,6 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	if (go_list.size()<2)
-		return UPDATE_CONTINUE;
 	//make a for in the future
 	for (int i = 0; i < go_list.size(); i++)
 	{
@@ -166,6 +164,11 @@ GameObject * ModuleSceneIntro::CreateNewGameObject()
 	go_list.push_back(tmp_GO);
 
 	return tmp_GO;
+}
+
+void ModuleSceneIntro::ClearScene()
+{
+	go_list.clear();
 }
 
 
