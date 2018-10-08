@@ -44,7 +44,7 @@ void DebugDraw(const Mesh* mesh, Color color, const float4x4 & transform)
 
 	for (uint i = 0; i < mesh->normal.size()-1; i++)
 	{
-		LineSegmentDraw(&mesh->normal[i].a, &mesh->normal[i].b,Red);
+		LineSegmentDraw(&mesh->normal[i].b, &mesh->normal[i].a,Red);
 	}
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);

@@ -60,17 +60,16 @@ LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 
 	vec3 retcros = cross(pv2 - pv1, pv3 - pv1);
 	retcros = normalize(retcros);
+
 	ret.b = (vec)&retcros;
 
 	ret.a.x = (p1.x + p2.x + p3.x) / 3;
 	ret.a.y = (p1.y + p2.y + p3.y) / 3;
 	ret.a.z = (p1.z + p2.z + p3.z) / 3;
+	ret.b = ret.b + ret.a;
 
 	return ret;
 }
-
-
-
 
 void MeshLoader::Render()
 {
