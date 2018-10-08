@@ -66,11 +66,7 @@ bool ComponentMesh::Update()
 	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
-	if (mesh->show_bb)
-	{
-		DebugDraw(mesh, Red);
-	}	
-	return true;
+	
 }
 
 void ComponentMesh::CleanUp()

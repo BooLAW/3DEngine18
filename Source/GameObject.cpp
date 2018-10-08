@@ -5,7 +5,7 @@
 #include "ComponentMaterial.h"
 #include "Material.h"
 #include "OpenGL.h"
-
+#include "DebugDraw.h"
 
 
 
@@ -66,6 +66,10 @@ void GameObject::Draw()
 
 				//Draw
 				glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
+				if (aux_mesh->mesh->show_bb)
+				{
+					DebugDraw(aux_mesh->mesh, Red);
+				}
 			}
 			
 			
@@ -79,7 +83,7 @@ void GameObject::Draw()
 			glDisableClientState(GL_VERTEX_ARRAY);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-
+			
 			
 		}
 	}
