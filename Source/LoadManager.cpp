@@ -23,16 +23,17 @@ void LoadManager::Load(const char * path)
 		CONSOLE_LOG("FBX dropped");
 		App->scene_intro->ClearScene();
 		mesh_loader->LoadMesh(path);
-
+		App->scene_intro->has_meshes = true;
+	
 	}
-	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG")
+	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" && App->scene_intro->has_meshes)
 	{
 		CONSOLE_LOG("Texture Dropped");	
 		ComponentMaterial* aux = material_loader->LoadPNG(path);
-		GameObject* auxgo = App->scene_intro->go_list[0];
-		App->scene_intro->go_list[2]->PushComponent((Component*)aux);
-		App->scene_intro->go_list[3]->PushComponent((Component*)aux);
-
+		int auxi = App->scene_intro->go_list.size();
+		for(int i = 1;i < auxi; i++)
+			App->scene_intro->go_list[i]->PushComponent((Component*)aux);
+		//App->scene_intro->go_list[2]->PushComponent((Component*)aux);
 
 	}
 }

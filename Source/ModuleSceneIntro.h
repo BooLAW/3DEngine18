@@ -31,5 +31,6 @@ public:
 	std::vector<GameObject*> go_list;
 	//std::vector<Mesh*> go_list;
 	GameObject* scene_root = nullptr;
+	bool has_meshes = false;
 
 };
