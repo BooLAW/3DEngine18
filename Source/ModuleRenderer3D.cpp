@@ -6,6 +6,7 @@
 #include <gl/GLU.h>
 #include "SDL/include/SDL_version.h"
 #include "Primitive.h"
+#include "TextureMSAA.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -132,7 +133,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
-	Color c = { 0,0,0,1 };
+	Color c = {0,0,0,1 };
 	glClearColor(c.r, c.g, c.b, c.a); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	glLoadIdentity();
@@ -154,21 +155,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	//Draw Scene
 	if (attributes.wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	//Base Plane
-	if (show_plane == true)
-	{
-		PPlane base_plane(0, 1, 0, 0);
-		base_plane.axis = true;	
-		base_plane.Render();
-	}
-	//PCube my_cube(5, 5, 5);
-	//my_cube.Render();
-	//Draw Scene
-	//App->scene_intro->Update(dt);
 	//Debug Draw
 	if (debug_draw == true)
 	{
@@ -178,11 +169,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		debug_draw = false;
 		SetNormalAttributes();
 	}
-
+	App->scene_intro->DrawGameObjects();
 	App->imgui->DrawImGui();
-	
 	SetSceneLights();
 	SDL_GL_SwapWindow(App->window->window);
+	App->camera->SceneMSAA()->Bind();
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -233,7 +225,7 @@ void ModuleRenderer3D::SetUILights()
 
 void ModuleRenderer3D::SetSceneLights()
 {
-	GLfloat LightModelAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat LightModelAmbient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
 
 	lights[0].ref = GL_LIGHT0;

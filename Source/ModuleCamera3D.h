@@ -32,7 +32,7 @@ public:
 
 	void SetMouseSensitivity(float new1_sensitivity);
 	float GetMouseSensitivity() const;
-	TextureMSAA* GetViewportTexture(); 
+	TextureMSAA* SceneMSAA();
 
 	void LockCamera(); 
 	void UnlockCamera(); 

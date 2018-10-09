@@ -11,6 +11,7 @@
 #include "PanelComponents.h"
 #include "PanelInspector.h"
 #include "ComponentMesh.h"
+#include "PanelScene.h"
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
@@ -27,19 +28,21 @@ bool ModuleSceneGui::Init()
 	App->profiler.StartTimer("UI");
 	bool ret = true;
 	ImGui_ImplSdl_Init(App->window->window);
-
+	ImGui::InitDock();
 	//Add Panels HERE
 	console = new PanelConsole();
 	configuration = new PanelConfiguration();
 	components = new PanelComponents();
 	hierarchy = new PanelHierarchy();
 	inspector = new PanelInspector();
+	scene = new PanelScene();
 
 	panels.push_back(console);
 	panels.push_back(configuration);
 	panels.push_back(inspector);
 	panels.push_back(components);
 	panels.push_back(hierarchy);
+	panels.push_back(scene);
 	App->profiler.SaveInitData("UI");
 	return ret;
 }
@@ -78,12 +81,34 @@ update_status ModuleSceneGui::Update(float dt)
 
 update_status ModuleSceneGui::PostUpdate(float dt)
 {
-	BlitPanels();
+	
 	
 	return UPDATE_CONTINUE;
 }
 void ModuleSceneGui::DrawImGui() {
 	App->renderer3D->SetUILights();
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
+	flags |= ImGuiWindowFlags_NoMove;
+	flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+	flags |= ImGuiWindowFlags_NoResize;
+
+	float h_offset = 6.0f;
+	float w_offset = 0.0f;
+
+	ImGui::SetNextWindowPos(ImVec2(w_offset, h_offset));
+	ImGui::SetNextWindowSize(ImVec2(App->window->width - w_offset, App->window->height - h_offset));
+
+
+	if (ImGui::Begin("Dock", 0, flags))
+	{
+		ImGui::BeginDockspace();
+
+		BlitPanels();
+
+		ImGui::EndDockspace();
+	}
+	ImGui::End();
+
 	ImGui::Render();
 }
 
@@ -386,16 +411,8 @@ void ModuleSceneGui::BlitPanels()
 	{
 		if ((*item)->IsActive())
 		{
-			//if (isBlitedDisplay < panels.size())
-			{
-				ImGui::SetNextWindowPos((*item)->render_pos, ImGuiSetCond_Always);
-				ImGui::SetNextWindowSize((*item)->render_size, ImGuiSetCond_Always);
-				isBlitedDisplay++;
-			}
-			
-
 			(*item)->Draw();
-			
 		}
 	}
+	
 }

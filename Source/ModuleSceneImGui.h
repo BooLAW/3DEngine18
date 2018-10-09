@@ -9,6 +9,7 @@ class PanelConsole;
 class PanelConfiguration;
 class PanelApplication;
 class PanelComponents;
+class PanelScene;
 class PanelHierarchy;
 class Panel;
 class ModuleSceneGui : public Module
@@ -84,5 +85,6 @@ public:
 	PanelComponents* components = nullptr;
 	PanelHierarchy* hierarchy = nullptr;
 	PanelInspector* inspector = nullptr;
+	PanelScene* scene = nullptr;
 	
 };

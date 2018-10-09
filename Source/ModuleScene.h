@@ -25,6 +25,7 @@ public:
 	//void DisplayRandNumber(bool isActive);
 	void Log(const std::string text);
 	GameObject* CreateNewGameObject();
+	void DrawGameObjects();
 	void ClearScene();
 	//UI
 	void DrawInspector();

@@ -420,7 +420,21 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_impl_sdl.h" />
+    <ClInclude Include="TextureMSAA.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl.h">
+      <Filter>Sources\External Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_dock.h">
+      <Filter>Sources\External Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelScene.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -654,7 +668,18 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_impl_sdl.cpp" />
+    <ClCompile Include="TextureMSAA.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_dock.cpp">
+      <Filter>Sources\External Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl.cpp">
+      <Filter>Sources\External Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelScene.cpp">
+      <Filter>Sources\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

@@ -87,6 +87,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_dock.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
     <ClInclude Include="ImGui\stb_rect_pack.h" />
     <ClInclude Include="ImGui\stb_textedit.h" />
@@ -173,16 +174,19 @@
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelComponents.h" />
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
+    <ClInclude Include="PanelScene.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PCG\include\utime.h" />
     <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Profiler.h" />
+    <ClInclude Include="TextureMSAA.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
@@ -198,6 +202,7 @@
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_dock.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_sdl.cpp" />
     <ClCompile Include="LoadManager.cpp" />
@@ -259,10 +264,12 @@
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
+    <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Profiler.cpp" />
+    <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>

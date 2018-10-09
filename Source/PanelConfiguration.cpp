@@ -22,15 +22,18 @@ PanelConfiguration::~PanelConfiguration()
 
 void PanelConfiguration::Draw()
 {
-	ImGui::Begin("Configuration", &active);	
-	render_pos = ImGui::GetWindowPos();
-	render_size = ImGui::GetWindowSize();
-	Application();
-	for (int i = 0; App->GetModule(i) != nullptr; i++)
+	if(ImGui::BeginDock("Configuration", &active))
 	{
-		App->GetModule(i)->DrawModuleConfig();
+		render_pos = ImGui::GetWindowPos();
+		render_size = ImGui::GetWindowSize();
+		Application();
+		for (int i = 0; App->GetModule(i) != nullptr; i++)
+		{
+			App->GetModule(i)->DrawModuleConfig();
+		}
 	}
-	ImGui::End();
+	ImGui::EndDock();
+
 }
 
 void PanelConfiguration::Application()

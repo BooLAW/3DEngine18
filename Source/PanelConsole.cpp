@@ -15,27 +15,30 @@ PanelConsole::~PanelConsole()
 
 void PanelConsole::Draw()
 {
-	ImGui::Begin("Console", &active, ImGuiWindowFlags_NoFocusOnAppearing);
-
-	if(ImGui::Button("Debug"))
+	if (ImGui::BeginDock("Console", &active))
 	{
-		show_debug_text = !show_debug_text;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Clear"))
-	{
-		text_debug_buffer.clear();
-	}
-	if (show_debug_text)
-		for (int i = 0; i < text_debug_buffer.size(); i++)
+		if (ImGui::Button("Debug"))
 		{
-			ImGui::Text(text_debug_buffer[i].c_str());
+			show_debug_text = !show_debug_text;
 		}
+		ImGui::SameLine();
+		if (ImGui::Button("Clear"))
+		{
+			text_debug_buffer.clear();
+		}
+		if (show_debug_text)
+			for (int i = 0; i < text_debug_buffer.size(); i++)
+			{
+				ImGui::Text(text_debug_buffer[i].c_str());
+			}
 
-	ImGui::SetScrollY(ImGui::GetScrollMaxY());
-	render_pos = ImGui::GetWindowPos();
-	render_size = ImGui::GetWindowSize();
-	ImGui::End();	
+		ImGui::SetScrollY(ImGui::GetScrollMaxY());
+		render_pos = ImGui::GetWindowPos();
+		render_size = ImGui::GetWindowSize();
+	}
+
+	ImGui::EndDock();
+
 }
 
 void PanelConsole::LogToConsole(const std::string text)

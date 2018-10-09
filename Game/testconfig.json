@@ -42,6 +42,12 @@
     "sizex": 0.0,
     "sizey": 0.0
   },
+  "Scene": {
+    "posx": 0.0,
+    "posy": 0.0,
+    "sizex": 0.0,
+    "sizey": 0.0
+  },
   "camera": {
     "SpeedBase": 4.0,
     "MouseSensitivity": 0.5,

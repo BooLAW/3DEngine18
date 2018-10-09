@@ -39,13 +39,7 @@ bool ModuleScene::Start()
 
 	//-----------------------------
 	srand(time(NULL));
-	//Base Plane
-	if (App->renderer3D->show_plane == true)
-	{
-		PPlane base_plane(0, 1, 0, 0);
-		base_plane.axis = true;
-		base_plane.Render();
-	}
+
 	scene_root = new GameObject();
 	scene_root->SetName("ROOT");
 	scene_root->root_go = true;
@@ -53,7 +47,9 @@ bool ModuleScene::Start()
 
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
-
+	//Change when making the release
+	//App->loading_manager->Load("C:\\Users\\Josep\\Documents\\GitHub\\3DEngine18\\Game\\Assets\\Models\\BakerHouse.fbx");
+	//App->loading_manager->Load("C:\\Users\\Josep\\Documents\\GitHub\\3DEngine18\\Game\\Assets\\Textures\\Baker_house.png");
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
@@ -124,15 +120,27 @@ void ModuleScene::rapidjsonexamplecode()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	//make a for in the future
+
+	return UPDATE_CONTINUE;
+}
+void ModuleScene::DrawGameObjects()
+{
+	
+	//Base Plane
+	if (App->renderer3D->show_plane == true)
+	{
+		PPlane base_plane(0, 1, 0, 0);
+		base_plane.axis = true;
+		base_plane.wire = false;
+		base_plane.color = White;
+		base_plane.Render();
+	}
 	for (int i = 0; i < go_list.size(); i++)
 	{
 		go_list[i]->Draw();
 	}
 
-	return UPDATE_CONTINUE;
 }
-
 
 
 void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
