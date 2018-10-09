@@ -9,6 +9,7 @@
 
 LoadManager::LoadManager()
 {
+	unique_material_path = "";
 }
 
 
@@ -21,20 +22,34 @@ void LoadManager::Load(const char * path)
 	if (App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
 	{
 		CONSOLE_LOG("FBX dropped");
-		App->scene_intro->ClearScene();
-		mesh_loader->LoadMesh(path);
-		App->scene_intro->has_meshes = true;
-	
+		if (unique_fbx_path != path)
+		{
+			App->scene_intro->ClearScene();
+			mesh_loader->LoadMesh(path);
+			App->scene_intro->has_meshes = true;
+			unique_fbx_path = path;
+		}
+		else
+		{
+			CONSOLE_LOG("%s was already loaded", App->GetFileName(path).c_str());
+		}
 	}
 	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" && App->scene_intro->has_meshes)
 	{
 		CONSOLE_LOG("Texture Dropped");	
-		ComponentMaterial* aux = material_loader->LoadPNG(path);
-		int auxi = App->scene_intro->go_list.size();
-		for(int i = 1;i < auxi; i++)
-			App->scene_intro->go_list[i]->PushComponent((Component*)aux);
-		//App->scene_intro->go_list[2]->PushComponent((Component*)aux);
-
+		if (unique_material_path != path)
+		{
+			ComponentMaterial* aux = material_loader->LoadPNG(path);
+			int auxi = App->scene_intro->go_list.size();
+			for (int i = 1; i < auxi; i++)
+				App->scene_intro->go_list[i]->PushComponent((Component*)aux);
+			unique_material_path = path;
+		}
+		else
+		{
+			CONSOLE_LOG("Texture: %s was already loaded", App->GetFileName(path).c_str());
+		}
+		
 	}
 }
 

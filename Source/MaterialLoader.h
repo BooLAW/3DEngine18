@@ -24,6 +24,7 @@ public:
 	void CleanUp();
 
 public:
+	char* unique_path;
 	
 };
 #endif // !__MATERIAL_LOADER_H__
