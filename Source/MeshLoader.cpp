@@ -117,7 +117,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Put the name
 				GameObject* new_child = new GameObject();
 				new_child->SetName(node->mName.C_Str());
-
+				//new_child->num_meshes = node->mMeshes;
 				//MESH
 				Mesh* new_mesh = new Mesh();
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -142,7 +142,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					new_mesh->num_normal = mesh->mNumVertices * 3;
 					new_mesh->indices = new int[new_mesh->num_indices];
 					new_mesh->normal = new float[new_mesh->num_normal];
-					
+
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{
@@ -155,13 +155,13 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 							
 							
-							/*int u = i + 1;
-							int w = i + 2;
-							LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
-							Absolute(face_normal);
-							
-							
-							new_mesh->face_normal.push_back(face_normal);*/
+							//int u = i + 1;
+							//int w = i + 2;
+							//LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
+							//Absolute(face_normal);
+							//
+							//
+							//new_mesh->face_normal.push_back(face_normal);
 						}
 					}
 					glGenBuffers(1, (GLuint*)&new_mesh->indices_id);

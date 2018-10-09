@@ -5,6 +5,8 @@
 #include "ImGui/imgui.h"
 #include "PanelHierarchy.h"
 #include "../Source/ImGui/imgui_internal.h"
+#include "ModuleScene.h"
+#include "Application.h"
 
 
 class PanelHierarchy :

@@ -24,7 +24,7 @@ void CleanUp()
 	glPopMatrix();
 }
 
-void DebugDraw(const Mesh* mesh, Color color, const float4x4 & transform)
+void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 {
 	//Bounding Box
 	static float3 points[8];//is a box

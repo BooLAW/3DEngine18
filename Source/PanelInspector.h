@@ -5,6 +5,7 @@
 
 class GameObject;
 
+
 class PanelInspector: public Panel
 {
 public:
@@ -12,8 +13,12 @@ public:
 	virtual ~PanelInspector();
 	void MeshComponentInfo(GameObject* active_GO);
 	void Draw()override;
+	
 public:
-
+	std::vector<uint> mesh_vertex;
+	uint Vertex;
+	std::string mesh_name;
+	std::string mesh_data;
 };
 
 #endif

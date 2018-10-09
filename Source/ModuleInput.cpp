@@ -95,6 +95,7 @@ update_status ModuleInput::PreUpdate(float dt)
 		{
 			case SDL_DROPFILE:
 			{
+				file_droped = true;
 				std::string file = e.drop.file;
 				App->loading_manager->Load(file.c_str());
 			}
