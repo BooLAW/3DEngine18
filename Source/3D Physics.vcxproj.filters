@@ -129,9 +129,6 @@
     <ClInclude Include="ImGui\imgui.h">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_sdl.h">
-      <Filter>Sources\External Tools\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui\imgui_internal.h">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClInclude>
@@ -423,6 +420,7 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="imgui_impl_sdl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -462,9 +460,6 @@
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_draw.cpp">
-      <Filter>Sources\External Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_sdl.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\AABB.cpp">
@@ -659,6 +654,7 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules\Editor</Filter>
     </ClCompile>
+    <ClCompile Include="imgui_impl_sdl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

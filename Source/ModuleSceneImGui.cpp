@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleSceneImGui.h"
 #include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
+#include "imgui_impl_sdl.h"
 #include "PCG/pcg_basic.h"
 
 #include "PanelConsole.h"
@@ -276,7 +276,7 @@ int ModuleSceneGui::CreateMainMenu()
 
 void ModuleSceneGui::showTestWindow() 
 {
-	ImGui::ShowTestWindow(&show_test_window);
+	ImGui::ShowTestWindow();
 
 }
 
