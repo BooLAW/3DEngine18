@@ -124,7 +124,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				new_mesh->num_vertices = mesh->mNumVertices;
 				new_mesh->vertices = new float3[new_mesh->num_vertices];
 				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
-				memcpy(new_mesh->normal, mesh->mNormals, sizeof(float)*new_mesh->num_normal * 3);
+				//memcpy(new_mesh->normal, mesh->mNormals, sizeof(float)*new_mesh->num_normal * 3);
 
 				glGenBuffers(1, (GLuint*)&new_mesh->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
@@ -152,7 +152,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						{
 							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 							
-
+							
 							int u = i + 1;
 							int w = i + 2;
 							LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
@@ -179,7 +179,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))
 				{
-					
 					new_mesh->num_tex_coords = mesh->mNumVertices;
 					new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
 					memcpy(new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
