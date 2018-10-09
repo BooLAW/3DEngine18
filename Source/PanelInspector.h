@@ -16,9 +16,9 @@ public:
 	
 public:
 	std::vector<uint> mesh_vertex;
-	uint Vertex;
-	std::string mesh_name;
-	std::string mesh_data;
+	std::vector<int*> vertex;
+	std::vector<const char*> mesh_name;
+	int counter = 0;
 };
 
 #endif

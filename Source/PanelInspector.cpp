@@ -43,28 +43,34 @@ void PanelInspector::Draw()
 			{
 				if ((*it)->IsRoot() == false)
 				{
-					if (mesh_name.empty())
+					if (mesh_name.size() <= counter)
 					{
-						mesh_name.append((*it)->GetName());
+						mesh_name.push_back((*it)->GetName());
 					}
-
-					ImGui::Text(mesh_data.c_str());
 					if ((*it)->HasMesh())
 					{
-						Vertex = (*it)->GetMesh()->num_vertices;
+						vertex.push_back((int*)(*it)->GetMesh()->num_vertices); 
+						
+						
 					}
-
+					counter++;
 				}
+				
 			}
+			App->input->file_droped = false;
 		}
 		//Drawing ImGui
-		if (App->input->file_droped)
+		if (App->scene_intro->go_list.size()>1)
 		{
-			ImGui::Text("Name of the mesh is: %s", mesh_name.c_str());
-			if (ImGui::CollapsingHeader("Mesh"))
+			if(ImGui::CollapsingHeader("Mesh"))
 			{
-				ImGui::Text("It has %i Vertex", Vertex);
-				ImGui::Text("Size of the name %i", mesh_name.size());
+				for (int i = 0; i < counter; i++)
+				{
+					if (ImGui::CollapsingHeader(mesh_name[i]))
+					{
+						ImGui::Text("It has %i Vertex", vertex[i]);
+					}
+				}
 			}
 
 		}

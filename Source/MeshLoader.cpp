@@ -117,13 +117,13 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Put the name
 				GameObject* new_child = new GameObject();
 				new_child->SetName(node->mName.C_Str());
-				//new_child->num_meshes = node->mMeshes;
+				new_child->num_meshes = node->mMeshes;
 				//MESH
 				Mesh* new_mesh = new Mesh();
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				//Vertices----------------------
 				new_mesh->num_vertices = mesh->mNumVertices;
-				new_mesh->vertices = new float3[new_mesh->num_vertices];
+				new_mesh->vertices = new float3[new_mesh->num_vertices];				
 				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
 				//memcpy(new_mesh->normal, mesh->mNormals, sizeof(float)*new_mesh->num_normal * 3);
 

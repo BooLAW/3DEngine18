@@ -1,5 +1,6 @@
 #include "PanelHierarchy.h"
 #include "stdio.h"
+#include "ImGui/imgui_dock.h"
 
 
 
@@ -21,12 +22,12 @@ PanelHierarchy::~PanelHierarchy()
 
 void PanelHierarchy::Draw()
 {
-	ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing);
+	ImGui::BeginDock("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing);
 	render_pos = ImGui::GetWindowPos();
 	render_size = ImGui::GetWindowSize();
 	App->scene_intro->DrawHierarchy();
 
-	ImGui::End();
+	ImGui::EndDock();
 
 }
 
