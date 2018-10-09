@@ -9,6 +9,7 @@
 ComponentMesh::ComponentMesh()
 {
 	type = ComponentType::MESH;
+	SetName("Component Mesh");
 }
 
 ComponentMesh::ComponentMesh(GameObject * new_owner)

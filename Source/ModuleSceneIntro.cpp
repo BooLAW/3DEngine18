@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
+#include "Component.h"
 
 #include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
@@ -173,7 +174,32 @@ void ModuleSceneIntro::ClearScene()
 
 void ModuleSceneIntro::DrawInspector()
 {
+	if (!go_list.empty())
+	{
+		
+		for (int i = 0; i < go_list.size(); i++)
+		{
+			if(ImGui::TreeNode(go_list[i]->GetName()))
+			{
+				
+				for (int j = 0; j < go_list[i]->components_list.size(); j++)
+				{
+					GameObject* aux = go_list[i];
+					if (ImGui::TreeNode(aux->components_list[j]->GetName()))
+					{
 
+
+
+						ImGui::TreePop();
+
+					}
+
+				}
+				ImGui::TreePop();
+
+			}
+		}
+	}
 }
 
 

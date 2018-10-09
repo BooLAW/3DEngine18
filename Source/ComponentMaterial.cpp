@@ -8,6 +8,7 @@
 ComponentMaterial::ComponentMaterial()
 {
 	type = ComponentType::MATERIAL;
+	SetName("Component Material");
 
 	//allocate buffer for the component
 
@@ -23,6 +24,7 @@ ComponentMaterial::ComponentMaterial(GameObject * owner)
 {
 	this->owner = owner;
 	type = ComponentType::MATERIAL;
+	SetName("Component Material");
 
 	//allocate buffer for the component
 

@@ -60,6 +60,16 @@ void Component::SetType(ComponentType type)
 	this->type = type;
 }
 
+const char * Component::GetName()
+{
+	return name.c_str();
+}
+
+void Component::SetName(const char * _name)
+{
+	name = _name;
+}
+
 
 Component::~Component()
 {
