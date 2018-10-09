@@ -26,11 +26,14 @@ public:
 	void Log(const std::string text);
 	GameObject* CreateNewGameObject();
 	void ClearScene();
+	//UI
+	void DrawInspector();
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
 	//std::vector<Mesh*> go_list;
 	GameObject* scene_root = nullptr;
+	GameObject* imported_go = nullptr;
 	bool has_meshes = false;
 
 };

@@ -9,6 +9,7 @@
 #include "PanelConfiguration.h"
 #include "PanelHierarchy.h"
 #include "PanelComponents.h"
+#include "PanelInspector.h"
 #include "ComponentMesh.h"
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
@@ -32,10 +33,11 @@ bool ModuleSceneGui::Init()
 	configuration = new PanelConfiguration();
 	components = new PanelComponents();
 	hierarchy = new PanelHierarchy();
+	inspector = new PanelInspector();
 
 	panels.push_back(console);
 	panels.push_back(configuration);
-
+	panels.push_back(inspector);
 	panels.push_back(components);
 	panels.push_back(hierarchy);
 	App->profiler.SaveInitData("UI");
@@ -198,6 +200,10 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 					hierarchy->Activate();
 				}
+				if (ImGui::MenuItem("Inspector"))
+				{
+					inspector->Activate();
+				}
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("About..."))
@@ -260,6 +266,7 @@ int ModuleSceneGui::CreateMainMenu()
 			ImGui::EndMainMenuBar();
 		}
 	}
+	if (show_panel_inspector)ShowInspector();
 	if (show_test_window)showTestWindow();
 	if (show_sphere_creator)showSphereCreator();
 	if (show_cube_creator)showCubeCreator();
@@ -271,6 +278,10 @@ void ModuleSceneGui::showTestWindow()
 {
 	ImGui::ShowTestWindow(&show_test_window);
 
+}
+
+void ModuleSceneGui::ShowInspector()
+{
 }
 
 void ModuleSceneGui::showConsoleWindow()

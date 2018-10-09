@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "PCG/pcg_basic.h"
 
+class PanelInspector;
 class PanelConsole;
 class PanelConfiguration;
 class PanelApplication;
@@ -24,6 +25,7 @@ public:
 
 	int CreateMainMenu();
 	void showTestWindow();
+	void ShowInspector();
 	void showConfigurationWindow();
 	void showConsoleWindow();
 	void showSphereCreator();
@@ -40,6 +42,7 @@ public:
 public:
 	//flags
 	bool show_test_window = false;
+	bool show_panel_inspector = false;
 	bool show_console = false;
 	bool show_sphere_creator = false;
 	bool show_cube_creator = false;
@@ -80,5 +83,6 @@ public:
 	PanelApplication* application = nullptr;
 	PanelComponents* components = nullptr;
 	PanelHierarchy* hierarchy = nullptr;
+	PanelInspector* inspector = nullptr;
 	
 };

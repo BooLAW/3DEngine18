@@ -173,7 +173,6 @@
     <ClInclude Include="ModuleSceneIntro.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="OpenGL.h" />
-    <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelComponents.h" />
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />

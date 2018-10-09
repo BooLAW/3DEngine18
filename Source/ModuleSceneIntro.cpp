@@ -171,5 +171,10 @@ void ModuleSceneIntro::ClearScene()
 	go_list.clear();
 }
 
+void ModuleSceneIntro::DrawInspector()
+{
+
+}
+
 
 
