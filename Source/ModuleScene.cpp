@@ -3,7 +3,7 @@
 #include "ModuleScene.h"
 #include "Primitive.h"
 #include "Component.h"
-#include "ImGui/imgui_impl_sdl.h"
+#include "imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
 

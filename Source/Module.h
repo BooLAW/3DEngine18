@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
+#include "imgui_impl_sdl.h"
 #include "MathGeoLib\MathGeoLib.h"
 
 #include "rapidjson/document.h"
