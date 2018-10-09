@@ -33,6 +33,7 @@ void LoadManager::Load(const char * path)
 		{
 			CONSOLE_LOG("%s was already loaded", App->GetFileName(path).c_str());
 		}
+		
 	}
 	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" && App->scene_intro->has_meshes)
 	{

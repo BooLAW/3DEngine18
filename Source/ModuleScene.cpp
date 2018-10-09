@@ -163,6 +163,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 	tmp_GO->SetParent(scene_root);
 	go_list.push_back(tmp_GO);
 
+
 	return tmp_GO;
 }
 
@@ -173,14 +174,19 @@ void ModuleScene::ClearScene()
 
 void ModuleScene::DrawInspector()
 {
+
+}
+
+void ModuleScene::DrawHierarchy()
+{
 	if (!go_list.empty())
 	{
-		
+
 		for (int i = 0; i < go_list.size(); i++)
 		{
-			if(ImGui::TreeNode(go_list[i]->GetName()))
+			if (ImGui::TreeNode(go_list[i]->GetName()))
 			{
-				
+
 				for (int j = 0; j < go_list[i]->components_list.size(); j++)
 				{
 					GameObject* aux = go_list[i];

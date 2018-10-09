@@ -2,7 +2,7 @@
 #define __GAMEOBJECT_H__
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
-
+#include "Mesh.h"
 class Component;
 enum ComponentType;
 class ComponentTransform;
@@ -35,8 +35,9 @@ public:
 	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
 
-	//MEsh functionalities
+	//Mesh functionalities
 	void ActivateBB();
+	Mesh* GetMesh();
 	
 	//Info
 	const char* GetName()const;
@@ -48,6 +49,7 @@ public:
 	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
 	ComponentTransform* transform;
+	//uint* num_meshes;
 	//flags
 	bool active = true;
 	bool static_go = false;

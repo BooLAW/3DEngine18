@@ -28,6 +28,7 @@ public:
 	void ClearScene();
 	//UI
 	void DrawInspector();
+	void DrawHierarchy();
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;

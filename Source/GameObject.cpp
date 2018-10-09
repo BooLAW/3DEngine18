@@ -68,7 +68,7 @@ void GameObject::Draw()
 				glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
 				if (aux_mesh->mesh->show_bb)
 				{
-					DebugDraw(aux_mesh->mesh, Red);
+					DebugDrawing(aux_mesh->mesh, Red);
 				}
 			}
 			
@@ -213,6 +213,18 @@ void GameObject::ActivateBB()
 		ComponentMesh* mesh_tmp = (ComponentMesh*)GetComponent(ComponentType::MESH);
 		if(mesh_tmp != nullptr)
 			mesh_tmp->mesh->show_bb = !mesh_tmp->mesh->show_bb;
+	}
+}
+
+Mesh * GameObject::GetMesh()
+{
+	if (this->IsActive())
+	{
+		ComponentMesh* mesh_tmp = (ComponentMesh*)GetComponent(ComponentType::MESH);
+		if (mesh_tmp != nullptr)
+			return mesh_tmp->mesh;
+		else
+			return nullptr;
 	}
 }
 

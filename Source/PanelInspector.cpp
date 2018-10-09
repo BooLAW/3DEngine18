@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "ComponentMesh.h"
 #include "Application.h"
-
+class ComponentTransform;
 
 PanelInspector::PanelInspector(): Panel("Inspector")
 {
@@ -28,11 +28,43 @@ void PanelInspector::MeshComponentInfo(GameObject * active_GO)
 
 void PanelInspector::Draw()
 {
-
 	ImGui::Begin("Inspector", &active, ImGuiWindowFlags_NoFocusOnAppearing);
 	render_pos = ImGui::GetWindowPos();
 	render_size = ImGui::GetWindowSize();
-	App->scene_intro->DrawInspector();
+	//Getting Data
+	if (App->scene_intro->go_list.size() > 0 && App->input->file_droped == true)
+	{
+		for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it < App->scene_intro->go_list.end(); it++)
+		{
+			if ((*it)->IsRoot() == false)
+			{
+				if (mesh_name.empty())
+				{
+					mesh_name.append((*it)->GetName());
+				}
+
+				ImGui::Text(mesh_data.c_str());
+				if ((*it)->HasMesh())
+				{
+					Vertex = (*it)->GetMesh()->num_vertices;
+				}
+				
+			}
+		}
+	}
+	//Drawing ImGui
+	if (App->input->file_droped)
+	{
+		ImGui::Text("Name of the mesh is: %s", mesh_name.c_str());
+		if (ImGui::CollapsingHeader("Mesh"))
+		{
+			ImGui::Text("It has %i Vertex", Vertex);
+			ImGui::Text("Size of the name %i", mesh_name.size());
+		}
+
+	}
+
+
 
 	ImGui::End();
 }
