@@ -1,8 +1,7 @@
 #include "PanelInspector.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleScene.h"
 #include "Component.h"
 #include "ComponentMesh.h"
-#include "ModuleSceneIntro.h"
 #include "Application.h"
 
 
@@ -29,6 +28,7 @@ void PanelInspector::MeshComponentInfo(GameObject * active_GO)
 
 void PanelInspector::Draw()
 {
+
 	ImGui::Begin("Inspector", &active, ImGuiWindowFlags_NoFocusOnAppearing);
 	render_pos = ImGui::GetWindowPos();
 	render_size = ImGui::GetWindowSize();

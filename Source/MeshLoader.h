@@ -8,6 +8,7 @@
 #include "OpenGL.h"
 #include "glmath.h"
 
+
 #define INVALID_MATERIAL 0xFFFFFFFF
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")

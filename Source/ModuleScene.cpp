@@ -1,9 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleScene.h"
 #include "Primitive.h"
 #include "Component.h"
-
 #include "ImGui/imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
@@ -12,15 +11,15 @@
 
 #define RADIUS 44
 
-ModuleSceneIntro::ModuleSceneIntro( bool start_enabled) : Module( start_enabled)
+ModuleScene::ModuleScene( bool start_enabled) : Module( start_enabled)
 {
 }
 
-ModuleSceneIntro::~ModuleSceneIntro()
+ModuleScene::~ModuleScene()
 {}
 
 // Load assets
-bool ModuleSceneIntro::Start()
+bool ModuleScene::Start()
 {
 	CONSOLE_LOG("Loading Intro assets");
 	App->profiler.SaveInitData("Scene");
@@ -60,13 +59,13 @@ bool ModuleSceneIntro::Start()
 }
 
 // Load assets
-bool ModuleSceneIntro::CleanUp()
+bool ModuleScene::CleanUp()
 {
 	CONSOLE_LOG("Unloading Intro scene");
 	return true;
 }
 
-void ModuleSceneIntro::rapidjsonexamplecode()
+void ModuleScene::rapidjsonexamplecode()
 {
 	FILE* fp = fopen("big.json", "rb"); // non-Windows use "r"
 	char readBuffer[500];
@@ -123,7 +122,7 @@ void ModuleSceneIntro::rapidjsonexamplecode()
 }
 
 // Update
-update_status ModuleSceneIntro::Update(float dt)
+update_status ModuleScene::Update(float dt)
 {
 	//make a for in the future
 	for (int i = 0; i < go_list.size(); i++)
@@ -136,12 +135,12 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 
-void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 
 }
 
-int ModuleSceneIntro::RandInt(int min, int max)
+int ModuleScene::RandInt(int min, int max)
 {
 	LCG aux;
 	int ret;
@@ -149,7 +148,7 @@ int ModuleSceneIntro::RandInt(int min, int max)
 	return ret;
 }
 
-float ModuleSceneIntro::RandFloat(float min, float max)
+float ModuleScene::RandFloat(float min, float max)
 {
 
 	LCG aux;
@@ -158,7 +157,7 @@ float ModuleSceneIntro::RandFloat(float min, float max)
 	return ret;
 }
 
-GameObject * ModuleSceneIntro::CreateNewGameObject()
+GameObject * ModuleScene::CreateNewGameObject()
 {
 	GameObject* tmp_GO = new GameObject();
 	tmp_GO->SetParent(scene_root);
@@ -167,12 +166,12 @@ GameObject * ModuleSceneIntro::CreateNewGameObject()
 	return tmp_GO;
 }
 
-void ModuleSceneIntro::ClearScene()
+void ModuleScene::ClearScene()
 {
 	go_list.clear();
 }
 
-void ModuleSceneIntro::DrawInspector()
+void ModuleScene::DrawInspector()
 {
 	if (!go_list.empty())
 	{

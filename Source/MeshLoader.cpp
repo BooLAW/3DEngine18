@@ -2,12 +2,13 @@
 #include "Mesh.h"
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleScene.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include <stdio.h>
 #include "glmath.h"
 #include "Material.h"
+#include "PanelInspector.h"
 
 MeshLoader::MeshLoader()
 {
@@ -141,6 +142,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					new_mesh->num_normal = mesh->mNumVertices * 3;
 					new_mesh->indices = new int[new_mesh->num_indices];
 					new_mesh->normal = new float[new_mesh->num_normal];
+					
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{
