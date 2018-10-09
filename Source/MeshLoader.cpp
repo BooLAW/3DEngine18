@@ -153,13 +153,13 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 							
 							
-							int u = i + 1;
+							/*int u = i + 1;
 							int w = i + 2;
 							LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
 							Absolute(face_normal);
 							
 							
-							new_mesh->face_normal.push_back(face_normal);
+							new_mesh->face_normal.push_back(face_normal);*/
 						}
 					}
 					glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
@@ -214,31 +214,15 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				new_child->PushComponent((Component*)new_comp_mesh);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				//Materials
-				//if (scene != nullptr && scene->HasMaterials())
-				//{
-				//	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-				//	aiString aipath;
-
-				//	ComponentMaterial* aux_mat = new ComponentMaterial();
-				//	material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath);
-				//	std::string path = aipath.C_Str();
-				//	uint name_pos = path.find_last_of("\\");
-
-				//	aux_mat->type = ComponentType::MATERIAL;
-				//	aux_mat->Enable();
-				//	//set component owner
-				//	aux_mat->SetOwner(new_child);
-				//	//Add component to child
-				//	new_child->PushComponent(aux_mat);
-				//}
 				//Add child to parent
 				parent->AddChild(new_child);
 				//Transform
 				if (node != nullptr) {
-					//TODO
+					node->mTransformation;
 				}
 				App->scene_intro->go_list.push_back(new_child);
+
+				App->camera->AdaptCamera(bb);
 			}
 			GO = parent;
 		}

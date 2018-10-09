@@ -106,6 +106,15 @@ void ModuleCamera3D::Move(const vec3 &speed)
 	Position += newPos;
 	Reference += newPos;
 }
+void ModuleCamera3D::MoveCam(const vec3 &speed)
+{
+	vec3 newPos(speed.x, speed.y, speed.z);
+
+
+
+	Position = newPos;
+	Reference = newPos;
+}
 
 void ModuleCamera3D::WheelMove(const vec3 & mouse_speed, int direction)
 {
@@ -251,6 +260,20 @@ bool ModuleCamera3D::Load(Document * config_r)
 
 
 	return true;
+}
+
+void ModuleCamera3D::AdaptCamera(AABB bounding_box)
+{
+	//TODO PAU
+	//float z = bounding_box.Diagonal().Length() * 0.4;
+	//float x = bounding_box.Diagonal().Length() * 0.1;
+	//float y = bounding_box.Diagonal().Length() * 0.5;
+	float3 newpos = bounding_box.CenterPoint();
+	newpos.z -= bounding_box.Diagonal().Length();
+	newpos.y += bounding_box.Diagonal().Length();
+	MoveCam({newpos.x,newpos.y,newpos.z});
+	LookAt({ 0,0,0 });
+	CalculateViewMatrix();
 }
 
 // -----------------------------------------------------------------

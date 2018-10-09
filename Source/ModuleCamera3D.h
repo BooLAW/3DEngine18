@@ -40,6 +40,9 @@ public:
 
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
+	void AdaptCamera(AABB bounding_box);
+	void MoveCam(const vec3 &speed);
+
 
 private:
 

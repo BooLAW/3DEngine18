@@ -27,8 +27,6 @@ MaterialLoader::~MaterialLoader()
 
 }
 
-
-	
 ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 {
 	
@@ -98,6 +96,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 				ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
 				GL_UNSIGNED_BYTE,		// Image data type
 				ilGetData());			// The actual image data itself
+
 			CONSOLE_LOG("Texture Loaded to VRAM");
 		}
 		else // If we failed to open the image file in the first place...
