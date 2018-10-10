@@ -244,12 +244,12 @@ int ModuleSceneGui::CreateMainMenu()
 				ImGui::SameLine();
 				if (ImGui::Button("REPO"))
 					App->OpenWebPage("https://github.com/joseppi");
-				ImGui::Text("License");
+				ImGui::Separator();				
+				ImGui::Text("Living Worlds is a game engine to create 3D world with realisitic physics.");
 				ImGui::Separator();
-				ImGui::Spacing();
 				ImGui::Text("MIT License");
-				ImGui::Spacing();
-					ImGui::Text("Copyright(c) 2018 Pau Bonet Vall Llebrera & Josep Pi");
+				/*
+									ImGui::Text("Copyright(c) 2018 Pau Bonet Vall Llebrera & Josep Pi");
 					ImGui::Spacing();
 					ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy");
 					ImGui::Text("of this software and associated documentation files(the Software), to deal");
@@ -269,8 +269,7 @@ int ModuleSceneGui::CreateMainMenu()
 						ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE");
 						ImGui::Text("SOFTWARE.");
 						ImGui::Spacing();
-						ImGui::Separator();
-				ImGui::Text("Living Worlds is a game engine to create 3D world with realisitic physics.");
+				*/				
 				ImGui::Spacing();
 				ImGui::Separator();
 
@@ -285,6 +284,51 @@ int ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Report a Bug"))
 				{
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/issues");
+				}
+				if (ImGui::BeginMenu("Used Libraries",true))
+				{
+					if (ImGui::BeginMenu("ImGui"))
+					{
+						if (ImGui::MenuItem("Source Code"))
+						{
+							App->OpenWebPage("https://github.com/ocornut/imgui");
+						}
+						if (ImGui::MenuItem("Docking Code"))
+						{
+							App->OpenWebPage("https://github.com/ocornut/imgui/tree/docking");
+						}
+						ImGui::EndMenu();
+					}
+					
+					if (ImGui::MenuItem("PCG"))
+					{
+						App->OpenWebPage("http://www.pcg-random.org/download.html");
+					}
+					if (ImGui::MenuItem("MathGeolib"))
+					{
+						App->OpenWebPage("https://github.com/juj/MathGeoLib");
+					}
+					if (ImGui::MenuItem("STL"))
+					{
+						App->OpenWebPage("http://www.cplusplus.com/reference/stl/");
+					}
+					if (ImGui::MenuItem("DevIL"))
+					{
+						App->OpenWebPage("http://openil.sourceforge.net/download.php");
+					}
+					if (ImGui::MenuItem("Assimp"))
+					{
+						App->OpenWebPage("https://github.com/assimp/assimp/releases/tag/v4.1.0/");
+					}
+					if (ImGui::MenuItem("OpenGL"))
+					{
+						App->OpenWebPage("https://www.opengl.org/documentation/");
+					}
+					if (ImGui::MenuItem("MMGR"))
+					{
+						App->OpenWebPage("https://github.com/ConfettiFX/The-Forge/tree/master/Common_3/ThirdParty/OpenSource/FluidStudios/MemoryManager");
+					}
+					ImGui::EndMenu();
 				}
 				ImGui::EndMenu();
 			}
