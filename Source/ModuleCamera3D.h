@@ -25,6 +25,7 @@ public:
 	void Move(const vec3 &speed);
 	void WheelMove(const vec3 &mouse_speed,int direction);
 	void HandleMouse();
+	void Orbit();
 	float* GetViewMatrix();
 
 	void SetSpeed(float new_speed); 

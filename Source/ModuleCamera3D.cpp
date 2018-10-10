@@ -164,6 +164,12 @@ void ModuleCamera3D::HandleMouse()
 	Position = Reference + Z * length(Position);
 }
 
+void ModuleCamera3D::Orbit()
+{
+	HandleMouse();
+	LookAt({ 0,0,0 });
+}
+
 // -----------------------------------------------------------------
 float* ModuleCamera3D::GetViewMatrix()
 {
@@ -192,11 +198,16 @@ void ModuleCamera3D::CameraMovement(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 2.0f * dt * speed_base;
 	//WASD MOVEMENT
-	Move(speed);
+
 	// MOUSE MOTION ----------------
 	// ROTATION
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
 		HandleMouse();
+		Move(speed);
+	}
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT))
+		Orbit();
 	//MOUSE WHEEL
 	int wheel = App->input->GetMouseZ();
 	float wheel_speed = wheel_speed_base * dt * 100;
