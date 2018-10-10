@@ -35,7 +35,7 @@ void LoadManager::Load(const char * path)
 		}
 		
 	}
-	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" && App->scene_intro->has_meshes)
+	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" || App->GetTermination(path) == "dds" || App->GetTermination(path) == "DDS" && App->scene_intro->has_meshes)
 	{
 		CONSOLE_LOG("Texture Dropped");	
 		if (unique_material_path != path)

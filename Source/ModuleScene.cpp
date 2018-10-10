@@ -179,6 +179,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 void ModuleScene::ClearScene()
 {
 	go_list.clear();
+	imported_go = nullptr;
 }
 
 void ModuleScene::DrawInspector()

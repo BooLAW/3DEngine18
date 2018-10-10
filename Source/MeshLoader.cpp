@@ -103,7 +103,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		}
 		GO->SetName(node_name.c_str());
 
-
 		if (parent != nullptr)
 			parent->SetChild(GO);
 
@@ -115,6 +114,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		{
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
+
 				//Put the name
 				GameObject* new_child = new GameObject();
 				new_child->SetName(node->mName.C_Str());
@@ -206,6 +206,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 				new_mesh->bounding_box = bb;
 				new_mesh->show_bb = false;
+			
 
 
 				ComponentMesh*  new_comp_mesh = new ComponentMesh();
@@ -224,7 +225,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					node->mTransformation;
 				}
 				App->scene_intro->go_list.push_back(new_child);
-
+				
 				App->camera->AdaptCamera(bb);
 			}
 			GO = parent;
