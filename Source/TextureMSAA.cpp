@@ -1,95 +1,95 @@
 #include "TextureMSAA.h"
+#include "OpenGL.h"
 #include "Application.h"
-#include "Module.h"
 #include "ModuleWindow.h"
 
 TextureMSAA::TextureMSAA()
-{}
+{
+}
+
 
 TextureMSAA::~TextureMSAA()
-{}
-
-// We have three tasks: creating the texture in which we’re going to render, 
-// actually rendering something in it, and using the generated texture.
-
-bool TextureMSAA::Create(uint width, uint height)
 {
-	this->width = width;
-	this->height = height;
+}
 
-	// ---------------------------------------------------------------
-	// What we’re going to render to is called a Framebuffer.
-	// It’s a container for textures and an optional depth buffer.
-	// ---------------------------------------------------------------
+bool TextureMSAA::Create(uint width, uint height, int msa_lvl)
+{
+	max_msaa_samples = 0;
+	glGetIntegerv(GL_MAX_SAMPLES, &max_msaa_samples);
+	if (msa_lvl > max_msaa_samples) msa_lvl = max_msaa_samples;
+	current_msaa_samples = msa_lvl;
 
-	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
-	glGenFramebuffers(1, &framebuffer_id);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
-
-	// ---------------------------------------------------------------
-	// Create the texture which will contain the RGB output 
-	// of our shader.
-	// ---------------------------------------------------------------
-
-	// The texture we're going to render to
+	// create a texture object
 	glGenTextures(1, &texture_id);
-	// "Bind" the newly created texture: all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, texture_id);
-	// Give an empty image to OpenGL (the last "0")
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	// Poor filtering. Needed!
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	
-	// ---------------------------------------------------------------
-	// We also need a depth buffer.This is optional, depending 
-	// on what you actually need to draw in your texture; but 
-	// since we’re going to render Suzanne, we need depth - testing.
-	// ---------------------------------------------------------------
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// The depth buffer
-	glGenRenderbuffers(1, &depthbuffer_id);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthbuffer_id);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 0, GL_DEPTH_COMPONENT, width, height);
+	// create a MSAA framebuffer object
+	glGenFramebuffers(1, &fbo_msaa_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_msaa_id);
+
+	// create a MSAA renderbuffer object to store color info
+	glGenRenderbuffers(1, &rbo_color_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo_color_id);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, msa_lvl, GL_RGB8, width, height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	// ---------------------------------------------------------------
-	// Finally, we configure our framebuffer
-	// ---------------------------------------------------------------
+	// create a MSAA renderbuffer object to store depth info
+	glGenRenderbuffers(1, &rbo_depth_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth_id);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, msa_lvl, GL_DEPTH_COMPONENT, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	// Set "renderedTexture" as our colour attachement #0
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture_id, 0);
+	// attach msaa RBOs to FBO attachment points
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rbo_color_id);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth_id);
 
-	// Set the list of draw buffers.
-	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+	// create a normal (no MSAA) FBO to hold a render-to-texture
+	glGenFramebuffers(1, &fbo_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
 
-	// ---------------------------------------------------------------
-	// Something may have gone wrong during the process. This is 
-	// how you check it:
-	// ---------------------------------------------------------------
+	glGenRenderbuffers(1, &rbo_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo_id);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	// Always check that our framebuffer is ok
+	// attach a texture to FBO color attachement point
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
+
+	// attach a rbo to FBO depth attachement point
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_id);
+
+	// check FBO status
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		return false;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	this->width = width;
+	this->height = height;
 
 	return true;
 }
 
 void TextureMSAA::Bind()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_msaa_id);
 	glViewport(0, 0, width, height);
 }
 
 void TextureMSAA::Render()
 {
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_id);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_id);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo_msaa_id);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id);
 	glBlitFramebuffer(0, 0, width, height,  // src rect
-					  0, 0, width, height,  // dst rect
-		              GL_COLOR_BUFFER_BIT, // buffer mask
-		              GL_LINEAR); // scale filter
+		0, 0, width, height,  // dst rect
+		GL_COLOR_BUFFER_BIT, // buffer mask
+		GL_LINEAR); // scale filter
 }
 
 void TextureMSAA::Unbind()
@@ -98,7 +98,41 @@ void TextureMSAA::Unbind()
 	glViewport(0, 0, App->window->screen_surface->w, App->window->screen_surface->h);
 }
 
-uint TextureMSAA::GetTextureID()
+void TextureMSAA::SetTextureID()
+{
+}
+
+unsigned int TextureMSAA::GetTextureID() const
 {
 	return texture_id;
+}
+
+void TextureMSAA::SetWidth()
+{
+}
+
+unsigned int TextureMSAA::GetWidth() const
+{
+	return width;
+}
+
+void TextureMSAA::SetHeight()
+{
+}
+
+unsigned int TextureMSAA::GetHeight() const
+{
+	return height;
+}
+
+void TextureMSAA::LoadToMemory()
+{
+}
+
+void TextureMSAA::UnloadFromMemory()
+{
+}
+
+void TextureMSAA::Clear()
+{
 }

@@ -25,7 +25,7 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 	viewport_texture = new TextureMSAA();
-	viewport_texture->Create(App->window->screen_surface->w, App->window->screen_surface->h);
+	viewport_texture->Create(App->window->screen_surface->w, App->window->screen_surface->h,2);
 	App->profiler.SaveInitData("Camera");
 	return ret;
 }
