@@ -6,6 +6,7 @@
 #include "imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
+#include <WinBase.h>
 
 #include "ModuleJSON.h"
 
@@ -48,8 +49,8 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 	//Change when making the release
-	//App->loading_manager->Load("C:\\Users\\Josep\\Documents\\GitHub\\3DEngine18\\Game\\Assets\\Models\\BakerHouse.fbx");
-	//App->loading_manager->Load("C:\\Users\\Josep\\Documents\\GitHub\\3DEngine18\\Game\\Assets\\Textures\\Baker_house.png");
+	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	App->loading_manager->Load(".\\Assets\\Textures\\Baker_house.png");
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
