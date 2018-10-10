@@ -21,7 +21,10 @@ public:
 	Component* GetComponent(ComponentType type);
 	void PushComponent(Component* new_component);
 	void RemoveComponent(ComponentType type);
+
 	bool HasMesh()const;
+	bool HasTex()const;
+
 	//flags interaction
 	void SetActive(bool active);
 	bool IsActive()const;
@@ -42,6 +45,7 @@ public:
 	//Info
 	const char* GetName()const;
 	void SetName(const char* name);
+
 
 public:
 	GameObject* parent;

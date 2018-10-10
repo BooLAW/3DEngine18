@@ -4,6 +4,7 @@
 
 enum ComponentType{TANSFORM,MESH,MATERIAL,CAMERA};
 class GameObject;
+class ComponentMaterial;
 class Component
 {
 public:
@@ -19,12 +20,14 @@ public:
 	void SetActive(bool active);
 	GameObject* GetOwner()const;
 	ComponentType GetType()const;
+	//ComponentMaterial* GetMaterial()const;
 	void SetType(ComponentType type);
 	const char* GetName();
 	void SetName(const char* _name);
 	virtual ~Component();
 public:
 	ComponentType type;
+	ComponentMaterial* material;
 	GameObject* owner;
 	std::string name;
 	bool active = true;

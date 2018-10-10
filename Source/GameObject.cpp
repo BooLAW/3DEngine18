@@ -132,6 +132,17 @@ bool GameObject::HasMesh() const
 	return ret;
 }
 
+bool GameObject::HasTex() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::MATERIAL)
+			ret = true;
+	}
+	return ret;
+}
+
 void GameObject::SetActive(bool active)
 {
 	this->active = active;

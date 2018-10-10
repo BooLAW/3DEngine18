@@ -25,6 +25,7 @@ void LoadManager::Load(const char * path)
 		if (unique_fbx_path != path)
 		{
 			App->scene_intro->ClearScene();
+			App->input->file_droped = true;
 			mesh_loader->LoadMesh(path);
 			App->scene_intro->has_meshes = true;
 			unique_fbx_path = path;
@@ -40,11 +41,15 @@ void LoadManager::Load(const char * path)
 		CONSOLE_LOG("Texture Dropped");	
 		if (unique_material_path != path)
 		{
+			App->input->tex_droped = true;
+
 			ComponentMaterial* aux = material_loader->LoadPNG(path);
 			int auxi = App->scene_intro->go_list.size();
 			for (int i = 1; i < auxi; i++)
 				App->scene_intro->go_list[i]->PushComponent((Component*)aux);
 			unique_material_path = path;
+			tex_name_file = App->GetFileName(path).c_str();
+
 		}
 		else
 		{

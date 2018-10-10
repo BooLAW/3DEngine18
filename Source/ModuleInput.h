@@ -70,4 +70,5 @@ private:
 	//int mouse_z_motion;
 public:
 	bool file_droped = false;
+	bool tex_droped = false;
 };

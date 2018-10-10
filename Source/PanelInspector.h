@@ -16,9 +16,13 @@ public:
 	
 public:
 	std::vector<int*> vertex;
+	std::vector<int*> triangle;
+	std::vector<int*> tex_coord;
 	std::vector<const char*> mesh_name;
+	std::vector<const char*> tex_name;
 	uint counter = 0;
 	const char* last_fbx = nullptr;
+	
 
 };
 
