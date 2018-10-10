@@ -39,7 +39,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 		ilBindImage(imageID);
 
 		ComponentMaterial* comp = new ComponentMaterial(nullptr);
-		comp->data = new Material();
+		comp->data = new Material();		
 		comp->SetActive(true);
 		comp->Enable();
 		success = ilLoadImage(file_name);

@@ -7,8 +7,8 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
 #include "MeshLoader.h"
-#include "ComponentMaterial.h"
-#include "Material.h"
+
+
 
 
 PanelInspector::PanelInspector(): Panel("Inspector")
@@ -39,56 +39,65 @@ void PanelInspector::Draw()
 		render_pos = ImGui::GetWindowPos();
 		render_size = ImGui::GetWindowSize();
 		//Reset
-		if (App->input->file_droped == true)
+		if (App->input->file_droped == true || App->input->tex_droped == true)
 		{
 			mesh_name.clear();
 			vertex.clear();
-			counter = 0;
-		}
-		if (App->input->tex_droped == true)
-		{
 			tex_name.clear();
+			tex_data.clear();
+			triangle.clear();
+			counter = 0;
+
 		}
-		//Getting Data
-		if (App->scene_intro->go_list.size() > 0 && App->input->file_droped == true || App->scene_intro->go_list.size() > 0 && App->input->tex_droped == true)
+		
+		if (App->input->tex_droped == true || App->input->file_droped == true)
 		{
+			//Getting Data
 			for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it < App->scene_intro->go_list.end(); it++)
 			{
 				if ((*it)->IsRoot() == false)
 				{
-					if ((*it)->GetName())
-					if (mesh_name.size() <= (*it)->num_meshes)
+					
+					if ((*it)->GetName() != nullptr)
 					{
 						mesh_name.push_back((*it)->GetName());
 	
 					}
 					if ((*it)->HasMesh())
 					{
-						vertex.push_back((int*)(*it)->GetMesh()->num_vertices); 
+						
+						vertex.push_back((*it)->GetMesh()->num_indices); 
 						uint get_triangles = ((*it)->GetMesh()->num_vertices);
+						
 						get_triangles = get_triangles / 3;
-						triangle.push_back((int*)get_triangles);
-						
-						if ((*it)->HasTex())
-						{
-							ComponentMaterial* aux = (ComponentMaterial*)(*it)->GetComponent(MATERIAL);
-							Material* aux_mat = aux->data;
-							aux_mat->height;
-						
-							tex_name.push_back(App->loading_manager->tex_name_file.c_str());
-							if ((*it)->GetMesh()->tex_coords != NULL)
-							{
-								tex_coord.push_back((int*)(*it)->GetMesh()->num_tex_coords);								
-							}
-						}
+						triangle.push_back(get_triangles);										
 						counter++;
 					}
 				}
-				
 			}
-			App->input->file_droped = false;
-			App->input->tex_droped = false;
+			
+			//Getting Textures
+			for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it < App->scene_intro->go_list.end(); it++)
+			{
+				if ((*it)->HasTex())
+				{
+					ComponentMaterial* aux = (ComponentMaterial*)(*it)->GetComponent(MATERIAL);
+					Material* aux_mat = aux->data;
+
+					tex_data.push_back(aux_mat);
+
+					tex_name.push_back(App->loading_manager->tex_name_file.c_str());
+					if ((*it)->GetMesh() != nullptr)
+					{
+						tex_coord.push_back((int*)(*it)->GetMesh()->num_tex_coords);
+					}
+				}
+			}
+			
 		}
+
+		App->input->file_droped = false;
+		App->input->tex_droped = false;
 		//Drawing ImGui
 		if (App->scene_intro->go_list.size()>1)
 		{
@@ -107,21 +116,31 @@ void PanelInspector::Draw()
 							}
 						}
 					}
-				}
-				if (ImGui::CollapsingHeader("Texture"))
+				}				
+				if (tex_data.size() != 0) //Checking if it the mesh has a texture to display.
 				{
-					for (int i = 0; i < counter; i++)
+					if (ImGui::CollapsingHeader("Texture"))
 					{
-						if (ImGui::CollapsingHeader(tex_name[i]), true)
+						for (int i = 0; i < counter; i++)
 						{
-							ImGui::Text("It has %i Texture Coordinates", tex_coord[i]);
+							if (ImGui::CollapsingHeader(tex_name[i]), true)
+							{
+								ImGui::Text("Texture Coordinates: TAB %i ", tex_coord[i]);
+								ImGui::Text("Height: %i", tex_data[i]->height);
+								ImGui::Text("Width: %i", tex_data[i]->width);
+								ImGui::Text("It has id %i", tex_data[i]->textures_id);
+
+								ImTextureID tex = (uint*)tex_data[i]->textures_id;
+								ImVec2 image_size = ImGui::GetWindowSize();
+								image_size.y = image_size.x;
+								ImGui::Image(tex, image_size);
+
+							}
 						}
 					}
 				}
 			}
-
 		}
-
 	}
 
 	ImGui::EndDock();

@@ -2,6 +2,10 @@
 #define __PANEL_INSPECTOR_H__
 
 #include "Panel.h"
+#include "Material.h"
+#include "ComponentMaterial.h"
+#include "Mesh.h"
+
 
 class GameObject;
 
@@ -15,11 +19,14 @@ public:
 	void Draw()override;
 	
 public:
-	std::vector<int*> vertex;
-	std::vector<int*> triangle;
+	std::vector<uint> vertex;
+	std::vector<uint> triangle;
 	std::vector<int*> tex_coord;
 	std::vector<const char*> mesh_name;
+
 	std::vector<const char*> tex_name;
+	std::vector<Material*> tex_data;
+
 	uint counter = 0;
 	const char* last_fbx = nullptr;
 	
