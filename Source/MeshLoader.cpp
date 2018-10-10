@@ -153,17 +153,18 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						}
 						else
 						{
-							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
-							
-							
-							//int u = i + 1;
-							//int w = i + 2;
-							//LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
-							//Absolute(face_normal);
-							//
-							//
-							//new_mesh->face_normal.push_back(face_normal);
+							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
 						}
+					}
+					for (int i = 0; i < mesh->mNumVertices; ++i)
+					{
+						int u = i + 1;
+						int w = i + 2;
+						LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
+						Absolute(face_normal);
+
+
+						new_mesh->face_normal.push_back(face_normal);
 					}
 					glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->indices_id);
