@@ -33,6 +33,7 @@ public:
 	//change to list when we have to load more than one mesh
 	std::vector<Mesh*> scene_meshes;
 	Material* mat;
+	std::string fbx_name;
 };
 
 

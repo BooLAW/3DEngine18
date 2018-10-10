@@ -15,10 +15,11 @@ public:
 	void Draw()override;
 	
 public:
-	std::vector<uint> mesh_vertex;
 	std::vector<int*> vertex;
 	std::vector<const char*> mesh_name;
-	int counter = 0;
+	uint counter = 0;
+	const char* last_fbx = nullptr;
+
 };
 
 #endif

@@ -49,7 +49,7 @@ public:
 	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
 	ComponentTransform* transform;
-	uint* num_meshes;
+	uint num_meshes;
 	//flags
 	bool active = true;
 	bool static_go = false;

@@ -6,6 +6,7 @@
 #include "imgui_impl_sdl.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
+#include "MeshLoader.h"
 
 
 PanelInspector::PanelInspector(): Panel("Inspector")
@@ -31,11 +32,17 @@ void PanelInspector::MeshComponentInfo(GameObject * active_GO)
 
 void PanelInspector::Draw()
 {
-
 	if(ImGui::BeginDock("Inspector", &active))
 	{
 		render_pos = ImGui::GetWindowPos();
 		render_size = ImGui::GetWindowSize();
+		//Reset
+		if (last_fbx != App->scene_intro->fbx_name.c_str() || App->input->file_droped == true)
+		{
+			mesh_name.clear();
+			vertex.clear();
+			counter = 0;
+		}
 		//Getting Data
 		if (App->scene_intro->go_list.size() > 0 && App->input->file_droped == true)
 		{
@@ -43,17 +50,18 @@ void PanelInspector::Draw()
 			{
 				if ((*it)->IsRoot() == false)
 				{
-					if (mesh_name.size() <= counter)
+					if ((*it)->GetName())
+					if (mesh_name.size() <= (*it)->num_meshes)
 					{
 						mesh_name.push_back((*it)->GetName());
+	
 					}
 					if ((*it)->HasMesh())
 					{
 						vertex.push_back((int*)(*it)->GetMesh()->num_vertices); 
-						
-						
+						counter++;
 					}
-					counter++;
+					last_fbx = App->scene_intro->fbx_name.c_str();
 				}
 				
 			}
@@ -62,18 +70,22 @@ void PanelInspector::Draw()
 		//Drawing ImGui
 		if (App->scene_intro->go_list.size()>1)
 		{
-			if(ImGui::CollapsingHeader("Mesh"))
+			if(ImGui::CollapsingHeader(App->scene_intro->fbx_name.c_str()))
 			{
 				for (int i = 0; i < counter; i++)
 				{
 					if (ImGui::CollapsingHeader(mesh_name[i]))
 					{
-						ImGui::Text("It has %i Vertex", vertex[i]);
+						if (i < vertex.size())
+						{
+							ImGui::Text("It has %i Vertex", vertex[i]);
+						}
 					}
 				}
 			}
 
 		}
+
 	}
 
 	ImGui::EndDock();

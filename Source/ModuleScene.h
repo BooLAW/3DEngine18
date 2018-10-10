@@ -37,5 +37,6 @@ public:
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
 	bool has_meshes = false;
+	std::string fbx_name;
 
 };
