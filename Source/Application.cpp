@@ -124,7 +124,10 @@ update_status Application::Update()
 		if (ret == UPDATE_CONTINUE)
 			ret = (*item)->PostUpdate(dt);
 	}
-
+	if (ret == UPDATE_STOP)
+	{
+		Save();
+	}
 	FinishUpdate();
 	return ret;
 }
@@ -174,13 +177,9 @@ Module * Application::GetModule(int index)
 
 void Application::DebugDraw()
 {
-	//change to active GO
 	for (int i = 0; i < scene_intro->go_list.size(); i++)
 		scene_intro->go_list[i]->ActivateBB();
 
-	/*for (int i = 0; i < scene_intro->go_list.size(); i++)
-		scene_intro->go_list[i]->show_normal = !scene_intro->go_list[i]->show_normal;
-*/
 }
 
 bool Application::Save()

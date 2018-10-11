@@ -86,6 +86,7 @@ bool ModuleRenderer3D::Init()
 		SetSceneLights();
 	}
 
+
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	App->profiler.SaveInitData("Render");
@@ -117,10 +118,9 @@ void ModuleRenderer3D::DrawModuleConfig()
 		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
 		if(ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
 
-		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw))
-		{
-			debug_draw = true;
-		}
+		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw))attribute_modified = true;
+
+
 
 		if (attribute_modified)
 			UpdateAttributes();
@@ -134,6 +134,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	App->profiler.StartTimer("Render");
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
@@ -164,13 +165,14 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
 	//Debug Draw
 	if (debug_draw == true)
 	{
 		SetDebugAttributes();
 		//DRAW FUTURE SCENE GAMEOBJECTS
 		App->DebugDraw();
-		debug_draw = false;
 		SetNormalAttributes();
 	}
 	App->scene_intro->DrawGameObjects();
@@ -351,6 +353,12 @@ void ModuleRenderer3D::UpdateAttributes()
 		glEnable(GL_TEXTURE_2D);
 	else
 		glDisable(GL_TEXTURE_2D);
+	if (attributes.debug_draw == true)
+	{
+		debug_draw = true;
+	}
+	else
+		debug_draw = false;
 
 }
 
@@ -385,6 +393,7 @@ bool ModuleRenderer3D::Save(Document& testconfig_w, FileWriteStream& os)
 	app.AddMember("CullTest", attributes.cull_face, allocator);
 	app.AddMember("Lighting", attributes.lighting, allocator);
 	app.AddMember("Color Material", attributes.color_material, allocator);
+	app.AddMember("Debug Draw", attributes.debug_draw, allocator);
 	testconfig_w.AddMember("renderer", app, allocator);
 	
 	return true;
@@ -401,6 +410,7 @@ bool ModuleRenderer3D::Load(Document* testconfig_r)
 	attributes.cull_face = ret["renderer"]["CullTest"].GetBool();
 	attributes.lighting = ret["renderer"]["Lighting"].GetBool();
 	attributes.color_material = ret["renderer"]["Color Material"].GetBool();
+	attributes.debug_draw = ret["renderer"]["Debug Draw"].GetBool();
 
 	return true;
 }
