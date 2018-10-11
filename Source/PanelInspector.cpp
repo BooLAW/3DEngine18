@@ -135,7 +135,7 @@ void PanelInspector::Draw()
 						{
 							if (ImGui::TreeNode("Texture"))
 							{
-								if (ImGui::TreeNode(tex_name[i]), true)
+								if (ImGui::TreeNode(tex_name[i]))
 								{
 									ImGui::Text("Texture Coordinates: TAB %i ", tex_coord[i]);
 									ImGui::Text("Height: %i", tex_data[i]->height);
@@ -146,7 +146,7 @@ void PanelInspector::Draw()
 									ImVec2 image_size = ImGui::GetWindowSize();
 									image_size.y = image_size.x;
 									ImGui::Image(tex, image_size);
-
+									ImGui::TreePop();
 								}
 								ImGui::TreePop();
 							}
