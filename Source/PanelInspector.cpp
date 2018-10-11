@@ -36,7 +36,6 @@ void PanelInspector::MeshComponentInfo(GameObject * active_GO)
 
 void PanelInspector::Draw()
 {
-	ImGui::ShowTestWindow();
 	if(ImGui::BeginDock("Inspector", &active))
 	{
 		render_pos = ImGui::GetWindowPos();
