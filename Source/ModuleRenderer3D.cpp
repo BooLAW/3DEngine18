@@ -117,11 +117,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 		if(ImGui::Checkbox("CullTest", &attributes.cull_face))attribute_modified = true;
 		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
 		if(ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
-
 		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw))attribute_modified = true;
-
-
-
 		if (attribute_modified)
 			UpdateAttributes();
 
@@ -353,10 +349,9 @@ void ModuleRenderer3D::UpdateAttributes()
 		glEnable(GL_TEXTURE_2D);
 	else
 		glDisable(GL_TEXTURE_2D);
+	//debug draw
 	if (attributes.debug_draw == true)
-	{
 		debug_draw = true;
-	}
 	else
 		debug_draw = false;
 
