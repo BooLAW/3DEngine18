@@ -36,6 +36,7 @@ void PanelInspector::MeshComponentInfo(GameObject * active_GO)
 
 void PanelInspector::Draw()
 {
+	ImGui::ShowTestWindow();
 	if(ImGui::BeginDock("Inspector", &active))
 	{
 		render_pos = ImGui::GetWindowPos();
@@ -75,7 +76,6 @@ void PanelInspector::Draw()
 					}
 					if ((*it)->HasMesh())
 					{
-						
 						vertex.push_back((*it)->GetMesh()->num_indices); 
 						uint get_triangles = ((*it)->GetMesh()->num_vertices);
 						
@@ -104,63 +104,58 @@ void PanelInspector::Draw()
 			}
 			
 		}
-
 		App->input->file_droped = false;
 		App->input->tex_droped = false;
+
 		//Drawing ImGui
 		if (App->scene_intro->go_list.size()>1)
 		{
-			if(ImGui::CollapsingHeader(App->scene_intro->fbx_name.c_str()))
+			if(ImGui::TreeNode(App->scene_intro->fbx_name.c_str()))
 			{
-				if (ImGui::CollapsingHeader("Transform"))
+				for (int i = 0; i < counter; i++)
 				{
-					for (int i = 0; i < counter; i++)
+					if (ImGui::TreeNode(mesh_name[i]))
 					{
-						if (ImGui::CollapsingHeader(mesh_name[i]), true)
+						if (ImGui::TreeNode("Transform"))
 						{
 							ImGui::DragFloat3("Position", (float*)&positions[i]);
 							ImGui::DragFloat3("Rotation", (float*)&rotations[i]);
 							ImGui::DragFloat3("Scale", (float*)&scales[i]);
-
+							ImGui::TreePop();
 						}
-					}
-				}
-				if (ImGui::CollapsingHeader("Geometry"))
-				{
-					for (int i = 0; i < counter; i++)
-					{
-						if (ImGui::CollapsingHeader(mesh_name[i]),true)
+						if (ImGui::TreeNode("Geometry"))
 						{
 							if (i < vertex.size())
 							{
 								ImGui::Text("It has %i Vertex", vertex[i]);
 								ImGui::Text("It has %i Triangles", triangle[i]);
 							}
+							ImGui::TreePop();
 						}
-					}
-				}				
-				if (tex_data.size() != 0) //Checking if it the mesh has a texture to display.
-				{
-					if (ImGui::CollapsingHeader("Texture"))
-					{
-						for (int i = 0; i < counter; i++)
+						if (tex_data.size() != 0) //Checking if it the mesh has a texture to display.
 						{
-							if (ImGui::CollapsingHeader(tex_name[i]), true)
+							if (ImGui::TreeNode("Texture"))
 							{
-								ImGui::Text("Texture Coordinates: TAB %i ", tex_coord[i]);
-								ImGui::Text("Height: %i", tex_data[i]->height);
-								ImGui::Text("Width: %i", tex_data[i]->width);
-								ImGui::Text("It has id %i", tex_data[i]->textures_id);
+								if (ImGui::TreeNode(tex_name[i]), true)
+								{
+									ImGui::Text("Texture Coordinates: TAB %i ", tex_coord[i]);
+									ImGui::Text("Height: %i", tex_data[i]->height);
+									ImGui::Text("Width: %i", tex_data[i]->width);
+									ImGui::Text("It has id %i", tex_data[i]->textures_id);
 
-								ImTextureID tex = (uint*)tex_data[i]->textures_id;
-								ImVec2 image_size = ImGui::GetWindowSize();
-								image_size.y = image_size.x;
-								ImGui::Image(tex, image_size);
+									ImTextureID tex = (uint*)tex_data[i]->textures_id;
+									ImVec2 image_size = ImGui::GetWindowSize();
+									image_size.y = image_size.x;
+									ImGui::Image(tex, image_size);
 
+								}
+								ImGui::TreePop();
 							}
 						}
+						ImGui::TreePop();
 					}
 				}
+				ImGui::TreePop();
 			}
 		}
 	}
