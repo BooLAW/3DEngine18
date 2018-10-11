@@ -41,6 +41,7 @@ void PanelInspector::Draw()
 		//Reset
 		if (App->input->file_droped == true || App->input->tex_droped == true)
 		{
+			//clear variables
 			mesh_name.clear();
 			vertex.clear();
 			tex_name.clear();
@@ -75,7 +76,6 @@ void PanelInspector::Draw()
 					}
 				}
 			}
-			
 			//Getting Textures
 			for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it < App->scene_intro->go_list.end(); it++)
 			{

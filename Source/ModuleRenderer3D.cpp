@@ -117,10 +117,14 @@ void ModuleRenderer3D::DrawModuleConfig()
 		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
 		if(ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
 
-		if (ImGui::Checkbox("Debug Draw", &debug_draw)) debug_draw = true;
+		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw))
+		{
+			debug_draw = true;
+		}
 
 		if (attribute_modified)
 			UpdateAttributes();
+
 		CPUCapabilities();
 	}
 

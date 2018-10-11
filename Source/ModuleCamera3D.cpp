@@ -42,8 +42,20 @@ void ModuleCamera3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
+		ImGui::SliderFloat3("Position", &Position, -100.0f, 100.0f);
+		ImGui::Spacing();
+		if (ImGui::Button("Reset"))
+		{
+			Position.Set(0, 5, 10);
+			LookAt({ 0, 0, 0 });
+		}
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
 		ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f);
+		ImGui::Spacing();
 		ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f);
+		ImGui::Spacing();
 		ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f);
 
 	}

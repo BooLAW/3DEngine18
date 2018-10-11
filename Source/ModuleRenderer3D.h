@@ -12,6 +12,7 @@ struct RenderAttributes{
 	bool lighting = false;
 	bool color_material = false;
 	bool texture = false;
+	bool debug_draw = false;
 };
 class ModuleRenderer3D : public Module
 {

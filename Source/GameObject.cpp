@@ -60,7 +60,7 @@ void GameObject::Draw()
 					glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 				}
 				//Bind Indices
-				if (aux_material != nullptr)
+				if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
 					glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
 
 

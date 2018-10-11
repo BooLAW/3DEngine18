@@ -242,7 +242,7 @@ int ModuleSceneGui::CreateMainMenu()
 				ImGui::SameLine();
 				ImGui::Text("& Josep Pi");
 				ImGui::SameLine();
-				if (ImGui::Button("REPO"))
+				if (ImGui::Button("REPO "))
 					App->OpenWebPage("https://github.com/joseppi");
 				ImGui::Separator();				
 				ImGui::Text("Living Worlds is a game engine to create 3D world with realisitic physics.");
