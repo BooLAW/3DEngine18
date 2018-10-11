@@ -51,6 +51,11 @@ void GameObject::Draw()
 				glVertexPointer(3, GL_FLOAT, 0, NULL);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
 
+				//Draw
+				if (aux_mesh->mesh->show_bb)
+				{
+					DebugDrawing(aux_mesh->mesh, Red);
+				}
 				//BindMaterial
 
 				if (aux_mesh->mesh->num_tex_coords != 0)
@@ -63,13 +68,7 @@ void GameObject::Draw()
 				if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
 					glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
 
-
-				//Draw
 				glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
-				if (aux_mesh->mesh->show_bb)
-				{
-					DebugDrawing(aux_mesh->mesh, Red);
-				}
 			}
 			
 			
