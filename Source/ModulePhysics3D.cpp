@@ -18,7 +18,7 @@ ModulePhysics3D::~ModulePhysics3D()
 // Render not available yet----------------------------------
 bool ModulePhysics3D::Init()
 {
-	CONSOLE_LOG("Creating 3D Physics simulation");
+	CONSOLE_LOG("Creating 3D Physics simulation",INFO_LOG);
 	bool ret = true;
 
 	return ret;
@@ -27,7 +27,7 @@ bool ModulePhysics3D::Init()
 // ---------------------------------------------------------
 bool ModulePhysics3D::Start()
 {
-	CONSOLE_LOG("Creating Physics environment");
+	CONSOLE_LOG("Creating Physics environment",INFO_LOG);
 
 
 
@@ -64,7 +64,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 // Called before quitting
 bool ModulePhysics3D::CleanUp()
 {
-	CONSOLE_LOG("Destroying 3D Physics simulation");
+	CONSOLE_LOG("Destroying 3D Physics simulation",INFO_LOG);
 
 	
 
@@ -105,7 +105,7 @@ std::list<float2> ModulePhysics3D::GetSphereCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({(float) listener,(float)candidate });
-				CONSOLE_LOG("Sphere %d collides with Sphere %d", listener, candidate);
+				//CONSOLE_LOG("Sphere %d collides with Sphere %d", INFO_LOG,*(listener, candidate));
 			}
 		}
 		candidate = 0;
@@ -131,7 +131,7 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({ (float)listener,(float)candidate });
-				CONSOLE_LOG("Cube %d collides with Cube %d", listener, candidate);
+				//CONSOLE_LOG("Cube %d collides with Cube %d", INFO_LOG,*(listener, candidate));
 			}
 		}
 		candidate = 0;

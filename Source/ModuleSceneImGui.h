@@ -33,7 +33,7 @@ public:
 	void showRandomNumberGenerator();
 	void showCubeCreator();
 	void ManageInput(SDL_Event* e)const;
-	void Log(const std::string text);
+	void Log(const std::string text,int type);
 	void DrawImGui();
 	void BlitPanels();
 	bool Save(Document& config_w, FileWriteStream& os);

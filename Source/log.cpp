@@ -17,7 +17,7 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 }
 
-void console_log(const char file[], int line, const char* format, ...)
+void console_log(const char file[], int line, const char* format,int type, ...)
 {
 	static char tmp_string[4096];
 	static char tmp_string2[4096];
@@ -31,5 +31,5 @@ void console_log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 	
 	if(App)
-		App->imgui->Log(tmp_string);
+		App->imgui->Log(tmp_string,type);
 }

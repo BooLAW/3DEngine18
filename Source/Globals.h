@@ -11,12 +11,10 @@
 #include <string>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
-#define CONSOLE_LOG(format, ...) console_log(__FILE__, __LINE__, format, __VA_ARGS__);
+#define CONSOLE_LOG(format,type, ...) console_log(__FILE__, __LINE__, format,type __VA_ARGS__);
 
 void log(const char file[], int line, const char* format, ...);
-void console_log(const char file[], int line, const char* format, ...);
-
-
+void console_log(const char file[], int line, const char* format,int type, ...);
 
 
 #define CAP(n) ((n <= 0.0f) ? n=0.0f : (n >= 1.0f) ? n=1.0f : n=n)
@@ -37,10 +35,10 @@ enum update_status
 };
 enum log_types
 {
-	WARN_LOG = 0,
+	DEB_LOG= 0,
+	WARN_LOG,
 	ERR_LOG,
-	INFO_LOG,
-	DEB_LOG
+	INFO_LOG
 };
 // Configuration -----------
 

@@ -22,7 +22,7 @@ ModuleScene::~ModuleScene()
 // Load assets
 bool ModuleScene::Start()
 {
-	CONSOLE_LOG("Loading Intro assets");
+	CONSOLE_LOG("Loading Intro assets",INFO_LOG);
 	App->profiler.SaveInitData("Scene");
 	bool ret = true;
 	{
@@ -58,7 +58,7 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	CONSOLE_LOG("Unloading Intro scene");
+	CONSOLE_LOG("Unloading Intro scene",INFO_LOG);
 	return true;
 }
 
@@ -72,31 +72,31 @@ void ModuleScene::rapidjsonexamplecode()
 	document.ParseStream(is);
 	document.IsObject();
 
-	//TEST START
-	{
-		//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
-		document.HasMember("hello");
-		document["hello"].IsString();
-		CONSOLE_LOG("hello = %s\n", document["hello"].GetString());
-		//hello = world
-		document["t"].IsBool();
-		CONSOLE_LOG("t = %s\n", document["t"].GetBool() ? "true" : "false");
-		//t=true;
-		CONSOLE_LOG("n = %s\n", document["n"].IsNull() ? "null" : "?");
-		document["i"].IsNumber();
-		// In this case, IsUint()/IsInt64()/IsUInt64() also return true.
-		document["i"].IsInt();
-		CONSOLE_LOG("i = %d\n", document["i"].GetInt());
-		// Alternative (int)document["i"]
-		document["pi"].IsNumber();
-		document["pi"].IsDouble();
-		CONSOLE_LOG("pi = %g\n", document["pi"].GetDouble());
+	////TEST START
+	//{
+	//	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
+	//	document.HasMember("hello");
+	//	document["hello"].IsString();
+	//	CONSOLE_LOG("hello = %s\n", document["hello"].GetString());
+	//	//hello = world
+	//	document["t"].IsBool();
+	//	CONSOLE_LOG("t = %s\n", document["t"].GetBool() ? "true" : "false");
+	//	//t=true;
+	//	CONSOLE_LOG("n = %s\n", document["n"].IsNull() ? "null" : "?");
+	//	document["i"].IsNumber();
+	//	// In this case, IsUint()/IsInt64()/IsUInt64() also return true.
+	//	document["i"].IsInt();
+	//	CONSOLE_LOG("i = %d\n", document["i"].GetInt());
+	//	// Alternative (int)document["i"]
+	//	document["pi"].IsNumber();
+	//	document["pi"].IsDouble();
+	//	CONSOLE_LOG("pi = %g\n", document["pi"].GetDouble());
 
-		const Value& a = document["a"];
-		a.IsArray();
-		for (SizeType i = 0; i < a.Size(); i++) // Uses SizeType instead of size_t
-			CONSOLE_LOG("a[%d] = %d\n", i, a[i].GetInt());
-	}
+	//	const Value& a = document["a"];
+	//	a.IsArray();
+	//	for (SizeType i = 0; i < a.Size(); i++) // Uses SizeType instead of size_t
+	//		CONSOLE_LOG("a[%d] = %d\n", i, a[i].GetInt());
+	//}
 	//TEST END
 
 

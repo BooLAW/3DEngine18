@@ -97,7 +97,7 @@ AABB GameObject::GetBB()
 		return aux->mesh->bounding_box;
 	}
 	else
-		CONSOLE_LOG("Can't return BB without a mesh");
+		CONSOLE_LOG("Can't return BB without a mesh",WARN_LOG);
 }
 
 Component * GameObject::GetComponent(ComponentType type)
