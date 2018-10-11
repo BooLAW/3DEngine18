@@ -35,7 +35,13 @@ enum update_status
 	UPDATE_STOP,
 	UPDATE_ERROR
 };
-
+enum log_types
+{
+	WARN_LOG = 0,
+	ERR_LOG,
+	INFO_LOG,
+	DEB_LOG
+};
 // Configuration -----------
 
 #define SCREEN_WIDTH 1280

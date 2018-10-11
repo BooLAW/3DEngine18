@@ -17,9 +17,21 @@ void PanelConsole::Draw()
 {
 	if (ImGui::BeginDock("Console", &active))
 	{
-		if (ImGui::Button("Debug"))
+		if (ImGui::Button("DEBUG"))
 		{
 			show_debug_text = !show_debug_text;
+		}
+		if (ImGui::Button("WARNINGS"))
+		{
+			show_warning_text = !show_warning_text;
+		}
+		if (ImGui::Button("ERRORS"))
+		{
+			show_err_text = !show_err_text;
+		}
+		if (ImGui::Button("INFO"))
+		{
+			show_info_text = !show_info_text;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Clear"))
@@ -31,6 +43,11 @@ void PanelConsole::Draw()
 			{
 				ImGui::Text(text_debug_buffer[i].c_str());
 			}
+		if (show_warning_text)
+			for (int i = 0; i < text_warning_buffer.size(); i++)
+			{
+				ImGui::Text(text_warning_buffer[i].c_str());
+			}
 
 		ImGui::SetScrollY(ImGui::GetScrollMaxY());
 		render_pos = ImGui::GetWindowPos();
@@ -41,9 +58,19 @@ void PanelConsole::Draw()
 
 }
 
-void PanelConsole::LogToConsole(const std::string text)
+void PanelConsole::LogToConsole(const std::string text,int type)
 {
-	text_debug_buffer.push_back(text);
+	switch (type)
+	{
+	case 0:
+		text_debug_buffer.push_back(text);
+	case 1:
+		text_warning_buffer.push_back(text);
+	case 2:
+		text_err_buffer.push_back(text);
+	case 3:
+		text_info_buffer.push_back(text);
+	}
 
 }
 

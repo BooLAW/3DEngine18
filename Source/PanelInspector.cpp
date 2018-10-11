@@ -7,6 +7,8 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
 #include "MeshLoader.h"
+#include "ComponentTransform.h"
+#include "Transform.h"
 
 
 
@@ -64,6 +66,13 @@ void PanelInspector::Draw()
 						mesh_name.push_back((*it)->GetName());
 	
 					}
+					if ((*it)->transform != nullptr)
+					{
+						positions.push_back((*it)->transform->transform.pos);
+						rotations.push_back((*it)->transform->transform.rot.ToEulerXYZ() *RADTODEG);
+						scales.push_back((*it)->transform->transform.scale);
+
+					}
 					if ((*it)->HasMesh())
 					{
 						
@@ -103,6 +112,19 @@ void PanelInspector::Draw()
 		{
 			if(ImGui::CollapsingHeader(App->scene_intro->fbx_name.c_str()))
 			{
+				if (ImGui::CollapsingHeader("Transform"))
+				{
+					for (int i = 0; i < counter; i++)
+					{
+						if (ImGui::CollapsingHeader(mesh_name[i]), true)
+						{
+							ImGui::DragFloat3("Position", (float*)&positions[i]);
+							ImGui::DragFloat3("Rotation", (float*)&rotations[i]);
+							ImGui::DragFloat3("Scale", (float*)&scales[i]);
+
+						}
+					}
+				}
 				if (ImGui::CollapsingHeader("Geometry"))
 				{
 					for (int i = 0; i < counter; i++)

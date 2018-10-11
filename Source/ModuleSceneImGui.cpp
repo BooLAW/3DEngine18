@@ -158,7 +158,7 @@ bool ModuleSceneGui::Load(Document * config_r)
 void ModuleSceneGui::Log(const std::string text)
 {
 	if (console != nullptr)
-		console->LogToConsole(text);
+		console->LogToConsole(text,DEB_LOG);
 }
 
 

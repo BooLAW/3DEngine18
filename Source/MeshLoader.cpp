@@ -9,6 +9,8 @@
 #include "glmath.h"
 #include "Material.h"
 #include "PanelInspector.h"
+#include "Transform.h"
+#include "ComponentTransform.h"
 
 MeshLoader::MeshLoader()
 {
@@ -223,7 +225,20 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				parent->AddChild(new_child);
 				//Transform
 				if (node != nullptr) {
-					node->mTransformation;
+
+					aiVector3D aiPos;
+					aiQuaternion aiQuat;
+					aiVector3D aiScale;
+
+					node->mTransformation.Decompose(aiPos, aiQuat, aiScale);
+
+					float3 pos(aiPos.x, aiPos.y, aiPos.z);
+					Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
+					float3 scale(aiScale.x, aiScale.y, aiScale.z);
+
+					new_child->transform->SetTransform(pos, rot, scale);
+
+
 				}
 				App->scene_intro->go_list.push_back(new_child);
 				

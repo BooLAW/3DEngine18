@@ -8,8 +8,11 @@ public:
 	ComponentTransform(GameObject* owner);
 	virtual ~ComponentTransform();
 
+	void SetTransform(float3 pos, Quat rot, float3 scale);
+	Transform GetTransform()const;
+
 public:
-	Transform local_trans;
-	Transform global_trans;
+	Transform transform;
+	//Transform global_trans;
 };
 
