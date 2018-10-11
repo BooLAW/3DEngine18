@@ -10,7 +10,6 @@ Application::Application()
 {
 	window = new ModuleWindow();
 	input = new ModuleInput();
-	audio = new ModuleAudio();
 	scene_intro = new ModuleScene();
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
@@ -26,7 +25,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(audio);
 	AddModule(physics);
 	AddModule(json);
 	AddModule(loading_manager);
@@ -189,7 +187,7 @@ bool Application::Save()
 {
 	bool ret = true;
 
-	FILE* fp = fopen("testconfig.json", "wb"); // non-Windows use "w"
+	FILE* fp = fopen("Assets/json/config.json", "wb"); // non-Windows use "w"
 	char writeBuffer[10000];
 	Document testconfig_w;
 	testconfig_w.Parse(readBuf);
@@ -222,7 +220,7 @@ bool Application::Load()
 {
 	bool ret = true;
 	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
-	FILE* fp = fopen("testconfig.json", "rb"); // non-Windows use "r"
+	FILE* fp = fopen("Assets/json/config.json", "rb"); // non-Windows use "r"
 
 	Document testconfig_r;
 	FileReadStream is(fp, loadBuf, sizeof(loadBuf));
