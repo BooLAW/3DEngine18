@@ -14,3 +14,11 @@ ComponentTransform::ComponentTransform(GameObject * owner)
 ComponentTransform::~ComponentTransform()
 {
 }
+
+void ComponentTransform::SetTransform(float3 pos, Quat rot,float3 scale)
+{
+	this->transform.pos = pos;
+	this->transform.rot = rot;
+	this->transform.scale = scale;
+
+}
