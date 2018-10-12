@@ -38,7 +38,7 @@ public:
 	void BlitPanels();
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
-	
+	void SetImguiStyle();
 
 public:
 	//flags
@@ -51,7 +51,8 @@ public:
 	bool show_profiler = false;
 	bool want_to_save = false;
 	bool want_to_load = false;
-
+	void ShowOnlyScene();
+	void ShowSTDPanels();
 	//Application
 	bool isVsyncActive = true;
 	int fps_slider = 60;

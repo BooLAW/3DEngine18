@@ -68,10 +68,10 @@ bool LoadManager::Start()
 	
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	material_loader->Start();
+	stream.callback = AssimpLog;
 	aiAttachLogStream(&stream);
 	return false;
 }
-
 update_status LoadManager::Update(float dt)
 {
 	return UPDATE_CONTINUE;
@@ -95,4 +95,7 @@ Resource::~Resource()
 {
 }
 
-
+void AssimpLog(const char * message, char * user)
+{
+	CONSOLE_LOG_INFO("%s", message);
+}

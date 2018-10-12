@@ -16,7 +16,8 @@ public:
 	virtual ~Panel();
 
 	void Activate();
-	bool IsActive();
+	void DeActivate();
+	bool IsActive()const;
 	virtual void Draw();
 public:
 	bool active = true;
