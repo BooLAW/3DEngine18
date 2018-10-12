@@ -24,7 +24,7 @@ ModuleSceneGui::~ModuleSceneGui()
 // Load assets
 bool ModuleSceneGui::Init()
 {
-	CONSOLE_LOG("Loading gui assets",INFO_LOG);
+	CONSOLE_LOG_INFO("Loading gui assets");
 	App->profiler.StartTimer("UI");
 	bool ret = true;
 	ImGui_ImplSdl_Init(App->window->window);
@@ -50,7 +50,7 @@ bool ModuleSceneGui::Init()
 // Load assets
 bool ModuleSceneGui::CleanUp()
 {
-	CONSOLE_LOG("Unloading gui scene",INFO_LOG);
+	CONSOLE_LOG_INFO("Unloading gui scene");
 	ImGui_ImplSdl_Shutdown();
 
 	return true;

@@ -14,7 +14,7 @@ public:
 
 
 	void Draw()override;
-	bool CheckDisplayFlag(typeLog log);
+	bool CheckDisplayFlag(int log);
 	void LogToConsole(const std::string text,int type);
 	void ClearConsole();
 	const ImVec4 GetColorFromLogType(typeLog log);
@@ -27,7 +27,8 @@ public:
 	std::vector<std::string> text_err_buffer;
 	std::vector<std::string> text_info_buffer;
 
-	
+	bool to_show = false;
+
 	bool show_debug_text = true;
 	bool show_warning_text = true;
 	bool show_err_text = true;
