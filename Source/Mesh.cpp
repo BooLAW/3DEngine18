@@ -128,7 +128,7 @@ void Mesh::DefineCubeVertices(float3 new_position,float size)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	CONSOLE_LOG("CUBE LOADED BUFFER_ID: %d",DEB_LOG,vertices_id);
+	CONSOLE_LOG_DEBUG("CUBE LOADED BUFFER_ID: %d",vertices_id);
 
 }
 

@@ -22,7 +22,7 @@ ModuleScene::~ModuleScene()
 // Load assets
 bool ModuleScene::Start()
 {
-	CONSOLE_LOG("Loading Intro assets",INFO_LOG);
+	CONSOLE_LOG_INFO("Loading Intro assets");
 	App->profiler.SaveInitData("Scene");
 	bool ret = true;
 	{
@@ -50,7 +50,9 @@ bool ModuleScene::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 	//Load BakerHouse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 	App->loading_manager->Load(".\\Assets\\Textures\\Baker_house.png");
+	App->loading_manager->unique_material_path = ".\\Assets\\Models\\BakerHouse.fbx";
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
@@ -58,7 +60,7 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	CONSOLE_LOG("Unloading Intro scene",INFO_LOG);
+	CONSOLE_LOG_INFO("Unloading Intro scene");
 	return true;
 }
 

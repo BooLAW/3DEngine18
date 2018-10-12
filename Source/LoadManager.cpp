@@ -21,7 +21,7 @@ void LoadManager::Load(const char * path)
 {
 	if (App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
 	{
-		CONSOLE_LOG("FBX dropped",INFO_LOG);
+		CONSOLE_LOG_INFO("FBX dropped");
 		if (unique_fbx_path != path)
 		{
 			App->scene_intro->ClearScene();
@@ -32,13 +32,13 @@ void LoadManager::Load(const char * path)
 		}
 		else
 		{
-			CONSOLE_LOG("%s was already loaded",WARN_LOG, App->GetFileName(path).c_str());
+			CONSOLE_LOG_WARNING("%s was already loaded", App->GetFileName(path).c_str());
 		}
 		
 	}
 	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" || App->GetTermination(path) == "dds" || App->GetTermination(path) == "DDS" && App->scene_intro->has_meshes)
 	{
-		CONSOLE_LOG("Texture Dropped",INFO_LOG);	
+		CONSOLE_LOG_INFO("Texture Dropped");	
 		if (unique_material_path != path)
 		{
 			App->input->tex_droped = true;
@@ -53,7 +53,7 @@ void LoadManager::Load(const char * path)
 		}
 		else
 		{
-			CONSOLE_LOG("Texture: %s was already loaded",WARN_LOG, App->GetFileName(path).c_str());
+			CONSOLE_LOG_WARNING("Texture: %s was already loaded", App->GetFileName(path).c_str());
 		}
 		
 	}
@@ -61,7 +61,7 @@ void LoadManager::Load(const char * path)
 
 bool LoadManager::Start()
 {
-	CONSOLE_LOG("---LOAD MANAGER START ---",INFO_LOG);
+	CONSOLE_LOG_INFO("---LOAD MANAGER START ---");
 	App->profiler.SaveInitData("LoadManager");
 	struct aiLogStream stream;
 
@@ -79,7 +79,7 @@ update_status LoadManager::Update(float dt)
 
 bool LoadManager::CleanUp()
 {
-	CONSOLE_LOG("---LOAD MANAGER CLEANUP ---",INFO_LOG);
+	CONSOLE_LOG_INFO("---LOAD MANAGER CLEANUP ---");
 	aiDetachAllLogStreams();
 	return false;
 }

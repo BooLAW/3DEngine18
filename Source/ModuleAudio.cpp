@@ -15,14 +15,14 @@ ModuleAudio::~ModuleAudio()
 bool ModuleAudio::Init()
 {
 	App->profiler.StartTimer("Audio");
-	CONSOLE_LOG("Loading Audio Mixer", INFO_LOG);
+	CONSOLE_LOG_INFO("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(SDL_WINDOW_SHOWN);
 	
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
-		CONSOLE_LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", ERR_LOG, Mix_GetError());
+		CONSOLE_LOG_ERROR("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", Mix_GetError());
 		ret = false;
 	}
 
@@ -32,14 +32,14 @@ bool ModuleAudio::Init()
 
 	if((init & flags) != flags)
 	{
-		CONSOLE_LOG("Could not initialize Mixer lib. Mix_Init: %s",ERR_LOG, Mix_GetError());
+		CONSOLE_LOG_ERROR("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
 		ret = false;
 	}
 
 	//Initialize SDL_mixer
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
-		CONSOLE_LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", ERR_LOG, Mix_GetError());
+		CONSOLE_LOG_ERROR("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		ret = false;
 	}
 	LoadFx("Assets/Audio/Sound/light_button_press.ogg");
@@ -52,7 +52,7 @@ bool ModuleAudio::Init()
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {
-	CONSOLE_LOG("Freeing sound FX, closing Mixer and Audio subsystem",INFO_LOG);
+	CONSOLE_LOG_INFO("Freeing sound FX, closing Mixer and Audio subsystem");
 	
 	for (int i = 0; i < fx.size(); i++)   Mix_FreeChunk(fx[i]);
 	fx.clear();
@@ -91,7 +91,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 
 	if(music == NULL)
 	{
-		CONSOLE_LOG("Cannot load music %s. Mix_GetError(): %s\n", ERR_LOG,path, Mix_GetError());
+		CONSOLE_LOG_ERROR("Cannot load music %s. Mix_GetError(): %s\n",path, Mix_GetError());
 		ret = false;
 	}
 	else
@@ -100,7 +100,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		{
 			if(Mix_FadeInMusic(music, -1, (int) (fade_time * 1000.0f)) < 0)
 			{
-				CONSOLE_LOG("Cannot fade in music %s. Mix_GetError(): %s",ERR_LOG, path, Mix_GetError());
+				CONSOLE_LOG_ERROR("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
 				ret = false;
 			}
 		}
@@ -108,13 +108,13 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		{
 			if(Mix_PlayMusic(music, -1) < 0)
 			{
-				CONSOLE_LOG("Cannot play in music %s. Mix_GetError(): %s",ERR_LOG, path, Mix_GetError());
+				CONSOLE_LOG_ERROR("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
 				ret = false;
 			}
 		}
 	}
 
-	CONSOLE_LOG("Successfully playing %s",INFO_LOG,path);
+	CONSOLE_LOG_INFO("Successfully playing %s",path);
 	return ret;
 }
 
@@ -150,7 +150,7 @@ void ModuleAudio::LoadFx(const char* path)
 	{
 		if (chunk == NULL)
 		{
-			CONSOLE_LOG("Cannot load wav %s. Mix_GetError(): %s", ERR_LOG, path, Mix_GetError());
+			CONSOLE_LOG_ERROR("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
 		}
 		else
 			fx.push_back(chunk);

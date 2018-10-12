@@ -16,12 +16,12 @@ ModuleWindow::~ModuleWindow()
 // Called before render is available
 bool ModuleWindow::Init()
 {
-	CONSOLE_LOG("Init SDL window & surface",INFO_LOG);
+	CONSOLE_LOG_INFO("Init SDL window & surface");
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		CONSOLE_LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", ERR_LOG, SDL_GetError());
+		CONSOLE_LOG_ERROR("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 	else
@@ -59,7 +59,7 @@ bool ModuleWindow::Init()
 
 		if(window == NULL)
 		{
-			CONSOLE_LOG("Window could not be created! SDL_Error: %s\n", INFO_LOG,SDL_GetError());
+			CONSOLE_LOG_INFO("Window could not be created! SDL_Error: %s\n",SDL_GetError());
 			ret = false;
 		}
 		else
@@ -75,7 +75,7 @@ bool ModuleWindow::Init()
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
-	CONSOLE_LOG("Destroying SDL window and quitting all SDL systems",INFO_LOG);
+	CONSOLE_LOG_INFO("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
 	if(window != NULL)

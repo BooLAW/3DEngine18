@@ -63,7 +63,7 @@ bool Application::Init()
 	
 
 	// After all Init calls we call Start() in all modules
-	CONSOLE_LOG("Application Start --------------",INFO_LOG);
+	CONSOLE_LOG_INFO("Application Start --------------");
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
 		ret = (*item)->Start();

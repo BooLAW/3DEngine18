@@ -50,8 +50,11 @@ void PanelConsole::Draw()
 		ImGui::BeginChild("ConsoleText");
 		for (int i = 0; i < text_buffer.size(); i++)
 		{	
-			if(CheckDisplayFlag(text_buffer[i]))
+			to_show = CheckDisplayFlag(text_buffer[i].type);
+			if (to_show) {
 				ImGui::TextColored(GetColorFromLogType(text_buffer[i]), text_buffer[i].text.c_str());
+
+			}
 		}
 		
 
@@ -66,32 +69,40 @@ void PanelConsole::Draw()
 
 }
 
-bool PanelConsole::CheckDisplayFlag(typeLog log)
+bool PanelConsole::CheckDisplayFlag(int type)
 {
-	switch (log.type)
+	bool ret = false;
+
+	switch (type)
 	{
-	case 0:
-	{
-		if (show_debug_text)
-			return true;
+		case 0:
+		{
+			if (show_debug_text)
+				ret =  true;
+			break;
+		}
+		case 1:
+		{
+			if (show_warning_text)
+				ret=  true;
+			break;
+		}
+		case 2:
+		{
+			if (show_err_text)
+				ret =  true;
+			break;
+		}
+		case 3:
+		{
+			if (show_info_text)
+				ret =  true;
+			break;
+		}
+		default:
+			break;
 	}
-	case 1:
-	{
-		if (show_warning_text)
-			return true;
-	}
-	case 2:
-	{
-		if (show_err_text)
-			return true;
-	}
-	case 3:
-	{
-		if (show_info_text)
-			return true;
-	}
-	}
-	return false;
+	return ret;
 }
 
 void PanelConsole::LogToConsole(const std::string text,int type)
