@@ -105,6 +105,7 @@ typedef struct Mix_Chunk {
     Uint8 *abuf;
     Uint32 alen;
     Uint8 volume;       /* Per-sample volume, 0-128 */
+	bool has_played_once;
 } Mix_Chunk;
 
 /* The different fading types supported */

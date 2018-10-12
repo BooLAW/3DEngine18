@@ -11,6 +11,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleSceneImGui.h"
 #include "ModuleJSON.h"
+#include "ModuleAudio.h"
 #include "LoadManager.h"
 #include "Profiler.h"
 
@@ -27,7 +28,9 @@ public:
 	ModulePhysics3D* physics;
 	ModuleSceneGui* imgui;
 	ModuleJSON* json;
+	ModuleAudio* audio;
 	LoadManager* loading_manager;
+
 
 
 

@@ -105,23 +105,30 @@ void PanelInspector::Draw()
 		}
 		App->input->file_droped = false;
 		App->input->tex_droped = false;
-
+		
 		//Drawing ImGui
 		if (App->scene_intro->go_list.size()>1)
 		{
 			if(ImGui::TreeNode(App->scene_intro->fbx_name.c_str()))
 			{
+
 				for (int i = 0; i < counter; i++)
 				{
 					if (ImGui::TreeNode(mesh_name[i]))
 					{
+
 						if (ImGui::TreeNode("Transform"))
 						{
+							App->audio->PlayFx(App->audio->id_light_button_press[0]);
 							ImGui::DragFloat3("Position", (float*)&positions[i]);
 							ImGui::DragFloat3("Rotation", (float*)&rotations[i]);
 							ImGui::DragFloat3("Scale", (float*)&scales[i]);
 							ImGui::TreePop();
+
 						}
+						else
+							App->audio->PlayFx(App->audio->id_light_button_press[0],true);
+
 						if (ImGui::TreeNode("Geometry"))
 						{
 							if (i < vertex.size())
@@ -131,6 +138,9 @@ void PanelInspector::Draw()
 							}
 							ImGui::TreePop();
 						}
+
+
+
 						if (tex_data.size() != 0) //Checking if it the mesh has a texture to display.
 						{
 							if (ImGui::TreeNode("Texture"))
@@ -156,6 +166,8 @@ void PanelInspector::Draw()
 				}
 				ImGui::TreePop();
 			}
+			
+
 		}
 	}
 

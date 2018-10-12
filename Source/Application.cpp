@@ -16,6 +16,7 @@ Application::Application()
 	physics = new ModulePhysics3D();
 	imgui = new ModuleSceneGui();
 	json = new ModuleJSON(true);
+	audio = new ModuleAudio();
 	loading_manager = new LoadManager();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -27,7 +28,9 @@ Application::Application()
 	AddModule(input);
 	AddModule(physics);
 	AddModule(json);
+	AddModule(audio);
 	AddModule(loading_manager);
+
 	
 	// Scenes
 	AddModule(imgui);

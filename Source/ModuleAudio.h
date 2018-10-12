@@ -24,12 +24,16 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFx(unsigned int fx, bool restart = false);
 
 private:
 
 	Mix_Music*			music;
-	std::list<Mix_Chunk*>	fx;
+	std::vector<Mix_Chunk*>	fx;
+
+public:
+	std::vector<int>id_light_button_press;
+	int fx_light_button;
 };
 
 #endif // __ModuleAudio_H__
