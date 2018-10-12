@@ -154,6 +154,28 @@ bool ModuleSceneGui::Load(Document * config_r)
 	return true;
 }
 
+void ModuleSceneGui::ShowOnlyScene()
+{
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		if ((*item)->panel_name != "Scene")
+		{
+			(*item)->DeActivate();
+		}
+	}
+}
+
+void ModuleSceneGui::ShowSTDPanels()
+{
+	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
+	{
+		if ((*item)->panel_name != "Scene")
+		{
+			(*item)->Activate();
+		}
+	}
+}
+
 
 void ModuleSceneGui::Log(const std::string text,int type)
 {
@@ -209,6 +231,14 @@ int ModuleSceneGui::CreateMainMenu()
 			}
 			if (ImGui::BeginMenu("View"))
 			{
+				if (ImGui::MenuItem("Only Scene"))
+				{
+					ShowOnlyScene();
+				}
+				if (ImGui::MenuItem("Standard Panels"))
+				{
+					ShowSTDPanels();
+				}
 				if (ImGui::MenuItem("Console"))
 				{
 					console->Activate();

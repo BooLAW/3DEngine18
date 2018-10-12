@@ -12,10 +12,15 @@ Panel::~Panel()
 
 void Panel::Activate()
 {
-	active = !active;
+	active = true;
 }
 
-bool Panel::IsActive()
+void Panel::DeActivate()
+{
+	active = false;
+}
+
+bool Panel::IsActive()const
 {
 	return active;
 }
