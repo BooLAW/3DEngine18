@@ -24,7 +24,8 @@ PanelConfiguration::~PanelConfiguration()
 
 void PanelConfiguration::Draw()
 {
-	if(ImGui::BeginDock("Configuration", &active))
+
+	if(ImGui::Begin("Configuration", &active))
 	{
 		render_pos = ImGui::GetWindowPos();
 		render_size = ImGui::GetWindowSize();
@@ -34,7 +35,7 @@ void PanelConfiguration::Draw()
 			App->GetModule(i)->DrawModuleConfig();
 		}
 	}
-	ImGui::EndDock();
+	ImGui::End();
 
 }
 
