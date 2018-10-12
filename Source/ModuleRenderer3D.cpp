@@ -97,7 +97,6 @@ void ModuleRenderer3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
-		
 		SDL_version compiler;
 		SDL_VERSION(&compiler);
 		

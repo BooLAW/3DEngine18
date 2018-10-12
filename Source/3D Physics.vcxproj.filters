@@ -467,9 +467,6 @@
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_demo.cpp">
-      <Filter>Sources\External Tools\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui_draw.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
@@ -679,6 +676,9 @@
     </ClCompile>
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

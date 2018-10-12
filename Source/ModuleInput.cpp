@@ -145,6 +145,7 @@ void ModuleInput::DrawModuleConfig()
 	io.WantCaptureKeyboard;
 	if (ImGui::CollapsingHeader("Input"))
 	{
+
 		ImGui::Text("Mouse Position:");
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "X: %d", App->input->mouse_x);
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Y: %d", App->input->mouse_y);

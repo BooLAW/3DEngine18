@@ -111,26 +111,23 @@ void PanelInspector::Draw()
 		{
 			if(ImGui::TreeNode(App->scene_intro->fbx_name.c_str()))
 			{
-
 				for (int i = 0; i < counter; i++)
 				{
 					if (ImGui::TreeNode(mesh_name[i]))
-					{
-
+					{						
 						if (ImGui::TreeNode("Transform"))
 						{
-							App->audio->PlayFx(App->audio->id_light_button_press[0]);
+							//App->audio->PlayFx(LIGHT_BUTTON_CLICK);
 							ImGui::DragFloat3("Position", (float*)&positions[i]);
 							ImGui::DragFloat3("Rotation", (float*)&rotations[i]);
 							ImGui::DragFloat3("Scale", (float*)&scales[i]);
 							ImGui::TreePop();
-
 						}
 						else
-							App->audio->PlayFx(App->audio->id_light_button_press[0],true);
-
+							App->audio->tick = false;
 						if (ImGui::TreeNode("Geometry"))
 						{
+							//App->audio->PlayFx(LIGHT_BUTTON_CLICK);
 							if (i < vertex.size())
 							{
 								ImGui::Text("It has %i Vertex", vertex[i]);
@@ -138,13 +135,12 @@ void PanelInspector::Draw()
 							}
 							ImGui::TreePop();
 						}
-
-
-
+						else
+							App->audio->tick = false;
 						if (tex_data.size() != 0) //Checking if it the mesh has a texture to display.
 						{
 							if (ImGui::TreeNode("Texture"))
-							{
+							{							
 								if (ImGui::TreeNode(tex_name[i]))
 								{
 									ImGui::Text("Texture Coordinates: TAB %i ", tex_coord[i]);

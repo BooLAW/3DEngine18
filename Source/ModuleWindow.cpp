@@ -111,6 +111,7 @@ void ModuleWindow::DrawModuleConfig()
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
+		
 
 		ImGui::Text("Size configuration:");
 		if (size_modified == true)
