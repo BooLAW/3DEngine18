@@ -99,11 +99,12 @@ void ModuleRenderer3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[51]);
 		SDL_version compiler;
 		SDL_VERSION(&compiler);
-		
+
 		ImGui::Text("SDL Version:"); ImGui::SameLine(0, 10);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d", compiler.major,compiler.minor,compiler.patch);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d", compiler.major, compiler.minor, compiler.patch);
 
 		ImGui::Text("CPUs: "); ImGui::SameLine(0, 5);
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%i (Cache: %ikb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
@@ -114,16 +115,18 @@ void ModuleRenderer3D::DrawModuleConfig()
 		bool attribute_modified = false;
 		if (ImGui::Checkbox("Wireframe", &attributes.wireframe)) attribute_modified = true;
 		if (ImGui::Checkbox("Texture", &attributes.texture)) attribute_modified = true;
-		if(ImGui::Checkbox("DepthTest", &attributes.depth_test))attribute_modified = true;
-		if(ImGui::Checkbox("CullTest", &attributes.cull_face))attribute_modified = true;
-		if(ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
-		if(ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
+		if (ImGui::Checkbox("DepthTest", &attributes.depth_test))attribute_modified = true;
+		if (ImGui::Checkbox("CullTest", &attributes.cull_face))attribute_modified = true;
+		if (ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
+		if (ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
 		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw))attribute_modified = true;
 		if (attribute_modified)
 			UpdateAttributes();
 
 		CPUCapabilities();
 	}
+	else
+		App->audio->tick_arr[51] = FALSEBOOL;
 
 }
 

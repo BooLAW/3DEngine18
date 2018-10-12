@@ -40,19 +40,20 @@ void PanelConfiguration::Application()
 {
 	if (ImGui::CollapsingHeader("Application"))
 	{
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[54]);
 		ImGui::Checkbox("Vsync", &App->imgui->isVsyncActive);
 		if (App->imgui->isVsyncActive == true)
 		{
 			//Activate Vsync
 			if (SDL_GL_SetSwapInterval(1))
-				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n", WARN_LOG,SDL_GetError());
+				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n", WARN_LOG, SDL_GetError());
 		}
 		else
 		{
 			//Deactivate Vsync
 			if (SDL_GL_SetSwapInterval(0))
-				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n",WARN_LOG,SDL_GetError());
-			
+				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n", WARN_LOG, SDL_GetError());
+
 		}
 		static char app_name[128] = TITLE;
 		static char org_name[128] = ORGANIZATION;
@@ -64,7 +65,7 @@ void PanelConfiguration::Application()
 		window_title.append(app_name);
 		window_title.append(" - ");
 		window_title.append(org_name);
-		
+
 
 		App->window->SetTitle(window_title.c_str());
 		ImGui::SliderInt("Max FPS", &App->imgui->fps_slider, 0, 120);
@@ -83,7 +84,7 @@ void PanelConfiguration::Application()
 			{
 				i = IM_ARRAYSIZE(fps_log);
 			}
-			fps_log[IM_ARRAYSIZE(fps_log)-1] = ImGui::GetIO().Framerate;
+			fps_log[IM_ARRAYSIZE(fps_log) - 1] = ImGui::GetIO().Framerate;
 		}
 
 		static char tmp_string[4096];
@@ -110,5 +111,7 @@ void PanelConfiguration::Application()
 		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", mss);
 		ImGui::PlotHistogram("##miliseconds", mms_log, IM_ARRAYSIZE(mms_log), 0, tmp_string2, 0.0f, 120.0f, ImVec2(310, 100));
 	}
+	else
+		App->audio->tick_arr[54] = FALSEBOOL;
 }
 

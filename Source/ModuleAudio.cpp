@@ -44,6 +44,11 @@ bool ModuleAudio::Init()
 	}
 	LoadFx("Assets/Audio/Sound/light_button_press.ogg");
 	
+	for (int i = 0; i < 100;i++)
+	{
+		tick_arr.push_back(TRUEBOOL);
+	}
+
 	App->profiler.SaveInitData("Audio");
 
 	return ret;
@@ -118,13 +123,13 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 	return ret;
 }
 
-bool ModuleAudio::PlayFx(unsigned int id, std::vector<BoolList> tick_array, uint volume, int repeat)
+bool ModuleAudio::PlayFx(unsigned int id, BoolList* tick_array, uint volume, int repeat)
 {
 	unsigned int ret = 0;
 
-		if (id < fx.size() && tick == false)
+		if (id < fx.size() && *tick_array == FALSEBOOL)
 		{
-			tick = true;
+			*tick_array = TRUEBOOL;
 			bool tmp = false;
 			for (std::list<SFXList>::iterator it = blackList.begin(); it != blackList.end(); it++)
 				if (*it == id && *it != LIGHT_BUTTON_CLICK) { tmp = true; }

@@ -33,7 +33,7 @@ public:
 	void LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int id, std::vector<BoolList> tick_array, uint volume = 128, int repeat = 0);
+	bool PlayFx(unsigned int id, BoolList* tick_array, uint volume = 128, int repeat = 0);
 
 private:
 

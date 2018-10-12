@@ -111,7 +111,7 @@ void ModuleWindow::DrawModuleConfig()
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
-		
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[50]);
 
 		ImGui::Text("Size configuration:");
 		if (size_modified == true)
@@ -131,13 +131,15 @@ void ModuleWindow::DrawModuleConfig()
 		// Auto adjustments -----------------------------
 
 		ImGui::Text("Auto adjustments: ");
-		
+
 		ImGui::Checkbox("Fullscreen", &fullscreen); ImGui::SameLine();
 		ImGui::Checkbox("Borderless", &borderless);
 
 		ImGui::Separator();
 		// ------------------------------------------
 	}
+	else
+		App->audio->tick_arr[50] = FALSEBOOL;
 }
 
 bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
