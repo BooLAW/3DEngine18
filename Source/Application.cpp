@@ -101,6 +101,7 @@ void Application::FinishUpdate()
 	{
 		Load();
 	}
+	App->audio->blackList.clear();
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

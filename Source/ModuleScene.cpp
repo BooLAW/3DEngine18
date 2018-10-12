@@ -121,7 +121,7 @@ void ModuleScene::rapidjsonexamplecode()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-
+	
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()

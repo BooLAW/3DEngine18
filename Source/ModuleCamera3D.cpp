@@ -42,6 +42,7 @@ void ModuleCamera3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
+		
 		ImGui::SliderFloat3("Position", &Position, -100.0f, 100.0f);
 		ImGui::Spacing();
 		if (ImGui::Button("Reset"))
