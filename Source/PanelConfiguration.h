@@ -11,8 +11,12 @@ class PanelConfiguration :
 public:
 	float fps_log[32];
 	float mms_log[32];
+	float mem_log[32];
 	static char app_name_input;
 	static char app_org_input;
+	int final_mem = 0;
+	int last_mem = 0;
+	
 
 public:
 	PanelConfiguration();

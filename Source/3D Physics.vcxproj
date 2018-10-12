@@ -98,6 +98,8 @@
     <ClInclude Include="MaterialLoader.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshLoader.h" />
+    <ClInclude Include="mmgr\mmgr.h" />
+    <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleJSON.h" />
     <ClInclude Include="Light.h" />
@@ -210,6 +212,7 @@
     <ClCompile Include="MaterialLoader.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
+    <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleJSON.cpp" />
     <ClCompile Include="Light.cpp" />

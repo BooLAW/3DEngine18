@@ -1,5 +1,7 @@
 #include "PanelConfiguration.h"
 #include "stdio.h"
+#include "mmgr/mmgr.h"
+
 
 
 
@@ -103,12 +105,42 @@ void PanelConfiguration::Application()
 			{
 				i2 = IM_ARRAYSIZE(mms_log);
 			}
-			mms_log[IM_ARRAYSIZE(mms_log)] = mss;
+			mms_log[IM_ARRAYSIZE(mms_log)-1] = mss;
 		}
 
 		static char tmp_string2[4096];
 		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", mss);
 		ImGui::PlotHistogram("##miliseconds", mms_log, IM_ARRAYSIZE(mms_log), 0, tmp_string2, 0.0f, 120.0f, ImVec2(310, 100));
+
+		static int i3 = 32;
+		//float mss = (1000.0f / ImGui::GetIO().Framerate);
+		sMStats stats = m_getMemoryStatistics();
+
+		static char tmp_string3[4096];
+		final_mem = stats.peakActualMemory;
+		final_mem = final_mem / 2048;
+
+		if (mem_log[IM_ARRAYSIZE(mem_log)] != final_mem)
+		{			
+			if (i3 > 0)
+			{
+				mem_log[i3 - 1] = mem_log[i3];
+				i3--;
+			}
+			else
+			{
+				i3 = IM_ARRAYSIZE(mem_log);
+			}
+
+			
+			mem_log[IM_ARRAYSIZE(mem_log) - 1] = (float)final_mem;
+			
+			
+		}
+		sprintf_s(tmp_string3, 4096, "Memory: %f", (float)final_mem);
+
+		ImGui::PlotHistogram("##memoryalloc", mem_log, IM_ARRAYSIZE(mem_log), 0, tmp_string3, 0.0f, 4000.0f, ImVec2(310, 100));
+		last_mem = stats.peakActualMemory;
 	}
 	else
 		App->audio->tick_arr[54] = FALSEBOOL;

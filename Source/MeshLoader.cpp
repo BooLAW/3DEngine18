@@ -11,6 +11,7 @@
 #include "PanelInspector.h"
 #include "Transform.h"
 #include "ComponentTransform.h"
+#include "mmgr/mmgr.h"
 
 MeshLoader::MeshLoader()
 {

@@ -88,6 +88,9 @@
     <Filter Include="Sources\Modules\GameObjects\Components\Material">
       <UniqueIdentifier>{bef7a542-607b-4903-a2d1-0c139718d74c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\External Tools\MMGR">
+      <UniqueIdentifier>{1ca973e3-0ce6-4bb7-96c6-753341fdd10b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -435,6 +438,12 @@
     <ClInclude Include="ModuleAudio.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Sources\External Tools\MMGR</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Sources\External Tools\MMGR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -679,6 +688,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_demo.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Sources\External Tools\MMGR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
