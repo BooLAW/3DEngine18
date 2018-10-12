@@ -38,7 +38,7 @@ public:
 	void BlitPanels();
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
-	
+	void SetImguiStyle();
 
 public:
 	//flags
