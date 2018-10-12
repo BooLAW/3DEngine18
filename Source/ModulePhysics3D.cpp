@@ -105,7 +105,7 @@ std::list<float2> ModulePhysics3D::GetSphereCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({(float) listener,(float)candidate });
-				//CONSOLE_LOG("Sphere %d collides with Sphere %d", INFO_LOG,*(listener, candidate));
+				CONSOLE_LOG("Sphere %d collides with Sphere %d", INFO_LOG,listener, candidate);
 			}
 		}
 		candidate = 0;
@@ -131,7 +131,7 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 			if (collided)
 			{
 				collisions_list.push_back({ (float)listener,(float)candidate });
-				//CONSOLE_LOG("Cube %d collides with Cube %d", INFO_LOG,*(listener, candidate));
+				CONSOLE_LOG("Cube %d collides with Cube %d", INFO_LOG,listener, candidate);
 			}
 		}
 		candidate = 0;

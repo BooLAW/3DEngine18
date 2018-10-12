@@ -34,8 +34,9 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 
 		aiReleaseImport(new_scene);
 	}
-	//else
-		//CONSOLE_LOG("Error Loading the scene with name %s",,ERR_LOG, file_path);
+	else
+		CONSOLE_LOG("Error Loading the scene with name %s",ERR_LOG, file_path);
+
 
 	return ret;
 }
@@ -134,7 +135,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * new_mesh->num_vertices, new_mesh->vertices, GL_STATIC_DRAW);
 
-				//CONSOLE_LOG("New mesh with %d vertices",,INFO_LOG, new_mesh->num_vertices);
+				CONSOLE_LOG("New mesh with:\n%d vertices",INFO_LOG, new_mesh->num_vertices);
 				//reset buffer
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -149,7 +150,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{
-						if (mesh->mFaces[i].mNumIndices != 3) //Detects if there is something that is not a triangle
+						if (mesh->mFaces[i].mNumIndices != 3) 
 						{
 							CONSOLE_LOG("WARNING, face indices != 3",WARN_LOG);
 						}
@@ -174,7 +175,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					//reset buffer
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-					//CONSOLE_LOG("%d indices", new_mesh->num_indices);
+					CONSOLE_LOG("%d indices",INFO_LOG, new_mesh->num_indices);
 
 				}
 				else
@@ -195,7 +196,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords * 3, new_mesh->tex_coords, GL_STATIC_DRAW);
 
 					//reset buffer
-					//CONSOLE_LOG("%d tex coords", new_mesh->num_tex_coords);
+					CONSOLE_LOG("%d tex coords", INFO_LOG, new_mesh->num_tex_coords);
 
 				}
 				else

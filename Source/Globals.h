@@ -11,7 +11,7 @@
 #include <string>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
-#define CONSOLE_LOG(format,type, ...) console_log(__FILE__, __LINE__, format,type __VA_ARGS__);
+#define CONSOLE_LOG(format,type, ...) console_log(__FILE__, __LINE__, format,type, __VA_ARGS__);
 
 void log(const char file[], int line, const char* format, ...);
 void console_log(const char file[], int line, const char* format,int type, ...);

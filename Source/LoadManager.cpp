@@ -30,10 +30,10 @@ void LoadManager::Load(const char * path)
 			App->scene_intro->has_meshes = true;
 			unique_fbx_path = path;
 		}
-		//else
-		//{
-		//	//CONSOLE_LOG("%s was already loaded",,WARN_LOG, App->GetFileName(path).c_str());
-		//}
+		else
+		{
+			CONSOLE_LOG("%s was already loaded",WARN_LOG, App->GetFileName(path).c_str());
+		}
 		
 	}
 	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" || App->GetTermination(path) == "dds" || App->GetTermination(path) == "DDS" && App->scene_intro->has_meshes)
@@ -51,10 +51,10 @@ void LoadManager::Load(const char * path)
 			tex_name_file = App->GetFileName(path).c_str();
 
 		}
-		//else
-		//{
-		//	//CONSOLE_LOG("Texture: %s was already loaded",,WARN_LOG, App->GetFileName(path).c_str());
-		//}
+		else
+		{
+			CONSOLE_LOG("Texture: %s was already loaded",WARN_LOG, App->GetFileName(path).c_str());
+		}
 		
 	}
 }

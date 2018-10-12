@@ -1,4 +1,6 @@
 #include "PanelConsole.h"
+#include "Globals.h"
+#include "Color.h"
 
 PanelConsole::PanelConsole() :Panel("Console")
 {
@@ -42,18 +44,17 @@ void PanelConsole::Draw()
 		{
 			ClearConsole();
 		}
+
 		ImGui::Separator();
+
 		ImGui::BeginChild("ConsoleText");
-		if (show_debug_text)
-			for (int i = 0; i < text_debug_buffer.size(); i++)
-			{
-				ImGui::Text(text_debug_buffer[i].c_str());
-			}
-		if (show_warning_text)
-			for (int i = 0; i < text_warning_buffer.size(); i++)
-			{
-				ImGui::Text(text_warning_buffer[i].c_str());
-			}
+		for (int i = 0; i < text_buffer.size(); i++)
+		{	
+			if(CheckDisplayFlag(text_buffer[i]))
+				ImGui::TextColored(GetColorFromLogType(text_buffer[i]), text_buffer[i].text.c_str());
+		}
+		
+
 		
 		ImGui::SetScrollY(ImGui::GetScrollMaxY());
 		render_pos = ImGui::GetWindowPos();
@@ -65,27 +66,103 @@ void PanelConsole::Draw()
 
 }
 
-void PanelConsole::LogToConsole(const std::string text,int type)
+bool PanelConsole::CheckDisplayFlag(typeLog log)
 {
-	switch (type)
+	switch (log.type)
 	{
 	case 0:
-		text_debug_buffer.push_back("-DEB:: " + text);
-	case 1:
-		text_warning_buffer.push_back("-WAR:: "+text);
-	case 2:
-		text_err_buffer.push_back("-ERR:: " + text);
-	case 3:
-		text_info_buffer.push_back("-INF:: " +text);
+	{
+		if (show_debug_text)
+			return true;
 	}
+	case 1:
+	{
+		if (show_warning_text)
+			return true;
+	}
+	case 2:
+	{
+		if (show_err_text)
+			return true;
+	}
+	case 3:
+	{
+		if (show_info_text)
+			return true;
+	}
+	}
+	return false;
+}
+
+void PanelConsole::LogToConsole(const std::string text,int type)
+{
+	typeLog aux;
+	aux.text = text;
+	aux.type = type;
+	
+	text_buffer.push_back(aux);
+	
 
 }
 
 void PanelConsole::ClearConsole()
 {
-	text_debug_buffer.clear();
-	text_warning_buffer.clear();
-	text_err_buffer.clear();
-	text_info_buffer.clear();
+	text_buffer.clear();
 
+}
+
+const ImVec4 PanelConsole::GetColorFromLogType(typeLog log)
+{
+	ImVec4 myColor;
+
+	switch (log.type)
+	{
+	case 0:
+	{
+		//WHITE
+		myColor.x = 1;
+		myColor.y = 1;
+		myColor.z = 1;
+		myColor.w = 1;
+
+
+		return myColor;
+	}
+		
+	case 1:
+	{
+		//YELLOW
+		myColor.x = 1;
+		myColor.y = 1;
+		myColor.z = 0;
+		myColor.w = 1;
+
+
+		return myColor;
+	}
+	case 2:
+	{
+		//RED
+		myColor.x = 1;
+		myColor.y = 0;
+		myColor.z = 0;
+		myColor.w = 1;
+
+
+
+		return myColor;
+	}
+	case 3:
+	{
+		//BLUE
+		myColor.x = 0;
+		myColor.y = 0;
+		myColor.z = 1;
+		myColor.w = 1;
+	
+
+
+		return myColor;
+	}
+	}
 }

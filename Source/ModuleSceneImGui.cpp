@@ -33,7 +33,7 @@ bool ModuleSceneGui::Init()
 	console = new PanelConsole();
 	configuration = new PanelConfiguration();
 	components = new PanelComponents();
-	hierarchy = new PanelHierarchy();
+	//hierarchy = new PanelHierarchy();
 	inspector = new PanelInspector();
 	scene = new PanelScene();
 
@@ -41,7 +41,7 @@ bool ModuleSceneGui::Init()
 	panels.push_back(configuration);
 	panels.push_back(inspector);
 	panels.push_back(components);
-	panels.push_back(hierarchy);
+	//panels.push_back(hierarchy);
 	panels.push_back(scene);
 	App->profiler.SaveInitData("UI");
 	return ret;
@@ -158,7 +158,7 @@ bool ModuleSceneGui::Load(Document * config_r)
 void ModuleSceneGui::Log(const std::string text,int type)
 {
 	if (console != nullptr)
-		console->LogToConsole(text,DEB_LOG);
+		console->LogToConsole(text,type);
 }
 
 
@@ -221,10 +221,10 @@ int ModuleSceneGui::CreateMainMenu()
 				{
 					components->Activate();
 				}
-				if (ImGui::MenuItem("Hierarchy"))
+				/*if (ImGui::MenuItem("Hierarchy"))
 				{
 					hierarchy->Activate();
-				}
+				}*/
 				if (ImGui::MenuItem("Inspector"))
 				{
 					inspector->Activate();

@@ -47,7 +47,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 
 		if (success)
 		{
-			//CONSOLE_LOG("Loading texture: %s", ,INFO_LOG,file_name);
+			CONSOLE_LOG("Loading texture: %s", INFO_LOG,file_name);
 			// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
 			ILinfo ImageInfo;
 			iluGetImageInfo(&ImageInfo);
@@ -65,7 +65,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 			if (!success)
 			{
 				error = ilGetError();
-				//CONSOLE_LOG("Image conversion failed - IL reports error: - s%",,ERR_LOG, iluErrorString(error));
+				CONSOLE_LOG("Image conversion failed - IL reports error: - s%",ERR_LOG, iluErrorString(error));
 				exit(-1);
 			}
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -103,7 +103,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 		{
 			textureID = 0;
 			//error = ilGetError();
-			//CONSOLE_LOG("%s not found",,WARN_LOG, App->GetFileName(file_name));
+			CONSOLE_LOG("%s not found",WARN_LOG, App->GetFileName(file_name));
 			//exit(-1);
 		}
 		//ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we

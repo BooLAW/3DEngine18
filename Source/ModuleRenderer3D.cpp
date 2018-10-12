@@ -32,17 +32,19 @@ bool ModuleRenderer3D::Init()
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
 	{
-		//CONSOLE_LOG("OpenGL context could not be created! SDL_Error: %s\n", , INFO_LOG, SDL_GetError());
+		const char* log = SDL_GetError();
+		CONSOLE_LOG("OpenGL context could not be created! SDL_Error: %s\n",INFO_LOG, log);
 		ret = false;
 	}
 	//Init GLEW
 	glewInit();
 	//Info LOG
-	//CONSOLE_LOG("Using Glew %s",,INFO_LOG, glewGetString(GLEW_VERSION));
-	//CONSOLE_LOG("Vendor: %s", ,INFO_LOG, glGetString(GL_VENDOR));
-	//CONSOLE_LOG("Renderer: %s", ,INFO_LOG, glGetString(GL_RENDERER));
-	//CONSOLE_LOG("OpenGL version supported %s", ,INFO_LOG, glGetString(GL_VERSION));
-	//CONSOLE_LOG("GLSL: %s\n", ,INFO_LOG,  glGetString(GL_SHADING_LANGUAGE_VERSION));
+	//const char* log = glewGetString(GLEW_VERSION);
+	CONSOLE_LOG("Using Glew %s",INFO_LOG, glewGetString(GLEW_VERSION));
+	/*CONSOLE_LOG("Vendor: %s", INFO_LOG, (const char*)glGetString(GL_VENDOR));
+	CONSOLE_LOG("Renderer: %s", INFO_LOG, (const char*)glGetString(GL_RENDERER));
+	CONSOLE_LOG("OpenGL version supported %s", INFO_LOG, (const char*)glGetString(GL_VERSION));
+	CONSOLE_LOG("GLSL: %s\n", INFO_LOG, (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));*/
 	if(ret == true)
 	{
 		//Reset Projection Matrix
@@ -53,7 +55,7 @@ bool ModuleRenderer3D::Init()
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//CONSOLE_LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			CONSOLE_LOG("Error initializing OpenGL! %s\n",ERR_LOG,gluErrorString(error));
 			ret = false;
 		}
 
@@ -65,7 +67,7 @@ bool ModuleRenderer3D::Init()
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//CONSOLE_LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			CONSOLE_LOG("Error initializing OpenGL! %s\n",ERR_LOG, gluErrorString(error));
 			ret = false;
 		}
 		
@@ -79,7 +81,7 @@ bool ModuleRenderer3D::Init()
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//CONSOLE_LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			CONSOLE_LOG("Error initializing OpenGL! %s\n",ERR_LOG, gluErrorString(error));
 			ret = false;
 		}
 		

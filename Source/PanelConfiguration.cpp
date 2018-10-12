@@ -44,14 +44,14 @@ void PanelConfiguration::Application()
 		if (App->imgui->isVsyncActive == true)
 		{
 			//Activate Vsync
-			//if (SDL_GL_SetSwapInterval(1))
-				//CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n", ,WARN_LOG,SDL_GetError());
+			if (SDL_GL_SetSwapInterval(1))
+				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n", WARN_LOG,SDL_GetError());
 		}
 		else
 		{
 			//Deactivate Vsync
-			//if (SDL_GL_SetSwapInterval(0))
-				//CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n",,WARN_LOG,SDL_GetError());
+			if (SDL_GL_SetSwapInterval(0))
+				CONSOLE_LOG("Warning: Unable to set VSync! SDL Error: %s\n",WARN_LOG,SDL_GetError());
 			
 		}
 		static char app_name[128] = TITLE;
