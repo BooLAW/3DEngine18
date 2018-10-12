@@ -131,9 +131,9 @@ const ImVec4 PanelConsole::GetColorFromLogType(typeLog log)
 	case 0:
 	{
 		//WHITE
-		myColor.x = 1;
-		myColor.y = 1;
-		myColor.z = 1;
+		myColor.x = 0;
+		myColor.y = 0;
+		myColor.z = 0;
 		myColor.w = 1;
 
 

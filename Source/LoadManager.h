@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "MeshLoader.h"
 #include "MaterialLoader.h"
+#include "PanelConsole.h"
 
 
 
@@ -46,5 +47,6 @@ public:
 
 	std::string tex_name_file;
 };
+void AssimpLog(const char* message, char* user);
 
 #endif
