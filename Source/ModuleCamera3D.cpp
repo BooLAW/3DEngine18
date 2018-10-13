@@ -42,26 +42,45 @@ void ModuleCamera3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[55]);
-		ImGui::SliderFloat3("Position", &Position, -100.0f, 100.0f);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
+		if (ImGui::SliderFloat3("Position", &Position, -100.0f, 100.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			App->audio->camera_tick_arr[1] = FALSEBOOL;
+		}
 		ImGui::Spacing();
 		if (ImGui::Button("Reset"))
 		{
 			Position.Set(0, 5, 10);
 			LookAt({ 0, 0, 0 });
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
+			
 		}
+		else
+			App->audio->camera_tick_arr[2] = FALSEBOOL;
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
-		ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f);
+		if (ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
+			App->audio->camera_tick_arr[3] = FALSEBOOL;
+		}				
 		ImGui::Spacing();
-		ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f);
+		if (ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
+			App->audio->camera_tick_arr[4] = FALSEBOOL;
+		}			
 		ImGui::Spacing();
-		ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f);
-
+		if (ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
+			App->audio->camera_tick_arr[5] = FALSEBOOL;
+		}
 	}
 	else
-		App->audio->tick_arr[55] = FALSEBOOL;
+		App->audio->camera_tick_arr[0] = FALSEBOOL;
 }
 
 // -----------------------------------------------------------------

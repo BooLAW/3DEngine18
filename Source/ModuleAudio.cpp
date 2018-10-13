@@ -56,6 +56,10 @@ bool ModuleAudio::Init()
 	{
 		renderer_tick_arr.push_back(TRUEBOOL);
 	}
+	for (int i = 0; i < 100; i++)
+	{
+		camera_tick_arr.push_back(TRUEBOOL);
+	}
 
 	App->profiler.SaveInitData("Audio");
 
