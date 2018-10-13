@@ -145,7 +145,7 @@ void ModuleInput::DrawModuleConfig()
 	io.WantCaptureKeyboard;
 	if (ImGui::CollapsingHeader("Input"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[52]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->input_tick_arr[0]);
 		ImGui::Text("Mouse Position:");
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "X: %d", App->input->mouse_x);
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Y: %d", App->input->mouse_y);
@@ -163,6 +163,6 @@ void ModuleInput::DrawModuleConfig()
 		ImGui::Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "");
 	}
 	else
-		App->audio->tick_arr[52] = FALSEBOOL;
+		App->audio->input_tick_arr[0] = FALSEBOOL;
 
 }

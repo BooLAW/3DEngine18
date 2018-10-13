@@ -52,6 +52,7 @@ bool ModuleAudio::Init()
 		camera_tick_arr.push_back(TRUEBOOL);
 		window_tick_arr.push_back(TRUEBOOL);
 		config_tick_arr.push_back(TRUEBOOL);
+		input_tick_arr.push_back(TRUEBOOL);
 	}
 
 
