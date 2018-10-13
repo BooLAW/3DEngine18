@@ -42,16 +42,20 @@ void PanelConfiguration::Application()
 {
 	if (ImGui::CollapsingHeader("Application"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[54]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[0]);
 		ImGui::Checkbox("Vsync", &App->imgui->isVsyncActive);
 		if (App->imgui->isVsyncActive == true)
 		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[1]);
+			App->audio->config_tick_arr[2] = FALSEBOOL;
 			//Activate Vsync
 			if (SDL_GL_SetSwapInterval(1))
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());
 		}
 		else
 		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[2]);
+			App->audio->config_tick_arr[1] = FALSEBOOL;
 			//Deactivate Vsync
 			if (SDL_GL_SetSwapInterval(0))
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());		
@@ -69,7 +73,11 @@ void PanelConfiguration::Application()
 
 
 		App->window->SetTitle(window_title.c_str());
-		ImGui::SliderInt("Max FPS", &App->imgui->fps_slider, 0, 120);
+		if (ImGui::SliderInt("Max FPS", &App->imgui->fps_slider, 0, 120))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[3]);
+			App->audio->config_tick_arr[3] = FALSEBOOL;
+		}
 		ImGui::Text("Limit Framerate: %i FPS", App->imgui->fps_slider);
 
 		static int i = 32;
@@ -143,6 +151,6 @@ void PanelConfiguration::Application()
 		last_mem = stats.peakActualMemory;
 	}
 	else
-		App->audio->tick_arr[54] = FALSEBOOL;
+		App->audio->config_tick_arr[0] = FALSEBOOL;
 }
 
