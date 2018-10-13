@@ -66,7 +66,6 @@ void PanelInspector::Draw()
 					if ((*it)->GetName() != nullptr)
 					{
 						mesh_name.push_back((*it)->GetName());
-
 					}
 					if ((*it)->transform != nullptr)
 					{

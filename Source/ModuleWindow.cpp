@@ -111,35 +111,61 @@ void ModuleWindow::DrawModuleConfig()
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[50]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[0]);
 
 		ImGui::Text("Size configuration:");
 		if (size_modified == true)
 			Resize(width, height);
 		if (ImGui::DragInt("Width", &width, 1, 1, 10000))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[1]);
+			App->audio->window_tick_arr[1] = FALSEBOOL;
 			size_modified = true;
+		}
+			
 
 		if (ImGui::DragInt("Height", &height, 1, 1, 10000))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[2]);
+			App->audio->window_tick_arr[2] = FALSEBOOL;
 			size_modified = true;
+		}
+			
 
 
 		if (ImGui::Button("Center Window"))
 		{
 			SDL_SetWindowPosition(window, DM.w / 2 - width / 2, DM.h / 2 - height / 2);
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[3]);			
 		}
+		else
+			App->audio->window_tick_arr[3] = FALSEBOOL;
+
 		ImGui::Separator();
 		// Auto adjustments -----------------------------
 
 		ImGui::Text("Auto adjustments: ");
 
-		ImGui::Checkbox("Fullscreen", &fullscreen); ImGui::SameLine();
-		ImGui::Checkbox("Borderless", &borderless);
+		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[4]);
+		}
+		else
+			App->audio->window_tick_arr[4] = FALSEBOOL;
+		
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Borderless", &borderless))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[5]);
+		}
+		else
+			App->audio->window_tick_arr[5] = FALSEBOOL;
 
 		ImGui::Separator();
 		// ------------------------------------------
 	}
 	else
-		App->audio->tick_arr[50] = FALSEBOOL;
+		App->audio->window_tick_arr[0] = FALSEBOOL;
 }
 
 bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)

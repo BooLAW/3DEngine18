@@ -47,19 +47,15 @@ bool ModuleAudio::Init()
 	for (int i = 0; i < 100;i++)
 	{
 		tick_arr.push_back(TRUEBOOL);
-	}
-	for (int i = 0; i < 100; i++)
-	{
 		audio_tick_arr.push_back(TRUEBOOL);
-	}
-	for (int i = 0; i < 100; i++)
-	{
 		renderer_tick_arr.push_back(TRUEBOOL);
-	}
-	for (int i = 0; i < 100; i++)
-	{
 		camera_tick_arr.push_back(TRUEBOOL);
+		window_tick_arr.push_back(TRUEBOOL);
 	}
+
+
+
+	
 
 	App->profiler.SaveInitData("Audio");
 
