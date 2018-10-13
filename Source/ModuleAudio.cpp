@@ -70,6 +70,12 @@ bool ModuleAudio::CleanUp()
 
 void ModuleAudio::DrawModuleConfig()
 {
+	if (ImGui::CollapsingHeader("Audio"))
+	{
+		//App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[53]);
+	}
+	/*else
+		App->audio->tick_arr[53] = FALSEBOOL;*/
 }
 
 // Play a music file

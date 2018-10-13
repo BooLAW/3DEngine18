@@ -29,7 +29,7 @@ bool ModuleSceneGui::Init()
 	App->profiler.StartTimer("UI");
 	bool ret = true;
 	ImGui_ImplSdl_Init(App->window->window);
-	SetImguiStyle();
+	ImGui::StyleColorsLight();
 	ImGui::InitDock();
 	//Add Panels HERE
 	console = new PanelConsole();
