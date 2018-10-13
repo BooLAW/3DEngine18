@@ -46,9 +46,10 @@ void PanelInspector::Draw()
 			//clear variables
 			mesh_name.clear();
 			vertex.clear();
+			indices.clear();
+			triangle.clear();
 			tex_name.clear();
 			tex_data.clear();
-			triangle.clear();
 			counter = 0;
 
 		}
@@ -75,7 +76,8 @@ void PanelInspector::Draw()
 					}
 					if ((*it)->HasMesh())
 					{
-						vertex.push_back((*it)->GetMesh()->num_indices); 
+						vertex.push_back((*it)->GetMesh()->num_vertices);
+						indices.push_back((*it)->GetMesh()->num_indices);
 						uint get_triangles = ((*it)->GetMesh()->num_vertices);
 						
 						get_triangles = get_triangles / 3;
@@ -131,8 +133,22 @@ void PanelInspector::Draw()
 							App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i+6]);
 							if (i < vertex.size())
 							{
-								ImGui::Text("It has %i Vertex", vertex[i]);
-								ImGui::Text("It has %i Triangles", triangle[i]);
+								ImGui::Spacing();
+								ImGui::Text("Number Vertices");
+								ImGui::SameLine();
+								ImGui::Text("      %i", vertex[i]);
+								ImGui::Spacing();
+
+								ImGui::Text("Number Indices");
+								ImGui::SameLine();
+								ImGui::Text("       %i", indices[i]);
+								ImGui::Spacing();
+
+								ImGui::Text("Number Triangles");
+								ImGui::SameLine();
+								ImGui::Text("      %i", triangle[i]);
+								ImGui::Spacing();
+
 							}
 							ImGui::TreePop();
 						}
@@ -146,10 +162,25 @@ void PanelInspector::Draw()
 								if (ImGui::TreeNode(tex_name[i]))
 								{
 									App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i+12]);
-									ImGui::Text("Texture Coordinates: TAB %i ", tex_coord[i]);
-									ImGui::Text("Height: %i", tex_data[i]->height);
-									ImGui::Text("Width: %i", tex_data[i]->width);
-									ImGui::Text("It has id %i", tex_data[i]->textures_id);
+									ImGui::Spacing();
+									ImGui::Text("Texture Coordinates:  %i ", tex_coord[i]);
+									ImGui::Spacing();
+									
+									ImGui::Text("Texture Height:");
+									ImGui::SameLine();
+									ImGui::Text("     %i", tex_data[i]->height);
+									ImGui::Spacing();
+
+
+									ImGui::Text("Texture Width:", tex_data[i]->width);
+									ImGui::SameLine();
+									ImGui::Text("     %i", tex_data[i]->width);
+									ImGui::Spacing();
+
+									ImGui::Text("Texture ID:");
+									ImGui::SameLine();
+									ImGui::Text("     %i", tex_data[i]->textures_id);
+									ImGui::Spacing();
 
 									ImTextureID tex = (uint*)tex_data[i]->textures_id;
 									ImVec2 image_size = ImGui::GetWindowSize();

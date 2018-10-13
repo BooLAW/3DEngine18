@@ -20,6 +20,7 @@ public:
 	
 public:
 	std::vector<uint> vertex;
+	std::vector<uint> indices;
 	std::vector<uint> triangle;
 	std::vector<int*> tex_coord;
 	std::vector<const char*> mesh_name;
