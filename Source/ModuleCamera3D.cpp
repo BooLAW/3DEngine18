@@ -133,6 +133,13 @@ void ModuleCamera3D::MoveCam(const vec3 &speed)
 	Reference = newPos;
 }
 
+bool ModuleCamera3D::MouseOverScene(PanelScene* Scene)
+{
+	bool ret = false;
+	
+	return ret;
+}
+
 void ModuleCamera3D::WheelMove(const vec3 & mouse_speed, int direction)
 {
 	vec3 newPos(0, 0, 0);

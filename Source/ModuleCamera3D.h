@@ -5,7 +5,7 @@
 #include "MathGeoLib\MathGeoLib.h"
 
 class TextureMSAA; 
-
+class PanelScene;
 class ModuleCamera3D : public Module
 {
 public:
@@ -43,7 +43,7 @@ public:
 	bool Load(Document* config_r);
 	void AdaptCamera(AABB bounding_box);
 	void MoveCam(const vec3 &speed);
-
+	bool MouseOverScene(PanelScene* Scene);
 
 private:
 

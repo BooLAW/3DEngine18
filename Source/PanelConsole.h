@@ -34,6 +34,10 @@ public:
 	bool show_err_text = true;
 	bool show_info_text = true;
 
+	ImVec4 Blue = { 0,0,1,1 };
+	ImVec4 Red = { 1,0,0,1 };
+	ImVec4 Yellow = { 1,1,0,1 };
+	ImVec4 White = { 1,1,1,1 };
 
 };
 #endif
