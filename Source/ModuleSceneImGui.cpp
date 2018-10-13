@@ -239,88 +239,163 @@ int ModuleSceneGui::CreateMainMenu()
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
+			
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Quit", "Alt + F4")) { return UPDATE_STOP; }
-				if (ImGui::MenuItem("Save")) { want_to_save = true; }
-				if (ImGui::MenuItem("Load")) { want_to_load = true; }
+				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[0]);
+				if (ImGui::MenuItem("Quit", "Alt + F4"))
+				{				
+					return UPDATE_STOP;
+				}
+					
+				if (ImGui::MenuItem("Save")) 
+				{ 
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[1]);
+					want_to_save = true; 
+				}
+				else
+					App->audio->menu_tick_arr[1] = FALSEBOOL;
+				
+				if (ImGui::MenuItem("Load")) 
+				{ 
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[2]);
+					want_to_load = true; 
+				}
+				else
+					App->audio->menu_tick_arr[2] = FALSEBOOL;
 				ImGui::EndMenu();
 			}
+			else
+				App->audio->menu_tick_arr[0] = FALSEBOOL;
 			if (ImGui::BeginMenu("Tools")) 
 			{
+				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[3]);
 				if (ImGui::MenuItem("ImGui Demo"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[4]);
 					ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_Always);
 					show_test_window = !show_test_window;
 				}
+				else
+					App->audio->menu_tick_arr[4] = FALSEBOOL;
 				if (ImGui::MenuItem("Random Number Generator"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[5]);
 					show_random_number_generator = !show_random_number_generator;
 				}
+				else
+					App->audio->menu_tick_arr[5] = FALSEBOOL;
 				if (ImGui::MenuItem("Sphere Creator"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[6]);
 					show_sphere_creator = !show_sphere_creator;
 				}
+				else
+					App->audio->menu_tick_arr[6] = FALSEBOOL;
 				if (ImGui::MenuItem("Cube Creator"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[7]);
 					show_cube_creator = !show_cube_creator;
 				}
+				else
+					App->audio->menu_tick_arr[7] = FALSEBOOL;
 				if (ImGui::MenuItem("Profiler"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[8]);
 					show_profiler = !show_profiler;
 				}
+				else
+					App->audio->menu_tick_arr[8] = FALSEBOOL;
 				if (ImGui::MenuItem("Check Collisions"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[9]);
 					App->physics->GetSphereCollisions();
 					App->physics->GetCubeCollisions();
 				}
+				else
+					App->audio->menu_tick_arr[9] = FALSEBOOL;
 				ImGui::EndMenu(); 
 			}
+			else
+				App->audio->menu_tick_arr[3] = FALSEBOOL;
 			if (ImGui::BeginMenu("View"))
 			{
+				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[10]);
 				if (ImGui::MenuItem("Only Scene"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[11]);
 					ShowOnlyScene();
 				}
+				else
+					App->audio->menu_tick_arr[11] = FALSEBOOL;
 				if (ImGui::MenuItem("Standard Panels"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[12]);
 					ShowSTDPanels();
 				}
+				else
+					App->audio->menu_tick_arr[12] = FALSEBOOL;
 				if (ImGui::MenuItem("Console"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[13]);
 					console->Activate();
 				}
+				else
+					App->audio->menu_tick_arr[13] = FALSEBOOL;
 				if (ImGui::MenuItem("Configuration"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[14]);
 					configuration->Activate();
 				}
+				else
+					App->audio->menu_tick_arr[14] = FALSEBOOL;
 				if (ImGui::MenuItem("Components"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[15]);
 					components->Activate();
 				}
+				else
+					App->audio->menu_tick_arr[15] = FALSEBOOL;
 				/*if (ImGui::MenuItem("Hierarchy"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[1]);
 					hierarchy->Activate();
 				}*/
 				if (ImGui::MenuItem("Inspector"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[16]);
 					inspector->Activate();
 				}
+				else
+					App->audio->menu_tick_arr[16] = FALSEBOOL;
 				ImGui::EndMenu();
 			}
+			else
+				App->audio->menu_tick_arr[10] = FALSEBOOL;
 			if (ImGui::BeginMenu("About..."))
 			{
+				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[17]);
 				//put links in  our names
 				ImGui::Text("Living Worlds");
 				ImGui::Text("by Pau Bonet");
 				ImGui::SameLine();
 				if (ImGui::Button("REPO"))
+				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[18]);
 					App->OpenWebPage("https://github.com/BooLAW");
+				}
+				else
+					App->audio->menu_tick_arr[18] = FALSEBOOL;				
 				ImGui::SameLine();
 				ImGui::Text("& Josep Pi");
 				ImGui::SameLine();
 				if (ImGui::Button("REPO "))
+				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[19]);
 					App->OpenWebPage("https://github.com/joseppi");
+				}
+				else
+					App->audio->menu_tick_arr[19] = FALSEBOOL;
 				ImGui::Separator();				
 				ImGui::Text("Living Worlds is a game engine to create 3D world with realisitic physics.");
 				ImGui::Separator();
@@ -352,63 +427,107 @@ int ModuleSceneGui::CreateMainMenu()
 
 				if (ImGui::MenuItem("Link to Repository"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[20]);
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18");
 				}
+				else
+					App->audio->menu_tick_arr[20] = FALSEBOOL;
 				if (ImGui::MenuItem("Link to Wiki"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[21]);
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/wiki");
 				}
+				else
+					App->audio->menu_tick_arr[21] = FALSEBOOL;
 				if (ImGui::MenuItem("Report a Bug"))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[22]);
 					App->OpenWebPage("https://github.com/BooLAW/3DEngine18/issues");
 				}
+				else
+					App->audio->menu_tick_arr[22] = FALSEBOOL;
 				if (ImGui::BeginMenu("Used Libraries",true))
 				{
+					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[23]);
 					if (ImGui::BeginMenu("ImGui"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[24]);
 						if (ImGui::MenuItem("Source Code"))
 						{
+							App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[25]);
 							App->OpenWebPage("https://github.com/ocornut/imgui");
 						}
+						else
+							App->audio->menu_tick_arr[25] = FALSEBOOL;
 						if (ImGui::MenuItem("Docking Code"))
 						{
+							App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[26]);
 							App->OpenWebPage("https://github.com/ocornut/imgui/tree/docking");
 						}
+						else
+							App->audio->menu_tick_arr[26] = FALSEBOOL;
 						ImGui::EndMenu();
 					}
+					else
+						App->audio->menu_tick_arr[24] = FALSEBOOL;
 					
 					if (ImGui::MenuItem("PCG"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[27]);
 						App->OpenWebPage("http://www.pcg-random.org/download.html");
 					}
+					else
+						App->audio->menu_tick_arr[27] = FALSEBOOL;
 					if (ImGui::MenuItem("MathGeolib"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[28]);
 						App->OpenWebPage("https://github.com/juj/MathGeoLib");
 					}
+					else
+						App->audio->menu_tick_arr[28] = FALSEBOOL;
 					if (ImGui::MenuItem("STL"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[29]);
 						App->OpenWebPage("http://www.cplusplus.com/reference/stl/");
 					}
+					else
+						App->audio->menu_tick_arr[29] = FALSEBOOL;
 					if (ImGui::MenuItem("DevIL"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[30]);
 						App->OpenWebPage("http://openil.sourceforge.net/download.php");
 					}
+					else
+						App->audio->menu_tick_arr[30] = FALSEBOOL;
 					if (ImGui::MenuItem("Assimp"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[31]);
 						App->OpenWebPage("https://github.com/assimp/assimp/releases/tag/v4.1.0/");
 					}
+					else
+						App->audio->menu_tick_arr[31] = FALSEBOOL;
 					if (ImGui::MenuItem("OpenGL"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[32]);
 						App->OpenWebPage("https://www.opengl.org/documentation/");
 					}
+					else
+						App->audio->menu_tick_arr[32] = FALSEBOOL;
 					if (ImGui::MenuItem("MMGR"))
 					{
+						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[33]);
 						App->OpenWebPage("https://github.com/ConfettiFX/The-Forge/tree/master/Common_3/ThirdParty/OpenSource/FluidStudios/MemoryManager");
 					}
+					else
+						App->audio->menu_tick_arr[33] = FALSEBOOL;
 					ImGui::EndMenu();
 				}
+				else
+					App->audio->menu_tick_arr[23] = FALSEBOOL;
 				ImGui::EndMenu();
 			}
+			else
+				App->audio->menu_tick_arr[17] = FALSEBOOL;
 			ImGui::EndMainMenuBar();
 		}
 	}

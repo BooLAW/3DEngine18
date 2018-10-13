@@ -123,20 +123,18 @@ void PanelInspector::Draw()
 				{
 					if (ImGui::TreeNode(mesh_name[i]))
 					{					
-						App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i]);
+						
 						if (ImGui::TreeNode("Transform"))
 						{
-							App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i+3]);
+							
 							ImGui::DragFloat3("Position", (float*)&positions[i]);
 							ImGui::DragFloat3("Rotation", (float*)&rotations[i]);
 							ImGui::DragFloat3("Scale", (float*)&scales[i]);
 							ImGui::TreePop();
-						}
-						else
-							App->audio->tick_arr[i+3] = FALSEBOOL;
+						}						
 						if (ImGui::TreeNode("Geometry"))
 						{
-							App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i+6]);
+							
 							if (i < vertex.size())
 							{
 								ImGui::Spacing();
@@ -158,16 +156,12 @@ void PanelInspector::Draw()
 							}
 							ImGui::TreePop();
 						}
-						else
-							App->audio->tick_arr[i+6] = FALSEBOOL;
 						if (tex_data.size() != 0) //Checking if it the mesh has a texture to display.
 						{
 							if (ImGui::TreeNode("Texture"))
-							{					
-								App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i+9]);
+							{													
 								if (ImGui::TreeNode(tex_name[i]))
-								{
-									App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[i+12]);
+								{									
 									ImGui::Spacing();
 									ImGui::Text("Texture Coordinates:  %i ", tex_coord[i]);
 									ImGui::Spacing();
@@ -193,25 +187,16 @@ void PanelInspector::Draw()
 									image_size.y = image_size.x;
 									ImGui::Image(tex, image_size);
 									ImGui::TreePop();
-								}
-								else
-									App->audio->tick_arr[i+12] = FALSEBOOL;
+								}								
 								ImGui::TreePop();
-							}
-							else
-								App->audio->tick_arr[i+9] = FALSEBOOL;
+							}							
 						}
 						ImGui::TreePop();
-					}
-					else
-						App->audio->tick_arr[i] = FALSEBOOL;
+					}					
 				}
 				ImGui::TreePop();
 			}
-			
-
 		}
 	}
-
 	ImGui::EndDock();
 }

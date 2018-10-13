@@ -53,6 +53,7 @@ bool ModuleAudio::Init()
 		window_tick_arr.push_back(TRUEBOOL);
 		config_tick_arr.push_back(TRUEBOOL);
 		input_tick_arr.push_back(TRUEBOOL);
+		menu_tick_arr.push_back(TRUEBOOL);
 	}
 
 

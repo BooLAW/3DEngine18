@@ -54,6 +54,7 @@ public:
 	std::vector<BoolList> window_tick_arr;
 	std::vector<BoolList> config_tick_arr;
 	std::vector<BoolList> input_tick_arr;
+	std::vector<BoolList> menu_tick_arr;
 
 	std::vector<BoolList> tick_arr;
 	bool mute_sound = false;
