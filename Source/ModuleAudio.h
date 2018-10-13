@@ -37,18 +37,25 @@ public:
 
 private:
 
-	Mix_Music*					music;
+	Mix_Music* music;
 	
 
-	float						musicVolumeModifier = 1;
-	float						sfxVolumeModifier = 1;
+	float musicVolumeModifier = 1;
+	float sfxVolumeModifier = 1;
 
 public:
-	std::list<SFXList>			blackList;
-	std::vector<Mix_Chunk*>		fx;
+	std::list<SFXList> blackList;
+	std::vector<Mix_Chunk*>	fx;
 	bool button_up = false;
 	bool tick = false;
+	std::vector<BoolList> audio_tick_arr;
+	std::vector<BoolList> renderer_tick_arr;
+	std::vector<BoolList> camera_tick_arr;
 	std::vector<BoolList> tick_arr;
+	bool mute_sound = false;
+	bool mute_music = true;
+	int sound_volume = 128;
+	int music_volume = 128;
 
 };
 

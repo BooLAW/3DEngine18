@@ -55,16 +55,17 @@ void PanelInspector::Draw()
 		
 		if (App->input->tex_droped == true || App->input->file_droped == true)
 		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[56]);
 			//Getting Data
 			for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it < App->scene_intro->go_list.end(); it++)
 			{
 				if ((*it)->IsRoot() == false)
 				{
-					
+
 					if ((*it)->GetName() != nullptr)
 					{
 						mesh_name.push_back((*it)->GetName());
-	
+
 					}
 					if ((*it)->transform != nullptr)
 					{
@@ -75,11 +76,11 @@ void PanelInspector::Draw()
 					}
 					if ((*it)->HasMesh())
 					{
-						vertex.push_back((*it)->GetMesh()->num_indices); 
+						vertex.push_back((*it)->GetMesh()->num_indices);
 						uint get_triangles = ((*it)->GetMesh()->num_vertices);
-						
+
 						get_triangles = get_triangles / 3;
-						triangle.push_back(get_triangles);										
+						triangle.push_back(get_triangles);
 						counter++;
 					}
 				}
@@ -101,8 +102,10 @@ void PanelInspector::Draw()
 					}
 				}
 			}
-			
+
 		}
+		else
+			App->audio->tick_arr[56] = FALSEBOOL;
 		App->input->file_droped = false;
 		App->input->tex_droped = false;
 		

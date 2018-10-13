@@ -23,7 +23,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 
 // Called before render is available
 bool ModuleRenderer3D::Init()
-{
+{	
 	CONSOLE_LOG_INFO("Creating 3D Renderer context");
 	App->profiler.StartTimer("Render");
 	bool ret = true;
@@ -97,7 +97,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[51]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[0]);
 		SDL_version compiler;
 		SDL_VERSION(&compiler);
 
@@ -124,7 +124,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 		CPUCapabilities();
 	}
 	else
-		App->audio->tick_arr[51] = FALSEBOOL;
+		App->audio->renderer_tick_arr[0] = FALSEBOOL;
 
 }
 
@@ -244,8 +244,9 @@ void ModuleRenderer3D::SetSceneLights()
 	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
+	App->audio->sound_volume = 0;
 	UpdateAttributes();
-	
+	App->audio->sound_volume = 128;
 	
 	lights[0].Active(true);
 }
@@ -323,39 +324,102 @@ void ModuleRenderer3D::UpdateAttributes()
 {
 	//wireframe
 	if (attributes.wireframe)
+	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else 		
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[1]);
+		App->audio->renderer_tick_arr[2] = FALSEBOOL;
+	}		
+	else
+	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		App->audio->renderer_tick_arr[1] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[2]);
+	}
+		
+
 	//color_material
 	if (attributes.color_material)
+	{
 		glEnable(GL_COLOR_MATERIAL);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[3]);
+		App->audio->renderer_tick_arr[4] = FALSEBOOL;
+	}		
 	else
+	{
 		glDisable(GL_COLOR_MATERIAL);
+		App->audio->renderer_tick_arr[3] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[4]);
+	}
+		
 	//depth test
 	if (attributes.depth_test)
+	{
 		glEnable(GL_DEPTH_TEST);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[5]);
+		App->audio->renderer_tick_arr[6] = FALSEBOOL;
+	}		
 	else
+	{
 		glDisable(GL_DEPTH_TEST);
+		App->audio->renderer_tick_arr[5] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[6]);
+	}
 	//lighting
 	if (attributes.lighting)
+	{
 		glEnable(GL_LIGHTING);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[7]);
+		App->audio->renderer_tick_arr[8] = FALSEBOOL;
+	}		
 	else
+	{
 		glDisable(GL_LIGHTING);
+		App->audio->renderer_tick_arr[7] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[8]);
+	}
+		
 	//cull test
 	if (attributes.cull_face)
+	{
 		glEnable(GL_CULL_FACE);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[9]);
+		App->audio->renderer_tick_arr[10] = FALSEBOOL;
+	}		
 	else
+	{
 		glDisable(GL_CULL_FACE);
+		App->audio->renderer_tick_arr[9] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[10]);
+	}
+		
 	//texture
 	if (attributes.texture)
+	{
 		glEnable(GL_TEXTURE_2D);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[11]);
+		App->audio->renderer_tick_arr[12] = FALSEBOOL;
+	}		
 	else
+	{
 		glDisable(GL_TEXTURE_2D);
+		App->audio->renderer_tick_arr[11] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[12]);
+	}
+		
 	//debug draw
 	if (attributes.debug_draw == true)
+	{
 		debug_draw = true;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[13]);
+		App->audio->renderer_tick_arr[14] = FALSEBOOL;
+	}		
 	else
+	{
 		debug_draw = false;
+		App->audio->renderer_tick_arr[13] = FALSEBOOL;
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[14]);
+	}
+		
 
 }
 

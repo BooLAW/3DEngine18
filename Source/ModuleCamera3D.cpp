@@ -42,7 +42,7 @@ void ModuleCamera3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[53]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[55]);
 		ImGui::SliderFloat3("Position", &Position, -100.0f, 100.0f);
 		ImGui::Spacing();
 		if (ImGui::Button("Reset"))
@@ -61,7 +61,7 @@ void ModuleCamera3D::DrawModuleConfig()
 
 	}
 	else
-		App->audio->tick_arr[53] = FALSEBOOL;
+		App->audio->tick_arr[55] = FALSEBOOL;
 }
 
 // -----------------------------------------------------------------

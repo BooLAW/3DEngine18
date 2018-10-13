@@ -38,6 +38,8 @@ Application::Application()
 
 	// Renderer last!
 	AddModule(renderer3D);
+	
+	
 }
 
 Application::~Application()

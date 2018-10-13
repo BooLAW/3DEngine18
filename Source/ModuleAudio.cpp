@@ -48,6 +48,14 @@ bool ModuleAudio::Init()
 	{
 		tick_arr.push_back(TRUEBOOL);
 	}
+	for (int i = 0; i < 100; i++)
+	{
+		audio_tick_arr.push_back(TRUEBOOL);
+	}
+	for (int i = 0; i < 100; i++)
+	{
+		renderer_tick_arr.push_back(TRUEBOOL);
+	}
 
 	App->profiler.SaveInitData("Audio");
 
@@ -72,10 +80,37 @@ void ModuleAudio::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Audio"))
 	{
-		//App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->tick_arr[53]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->audio_tick_arr[0]);
+		ImGui::Checkbox("Mute Sound", &mute_sound);
+		if (mute_sound == false)
+		{
+			
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->audio_tick_arr[1]);
+			if (ImGui::SliderInt("Volume", &sound_volume, 0, 128))
+			{
+				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->audio_tick_arr[2]);
+				App->audio->audio_tick_arr[2] = FALSEBOOL;
+			}
+
+
+		}
+		else
+			App->audio->audio_tick_arr[1] = FALSEBOOL;			
+		ImGui::Checkbox("Mute Music", &mute_music);
+		if (mute_music == false)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->audio_tick_arr[3]);
+			if (ImGui::SliderInt("sVolume", &music_volume, 0, 128))
+			{
+				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->audio_tick_arr[4]);
+				App->audio->audio_tick_arr[4] = FALSEBOOL;
+			}
+		}
+		else
+			App->audio->audio_tick_arr[3] = FALSEBOOL;
 	}
-	/*else
-		App->audio->tick_arr[53] = FALSEBOOL;*/
+	else
+		App->audio->audio_tick_arr[0] = FALSEBOOL;
 }
 
 // Play a music file
@@ -132,22 +167,28 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 bool ModuleAudio::PlayFx(unsigned int id, BoolList* tick_array, uint volume, int repeat)
 {
 	unsigned int ret = 0;
+	if (mute_sound)
+	{
+		volume = 0;
+	}
+	else
+		volume = sound_volume;
+	
+	if (id < fx.size() && *tick_array == FALSEBOOL)
+	{
+		*tick_array = TRUEBOOL;
+		bool tmp = false;
+		for (std::list<SFXList>::iterator it = blackList.begin(); it != blackList.end(); it++)
+			if (*it == id && *it != LIGHT_BUTTON_CLICK) { tmp = true; }
 
-		if (id < fx.size() && *tick_array == FALSEBOOL)
+		if (!tmp)
 		{
-			*tick_array = TRUEBOOL;
-			bool tmp = false;
-			for (std::list<SFXList>::iterator it = blackList.begin(); it != blackList.end(); it++)
-				if (*it == id && *it != LIGHT_BUTTON_CLICK) { tmp = true; }
-
-			if (!tmp)
-			{
-				blackList.push_back((SFXList)id);
-				Mix_VolumeChunk(fx[id], volume*sfxVolumeModifier);
-				Mix_PlayChannel(-1, fx[id], repeat);
-				return true;
-			}
+			blackList.push_back((SFXList)id);
+			Mix_VolumeChunk(fx[id], volume*sfxVolumeModifier);
+			Mix_PlayChannel(-1, fx[id], repeat);
+			return true;
 		}
+	}
 	
 		
 

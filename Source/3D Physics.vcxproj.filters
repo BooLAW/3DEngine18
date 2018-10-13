@@ -718,16 +718,7 @@
     <None Include="Parson\testconfig.json">
       <Filter>Sources\External Tools\Parson</Filter>
     </None>
-    <None Include="..\Game\big.json">
-      <Filter>Sources\json</Filter>
-    </None>
-    <None Include="..\Game\config.json">
-      <Filter>Sources\json</Filter>
-    </None>
-    <None Include="..\Game\output.json">
-      <Filter>Sources\json</Filter>
-    </None>
-    <None Include="..\Game\testconfig.json">
+    <None Include="..\Game\Assets\json\config.json">
       <Filter>Sources\json</Filter>
     </None>
   </ItemGroup>
