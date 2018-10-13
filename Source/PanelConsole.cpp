@@ -20,26 +20,40 @@ void PanelConsole::Draw()
 	if (ImGui::BeginDock("Console", &active))
 	{
 		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 1, 0.3));
 		if (ImGui::Button("DEBUG"))
 		{
 			show_debug_text = !show_debug_text;
 		}
+		ImGui::PopStyleColor(1);
+
 		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1,1,0,0.3));
+
 		if (ImGui::Button("WARNINGS"))
 		{
 			show_warning_text = !show_warning_text;
 		}
+		ImGui::PopStyleColor(1);
+
 		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 0, 0, 0.3));
 		if (ImGui::Button("ERRORS"))
 		{
 			show_err_text = !show_err_text;
 		}
+		ImGui::PopStyleColor(1);
+
 		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 0.3));
 		if (ImGui::Button("INFO"))
 		{
 			show_info_text = !show_info_text;
 		}
 		ImGui::SameLine();
+		ImGui::PopStyleColor(1);
+
 		if (ImGui::Button("Clear"))
 		{
 			ClearConsole();
@@ -130,50 +144,25 @@ const ImVec4 PanelConsole::GetColorFromLogType(typeLog log)
 	{
 	case 0:
 	{
-		//WHITE
-		myColor.x = 0;
-		myColor.y = 0;
-		myColor.z = 0;
-		myColor.w = 1;
 
-
-		return myColor;
+		return Blue;
 	}
 		
 	case 1:
 	{
-		//YELLOW
-		myColor.x = 1;
-		myColor.y = 1;
-		myColor.z = 0;
-		myColor.w = 1;
 
-
-		return myColor;
+		return Yellow;
 	}
 	case 2:
 	{
-		//RED
-		myColor.x = 1;
-		myColor.y = 0;
-		myColor.z = 0;
-		myColor.w = 1;
 
 
-
-		return myColor;
+		return Red;
 	}
 	case 3:
 	{
-		//BLUE
-		myColor.x = 0;
-		myColor.y = 0;
-		myColor.z = 1;
-		myColor.w = 1;
-	
 
-
-		return myColor;
+		return White;
 	}
 	}
 }

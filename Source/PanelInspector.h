@@ -10,14 +10,14 @@
 class GameObject;
 
 
-class PanelInspector: public Panel
+class PanelInspector : public Panel
 {
 public:
 	PanelInspector();
 	virtual ~PanelInspector();
 	void MeshComponentInfo(GameObject* active_GO);
 	void Draw()override;
-	
+
 public:
 	std::vector<uint> vertex;
 	std::vector<uint> indices;
