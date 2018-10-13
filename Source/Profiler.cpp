@@ -29,10 +29,10 @@ bool Profiler::Draw(bool &active)
 	ImGui::Text("Run time:");
 	ImGui::Spacing();
 	//Rund time performance for the ones needed(Input, Camera, Render)
-	ImGui::PlotLines("",&input_buffer[0],input_buffer.size(),0,"Input",0.0,5.0,ImVec2(300,100));
-	ImGui::PlotLines("", &render_buffer[0], render_buffer.size(), 0, "Render", 0.0, 5.0, ImVec2(300, 100));
-	ImGui::PlotLines("", &camera_buffer[0], camera_buffer.size(), 0, "Camera", 0.0, 5.0, ImVec2(300, 100));
-	ImGui::PlotLines("", &ui_buffer[0], ui_buffer.size(), 0, "UI", 0.0, 5.0, ImVec2(300, 100));
+	ImGui::PlotHistogram("",&input_buffer[0],input_buffer.size(),0,"Input",0.0,5.0,ImVec2(300,100));
+	ImGui::PlotHistogram("", &render_buffer[0], render_buffer.size(), 0, "Render", 0.0, 5.0, ImVec2(300, 100));
+	ImGui::PlotHistogram("", &camera_buffer[0], camera_buffer.size(), 0, "Camera", 0.0, 5.0, ImVec2(300, 100));
+	ImGui::PlotHistogram("", &ui_buffer[0], ui_buffer.size(), 0, "UI", 0.0, 5.0, ImVec2(300, 100));
 
 	ImGui::End();
 	return true;
