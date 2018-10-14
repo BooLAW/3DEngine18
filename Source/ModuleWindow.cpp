@@ -26,9 +26,9 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
-		 width = SCREEN_WIDTH * SCREEN_SIZE;
-		 height = SCREEN_HEIGHT * SCREEN_SIZE;
+ 
+		width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -195,8 +195,10 @@ bool ModuleWindow::Load(Document* config_r)
 	//Set Window size
 	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
+	width = DM.w - WINDOW_OFFSET_X;
+	height = DM.h - WINDOW_OFFSET_Y;
 	Resize(width, height);
-	SDL_SetWindowPosition(window, DM.w / 2 - width / 2, DM.h / 2 - height / 2);
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
 	return true;
 }

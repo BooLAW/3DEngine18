@@ -32,6 +32,8 @@ void console_log_info(const char file[], int line, const char* format, ...);
 #define HALF_PI  1.57079632679
 #define PI 3.14159265359
 
+#define WINDOW_OFFSET_X 100
+#define WINDOW_OFFSET_Y 100
 
 typedef unsigned int uint;
 

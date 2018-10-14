@@ -181,6 +181,8 @@ GameObject * ModuleScene::CreateNewGameObject()
 void ModuleScene::ClearScene()
 {
 	go_list.clear();
+	App->loading_manager->unique_fbx_path = "";
+	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;
 }
 

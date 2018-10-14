@@ -110,7 +110,23 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		if (parent != nullptr)
 			parent->SetChild(GO);
 
+		//Transform
+		if (node != nullptr) {
 
+			aiVector3D aiPos;
+			aiQuaternion aiQuat;
+			aiVector3D aiScale;
+
+			node->mTransformation.Decompose(aiPos, aiQuat, aiScale);
+
+			float3 pos(aiPos.x, aiPos.y, aiPos.z);
+			Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
+			float3 scale(aiScale.x, aiScale.y, aiScale.z);
+
+			GO->transform->SetTransform(pos, rot, scale);
+
+
+		}
 		App->scene_intro->go_list.push_back(GO);
 	}else
 	{
@@ -259,7 +275,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		InitMesh(scene, node->mChildren[i], GO,path);
 	}
 		
-	
 
 	return true;
 }
