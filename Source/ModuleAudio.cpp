@@ -14,6 +14,7 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
+
 	App->profiler.StartTimer("Audio");
 	CONSOLE_LOG_INFO("Loading Audio Mixer");
 	bool ret = true;
@@ -195,6 +196,36 @@ bool ModuleAudio::PlayFx(unsigned int id, BoolList* tick_array, uint volume, int
 	
 		
 
+	return false;
+}
+
+bool ModuleAudio::Save(Document & config_w, FileWriteStream & os)
+{
+	Document::AllocatorType& allocator = config_w.GetAllocator();
+
+	Value test(kObjectType);
+
+
+	test.AddMember("MuteAudio", mute_sound, allocator);
+	test.AddMember("SoundVolume", sound_volume, allocator);
+	test.AddMember("MuteMusic", mute_music, allocator);
+	test.AddMember("MusicVolume", music_volume, allocator);
+	
+
+	config_w.AddMember("audio", test, allocator);
+
+	return false;
+}
+
+bool ModuleAudio::Load(Document * config_r)
+{
+	Document ret;
+	ret.Parse(App->loadBuf);
+	ret.IsObject();
+	mute_sound = ret["audio"]["MuteAudio"].GetBool();
+	sound_volume = ret["audio"]["SoundVolume"].GetInt();
+	mute_music = ret["audio"]["MuteMusic"].GetBool();
+	music_volume = ret["audio"]["MusicVolume"].GetInt();
 	return false;
 }
 

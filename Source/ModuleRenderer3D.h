@@ -12,7 +12,7 @@ struct RenderAttributes{
 	bool lighting = false;
 	bool color_material = false;
 	bool texture = false;
-	bool debug_draw = false;
+	bool debug_draw_atribute = false;
 };
 class ModuleRenderer3D : public Module
 {
@@ -30,7 +30,7 @@ public:
 	void SetUILights();
 	void SetSceneLights();
 	void CPUCapabilities();
-	void UpdateAttributes();
+	void UpdateAttributes(bool sound = true);
 	//DEBUG OPTIONS
 	void SetDebugAttributes();
 	void SetNormalAttributes();

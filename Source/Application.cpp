@@ -181,7 +181,7 @@ Module * Application::GetModule(int index)
 	return nullptr;
 }
 
-void Application::DebugDraw()
+void Application::DebugDrawBB()
 {
 	for (int i = 0; i < scene_intro->go_list.size(); i++)
 		scene_intro->go_list[i]->ActivateBB();
@@ -209,11 +209,11 @@ bool Application::Save()
 	app.AddMember("max_fps", App->imgui->fps_slider, allocator);
 	testconfig_w.AddMember("app", app, allocator);
 
-
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
 		ret = (*item)->Save(testconfig_w,os);
 	}
+
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
 	fclose(fp);
@@ -224,7 +224,6 @@ bool Application::Save()
 bool Application::Load()
 {
 	bool ret = true;
-	//const char json[] = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";
 	FILE* fp = fopen("Assets/json/config.json", "rb"); // non-Windows use "r"
 
 	Document testconfig_r;

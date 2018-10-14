@@ -82,8 +82,9 @@ bool ModuleRenderer3D::Init()
 			CONSOLE_LOG_ERROR("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
-		
+
 		SetSceneLights();
+		
 	}
 
 
@@ -117,9 +118,9 @@ void ModuleRenderer3D::DrawModuleConfig()
 		if (ImGui::Checkbox("CullTest", &attributes.cull_face))attribute_modified = true;
 		if (ImGui::Checkbox("Lighting", &attributes.lighting))attribute_modified = true;
 		if (ImGui::Checkbox("Color Material", &attributes.color_material))attribute_modified = true;
-		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw))attribute_modified = true;
+		if (ImGui::Checkbox("Debug Draw", &attributes.debug_draw_atribute))attribute_modified = true;
 		if (attribute_modified)
-			UpdateAttributes();
+			UpdateAttributes(true);
 
 		CPUCapabilities();
 	}
@@ -166,11 +167,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 	//Debug Draw
-	if (debug_draw == true)
+	if (attributes.debug_draw_atribute)
 	{
 		SetDebugAttributes();
-		//DRAW FUTURE SCENE GAMEOBJECTS
-		App->DebugDraw();
+		App->DebugDrawBB();
 		SetNormalAttributes();
 	}
 	App->scene_intro->DrawGameObjects();
@@ -227,6 +227,7 @@ void ModuleRenderer3D::SetUILights()
 	glDisable(GL_TEXTURE_2D);
 }
 
+
 void ModuleRenderer3D::SetSceneLights()
 {
 	GLfloat LightModelAmbient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -244,9 +245,9 @@ void ModuleRenderer3D::SetSceneLights()
 	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
-	App->audio->sound_volume = 0;
+
 	UpdateAttributes();
-	App->audio->sound_volume = 128;
+
 	
 	lights[0].Active(true);
 }
@@ -320,105 +321,145 @@ void ModuleRenderer3D::CPUCapabilities()
 	}
 }
 
-void ModuleRenderer3D::UpdateAttributes()
+void ModuleRenderer3D::UpdateAttributes(bool sound)
 {
 	//wireframe
 	if (attributes.wireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[1]);
-		App->audio->renderer_tick_arr[2] = FALSEBOOL;
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[1]);
+			App->audio->renderer_tick_arr[2] = FALSEBOOL;
+		}
 	}		
 	else
 	{
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[1] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[2]);
+		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		App->audio->renderer_tick_arr[1] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[2]);
 	}
 		
 
 	//color_material
 	if (attributes.color_material)
 	{
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[3]);
+			App->audio->renderer_tick_arr[4] = FALSEBOOL;
+		}
 		glEnable(GL_COLOR_MATERIAL);
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[3]);
-		App->audio->renderer_tick_arr[4] = FALSEBOOL;
 	}		
 	else
 	{
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[3] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[4]);
+		}
 		glDisable(GL_COLOR_MATERIAL);
-		App->audio->renderer_tick_arr[3] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[4]);
 	}
 		
 	//depth test
 	if (attributes.depth_test)
 	{
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[5]);
+			App->audio->renderer_tick_arr[6] = FALSEBOOL;
+		}
 		glEnable(GL_DEPTH_TEST);
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[5]);
-		App->audio->renderer_tick_arr[6] = FALSEBOOL;
 	}		
 	else
 	{
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[5] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[6]);
+		}
 		glDisable(GL_DEPTH_TEST);
-		App->audio->renderer_tick_arr[5] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[6]);
 	}
 	//lighting
 	if (attributes.lighting)
 	{
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[7]);
+			App->audio->renderer_tick_arr[8] = FALSEBOOL;
+		}
 		glEnable(GL_LIGHTING);
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[7]);
-		App->audio->renderer_tick_arr[8] = FALSEBOOL;
 	}		
 	else
 	{
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[7] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[8]);
+		}
 		glDisable(GL_LIGHTING);
-		App->audio->renderer_tick_arr[7] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[8]);
 	}
 		
 	//cull test
 	if (attributes.cull_face)
 	{
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[9]);
+			App->audio->renderer_tick_arr[10] = FALSEBOOL;
+		}
 		glEnable(GL_CULL_FACE);
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[9]);
-		App->audio->renderer_tick_arr[10] = FALSEBOOL;
 	}		
 	else
 	{
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[9] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[10]);
+		}
 		glDisable(GL_CULL_FACE);
-		App->audio->renderer_tick_arr[9] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[10]);
 	}
-		
+	
 	//texture
 	if (attributes.texture)
 	{
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[11]);
+			App->audio->renderer_tick_arr[12] = FALSEBOOL;
+		}
 		glEnable(GL_TEXTURE_2D);
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[11]);
-		App->audio->renderer_tick_arr[12] = FALSEBOOL;
 	}		
 	else
 	{
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[11] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[12]);
+		}
 		glDisable(GL_TEXTURE_2D);
-		App->audio->renderer_tick_arr[11] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[12]);
 	}
-		
 	//debug draw
-	if (attributes.debug_draw == true)
+	if (attributes.debug_draw_atribute)
 	{
-		debug_draw = true;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[13]);
-		App->audio->renderer_tick_arr[14] = FALSEBOOL;
-	}		
+		if (!sound)
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[13]);
+			App->audio->renderer_tick_arr[14] = FALSEBOOL;
+		}
+	}
 	else
 	{
-		debug_draw = false;
-		App->audio->renderer_tick_arr[13] = FALSEBOOL;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[14]);
+		if (!sound)
+		{
+			App->audio->renderer_tick_arr[13] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[14]);
+		}
 	}
+
 		
 
 }
@@ -454,7 +495,7 @@ bool ModuleRenderer3D::Save(Document& testconfig_w, FileWriteStream& os)
 	app.AddMember("CullTest", attributes.cull_face, allocator);
 	app.AddMember("Lighting", attributes.lighting, allocator);
 	app.AddMember("Color Material", attributes.color_material, allocator);
-	app.AddMember("Debug Draw", attributes.debug_draw, allocator);
+	app.AddMember("Debug Draw", attributes.debug_draw_atribute, allocator);
 	testconfig_w.AddMember("renderer", app, allocator);
 	
 	return true;
@@ -471,7 +512,7 @@ bool ModuleRenderer3D::Load(Document* testconfig_r)
 	attributes.cull_face = ret["renderer"]["CullTest"].GetBool();
 	attributes.lighting = ret["renderer"]["Lighting"].GetBool();
 	attributes.color_material = ret["renderer"]["Color Material"].GetBool();
-	attributes.debug_draw = ret["renderer"]["Debug Draw"].GetBool();
+	attributes.debug_draw_atribute = ret["renderer"]["Debug Draw"].GetBool();
 
 	return true;
 }
