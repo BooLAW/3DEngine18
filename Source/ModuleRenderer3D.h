@@ -30,7 +30,7 @@ public:
 	void SetUILights();
 	void SetSceneLights();
 	void CPUCapabilities();
-	void UpdateAttributes(bool sound = true);
+	void UpdateAttributes(bool activate_sound = true);
 	//DEBUG OPTIONS
 	void SetDebugAttributes();
 	void SetNormalAttributes();

@@ -246,7 +246,7 @@ void ModuleRenderer3D::SetSceneLights()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
 
-	UpdateAttributes();
+	UpdateAttributes(false);
 
 	
 	lights[0].Active(true);
@@ -321,25 +321,30 @@ void ModuleRenderer3D::CPUCapabilities()
 	}
 }
 
-void ModuleRenderer3D::UpdateAttributes(bool sound)
+void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 {
+
 	//wireframe
 	if (attributes.wireframe)
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		if (!sound)
+		if (activate_sound)
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[1]);
 			App->audio->renderer_tick_arr[2] = FALSEBOOL;
 		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}		
 	else
 	{
-		if (!sound)
+		if (activate_sound)
 		{
-			App->audio->renderer_tick_arr[1] = FALSEBOOL;
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[2]);
+			App->audio->renderer_tick_arr[1] = FALSEBOOL;
 		}
+		
+			
+		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 		
@@ -347,118 +352,117 @@ void ModuleRenderer3D::UpdateAttributes(bool sound)
 	//color_material
 	if (attributes.color_material)
 	{
-		if (!sound)
+		if (activate_sound)
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[3]);
-			App->audio->renderer_tick_arr[4] = FALSEBOOL;
 		}
+		App->audio->renderer_tick_arr[4] = FALSEBOOL;
 		glEnable(GL_COLOR_MATERIAL);
 	}		
 	else
 	{
-		if (!sound)
-		{
-			App->audio->renderer_tick_arr[3] = FALSEBOOL;
+		if (activate_sound)
+		{			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[4]);
 		}
+		App->audio->renderer_tick_arr[3] = FALSEBOOL;
 		glDisable(GL_COLOR_MATERIAL);
 	}
 		
 	//depth test
 	if (attributes.depth_test)
 	{
-		if (!sound)
+		if (activate_sound)
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[5]);
-			App->audio->renderer_tick_arr[6] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[5]);			
 		}
+		App->audio->renderer_tick_arr[6] = FALSEBOOL;
 		glEnable(GL_DEPTH_TEST);
 	}		
 	else
 	{
-		if (!sound)
-		{
-			App->audio->renderer_tick_arr[5] = FALSEBOOL;
+		if (activate_sound)
+		{			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[6]);
 		}
+		App->audio->renderer_tick_arr[5] = FALSEBOOL;
 		glDisable(GL_DEPTH_TEST);
 	}
 	//lighting
 	if (attributes.lighting)
 	{
-		if (!sound)
+		if (activate_sound)
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[7]);
-			App->audio->renderer_tick_arr[8] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[7]);			
 		}
+		App->audio->renderer_tick_arr[8] = FALSEBOOL;
 		glEnable(GL_LIGHTING);
 	}		
 	else
 	{
-		if (!sound)
-		{
-			App->audio->renderer_tick_arr[7] = FALSEBOOL;
+		if (activate_sound)
+		{			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[8]);
 		}
+		App->audio->renderer_tick_arr[7] = FALSEBOOL;
 		glDisable(GL_LIGHTING);
 	}
 		
 	//cull test
 	if (attributes.cull_face)
 	{
-		if (!sound)
+		if (activate_sound)
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[9]);
-			App->audio->renderer_tick_arr[10] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[9]);			
 		}
+		App->audio->renderer_tick_arr[10] = FALSEBOOL;
 		glEnable(GL_CULL_FACE);
 	}		
 	else
 	{
-		if (!sound)
-		{
-			App->audio->renderer_tick_arr[9] = FALSEBOOL;
+		if (activate_sound)
+		{			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[10]);
 		}
+		App->audio->renderer_tick_arr[9] = FALSEBOOL;
 		glDisable(GL_CULL_FACE);
 	}
 	
 	//texture
 	if (attributes.texture)
 	{
-		if (!sound)
+		if (activate_sound)
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[11]);
-			App->audio->renderer_tick_arr[12] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[11]);			
 		}
+		App->audio->renderer_tick_arr[12] = FALSEBOOL;
 		glEnable(GL_TEXTURE_2D);
 	}		
 	else
 	{
-		if (!sound)
-		{
-			App->audio->renderer_tick_arr[11] = FALSEBOOL;
+		if (activate_sound)
+		{			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[12]);
 		}
+		App->audio->renderer_tick_arr[11] = FALSEBOOL;
 		glDisable(GL_TEXTURE_2D);
 	}
 	//debug draw
-	if (attributes.debug_draw_atribute)
+	if (activate_sound)
 	{
-		if (!sound)
+		if (attributes.debug_draw_atribute)
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[13]);
-			App->audio->renderer_tick_arr[14] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[13]);			
 		}
-	}
-	else
-	{
-		if (!sound)
+		else
 		{
-			App->audio->renderer_tick_arr[13] = FALSEBOOL;
+			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->renderer_tick_arr[14]);
 		}
+		App->audio->renderer_tick_arr[14] = FALSEBOOL;
+		App->audio->renderer_tick_arr[13] = FALSEBOOL;
 	}
+	
 
 		
 
