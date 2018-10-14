@@ -86,7 +86,6 @@ bool ModuleRenderer3D::Init()
 		SetSceneLights();
 		
 	}
-
 	SDL_GL_SetSwapInterval(0);
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -133,7 +132,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	App->profiler.StartTimer("Render");
-
+	App->isVsyncActive();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
@@ -178,6 +177,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	SetSceneLights();
 	SDL_GL_SwapWindow(App->window->window);
 	App->camera->SceneMSAA()->Bind();
+
 	
 
 	return UPDATE_CONTINUE;

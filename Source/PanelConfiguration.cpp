@@ -50,17 +50,11 @@ void PanelConfiguration::Application()
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[1]);
 			App->audio->config_tick_arr[2] = FALSEBOOL;
-			//Activate Vsync
-			
-				//CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());
 		}
 		else
-		{
+		{			
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[2]);
-			App->audio->config_tick_arr[1] = FALSEBOOL;
-			//Deactivate Vsync
-			/*if(SDL_GL_SetSwapInterval(0))*/
-				//CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());		
+			App->audio->config_tick_arr[1] = FALSEBOOL;	
 		}
 		static char app_name[128] = TITLE;
 		static char org_name[128] = ORGANIZATION;

@@ -88,35 +88,11 @@ void Application::PrepareUpdate()
 	ms_timer.Start();
 }
 
-// ---------------------------------------------
-void Application::FinishUpdate()
-{
-	if (App->imgui->isVsyncActive == false)
-	{
-		tick_interval = 1000.0f / (float)App->imgui->fps_slider;
-		sleeping_time = tick_interval - dt;
-		sleeping_time = sleeping_time - App->mms_fps/3;
-		if (sleeping_time > 0)
-		{
-			SDL_Delay(sleeping_time);
-		}
-		else
-			sleeping_time = 0;
-	}
-	if (App->imgui->want_to_save == true)
-	{
-		Save();
-	}
-	if (App->imgui->want_to_load == true)
-	{
-		Load();
-	}
-}
 
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
-	++fps;
+
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
@@ -144,7 +120,44 @@ update_status Application::Update()
 	FinishUpdate();
 	return ret;
 }
+// ---------------------------------------------
+void Application::FinishUpdate()
+{
 
+	if (App->imgui->isVsyncActive == false)
+	{
+
+		tick_interval = 1000.0f / (float)App->imgui->fps_slider;
+		sleeping_time = tick_interval - dt;
+		sleeping_time = sleeping_time - App->mms_fps / 3;
+		if (sleeping_time > 0)
+		{
+			SDL_Delay(sleeping_time);
+		}
+		else
+			sleeping_time = 0;
+	}
+	if (App->imgui->want_to_save == true)
+	{
+		Save();
+	}
+	if (App->imgui->want_to_load == true)
+	{
+		Load();
+	}
+}
+void Application::isVsyncActive()
+{
+	if (App->imgui->isVsyncActive)
+	{
+		SDL_GL_SetSwapInterval(1);							
+	}
+	else
+	{
+		SDL_GL_SetSwapInterval(0);
+	}
+		
+}
 bool Application::CleanUp()
 {
 	bool ret = true;
@@ -293,6 +306,8 @@ std::string Application::GetFileName(const char * path)
 
 
 }
+
+
 
 void Application::AddModule(Module* mod)
 {

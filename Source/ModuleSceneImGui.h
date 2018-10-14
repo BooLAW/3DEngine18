@@ -54,7 +54,7 @@ public:
 	void ShowOnlyScene();
 	void ShowSTDPanels();
 	//Application
-	bool isVsyncActive = true;
+	bool isVsyncActive = false;
 	bool quit = false;
 	int fps_slider = 60;
 

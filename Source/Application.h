@@ -72,6 +72,7 @@ public:
 	//File path string
 	std::string GetTermination(const char* path);
 	std::string GetFileName(const char* path);
+	void isVsyncActive();
 
 private:
 
