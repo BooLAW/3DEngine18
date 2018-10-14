@@ -575,10 +575,8 @@ void ModuleSceneGui::showRandomNumberGenerator()
 		}
 		ImGui::SameLine();
 		ImGui::Text("%f", random_float);
-
-		ImGui::End();
 	}
-
+	ImGui::End();
 }
 
 void ModuleSceneGui::showSphereCreator()
@@ -593,15 +591,13 @@ void ModuleSceneGui::showSphereCreator()
 		{
 			pos_aux.Set(x_aux, y_aux, z_aux);
 			App->physics->CreateSphere(pos_aux, rad_aux);
-
 		}
 		if (ImGui::SmallButton("Reset"))
 		{
 			x_aux = y_aux = z_aux = rad_aux = 0;
-		}
-
-		ImGui::End();
+		}		
 	}
+	ImGui::End();
 	
 }
 
@@ -634,9 +630,8 @@ void ModuleSceneGui::showCubeCreator()
 			x_aux = y_aux = z_aux = 0;
 			x_aux2 = y_aux2 = z_aux2 = 0;
 		}
-
-		ImGui::End();
 	}
+	ImGui::End();
 }
 
 void ModuleSceneGui::ManageInput(SDL_Event * e) const

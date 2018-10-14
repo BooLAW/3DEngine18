@@ -1,6 +1,7 @@
 #include "PanelConfiguration.h"
 #include "stdio.h"
 #include "mmgr/mmgr.h"
+#include "SDL/include/SDL_video.h"
 
 
 
@@ -49,7 +50,7 @@ void PanelConfiguration::Application()
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[1]);
 			App->audio->config_tick_arr[2] = FALSEBOOL;
 			//Activate Vsync
-			if (SDL_GL_SetSwapInterval(1))
+			if(SDL_GL_SetSwapInterval(1) == -1)
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());
 		}
 		else
@@ -57,7 +58,7 @@ void PanelConfiguration::Application()
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[2]);
 			App->audio->config_tick_arr[1] = FALSEBOOL;
 			//Deactivate Vsync
-			if (SDL_GL_SetSwapInterval(0))
+			if(SDL_GL_SetSwapInterval(0) == -1)
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());		
 		}
 		static char app_name[128] = TITLE;
