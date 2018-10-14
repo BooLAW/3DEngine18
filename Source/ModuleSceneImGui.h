@@ -24,7 +24,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	int CreateMainMenu();
+	void CreateMainMenu();
 	void showTestWindow();
 	void ShowInspector();
 	void showConfigurationWindow();
@@ -55,6 +55,7 @@ public:
 	void ShowSTDPanels();
 	//Application
 	bool isVsyncActive = true;
+	bool quit = false;
 	int fps_slider = 60;
 
 	char* organization_name = "UPC CITM";

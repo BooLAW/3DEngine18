@@ -45,6 +45,7 @@ bool ModuleSceneGui::Init()
 	panels.push_back(components);
 	//panels.push_back(hierarchy);
 	panels.push_back(scene);
+	quit = false;
 	App->profiler.SaveInitData("UI");
 	return ret;
 }
@@ -60,7 +61,11 @@ bool ModuleSceneGui::CleanUp()
 
 update_status ModuleSceneGui::PreUpdate(float dt)
 {
+	if (quit)
+		return UPDATE_STOP;
+
 	ImGui_ImplSdl_NewFrame(App->window->window);
+
 	return UPDATE_CONTINUE;
 }
 // Update
@@ -68,13 +73,8 @@ update_status ModuleSceneGui::Update(float dt)
 {
 	App->profiler.StartTimer("UI");
 	//RICARD: For a cleaner code, we decided to have a switch with the CreateMainMenu.
-	switch (CreateMainMenu())
-	{
-		case UPDATE_STOP:
-		{
-			return UPDATE_STOP;
-		}
-	}
+	CreateMainMenu();
+	
 	//ImGui::ShowMetricsWindow();
 	//ImGui::ShowTestWindow();
 	App->profiler.SaveRunTimeData("UI");
@@ -83,9 +83,8 @@ update_status ModuleSceneGui::Update(float dt)
 
 update_status ModuleSceneGui::PostUpdate(float dt)
 {
-	
-	
 	return UPDATE_CONTINUE;
+
 }
 void ModuleSceneGui::DrawImGui() {
 	App->renderer3D->SetUILights();
@@ -231,7 +230,7 @@ void ModuleSceneGui::Log(const std::string text,int type)
 }
 
 
-int ModuleSceneGui::CreateMainMenu()
+void ModuleSceneGui::CreateMainMenu()
 {
 	// Menu
 	static bool show_app_main_menu_bar = true;
@@ -244,8 +243,8 @@ int ModuleSceneGui::CreateMainMenu()
 			{
 				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[0]);
 				if (ImGui::MenuItem("Quit", "Alt + F4"))
-				{				
-					return UPDATE_STOP;
+				{		
+					quit = true;
 				}
 					
 				if (ImGui::MenuItem("Save")) 
