@@ -2,6 +2,8 @@
 #include "ImGui/imgui.h"
 #include "Component.h"
 #include "PanelConfiguration.h"
+#include <chrono>
+#include <thread>
 
 
 
@@ -91,9 +93,13 @@ void Application::FinishUpdate()
 {
 	if (App->imgui->isVsyncActive == false)
 	{
-		maxfps = 1000.0f / (float)App->imgui->fps_slider;
-		sleeping_time = maxfps - dt - 3;
-		Sleep(sleeping_time);
+		tick_interval = 1000.0f / (float)App->imgui->fps_slider;
+		sleeping_time = tick_interval - dt - App->mms_fps;
+		if (sleeping_time > 0)
+		{
+			SDL_Delay(sleeping_time);
+		}
+		
 	}
 	if (App->imgui->want_to_save == true)
 	{
@@ -238,8 +244,8 @@ bool Application::Load()
 		testconfig_r.IsObject();
 
 
-		maxfps = testconfig_r["app"]["max_fps"].GetInt();
-		App->imgui->fps_slider = maxfps;
+		tick_interval = testconfig_r["app"]["max_fps"].GetInt();
+		App->imgui->fps_slider = tick_interval;
 
 		std::string title;
 		title.append(testconfig_r["app"]["engine_name"].GetString());

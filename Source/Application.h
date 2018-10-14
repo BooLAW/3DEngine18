@@ -42,13 +42,15 @@ public:
 
 	Profiler profiler;
 	float	dt;
+	float	sleeping_time = 0;
+	float	mms_fps;
 
 private:
 
 	Timer	ms_timer;
 	int		fps = 0;
-	float	maxfps = 0;
-	float	sleeping_time = 0;
+	float	tick_interval = 0;
+
 	bool	isSaving = false;
 
 	std::list<Module*> list_modules;

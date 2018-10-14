@@ -91,6 +91,9 @@
     <Filter Include="Sources\External Tools\MMGR">
       <UniqueIdentifier>{1ca973e3-0ce6-4bb7-96c6-753341fdd10b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\External Tools\SDL">
+      <UniqueIdentifier>{91c12c75-fa51-4a26-aca1-728f6baf4850}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -443,6 +446,12 @@
     </ClInclude>
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Sources\External Tools\MMGR</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL\include\SDL.h">
+      <Filter>Sources\External Tools\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL\include\SDL_video.h">
+      <Filter>Sources\External Tools\SDL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

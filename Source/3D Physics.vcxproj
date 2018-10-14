@@ -188,6 +188,8 @@
     <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Profiler.h" />
+    <ClInclude Include="SDL\include\SDL.h" />
+    <ClInclude Include="SDL\include\SDL_video.h" />
     <ClInclude Include="TextureMSAA.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />

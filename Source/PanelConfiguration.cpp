@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "mmgr/mmgr.h"
 #include "SDL/include/SDL_video.h"
+#include "Application.h"
 
 
 
@@ -50,7 +51,7 @@ void PanelConfiguration::Application()
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[1]);
 			App->audio->config_tick_arr[2] = FALSEBOOL;
 			//Activate Vsync
-			if(SDL_GL_SetSwapInterval(1) == -1)
+			if(SDL_GL_SetSwapInterval(0))
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());
 		}
 		else
@@ -58,12 +59,14 @@ void PanelConfiguration::Application()
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[2]);
 			App->audio->config_tick_arr[1] = FALSEBOOL;
 			//Deactivate Vsync
-			if(SDL_GL_SetSwapInterval(0) == -1)
+			if(SDL_GL_SetSwapInterval(0))
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());		
 		}
 		static char app_name[128] = TITLE;
 		static char org_name[128] = ORGANIZATION;
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Application Delta Time: %f", App->dt);
+		ImGui::Text("Application Sleeping Time: %f", App->sleeping_time);
+		
 		ImGui::InputText("App Name", app_name, IM_ARRAYSIZE(app_name));
 		ImGui::InputText("Organization", org_name, IM_ARRAYSIZE(org_name));
 
@@ -102,8 +105,8 @@ void PanelConfiguration::Application()
 		ImGui::PlotHistogram("##framerate", fps_log, IM_ARRAYSIZE(fps_log), 0, tmp_string, 0.0f, 120.0f, ImVec2(310, 100));
 
 		static int i2 = 32;
-		float mss = (1000.0f / ImGui::GetIO().Framerate);
-		if (mms_log[IM_ARRAYSIZE(mms_log)] != mss)
+		App->mms_fps = (1000.0f / ImGui::GetIO().Framerate);
+		if (mms_log[IM_ARRAYSIZE(mms_log)] != App->mms_fps)
 		{
 			if (i2 > 0)
 			{
@@ -114,11 +117,11 @@ void PanelConfiguration::Application()
 			{
 				i2 = IM_ARRAYSIZE(mms_log);
 			}
-			mms_log[IM_ARRAYSIZE(mms_log)-1] = mss;
+			mms_log[IM_ARRAYSIZE(mms_log)-1] = App->mms_fps;
 		}
 
 		static char tmp_string2[4096];
-		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", mss);
+		sprintf_s(tmp_string2, 4096, "Miliseconds: %.3f", App->mms_fps);
 		ImGui::PlotHistogram("##miliseconds", mms_log, IM_ARRAYSIZE(mms_log), 0, tmp_string2, 0.0f, 120.0f, ImVec2(310, 100));
 
 		static int i3 = 32;
