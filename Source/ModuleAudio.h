@@ -34,6 +34,8 @@ public:
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int id, BoolList* tick_array, uint volume = 128, int repeat = 0);
+	bool Save(Document &config_w, FileWriteStream &os);
+	bool Load(Document *config_r);
 
 private:
 

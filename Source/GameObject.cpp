@@ -52,7 +52,7 @@ void GameObject::Draw()
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
 
 				//Draw
-				if (App->renderer3D->debug_draw == true) //aux_mesh->mesh->show_bb || 
+				if (App->renderer3D->attributes.debug_draw_atribute) //aux_mesh->mesh->show_bb || 
 				{
 					DebugDrawing(aux_mesh->mesh, Red);
 				}
