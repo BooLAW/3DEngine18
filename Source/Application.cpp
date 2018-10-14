@@ -94,7 +94,8 @@ void Application::FinishUpdate()
 	if (App->imgui->isVsyncActive == false)
 	{
 		tick_interval = 1000.0f / (float)App->imgui->fps_slider;
-		sleeping_time = tick_interval - dt - App->mms_fps;
+		sleeping_time = tick_interval - dt;
+		sleeping_time = sleeping_time - App->mms_fps/3;
 		if (sleeping_time > 0)
 		{
 			SDL_Delay(sleeping_time);

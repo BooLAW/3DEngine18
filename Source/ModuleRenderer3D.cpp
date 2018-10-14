@@ -87,7 +87,7 @@ bool ModuleRenderer3D::Init()
 		
 	}
 
-
+	SDL_GL_SetSwapInterval(0);
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	App->profiler.SaveInitData("Render");
