@@ -51,7 +51,7 @@ void PanelConfiguration::Application()
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[1]);
 			App->audio->config_tick_arr[2] = FALSEBOOL;
 			//Activate Vsync
-			if(SDL_GL_SetSwapInterval(0))
+			if(SDL_GL_SetSwapInterval(1))
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());
 		}
 		else
@@ -59,7 +59,7 @@ void PanelConfiguration::Application()
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->config_tick_arr[2]);
 			App->audio->config_tick_arr[1] = FALSEBOOL;
 			//Deactivate Vsync
-			if(SDL_GL_SetSwapInterval(0))
+			if(SDL_GL_SetSwapInterval(-1))
 				CONSOLE_LOG_WARNING("Warning: Unable to set VSync! SDL Error: %s\n",SDL_GetError());		
 		}
 		static char app_name[128] = TITLE;
@@ -153,6 +153,15 @@ void PanelConfiguration::Application()
 
 		ImGui::PlotHistogram("##memoryalloc", mem_log, IM_ARRAYSIZE(mem_log), 0, tmp_string3, 0.0f, 4000.0f, ImVec2(310, 100));
 		last_mem = stats.peakActualMemory;
+		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
 	}
 	else
 		App->audio->config_tick_arr[0] = FALSEBOOL;

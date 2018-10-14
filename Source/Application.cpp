@@ -99,7 +99,8 @@ void Application::FinishUpdate()
 		{
 			SDL_Delay(sleeping_time);
 		}
-		
+		else
+			sleeping_time = 0;
 	}
 	if (App->imgui->want_to_save == true)
 	{
