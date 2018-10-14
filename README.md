@@ -24,3 +24,13 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 --> [Assimp](https://github.com/assimp/assimp/releases/tag/v4.1.0/): For reading data from the .fbx format
 
 --> [OpenGL](https://www.opengl.org/documentation/): For the render of 3D models and textures.
+
+## Innovation
+
+-> Profiler: Basic Profiler that gives the ms expend in the update and the init of each core module.
+
+-> Audio: There are FX on when opening Collapsing Headers,Menu Items,...
+
+-> Scene Panel: The Scene Panel is a Multisample anti-aliasing texture, generated from opengl.
+
+-> Docking: Using ImguiDocking testing branch(not sure if its innovation)
