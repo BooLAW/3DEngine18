@@ -128,6 +128,7 @@ void PanelInspector::Draw()
 						{
 							
 							ImGui::DragFloat3("Position", (float*)&positions[i]);
+
 							ImGui::DragFloat3("Rotation", (float*)&rotations[i]);
 							ImGui::DragFloat3("Scale", (float*)&scales[i]);
 							ImGui::TreePop();

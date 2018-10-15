@@ -43,7 +43,9 @@ void GameObject::Draw()
 			glEnableClientState(GL_VERTEX_ARRAY);
 			ComponentMesh* aux_mesh = (ComponentMesh*)(*it)->GetComponent(MESH);
 			ComponentMaterial* aux_material = (ComponentMaterial*)(*it)->GetComponent(MATERIAL);
-
+			
+				//glPushMatrix();
+				//glMultMatrixf((*it)->transform->trans_matrix_l.Transposed().ptr());
 			//Bind Vertices
 			if (aux_mesh != nullptr)
 			{
@@ -81,7 +83,7 @@ void GameObject::Draw()
 			//Disable Client
 			glDisableClientState(GL_VERTEX_ARRAY);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
+				//glPopMatrix();
 			
 			
 		}
