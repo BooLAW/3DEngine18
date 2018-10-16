@@ -27,6 +27,7 @@ public:
 	GameObject* CreateNewGameObject();
 	void DrawGameObjects();
 	void ClearScene();
+	bool HasObjects();
 	//UI
 	void DrawInspector();
 	void DrawHierarchy();

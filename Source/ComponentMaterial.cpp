@@ -42,6 +42,10 @@ ComponentMaterial::~ComponentMaterial()
 {
 }
 
+void ComponentMaterial::DrawInspectorInfo()
+{
+}
+
 void ComponentMaterial::Enable()
 {
 	SetActive(true);

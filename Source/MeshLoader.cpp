@@ -198,7 +198,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				else
 					CONSOLE_LOG_WARNING("Mesh has no Faces");
 
-				//TODO fix tex coords
 
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))

@@ -240,6 +240,13 @@ Mesh * GameObject::GetMesh()
 	}
 }
 
+void GameObject::RecursiveUpdateTransformChilds()
+{
+	//PAUTODO
+	//Make a function to update recursively all the childs and components related
+
+}
+
 const char * GameObject::GetName() const
 {
 	return name.c_str();

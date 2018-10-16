@@ -41,7 +41,7 @@ public:
 	//Mesh functionalities
 	void ActivateBB();
 	Mesh* GetMesh();
-	
+	void RecursiveUpdateTransformChilds();
 	//Info
 	const char* GetName()const;
 	void SetName(const char* name);

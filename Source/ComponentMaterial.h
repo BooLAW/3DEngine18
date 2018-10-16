@@ -14,6 +14,8 @@ public:
 	ComponentMaterial();
 	ComponentMaterial(GameObject* owner);
 	virtual ~ComponentMaterial();
+	void DrawInspectorInfo();
+
 
 	void Enable();
 	void Disable();

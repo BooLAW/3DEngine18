@@ -19,21 +19,9 @@ public:
 	void Draw()override;
 
 public:
-	std::vector<uint> vertex;
-	std::vector<uint> indices;
-	std::vector<uint> triangle;
-	std::vector<int*> tex_coord;
-	std::vector<const char*> mesh_name;
-
-	std::vector<float3> positions;
-	std::vector<float3> rotations;
-	std::vector<float3> scales;
-
-
-	std::vector<const char*> tex_name;
-	std::vector<Material*> tex_data;
 
 	uint counter = 0;
+	GameObject* selected_go = nullptr;
 	const char* last_fbx = nullptr;
 
 	

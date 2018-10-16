@@ -11,7 +11,7 @@ Component::Component(ComponentType t)
 	type = t;
 }
 
-void Component::DrawInfo()
+void Component::DrawInspectorInfo()
 {
 }
 

@@ -9,6 +9,8 @@ public:
 	ComponentTransform(GameObject* owner);
 	virtual ~ComponentTransform();
 	bool Update()override;
+	void UpdateTransformValues();
+	void DrawInspectorInfo();
 
 	void SetLocalPos(const float3& new_pos);
 	void SetGlobalPos(const float3& new_pos);

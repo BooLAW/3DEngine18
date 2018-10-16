@@ -7,6 +7,10 @@ class Transform
 public:
 	Transform();
 	virtual ~Transform();
+	void SetPosition(float x, float y, float z);
+	void SetRotation(float x, float y, float z);
+	void SetRotation(Quat quat);
+	void SetScale(float x, float y, float z);
 public:
 	float3 pos = float3::zero;
 	Quat rot = Quat::identity;

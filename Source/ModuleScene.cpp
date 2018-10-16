@@ -186,6 +186,11 @@ void ModuleScene::ClearScene()
 	imported_go = nullptr;
 }
 
+bool ModuleScene::HasObjects()
+{
+	return (go_list.size() > 1);
+}
+
 void ModuleScene::DrawInspector()
 {
 

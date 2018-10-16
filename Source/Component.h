@@ -11,7 +11,7 @@ public:
 	Component();
 	Component(ComponentType t);
 
-	virtual void DrawInfo();
+	virtual void DrawInspectorInfo();
 	virtual bool Update();
 	virtual void Enable();
 	virtual void Disable();

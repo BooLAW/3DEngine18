@@ -13,10 +13,9 @@ public:
 	ComponentMesh(GameObject* new_owner);
 	virtual ~ComponentMesh();
 
-
-
 	void AddMesh(Mesh* new_mesh);
 	bool Update();
+	void DrawInspectorInfo();
 	void CleanUp();
 
 public:

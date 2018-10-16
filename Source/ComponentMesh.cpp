@@ -29,6 +29,10 @@ bool ComponentMesh::Update()
 	
 }
 
+void ComponentMesh::DrawInspectorInfo()
+{
+}
+
 void ComponentMesh::CleanUp()
 {
 }
