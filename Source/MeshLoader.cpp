@@ -85,10 +85,31 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 					my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices, allocator);
 					my_mesh.AddMember("num_texcoord", (uint)ai_mesh->mNumUVComponents, allocator);
 					my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
-					//memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
+
+					//Vertices
+					float3* verti = new float3[ai_mesh->mNumVertices];					
+					memcpy(verti, ai_mesh->mVertices, sizeof(vec) * ai_mesh->mNumVertices);
+
+					Value vertices(kObjectType);
+					for (int i = 0; i < ai_mesh->mNumVertices; ++i)
+					{										
+						int u = i + 1;
+						int w = i + 2;
+						verti[i]; 
+						verti[u];
+						verti[w];
+						
+						vertices.AddMember("x", (float)verti[i].x, allocator);
+						vertices.AddMember("y", (float)verti[i].y, allocator);
+						vertices.AddMember("z", (float)verti[i].z, allocator);				
+					}
+					std::string verti_name;
+					verti_name.append("vertex");
+
+					Value vertexname(verti_name.c_str(), config->GetAllocator());
+					my_mesh.AddMember(vertexname, vertices, allocator);
 					Value n(node->mName.C_Str(), config->GetAllocator());
 					config->AddMember(n, my_mesh, allocator);
-
 				}
 			}
 		}
