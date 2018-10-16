@@ -38,11 +38,11 @@ bool ModuleRenderer3D::Init()
 	//Init GLEW
 	glewInit();
 	//Info LOG
-	/*CONSOLE_LOG_INFO("Using Glew %s", glewGetString(GLEW_VERSION));
+	CONSOLE_LOG_INFO("Using Glew %s", glewGetString(GLEW_VERSION));
 	CONSOLE_LOG_INFO("Vendor: %s", glGetString(GL_VENDOR));
 	CONSOLE_LOG_INFO("Renderer: %s", glGetString(GL_RENDERER));
 	CONSOLE_LOG_INFO("OpenGL version supported %s", glGetString(GL_VERSION));
-	CONSOLE_LOG_INFO("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));*/
+	CONSOLE_LOG_INFO("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	if(ret == true)
 	{
 		//Reset Projection Matrix
