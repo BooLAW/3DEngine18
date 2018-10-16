@@ -41,6 +41,34 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 
 	return ret;
 }
+
+bool MeshLoader::SaveMesh(Mesh* init_mesh)
+{
+	char readBuf[10000];
+
+	App->json->CreateNewJSON("my_mesh.piformat");
+	json_file file1("my_mesh.piformat");
+	FILE* fp = fopen("my_mesh.piformat", "wb"); // non-Windows use "w"
+
+	char writeBuffer[10000];
+	Document testconfig_w;
+	testconfig_w.SetObject();
+	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+	Document::AllocatorType& allocator = testconfig_w.GetAllocator();
+	Value app(kObjectType);
+	app.AddMember("number of indices", init_mesh->num_indices, allocator);
+	testconfig_w.AddMember("app", app, allocator);
+
+
+	Writer<FileWriteStream> writer(os);
+	testconfig_w.Accept(writer);
+	fclose(fp);
+
+
+	return false;
+}
+
+
 LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
 	LineSegment ret; //a = N, b = A
@@ -163,7 +191,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					new_mesh->num_normal = mesh->mNumVertices * 3;
 					new_mesh->indices = new int[new_mesh->num_indices];
 					new_mesh->normal = new float[new_mesh->num_normal];
-
+					SaveMesh(new_mesh);
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{

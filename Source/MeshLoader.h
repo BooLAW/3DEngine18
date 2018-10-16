@@ -22,6 +22,7 @@ public:
 	MeshLoader();
 	virtual ~MeshLoader();
 	bool LoadMesh(const std::string& file_name);
+	bool SaveMesh(Mesh* my_mesh);
 	
 	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
 
