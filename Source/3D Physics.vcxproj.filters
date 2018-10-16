@@ -934,5 +934,8 @@
     <None Include="..\Game\Assets\json\config.json">
       <Filter>Sources\json</Filter>
     </None>
+    <None Include="..\Game\my_mesh.piformat">
+      <Filter>Sources\json</Filter>
+    </None>
   </ItemGroup>
 </Project>

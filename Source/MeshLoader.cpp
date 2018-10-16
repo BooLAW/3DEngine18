@@ -31,8 +31,8 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 	{
 		aiNode* root = new_scene->mRootNode;
 
+		SaveSceneMeshes(new_scene, new_scene->mRootNode);
 		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
-
 		aiReleaseImport(new_scene);
 	}
 	else
@@ -42,7 +42,7 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 	return ret;
 }
 
-bool MeshLoader::SaveMesh(Mesh* init_mesh)
+bool MeshLoader::SaveSceneMeshes(const aiScene* scene, aiNode* node)
 {
 	char readBuf[10000];
 
@@ -54,17 +54,46 @@ bool MeshLoader::SaveMesh(Mesh* init_mesh)
 	Document testconfig_w;
 	testconfig_w.SetObject();
 	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
-	Document::AllocatorType& allocator = testconfig_w.GetAllocator();
-	Value app(kObjectType);
-	app.AddMember("number of indices", init_mesh->num_indices, allocator);
-	testconfig_w.AddMember("app", app, allocator);
 
+
+
+	for (int i = 0; i < node->mNumChildren; i++)
+	{
+		SaveMesh(scene, node->mChildren[i],&testconfig_w);
+	}
 
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
 	fclose(fp);
+	return false;
+}
 
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
+{
+	if (scene != nullptr)
+	{
+		if (node->mName.C_Str() != "RootNode")
+		{
+			if (scene->HasMeshes())
+			{
+				Document::AllocatorType& allocator = config->GetAllocator();
+				for (int i = 0; i < node->mNumMeshes; i++)
+				{
+					aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
+					Value my_mesh(kObjectType);
+					my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumVertices, allocator);
+					my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices, allocator);
+					my_mesh.AddMember("num_texcoord", (uint)ai_mesh->mNumUVComponents, allocator);
+					my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
+					//memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
+					Value n(node->mName.C_Str(), config->GetAllocator());
+					config->AddMember(n, my_mesh, allocator);
 
+				}
+			}
+		}
+
+	}
 	return false;
 }
 
@@ -121,8 +150,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 		GO = new GameObject();
 
-		node_name = node->mName.C_Str();
-
 		if (node_name == "RootNode")//That's how assimp saves the rootnode
 		{
 			GO->root_go = true;
@@ -156,7 +183,8 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 		}
 		App->scene_intro->go_list.push_back(GO);
-	}else
+	}
+	else
 	{
 		if (scene != nullptr && scene->HasMeshes())
 		{
@@ -174,7 +202,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				new_mesh->num_vertices = mesh->mNumVertices;
 				new_mesh->vertices = new float3[new_mesh->num_vertices];				
 				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
-				//memcpy(new_mesh->normal, mesh->mNormals, sizeof(float)*new_mesh->num_normal * 3);
+				
 
 				glGenBuffers(1, (GLuint*)&new_mesh->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
@@ -191,7 +219,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					new_mesh->num_normal = mesh->mNumVertices * 3;
 					new_mesh->indices = new int[new_mesh->num_indices];
 					new_mesh->normal = new float[new_mesh->num_normal];
-					SaveMesh(new_mesh);
+					
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{
@@ -241,7 +269,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 					//reset buffer
 					CONSOLE_LOG_INFO("%d tex coords", new_mesh->num_tex_coords);
-
 				}
 				else
 				{
