@@ -31,6 +31,8 @@ GameObject::~GameObject()
 {
 }
 
+
+
 void GameObject::Draw()
 {
 	if (!active)

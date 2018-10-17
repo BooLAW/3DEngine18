@@ -14,6 +14,7 @@ public:
 	//CORE
 	GameObject();
 	~GameObject();
+
 	void Draw();
 	//AABB
 	AABB GetBB();
@@ -23,7 +24,6 @@ public:
 	Component* GetComponent(ComponentType type);
 	void PushComponent(Component* new_component);
 	void RemoveComponent(ComponentType type);
-
 	bool HasMesh()const;
 	bool HasTex()const;
 

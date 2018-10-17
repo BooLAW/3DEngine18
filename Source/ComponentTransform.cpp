@@ -42,13 +42,11 @@ void ComponentTransform::DrawInspectorInfo()
 	float rot[3] = { transform.rot.ToEulerXYZ().x*RADTODEG, transform.rot.ToEulerXYZ().y*RADTODEG, transform.rot.ToEulerXYZ().z*RADTODEG };
 	float scale[3] = { transform.scale.x,transform.scale.y,transform.scale.z };
 
-	if (ImGui::CollapsingHeader("Transform"))
-	{
+
 		ImGui::DragFloat3("Position##transform", pos, 0.1f, -INFINITY, INFINITY);
 		ImGui::DragFloat3("Rotation##transform", rot, 0.1f, -360, 360);
 		ImGui::DragFloat3("Scale##transform", scale, 0.1f, 1, INFINITY);
-
-	}
+	
 	//Update Transform
 	if (!owner->IsStatic())
 	{
