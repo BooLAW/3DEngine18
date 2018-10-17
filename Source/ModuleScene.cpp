@@ -132,31 +132,79 @@ void ModuleScene::DrawHierarchy()
 {
 	if (!go_list.empty())
 	{
-
-		for (int i = 0; i < go_list.size(); i++)
+		std::vector<GameObject*> root_childs = scene_root->childs_list;
+		for (std::vector<GameObject*>::iterator it = root_childs.begin(); it != root_childs.end(); it++)
 		{
-			if (ImGui::TreeNode(go_list[i]->GetName()))
-			{
-
-				for (int j = 0; j < go_list[i]->components_list.size(); j++)
-				{
-					GameObject* aux = go_list[i];
-					if (ImGui::TreeNode(aux->components_list[j]->GetName()))
-					{
-
-
-
-						ImGui::TreePop();
-
-					}
-
-				}
-				ImGui::TreePop();
-
-			}
+			DrawChilds((*it));
 		}
+
 	}
 }
 
+void ModuleScene::DrawChilds(GameObject* parent)
+{
+	if (parent == nullptr)
+		return;
 
+	// Flags ------------------
+
+	uint flags = ImGuiTreeNodeFlags_OpenOnArrow;
+
+	if (parent->IsActive())
+		flags |= ImGuiTreeNodeFlags_Selected;
+
+	if (parent->GetNumChilds() == 0)
+		flags |= ImGuiTreeNodeFlags_Leaf;
+
+	// ------------------------
+	// Draw line --------------
+	// ------------------------
+	bool opened = ImGui::TreeNodeEx(parent->GetName(), flags);
+
+	// ------------------------
+	// Input ------------------
+	// ------------------------
+	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
+	{
+			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())
+			{
+				ResetSelected();
+				parent->SetSelected(true);
+			}
+		
+	}
+	// Draw childs recursive --
+	if (opened)
+	{
+		std::vector<GameObject*> childs = parent->childs_list;
+
+		for (std::vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); it++)
+		{
+			DrawChilds(*it);
+		}
+
+		ImGui::TreePop();
+	}
+}
+
+void ModuleScene::ResetSelected()
+{
+	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	{
+		(*it)->SetSelected(false);
+	}
+}
+
+GameObject * ModuleScene::GetSelected()
+{
+	GameObject* aux = nullptr;
+	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	{
+		if ((*it)->IsSelected() == true)
+			aux = (*it);
+	}
+	if (aux == nullptr)
+		CONSOLE_LOG_INFO("No Selected Object");
+	return aux;
+}
 

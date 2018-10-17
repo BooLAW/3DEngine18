@@ -182,6 +182,16 @@ bool GameObject::IsRoot() const
 	return root_go;
 }
 
+bool GameObject::IsSelected() const
+{
+	return selected;
+}
+
+void GameObject::SetSelected(bool selected)
+{
+	this->selected = selected;
+}
+
 GameObject * GameObject::GetParent()const
 {
 	return parent;
@@ -216,6 +226,11 @@ void GameObject::SetChild(GameObject * child)
 GameObject * GameObject::GetChild(int id)
 {
 	return childs_list[id];
+}
+
+int GameObject::GetNumChilds() const
+{
+	return childs_list.size();
 }
 
 void GameObject::ActivateBB()

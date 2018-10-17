@@ -23,8 +23,7 @@ PanelHierarchy::~PanelHierarchy()
 void PanelHierarchy::Draw()
 {
 	ImGui::BeginDock("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing);
-	render_pos = ImGui::GetWindowPos();
-	render_size = ImGui::GetWindowSize();
+	
 	App->scene_intro->DrawHierarchy();
 
 	ImGui::EndDock();

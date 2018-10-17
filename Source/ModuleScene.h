@@ -29,7 +29,9 @@ public:
 	//UI
 	void DrawInspector();
 	void DrawHierarchy();
-public:
+	void DrawChilds(GameObject* parent);
+	void ResetSelected();
+	GameObject* GetSelected();
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
 	GameObject* scene_root = nullptr;

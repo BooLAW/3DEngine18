@@ -31,12 +31,15 @@ public:
 	void SetStatic(bool is_static);
 	bool IsStatic()const;
 	bool IsRoot()const;
+	bool IsSelected()const;
+	void SetSelected(bool selected);
 	//Parent
 	GameObject* GetParent()const;
 	void SetParent(GameObject* new_parent);
 	void AddChild(GameObject* new_child);
 	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
+	int GetNumChilds()const;
 
 	//Mesh functionalities
 	void ActivateBB();
@@ -57,6 +60,7 @@ public:
 	//flags
 	bool active = true;
 	bool static_go = false;
+	bool selected = false;
 	bool root_go = false;
 
 	
