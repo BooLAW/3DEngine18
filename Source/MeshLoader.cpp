@@ -117,26 +117,19 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 					my_mesh.AddMember("all_vertex", vertex_arr, allocator);
 					//Textures
 
-					//if (ai_mesh->HasTextureCoords(0))
-					//{
-					//	my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
+					if (ai_mesh->HasTextureCoords(0))
+					{
+						my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
 
-					//	float* tex_points = new float[ai_mesh->mNumVertices * 3];
-					//	memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
-					//	for (int i = 0; i < (sizeof(uint) * (uint)ai_mesh->mNumVertices * 3); i++)
-					//	{
-
-					//		Value texture_values(kObjectType);
-
-					//		texture_values.AddMember("x", (float)tex_points[i], allocator);
-					//		std::string tex_name;
-					//		tex_name.append("tex_name");
-					//		tex_name.append(std::to_string(i));
-
-					//		Value vertexname(tex_name.c_str(), config->GetAllocator());
-					//		my_mesh.AddMember(vertexname, texture_values, allocator);
-					//	}												
-					//}
+						float* tex_points = new float[ai_mesh->mNumVertices * 3];
+						memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
+						Value texture_values(kArrayType);
+						for (int i = 0; i<(uint)ai_mesh->mNumVertices; i++)
+						{
+							texture_values.PushBack((float)tex_points[i],allocator);							
+						}	
+						my_mesh.AddMember("texture_coords", texture_values, allocator);
+					}
 
 					Value n(node->mName.C_Str(), config->GetAllocator());
 					config->AddMember(n, my_mesh, allocator);
