@@ -8,9 +8,8 @@ class PanelInspector;
 class PanelConsole;
 class PanelConfiguration;
 class PanelApplication;
-class PanelComponents;
 class PanelScene;
-//class PanelHierarchy;
+class PanelHierarchy;
 class Panel;
 class ModuleSceneGui : public Module
 {
@@ -84,8 +83,7 @@ public:
 	PanelConsole * console = nullptr;
 	PanelConfiguration* configuration = nullptr;
 	PanelApplication* application = nullptr;
-	PanelComponents* components = nullptr;
-	//PanelHierarchy* hierarchy = nullptr;
+	PanelHierarchy* hierarchy = nullptr;
 	PanelInspector* inspector = nullptr;
 	PanelScene* scene = nullptr;
 	

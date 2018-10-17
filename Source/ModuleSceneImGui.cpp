@@ -9,7 +9,6 @@
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "PanelHierarchy.h"
-#include "PanelComponents.h"
 #include "PanelInspector.h"
 #include "ComponentMesh.h"
 #include "PanelScene.h"
@@ -34,16 +33,14 @@ bool ModuleSceneGui::Init()
 	//Add Panels HERE
 	console = new PanelConsole();
 	configuration = new PanelConfiguration();
-	components = new PanelComponents();
-	//hierarchy = new PanelHierarchy();
+	hierarchy = new PanelHierarchy();
 	inspector = new PanelInspector();
 	scene = new PanelScene();
 
 	panels.push_back(console);
 	panels.push_back(configuration);
 	panels.push_back(inspector);
-	panels.push_back(components);
-	//panels.push_back(hierarchy);
+	panels.push_back(hierarchy);
 	panels.push_back(scene);
 	quit = false;
 	App->profiler.SaveInitData("UI");
@@ -348,18 +345,14 @@ void ModuleSceneGui::CreateMainMenu()
 				}
 				else
 					App->audio->menu_tick_arr[14] = FALSEBOOL;
-				if (ImGui::MenuItem("Components"))
+		
+				if (ImGui::MenuItem("Hierarchy"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[15]);
-					components->Activate();
+					hierarchy->Activate();
 				}
 				else
 					App->audio->menu_tick_arr[15] = FALSEBOOL;
-				/*if (ImGui::MenuItem("Hierarchy"))
-				{
-					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[1]);
-					hierarchy->Activate();
-				}*/
 				if (ImGui::MenuItem("Inspector"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[16]);

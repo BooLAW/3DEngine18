@@ -351,9 +351,6 @@
     <ClInclude Include="Parson\parson.h">
       <Filter>Sources\External Tools\Parson</Filter>
     </ClInclude>
-    <ClInclude Include="PanelComponents.h">
-      <Filter>Sources\Panels</Filter>
-    </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
@@ -817,9 +814,6 @@
     </ClCompile>
     <ClCompile Include="Parson\parson.c">
       <Filter>Sources\External Tools\Parson</Filter>
-    </ClCompile>
-    <ClCompile Include="PanelComponents.cpp">
-      <Filter>Sources\Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Sources\Panels</Filter>
