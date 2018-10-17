@@ -31,7 +31,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	{
 		aiNode* root = new_scene->mRootNode;
 
-		SaveSceneMeshes(new_scene, root,file_path);
+		SaveSceneMeshesLW(new_scene, root,file_path);
 		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
 
 		aiReleaseImport(new_scene);
@@ -43,7 +43,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	return ret;
 }
 
-bool MeshLoader::SaveSceneMeshes(const aiScene* scene, aiNode* node, const std::string& path)
+bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std::string& path)
 {
 
 	char readBuf[100000];
@@ -66,7 +66,7 @@ bool MeshLoader::SaveSceneMeshes(const aiScene* scene, aiNode* node, const std::
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
 	fclose(fp);
-	return false;
+	return true;
 }
 
 bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
@@ -132,6 +132,11 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 	}
 
 	return false;
+}
+
+Mesh * MeshLoader::LoadSceneMeshLW(std::string file_name,const aiNode* node)
+{
+	return nullptr;
 }
 
 
@@ -227,6 +232,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		{
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
+				LoadSceneMeshLW(App->scene_intro->fbx_name, node);
 
 				//Put the name
 				GameObject* new_child = new GameObject();
@@ -332,7 +338,8 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Add child to parent
 				parent->AddChild(new_child);
 				//Transform
-				if (node != nullptr) {
+				if (node != nullptr) 
+				{
 
 					aiVector3D aiPos;
 					aiQuaternion aiQuat;
