@@ -22,7 +22,7 @@ MeshLoader::~MeshLoader()
 {
 }
 
-bool MeshLoader::LoadMesh(const std::string & file_path)
+bool MeshLoader::LoadMesh(const std::string &file_path)
 {
 	bool ret = false;
 	const aiScene* new_scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
@@ -31,8 +31,9 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 	{
 		aiNode* root = new_scene->mRootNode;
 
-		SaveSceneMeshes(new_scene, root);
+		SaveSceneMeshes(new_scene, root,file_path);
 		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
+
 		aiReleaseImport(new_scene);
 	}
 	else
@@ -42,16 +43,17 @@ bool MeshLoader::LoadMesh(const std::string & file_path)
 	return ret;
 }
 
-bool MeshLoader::SaveSceneMeshes(const aiScene* scene, aiNode* node)
+bool MeshLoader::SaveSceneMeshes(const aiScene* scene, aiNode* node, const std::string& path)
 {
 
 	char readBuf[100000];
-	scene->mRootNode->mName;
+
 	std::string file_name;
-	file_name.append(std::to_string(scene->mRootNode->mName));
-	App->json->CreateNewJSON("my_mesh.piformat");
-	json_file file1("my_mesh.piformat");
-	FILE* fp = fopen("my_mesh.piformat", "wb"); // non-Windows use "w"
+	file_name.append(App->GetFileName(path.c_str()));
+	file_name.append(".lw");
+	App->json->CreateNewJSON(file_name.c_str());
+	json_file file1(file_name.c_str());
+	FILE* fp = fopen(file_name.c_str(), "wb"); // non-Windows use "w"
 
 	char writeBuffer[10000];
 	Document testconfig_w;
@@ -69,77 +71,61 @@ bool MeshLoader::SaveSceneMeshes(const aiScene* scene, aiNode* node)
 
 bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
 {
-	if (node->mNumMeshes < 1)
+
+	if (scene != nullptr && node->mNumMeshes > 0)
 	{
-		
-	}
-	else
-	{
-		if (scene != nullptr)
+		if (scene->HasMeshes())
 		{
-			if (scene->HasMeshes())
+			Document::AllocatorType& allocator = config->GetAllocator();
+			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				Document::AllocatorType& allocator = config->GetAllocator();
-				for (int i = 0; i < node->mNumMeshes; i++)
+				aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
+				Value my_mesh(kObjectType);
+				my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
+				my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces * 3, allocator);
+				my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices * 3, allocator);
+				my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
+
+				//Vertices
+				float3* points = new float3[ai_mesh->mNumVertices];
+				memcpy(points, ai_mesh->mVertices, sizeof(vec) * ai_mesh->mNumVertices);
+				Value vertices_values(kArrayType);
+				for (int i = 0; i < ai_mesh->mNumVertices; ++i)
 				{
-					aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
-					Value my_mesh(kObjectType);
-					my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
-					my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces * 3, allocator);
-					my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices * 3, allocator);
-					my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
+					int u = i + 1;
+					int w = i + 2;
+					points[i];
+					points[u];
+					points[w];
 
-					//Vertices
-					float3* points = new float3[ai_mesh->mNumVertices];
-					memcpy(points, ai_mesh->mVertices, sizeof(vec) * ai_mesh->mNumVertices);
-
-					Value vertex_arr(kObjectType);
-					for (int i = 0; i < ai_mesh->mNumVertices; ++i)
-					{
-						int u = i + 1;
-						int w = i + 2;
-						points[i];
-						points[u];
-						points[w];
-
-						Value vertices_values(kObjectType);
-
-						vertices_values.AddMember("x", (float)points[i].x, allocator);
-						vertices_values.AddMember("y", (float)points[i].y, allocator);
-						vertices_values.AddMember("z", (float)points[i].z, allocator);
-
-						std::string vertex_name;
-						vertex_name.append("vertex");
-						vertex_name.append(std::to_string(i));
-
-
-						Value vertexname(vertex_name.c_str(), config->GetAllocator());
-						vertex_arr.AddMember(vertexname, vertices_values, allocator);
-					}
-
-					my_mesh.AddMember("all_vertex", vertex_arr, allocator);
-					//Textures
-
-					if (ai_mesh->HasTextureCoords(0))
-					{
-						my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
-
-						float* tex_points = new float[ai_mesh->mNumVertices * 3];
-						memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
-						Value texture_values(kArrayType);
-						for (int i = 0; i<(uint)ai_mesh->mNumVertices; i++)
-						{
-							texture_values.PushBack((float)tex_points[i], allocator);
-						}
-						my_mesh.AddMember("texture_coords", texture_values, allocator);
-					}
-
-					Value n(node->mName.C_Str(), config->GetAllocator());
-					config->AddMember(n, my_mesh, allocator);
+					vertices_values.PushBack((float)points[i].x, allocator);
+					vertices_values.PushBack((float)points[i].y, allocator);
+					vertices_values.PushBack((float)points[i].z, allocator);
 				}
+
+				my_mesh.AddMember("all_vertex", vertices_values, allocator);
+				//Textures
+
+				if (ai_mesh->HasTextureCoords(0))
+				{
+					my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
+
+					float* tex_points = new float[ai_mesh->mNumVertices * 3];
+					memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
+					Value texture_values(kArrayType);
+					for (int i = 0; i<(uint)ai_mesh->mNumVertices; i++)
+					{
+						texture_values.PushBack((float)tex_points[i], allocator);
+					}
+					my_mesh.AddMember("texture_coords", texture_values, allocator);
+				}
+
+				Value n(node->mName.C_Str(), config->GetAllocator());
+				config->AddMember(n, my_mesh, allocator);
 			}
 		}
 	}
+	
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
 		SaveMesh(scene, node->mChildren[i], config);

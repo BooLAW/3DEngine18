@@ -22,7 +22,7 @@ public:
 	MeshLoader();
 	virtual ~MeshLoader();
 	bool LoadMesh(const std::string& file_name);
-	bool SaveSceneMeshes(const aiScene* scene,aiNode* node);
+	bool SaveSceneMeshes(const aiScene* scene,aiNode* node, const std::string &path);
 	bool SaveMesh(const aiScene* scene, aiNode* node,Document* config);
 	
 	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
