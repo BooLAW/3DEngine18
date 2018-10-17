@@ -81,36 +81,67 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 				{
 					aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
 					Value my_mesh(kObjectType);
-					my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumVertices, allocator);
-					my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices, allocator);
-					my_mesh.AddMember("num_texcoord", (uint)ai_mesh->mNumUVComponents, allocator);
 					my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
+					my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces*3, allocator);
+					my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices*3, allocator);
+					my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
 
 					//Vertices
-					float3* verti = new float3[ai_mesh->mNumVertices];					
-					memcpy(verti, ai_mesh->mVertices, sizeof(vec) * ai_mesh->mNumVertices);
+					float3* points = new float3[ai_mesh->mNumVertices];					
+					memcpy(points, ai_mesh->mVertices, sizeof(vec) * ai_mesh->mNumVertices);
 
-					Value vertices(kObjectType);
+					Value vertex_arr(kObjectType);
 					for (int i = 0; i < ai_mesh->mNumVertices; ++i)
-					{										
+					{			
 						int u = i + 1;
 						int w = i + 2;
-						verti[i]; 
-						verti[u];
-						verti[w];
+						points[i]; 
+						points[u];
+						points[w];
 						
-						vertices.AddMember("x", (float)verti[i].x, allocator);
-						vertices.AddMember("y", (float)verti[i].y, allocator);
-						vertices.AddMember("z", (float)verti[i].z, allocator);				
-					}
-					std::string verti_name;
-					verti_name.append("vertex");
+						Value vertices_values(kObjectType);
 
-					Value vertexname(verti_name.c_str(), config->GetAllocator());
-					my_mesh.AddMember(vertexname, vertices, allocator);
+						vertices_values.AddMember("x", (float)points[i].x, allocator);
+						vertices_values.AddMember("y", (float)points[i].y, allocator);
+						vertices_values.AddMember("z", (float)points[i].z, allocator);
+
+						std::string vertex_name;
+						vertex_name.append("vertex");
+						vertex_name.append(std::to_string(i));
+
+
+						Value vertexname(vertex_name.c_str(), config->GetAllocator());
+						vertex_arr.AddMember(vertexname, vertices_values, allocator);
+					}
+
+					my_mesh.AddMember("all_vertex", vertex_arr, allocator);
+					//Textures
+
+					//if (ai_mesh->HasTextureCoords(0))
+					//{
+					//	my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
+
+					//	float* tex_points = new float[ai_mesh->mNumVertices * 3];
+					//	memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
+					//	for (int i = 0; i < (sizeof(uint) * (uint)ai_mesh->mNumVertices * 3); i++)
+					//	{
+
+					//		Value texture_values(kObjectType);
+
+					//		texture_values.AddMember("x", (float)tex_points[i], allocator);
+					//		std::string tex_name;
+					//		tex_name.append("tex_name");
+					//		tex_name.append(std::to_string(i));
+
+					//		Value vertexname(tex_name.c_str(), config->GetAllocator());
+					//		my_mesh.AddMember(vertexname, texture_values, allocator);
+					//	}												
+					//}
+
 					Value n(node->mName.C_Str(), config->GetAllocator());
 					config->AddMember(n, my_mesh, allocator);
 				}
+				
 			}
 		}
 
@@ -239,7 +270,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					new_mesh->num_indices = mesh->mNumFaces * 3;
 					new_mesh->num_normal = mesh->mNumVertices * 3;
 					new_mesh->indices = new int[new_mesh->num_indices];
-					new_mesh->normal = new float[new_mesh->num_normal];
 					
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
