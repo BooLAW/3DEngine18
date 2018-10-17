@@ -46,8 +46,8 @@ void GameObject::Draw()
 			ComponentMesh* aux_mesh = (ComponentMesh*)(*it)->GetComponent(MESH);
 			ComponentMaterial* aux_material = (ComponentMaterial*)(*it)->GetComponent(MATERIAL);
 			
-				//glPushMatrix();
-				//glMultMatrixf((*it)->transform->trans_matrix_l.Transposed().ptr());
+		//	glPushMatrix();
+			//glMultMatrixf((*it)->transform->trans_matrix_l.Transposed().ptr());
 			//Bind Vertices
 			if (aux_mesh != nullptr)
 			{

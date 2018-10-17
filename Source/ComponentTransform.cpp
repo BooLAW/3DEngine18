@@ -43,9 +43,9 @@ void ComponentTransform::DrawInspectorInfo()
 	float scale[3] = { transform.scale.x,transform.scale.y,transform.scale.z };
 
 
-		ImGui::DragFloat3("Position##transform", pos, 0.1f, -INFINITY, INFINITY);
-		ImGui::DragFloat3("Rotation##transform", rot, 0.1f, -360, 360);
-		ImGui::DragFloat3("Scale##transform", scale, 0.1f, 1, INFINITY);
+	ImGui::DragFloat3("Position##transform", pos, 0.1f, -INFINITY, INFINITY);
+	ImGui::DragFloat3("Rotation##transform", rot, 0.1f, -360, 360);
+	ImGui::DragFloat3("Scale##transform", scale, 0.1f, 1, INFINITY);
 	
 	//Update Transform
 	if (!owner->IsStatic())
@@ -53,6 +53,16 @@ void ComponentTransform::DrawInspectorInfo()
 		if (pos[0] != transform.pos.x || pos[1] != transform.pos.y || pos[2] != transform.pos.z)
 		{
 			transform.SetPosition(pos[0], pos[1], pos[2]);
+			updated_transform = true;
+		}
+		if (rot[0] != transform.rot.x || rot[1] != transform.pos.y || rot[2] != transform.rot.z)
+		{
+			transform.SetRotation(pos[0], pos[1], pos[2]);
+			updated_transform = true;
+		}
+		if (pos[0] != transform.pos.x || pos[1] != transform.pos.y || pos[2] != transform.pos.z)
+		{
+			transform.SetScale(scale[0], scale[1], scale[2]);
 			updated_transform = true;
 		}
 		if (updated_transform)

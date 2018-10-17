@@ -214,7 +214,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 			aiQuaternion aiQuat;
 			aiVector3D aiScale;
 
-			node->mTransformation.Decompose(aiPos, aiQuat, aiScale);
+			node->mTransformation.Decompose(aiScale, aiQuat, aiPos);
 
 			float3 pos(aiPos.x, aiPos.y, aiPos.z);
 			Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
