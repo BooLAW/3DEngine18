@@ -255,6 +255,15 @@ Mesh * GameObject::GetMesh()
 	}
 }
 
+Material * GameObject::GetMaterial()
+{
+	ComponentMaterial* mat_tmp = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);
+	if (mat_tmp != nullptr)
+		return mat_tmp->data;
+	else
+		return nullptr;
+}
+
 void GameObject::RecursiveUpdateTransformChilds()
 {
 	//PAUTODO

@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "Mesh.h"
+
+class Material;
 class Component;
 enum ComponentType;
 class ComponentTransform;
@@ -44,6 +46,7 @@ public:
 	//Mesh functionalities
 	void ActivateBB();
 	Mesh* GetMesh();
+	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();
 	//Info
 	const char* GetName()const;
