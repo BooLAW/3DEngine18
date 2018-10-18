@@ -39,13 +39,12 @@ bool ModuleScene::Start()
 	float3 root_scale = float3::one;
 	scene_root->transform->SetTransform(root_pos, root_rotation, root_scale);
 	scene_root->transform->SetGlobalPos({ 0, 0, 0 });
-	scene_root->transform->trans_matrix_g = float4x4(root_rotation, root_pos);
-	scene_root->transform->trans_matrix_l = float4x4(root_rotation, root_pos);
+	scene_root->transform->UpdateTransformValues();
+
 
 	go_list.push_back(scene_root);
 
-	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	
 	//Load BakerHouse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";

@@ -325,7 +325,7 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box)
 	float3 newpos = bounding_box.CenterPoint();
 	newpos.z -= bounding_box.Diagonal().Length();
 	newpos.y += bounding_box.Diagonal().Length();
-	MoveCam({newpos.x,newpos.y,newpos.z});
+	MoveCam({newpos.x,newpos.y,-newpos.z});
 	LookAt({ 0,0,0 });
 	CalculateViewMatrix();
 }

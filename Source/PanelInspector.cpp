@@ -41,10 +41,22 @@ void PanelInspector::Draw()
 	{	
 		GameObject* selected_go = nullptr;
 		selected_go = App->scene_intro->GetSelected();
-
 		////Drawing ImGui
 		if (selected_go != nullptr)
-		{		
+		{	
+			ImGui::Text("%s", selected_go->GetName());
+			ImGui::Separator();
+			bool static_go = selected_go->IsStatic();
+			if (ImGui::Checkbox("Static", &static_go))
+				selected_go->SetStatic(static_go);
+			ImGui::SameLine();
+			bool active = selected_go->IsActive();
+			if(ImGui::Checkbox("Active", &active))
+				selected_go->SetActive(active);
+
+			ImGui::Separator();
+
+
 					if (ImGui::CollapsingHeader("Transform"))
 					{
 						selected_go->transform->DrawInspectorInfo();
