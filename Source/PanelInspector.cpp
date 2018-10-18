@@ -44,7 +44,7 @@ void PanelInspector::Draw()
 		////Drawing ImGui
 		if (selected_go != nullptr)
 		{	
-			ImGui::Text("%s", selected_go->GetName());
+			ImGui::Text("Name: %s", selected_go->GetName());
 			ImGui::Separator();
 			bool static_go = selected_go->IsStatic();
 			if (ImGui::Checkbox("Static", &static_go))
@@ -121,6 +121,8 @@ void PanelInspector::Draw()
 					}
 				
 		}
+		else
+			ImGui::Text("Select a GameObject in the Hierarchy");
 			
 	}
 	ImGui::EndDock();

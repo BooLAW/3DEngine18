@@ -212,8 +212,7 @@ GameObject * ModuleScene::GetSelected()
 		if ((*it)->IsSelected() == true)
 			aux = (*it);
 	}
-	if (aux == nullptr)
-		CONSOLE_LOG_INFO("No Selected Object");
+
 	return aux;
 }
 
