@@ -18,11 +18,13 @@ void Transform::SetPosition(float x, float y, float z)
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
+
+
 }
 
 void Transform::SetRotation(float x, float y, float z)
 {
-
+	rot = Quat::FromEulerXYZ(x, y, z);
 }
 
 void Transform::SetRotation(Quat quat)

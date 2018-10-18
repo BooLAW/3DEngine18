@@ -48,6 +48,7 @@ void ComponentTransform::DrawInspectorInfo()
 	ImGui::DragFloat3("Scale##transform", scale, 0.1f, 1, INFINITY);
 	
 	//Update Transform
+	updated_transform = false;
 	if (!owner->IsStatic())
 	{
 		if (pos[0] != transform.pos.x || pos[1] != transform.pos.y || pos[2] != transform.pos.z)
@@ -55,12 +56,13 @@ void ComponentTransform::DrawInspectorInfo()
 			transform.SetPosition(pos[0], pos[1], pos[2]);
 			updated_transform = true;
 		}
-		if (rot[0] != transform.rot.x || rot[1] != transform.pos.y || rot[2] != transform.rot.z)
+		Quat aux = Quat::FromEulerXYZ(rot[0] * DEGTORAD, rot[1] * DEGTORAD, rot[2] * DEGTORAD);
+		if (!transform.rot.Equals(aux));
 		{
-			transform.SetRotation(pos[0], pos[1], pos[2]);
+			transform.SetRotation(aux);
 			updated_transform = true;
 		}
-		if (pos[0] != transform.pos.x || pos[1] != transform.pos.y || pos[2] != transform.pos.z)
+		if (pos[0] != transform.scale.x || pos[1] != transform.scale.y || pos[2] != transform.scale.z)
 		{
 			transform.SetScale(scale[0], scale[1], scale[2]);
 			updated_transform = true;
@@ -89,6 +91,7 @@ void ComponentTransform::SetLocalPos(const float3 & new_pos)
 
 void ComponentTransform::SetGlobalPos(const float3 & new_pos)
 {
+
 }
 
 void ComponentTransform::SetTransform(float3 pos, Quat rot,float3 scale)
