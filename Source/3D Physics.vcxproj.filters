@@ -94,6 +94,9 @@
     <Filter Include="Sources\External Tools\SDL">
       <UniqueIdentifier>{91c12c75-fa51-4a26-aca1-728f6baf4850}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects\BaseClasses\Camera">
+      <UniqueIdentifier>{7609f100-655b-4100-8b80-a84d545a97cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -654,6 +657,9 @@
     <ClInclude Include="SDL\include\SDL_version.h">
       <Filter>Sources\External Tools\SDL</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -898,6 +904,9 @@
     </ClCompile>
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\External Tools\MMGR</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

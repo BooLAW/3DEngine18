@@ -6,6 +6,7 @@
 
 class TextureMSAA; 
 class PanelScene;
+class Camera;
 class ModuleCamera3D : public Module
 {
 public:
@@ -58,6 +59,12 @@ public:
 	vec3 X, Y, Z, Position, Reference;
 
 private:
+	//active camera when playing game
+	Camera * game_camera = nullptr;
+	//camera of the scene in the editor
+	Camera * editor_camera = nullptr;
+	
+	std::vector<Camera*> cams_list;
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 	TextureMSAA* viewport_texture; 
