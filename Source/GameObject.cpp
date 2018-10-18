@@ -37,17 +37,17 @@ void GameObject::Draw()
 {
 	if (!active)
 		return;
-	if (!childs_list.empty())
-	{
-		for (std::vector<GameObject*>::iterator  it = childs_list.begin(); it != childs_list.end(); it++)
-		{
+	//if (!childs_list.empty())
+	//{
+		//for (std::vector<GameObject*>::iterator  it = childs_list.begin(); it != childs_list.end(); it++)
+		//{
 			//Enable Client
 			glEnableClientState(GL_VERTEX_ARRAY);
-			ComponentMesh* aux_mesh = (ComponentMesh*)(*it)->GetComponent(MESH);
-			ComponentMaterial* aux_material = (ComponentMaterial*)(*it)->GetComponent(MATERIAL);
+			ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
+			ComponentMaterial* aux_material = (ComponentMaterial*)GetComponent(MATERIAL);
 			
-		//	glPushMatrix();
-			//glMultMatrixf((*it)->transform->trans_matrix_l.Transposed().ptr());
+			glPushMatrix();
+			glMultMatrixf(transform->trans_matrix_g.Transposed().ptr());
 			//Bind Vertices
 			if (aux_mesh != nullptr)
 			{
@@ -85,11 +85,11 @@ void GameObject::Draw()
 			//Disable Client
 			glDisableClientState(GL_VERTEX_ARRAY);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-				//glPopMatrix();
+			glPopMatrix();
 			
 			
-		}
-	}
+		//}
+	//}
 }
 
 AABB GameObject::GetBB()
@@ -270,6 +270,10 @@ void GameObject::RecursiveUpdateTransformChilds()
 {
 	//PAUTODO
 	//Make a function to update recursively all the childs and components related
+	for (int i = 0; i < GetNumChilds(); i++)
+	{
+		childs_list[i]->transform->UpdateTransformValues();
+	}
 
 }
 

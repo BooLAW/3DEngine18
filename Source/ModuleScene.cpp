@@ -9,6 +9,8 @@
 #include <WinBase.h>
 
 #include "ModuleJSON.h"
+#include "Transform.h"
+#include "ComponentTransform.h"
 
 #define RADIUS 44
 
@@ -32,6 +34,14 @@ bool ModuleScene::Start()
 	scene_root = new GameObject();
 	scene_root->SetName("ROOT");
 	scene_root->root_go = true;
+	float3 root_pos = float3::zero;
+	Quat root_rotation = Quat::identity;
+	float3 root_scale = float3::one;
+	scene_root->transform->SetTransform(root_pos, root_rotation, root_scale);
+	scene_root->transform->SetGlobalPos({ 0, 0, 0 });
+	scene_root->transform->trans_matrix_g = float4x4(root_rotation, root_pos);
+	scene_root->transform->trans_matrix_l = float4x4(root_rotation, root_pos);
+
 	go_list.push_back(scene_root);
 
 	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
