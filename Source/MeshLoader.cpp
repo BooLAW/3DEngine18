@@ -56,6 +56,7 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	FILE* fp = fopen(file_name.c_str(), "wb"); // non-Windows use "w"
 
 	char writeBuffer[10000];
+
 	Document testconfig_w;
 	testconfig_w.SetObject();
 	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
@@ -66,6 +67,10 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
 	fclose(fp);
+
+	
+
+
 	return true;
 }
 
@@ -77,9 +82,14 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 		if (scene->HasMeshes())
 		{
 			Document::AllocatorType& allocator = config->GetAllocator();
+
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
 				aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
+				uint ranges[2] = { (uint)ai_mesh->mNumFaces * 3, (uint)ai_mesh->mNumVertices };
+				
+				uint size = sizeof(ranges) + sizeof(uint)*node->mNumMeshes + sizeof(float)*ai_mesh->mNumVertices * 3;
+
 				Value my_mesh(kObjectType);
 				my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
 				my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces * 3, allocator);
@@ -136,6 +146,9 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 
 Mesh * MeshLoader::LoadSceneMeshLW(std::string file_name,const aiNode* node)
 {
+	//TODO JOSEP
+
+
 	return nullptr;
 }
 
