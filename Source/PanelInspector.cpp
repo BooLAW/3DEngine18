@@ -57,68 +57,68 @@ void PanelInspector::Draw()
 			ImGui::Separator();
 
 
-					if (ImGui::CollapsingHeader("Transform"))
-					{
-						selected_go->transform->DrawInspectorInfo();
+			if (ImGui::CollapsingHeader("Transform"))
+				selected_go->transform->DrawInspectorInfo();
+					
+			
+				//Check if has MEsh
+			if (selected_go->HasMesh())
+			{
+				if (ImGui::CollapsingHeader("Geometry"))
+				{
+						Mesh* aux = selected_go->GetMesh();
+						ImGui::Spacing();
+						ImGui::Text("Number Vertices");
+						ImGui::SameLine();
+						ImGui::Text("      %i", aux->num_vertices);
+						ImGui::Spacing();
+
+						ImGui::Text("Number Indices");
+						ImGui::SameLine();
+						ImGui::Text("       %i", aux->num_indices);
+						ImGui::Spacing();
+
+						ImGui::Text("Number Texture Coords");
+						ImGui::SameLine();
+						ImGui::Text("      %i", aux->num_tex_coords);
+						ImGui::Spacing();
+
+
+					
+				}
+			}
+				//Check if it has Materials and then it draws it
+			if (selected_go->HasTex()) //Checking if it the mesh has a texture to display.
+			{
+				if (ImGui::CollapsingHeader("Texture"))
+				{				
+						Material* mat = selected_go->GetMaterial();
 							
-					}
-						//Check if has MEsh
-					if (selected_go->HasMesh())
-					{
-						if (ImGui::CollapsingHeader("Geometry"))
-						{
-								Mesh* aux = selected_go->GetMesh();
-								ImGui::Spacing();
-								ImGui::Text("Number Vertices");
-								ImGui::SameLine();
-								ImGui::Text("      %i", aux->num_vertices);
-								ImGui::Spacing();
-
-								ImGui::Text("Number Indices");
-								ImGui::SameLine();
-								ImGui::Text("       %i", aux->num_indices);
-								ImGui::Spacing();
-
-								ImGui::Text("Number Texture Coords");
-								ImGui::SameLine();
-								ImGui::Text("      %i", aux->num_tex_coords);
-								ImGui::Spacing();
+							ImGui::Text("Texture Height:");
+							ImGui::SameLine();
+							ImGui::Text("     %i", mat->height);
+							ImGui::Spacing();
 
 
-							
-						}
-					}
-						//Check if it has Materials and then it draws it
-					if (selected_go->HasTex()) //Checking if it the mesh has a texture to display.
-					{
-						if (ImGui::CollapsingHeader("Texture"))
-						{				
-								Material* mat = selected_go->GetMaterial();
-									
-									ImGui::Text("Texture Height:");
-									ImGui::SameLine();
-									ImGui::Text("     %i", mat->height);
-									ImGui::Spacing();
+							ImGui::Text("Texture Width:");
+							ImGui::SameLine();
+							ImGui::Text("     %i", mat->width);
+							ImGui::Spacing();
 
+							ImGui::Text("Texture ID:");
+							ImGui::SameLine();
+							ImGui::Text("     %i", mat->textures_id);
+							ImGui::Spacing();
 
-									ImGui::Text("Texture Width:");
-									ImGui::SameLine();
-									ImGui::Text("     %i", mat->width);
-									ImGui::Spacing();
-
-									ImGui::Text("Texture ID:");
-									ImGui::SameLine();
-									ImGui::Text("     %i", mat->textures_id);
-									ImGui::Spacing();
-
-									ImTextureID tex = (uint*)mat->textures_id;
-									ImVec2 image_size = ImGui::GetWindowSize();
-									image_size.y = image_size.x;
-									ImGui::Image(tex, image_size);
-															
-						
-						}							
-					}
+							ImTextureID tex = (uint*)mat->textures_id;
+							ImVec2 image_size = ImGui::GetWindowSize();
+							image_size.x = image_size.x / 2;
+							image_size.y = image_size.x;
+							ImGui::Image(tex, image_size);
+													
+				
+				}							
+			}
 				
 		}
 		else
