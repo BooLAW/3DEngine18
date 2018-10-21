@@ -6,7 +6,8 @@
 #include "Material.h"
 #include "OpenGL.h"
 #include "DebugDraw.h"
-
+#include "Camera.h"
+#include "ComponentCamera.h"
 
 
 GameObject::GameObject()
@@ -146,6 +147,17 @@ bool GameObject::HasTex() const
 	return ret;
 }
 
+bool GameObject::HasCam() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::CAMERA)
+			ret = true;
+	}
+	return ret;
+}
+
 void GameObject::SetActive(bool active)
 {
 	this->active = active;
@@ -233,6 +245,13 @@ GameObject * GameObject::GetChild(int id)
 int GameObject::GetNumChilds() const
 {
 	return childs_list.size();
+}
+
+Camera * GameObject::GetCamera()
+{
+	ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
+	if (aux != nullptr)
+		return aux->cam;
 }
 
 void GameObject::ActivateBB()

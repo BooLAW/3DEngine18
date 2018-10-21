@@ -8,6 +8,7 @@ class Material;
 class Component;
 enum ComponentType;
 class ComponentTransform;
+class Camera;
 class GameObject
 {
 public:
@@ -26,6 +27,7 @@ public:
 	void RemoveComponent(ComponentType type);
 	bool HasMesh()const;
 	bool HasTex()const;
+	bool HasCam()const;
 
 	//flags interaction
 	void SetActive(bool active);
@@ -42,16 +44,15 @@ public:
 	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
 	int GetNumChilds()const;
-
 	//Mesh functionalities
 	void ActivateBB();
 	Mesh* GetMesh();
+	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();
 	//Info
 	const char* GetName()const;
 	void SetName(const char* name);
-
 
 public:
 	GameObject* parent;

@@ -3,7 +3,7 @@
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleCamera3D.h"
 #include "Application.h"
-
+#include "TextureMSAA.h"
 
 Camera::Camera()
 {
@@ -239,4 +239,59 @@ float3 Camera::Rotate(const float3 & u, float angle, const float3 & v)
 void Camera::CreateNewFrustum()
 {
 	frustum.GetCornerPoints(frustum_vertices);
+}
+
+void Camera::DrawFrustum()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glBegin(GL_LINES);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[1]);
+	glVertex3fv((GLfloat*)&frustum_vertices[5]);
+	glVertex3fv((GLfloat*)&frustum_vertices[7]);
+	glVertex3fv((GLfloat*)&frustum_vertices[3]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[3]);
+	glVertex3fv((GLfloat*)&frustum_vertices[1]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[4]);
+	glVertex3fv((GLfloat*)&frustum_vertices[0]);
+	glVertex3fv((GLfloat*)&frustum_vertices[2]);
+	glVertex3fv((GLfloat*)&frustum_vertices[6]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[6]);
+	glVertex3fv((GLfloat*)&frustum_vertices[4]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[5]);
+	glVertex3fv((GLfloat*)&frustum_vertices[4]);
+	glVertex3fv((GLfloat*)&frustum_vertices[6]);
+	glVertex3fv((GLfloat*)&frustum_vertices[7]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[7]);
+	glVertex3fv((GLfloat*)&frustum_vertices[5]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[0]);
+	glVertex3fv((GLfloat*)&frustum_vertices[1]);
+	glVertex3fv((GLfloat*)&frustum_vertices[3]);
+	glVertex3fv((GLfloat*)&frustum_vertices[2]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[2]);
+	glVertex3fv((GLfloat*)&frustum_vertices[6]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[3]);
+	glVertex3fv((GLfloat*)&frustum_vertices[7]);
+	glVertex3fv((GLfloat*)&frustum_vertices[6]);
+	glVertex3fv((GLfloat*)&frustum_vertices[2]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[2]);
+	glVertex3fv((GLfloat*)&frustum_vertices[0]);
+
+	glVertex3fv((GLfloat*)&frustum_vertices[0]);
+	glVertex3fv((GLfloat*)&frustum_vertices[4]);
+	glVertex3fv((GLfloat*)&frustum_vertices[5]);
+	glVertex3fv((GLfloat*)&frustum_vertices[1]);
+
+	glEnd();
+
 }

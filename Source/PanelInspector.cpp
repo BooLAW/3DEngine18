@@ -82,9 +82,6 @@ void PanelInspector::Draw()
 						ImGui::SameLine();
 						ImGui::Text("      %i", aux->num_tex_coords);
 						ImGui::Spacing();
-
-
-					
 				}
 			}
 				//Check if it has Materials and then it draws it
@@ -119,7 +116,7 @@ void PanelInspector::Draw()
 				
 				}							
 			}
-				
+			
 		}
 		else
 			ImGui::Text("Select a GameObject in the Hierarchy");

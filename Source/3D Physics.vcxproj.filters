@@ -97,6 +97,9 @@
     <Filter Include="Sources\Modules\GameObjects\BaseClasses\Camera">
       <UniqueIdentifier>{7609f100-655b-4100-8b80-a84d545a97cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Camera">
+      <UniqueIdentifier>{1752be37-31e1-43c7-8767-80389e750b9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -657,6 +660,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Sources\Modules\GameObjects\BaseClasses\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -902,6 +906,7 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Sources\Modules\GameObjects\BaseClasses\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

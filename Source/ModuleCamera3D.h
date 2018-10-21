@@ -6,12 +6,13 @@
 class TextureMSAA; 
 class PanelScene;
 class Camera;
+class GameObject;
 class ModuleCamera3D : public Module
 {
 public:
 	ModuleCamera3D(bool start_enabled = true);
 	~ModuleCamera3D();
-
+	bool Init();
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
@@ -33,7 +34,6 @@ public:
 
 	void SetMouseSensitivity(float new1_sensitivity);
 	float GetMouseSensitivity() const;
-	TextureMSAA* SceneMSAA();
 
 	void LockCamera(); 
 	void UnlockCamera(); 
@@ -51,16 +51,12 @@ private:
 	float mouse_sensitivity = 0.5f;
 	bool locked = false; 
 
-public:
-	
 
-private:
+public:
 	//active camera when playing game
-	Camera * game_camera = nullptr;
 	//camera of the scene in the editor
-	Camera * editor_camera = nullptr;
-	
+	GameObject* editor_camera = nullptr;
+	bool draw_frustum = false;
 	std::vector<Camera*> cams_list;
 
-	TextureMSAA* viewport_texture; 
 };

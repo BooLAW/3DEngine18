@@ -2,6 +2,7 @@
 #define __CAMERA_H__
 #include "MathGeoLib/MathGeoLib.h"
 
+class TextureMSAA;
 class Camera {
 public:
 	Camera();
@@ -43,7 +44,7 @@ public:
 	float3 Rotate(const float3 &u, float angle, const float3 &v);
 	
 	void CreateNewFrustum();
-
+	void DrawFrustum();
 private:
 
 	Frustum frustum;
@@ -52,7 +53,6 @@ private:
 	float3 frustum_vertices[8];
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
-
 
 	bool	is_culling = true;
 };

@@ -7,6 +7,9 @@
 #include <gl/GLU.h>
 #include "SDL/include/SDL_version.h"
 #include "TextureMSAA.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "ComponentCamera.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -176,7 +179,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	App->imgui->DrawImGui();
 	SetSceneLights();
 	SDL_GL_SwapWindow(App->window->window);
-	App->camera->SceneMSAA()->Bind();
+	
+	ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
+	aux->SceneMSAA()->Bind();
 
 	
 
@@ -197,12 +202,13 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	float4x4 aux;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = App->camera->GetCurrentCam()->GetFrustum().ProjectionMatrix();
-	glLoadMatrixf(&ProjectionMatrix[0][0]);
-
+	if (App->camera->GetCurrentCam() != nullptr)
+	{
+		ProjectionMatrix = App->camera->GetCurrentCam()->GetFrustum().ProjectionMatrix();
+		glLoadMatrixf(&ProjectionMatrix[0][0]);
+	}
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }

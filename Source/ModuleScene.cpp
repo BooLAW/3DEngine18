@@ -41,9 +41,9 @@ bool ModuleScene::Start()
 	scene_root->transform->SetGlobalPos({ 0, 0, 0 });
 	scene_root->transform->UpdateTransformValues();
 
+	
 
 	go_list.push_back(scene_root);
-
 	
 	//Load BakerHouse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
