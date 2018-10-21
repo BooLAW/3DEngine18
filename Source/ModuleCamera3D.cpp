@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "TextureMSAA.h"
+#include "Camera.h"
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 {
@@ -14,6 +15,10 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 
 	Position = vec3(3.0f, 8.0f, -8.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+
+
+
+	cams_list.push_back(editor_camera);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
