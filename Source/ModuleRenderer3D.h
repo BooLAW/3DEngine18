@@ -2,7 +2,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
-#include "Primitive.h"
 
 #define MAX_LIGHTS 8
 struct RenderAttributes{
@@ -42,7 +41,7 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	RenderAttributes attributes;
 	//RENDERING FLAGS
 	bool show_plane = true;

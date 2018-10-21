@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "Primitive.h"
 #include "Component.h"
 #include "imgui_impl_sdl.h"
 #include <stdlib.h>
@@ -11,6 +10,7 @@
 #include "ModuleJSON.h"
 #include "Transform.h"
 #include "ComponentTransform.h"
+#include "Primitive.h"
 
 #define RADIUS 44
 

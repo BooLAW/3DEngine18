@@ -6,7 +6,6 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include <stdio.h>
-#include "glmath.h"
 #include "Material.h"
 #include "PanelInspector.h"
 #include "Transform.h"
@@ -157,17 +156,17 @@ LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
 	LineSegment ret; //a = N, b = A
 
-	vec3 pv1;
+	float3 pv1;
 	pv1.x = p1.x;
 	pv1.y = p1.y;
 	pv1.z = p1.z;
 
-	vec3 pv2;
+	float3 pv2;
 	pv2.x = p2.x;
 	pv2.y = p2.y;
 	pv2.z = p2.z;
 
-	vec3 pv3;
+	float3 pv3;
 	pv3.x = p3.x;
 	pv3.y = p3.y;
 	pv3.z = p3.z;
@@ -175,10 +174,11 @@ LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 	float3 u = p2 - p1;
 	float3 v = p3 - p1;
 
-	vec3 retcros = cross(pv2 - pv1, pv3 - pv1);
-	retcros = normalize(retcros);
+	float3 aux1 = pv2 - pv1;
+	float3 retcros = aux1.Cross(pv3 - pv1);
+	retcros = retcros.Normalized();
 
-	ret.b = (vec)&retcros;
+	ret.b = retcros;
 
 	ret.a.x = (p1.x + p2.x + p3.x) / 3;
 	ret.a.y = (p1.y + p2.y + p3.y) / 3;

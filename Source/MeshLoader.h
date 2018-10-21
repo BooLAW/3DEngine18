@@ -6,7 +6,6 @@
 #include "Assimp/include/cfileio.h"
 #include "Module.h"
 #include "OpenGL.h"
-#include "glmath.h"
 
 
 #define INVALID_MATERIAL 0xFFFFFFFF

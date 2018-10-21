@@ -1,7 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "glmath.h"
 #include "MathGeoLib\MathGeoLib.h"
 
 class TextureMSAA; 
@@ -21,10 +20,10 @@ public:
 
 	void CameraMovement(float dt);
 
-	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const vec3 &Spot);
-	void Move(const vec3 &speed);
-	void WheelMove(const vec3 &mouse_speed,int direction);
+	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
+	void LookAt(const float3 &Spot);
+	void Move(const float3 &speed);
+	void WheelMove(const float3 &mouse_speed,int direction);
 	void HandleMouse();
 	void Orbit();
 	float* GetViewMatrix();
@@ -43,12 +42,10 @@ public:
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
 	void AdaptCamera(AABB bounding_box);
-	void MoveCam(const vec3 &speed);
+	void MoveCam(const float3 &speed);
 	bool MouseOverScene(PanelScene* Scene);
-
+	Camera* GetCurrentCam()const;
 private:
-
-	void CalculateViewMatrix();
 	float speed_base = 4.0f;
 	float wheel_speed_base = 4.0f;
 	float mouse_sensitivity = 0.5f;
@@ -56,7 +53,6 @@ private:
 
 public:
 	
-	vec3 X, Y, Z, Position, Reference;
 
 private:
 	//active camera when playing game
@@ -66,6 +62,5 @@ private:
 	
 	std::vector<Camera*> cams_list;
 
-	mat4x4 ViewMatrix, ViewMatrixInverse;
 	TextureMSAA* viewport_texture; 
 };

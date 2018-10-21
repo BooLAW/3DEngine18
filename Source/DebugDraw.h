@@ -1,5 +1,3 @@
-
-#include "glmath.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include "Color.h"
 #include "Mesh.h"

@@ -84,7 +84,6 @@
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -272,7 +271,6 @@
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="glmath.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_dock.cpp" />
