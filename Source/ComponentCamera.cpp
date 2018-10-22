@@ -3,19 +3,25 @@
 #include "Camera.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "Component.h"
+#include "ComponentTransform.h"
+#include "Transform.h"
 
 ComponentCamera::ComponentCamera()
 {
 	type = CAMERA;
 	SetName("Component Camera");
-
+	
 	cam = new Camera();
+	
 }
 
 bool ComponentCamera::Start()
 {
-	viewport_texture = new TextureMSAA();
-	viewport_texture->Create(App->window->screen_surface->w, App->window->screen_surface->h, 2);
+	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TANSFORM);
+	cam->SetPosition(trans->transform.pos);
+
+
 	return true;
 }
 
@@ -35,7 +41,4 @@ Camera * ComponentCamera::GetCamera()
 	return cam;
 }
 
-TextureMSAA * ComponentCamera::SceneMSAA()
-{
-	return viewport_texture;
-}
+

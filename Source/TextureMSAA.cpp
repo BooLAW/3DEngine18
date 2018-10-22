@@ -76,6 +76,24 @@ bool TextureMSAA::Create(uint width, uint height, int msa_lvl)
 	return true;
 }
 
+void TextureMSAA::Destroy()
+{
+	glDeleteTextures(1, &texture_id);
+	texture_id = 0;
+
+	glDeleteFramebuffers(1, &fbo_id);
+	fbo_id = 0;
+	glDeleteFramebuffers(1, &fbo_msaa_id);
+	fbo_msaa_id = 0;
+
+	glDeleteRenderbuffers(1, &rbo_id);
+	glDeleteRenderbuffers(1, &rbo_color_id);
+	glDeleteRenderbuffers(1, &rbo_depth_id);
+	rbo_id = 0;
+	rbo_color_id = 0;
+	rbo_depth_id = 0;
+}
+
 void TextureMSAA::Bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo_msaa_id);

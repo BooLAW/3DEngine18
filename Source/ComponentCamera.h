@@ -11,10 +11,8 @@ public:
 	bool Update()override;
 	virtual ~ComponentCamera();
 	Camera* GetCamera();
-	TextureMSAA* SceneMSAA();
 public:
 	Camera * cam;
-	TextureMSAA* viewport_texture;
 
 };
 

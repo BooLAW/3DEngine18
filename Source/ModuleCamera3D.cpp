@@ -37,12 +37,10 @@ bool ModuleCamera3D::Start()
 	editor_camera->transform->SetGlobalPos({ 0, 0, 0 });
 	editor_camera->transform->UpdateTransformValues();
 
-	ComponentCamera* c_camera = new ComponentCamera();
-	c_camera->SetOwner(editor_camera);
-	c_camera->Start();
-	editor_camera->PushComponent(c_camera);
+	
 
 	App->scene_intro->go_list.push_back(editor_camera);
+
 	App->profiler.SaveInitData("Camera");
 	return ret;
 }
@@ -100,10 +98,10 @@ void ModuleCamera3D::DrawModuleConfig()
 		ImGui::Spacing();
 		if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[6]);
 		}
 		else
-			App->audio->camera_tick_arr[5] = FALSEBOOL;
+			App->audio->camera_tick_arr[6] = FALSEBOOL;
 
 
 	}
@@ -167,6 +165,7 @@ void ModuleCamera3D::MoveCam(const float3 &speed)
 
 	aux->cam->SetPosition(newPos);
 	aux->cam->SetReference(newPos);
+	
 }
 
 bool ModuleCamera3D::MouseOverScene(PanelScene* Scene)
@@ -188,6 +187,18 @@ Camera * ModuleCamera3D::GetCurrentCam() const
 		return aux->cam;
 	else
 		return nullptr;
+}
+
+void ModuleCamera3D::StartEditorCamera()
+{
+	editor_camera->SetParent(App->scene_intro->scene_root);
+	ComponentCamera* c_camera = new ComponentCamera();
+	c_camera->SetOwner(editor_camera);
+	c_camera->Start();
+	editor_camera->PushComponent(c_camera);
+
+	c_camera->cam->viewport_texture = new TextureMSAA();
+	c_camera->cam->viewport_texture->Create(1500, 1000, 2);
 }
 
 void ModuleCamera3D::WheelMove(const float3 & mouse_speed, int direction)

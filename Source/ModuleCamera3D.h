@@ -45,6 +45,7 @@ public:
 	void MoveCam(const float3 &speed);
 	bool MouseOverScene(PanelScene* Scene);
 	Camera* GetCurrentCam()const;
+	void StartEditorCamera();
 private:
 	float speed_base = 4.0f;
 	float wheel_speed_base = 4.0f;

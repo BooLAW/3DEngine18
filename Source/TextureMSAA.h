@@ -9,7 +9,7 @@ public:
 	~TextureMSAA();
 
 	bool Create(uint width, uint height, int msa_lvl); 
-
+	void Destroy();
 	void Bind(); 
 	void Render(); 
 	void Unbind(); 

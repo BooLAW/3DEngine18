@@ -45,6 +45,7 @@ bool ModuleScene::Start()
 
 	go_list.push_back(scene_root);
 	
+	App->camera->StartEditorCamera();
 	//Load BakerHouse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";

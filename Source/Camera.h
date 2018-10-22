@@ -29,8 +29,9 @@ public:
 	float GetNearPlane()const;
 	float GetAspectRatio()const;
 
-	float* GetViewMatrix();
-	float* GetProjectionMatrix();
+	float* GetViewMatrix()const;
+	float* GetProjMatrix()const;
+	void UpdateProjectionMatrix();
 
 	void CalculateViewMatrix();
 
@@ -45,11 +46,14 @@ public:
 	
 	void CreateNewFrustum();
 	void DrawFrustum();
+	TextureMSAA* SceneMSAA();
+
+	TextureMSAA* viewport_texture;
+
 private:
 
 	Frustum frustum;
 	float	aspect_ratio = 0.0f;
-	float   vertical_fov = 0.0f;
 	float3 frustum_vertices[8];
 
 	float4x4 ViewMatrix, ViewMatrixInverse;

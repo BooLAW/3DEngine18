@@ -660,7 +660,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Sources\Modules\GameObjects\BaseClasses\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentCamera.h" />
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Sources\Modules\GameObjects\Components\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -906,7 +908,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Sources\Modules\GameObjects\BaseClasses\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentCamera.cpp" />
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

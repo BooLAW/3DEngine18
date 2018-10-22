@@ -7,22 +7,22 @@
 
 Camera::Camera()
 {
-	//frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumRightHanded);
-
 	CalculateViewMatrix();
-	frustum.SetPos(float3(0, 1, -1));
-	frustum.SetFront(float3(0, 0, 1));
-	frustum.SetUp(float3(0, 1, 0));
 
 	X = float3(1.0f, 0.0f, 0.0f);
 	Y = float3(0.0f, 1.0f, 0.0f);
 	Z = float3(0.0f, 0.0f, 1.0f);
 
+
 	Position = float3(0.0f, 0.0f, 5.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
-	frustum.horizontalFov = DegToRad(120);
+
+	frustum.SetPos(float3(0, 1, -1));
+	frustum.SetFront(float3(0, 0, 1));
+	frustum.SetUp(float3(0, 1, 0));
+	frustum.horizontalFov = DegToRad(80);
 	frustum.verticalFov = DegToRad(60);
-	frustum.nearPlaneDistance = 0.5;//needs to be higher than 0.4
+	frustum.nearPlaneDistance = 0.4;//needs to be higher than 0.4
 	frustum.farPlaneDistance = 800;
 
 	frustum.type = FrustumType::PerspectiveFrustum;
@@ -31,8 +31,6 @@ Camera::Camera()
 
 	//frustum.Translate(float3(0,0,0));
 	//frustum.pos = Position;
-	frustum.pos = float3(0, 0, 0);
-
 	frustum.Translate(Position);
 
 	CreateNewFrustum();
@@ -47,11 +45,14 @@ void Camera::SetPosition(const float3 & new_pos)
 {
 	frustum.SetPos(new_pos);
 	Position = frustum.pos;
+	CalculateViewMatrix();
 }
 
 void Camera::SetReference(const float3 & new_pos)
 {
 	Reference = new_pos;
+	CalculateViewMatrix();
+
 }
 
 void Camera::SetFront(const float3 & front)
@@ -66,15 +67,15 @@ void Camera::SetUp(const float3 & up)
 
 void Camera::SetFOV(const float & new_fov)
 {
-	if (new_fov <= 0)
+	/*if (new_fov <= 0)
 	{
 		CONSOLE_LOG_WARNING("Can't set a fov of negative value : %d", new_fov);
 	}
 	else
-	{
-		vertical_fov = new_fov * DEGTORAD;
-		frustum.SetVerticalFovAndAspectRatio(DEGTORAD*new_fov, aspect_ratio);
-	}
+	{*/
+		frustum.verticalFov = new_fov * DEGTORAD;
+		frustum.horizontalFov = math::Atan(aspect_ratio * math::Tan(frustum.verticalFov / 2)) * 2;
+	//}
 }
 
 void Camera::SetFarPlane(const float & new_fp)
@@ -89,13 +90,14 @@ void Camera::SetNearPlane(const float & new_np)
 
 void Camera::SetAspectRatio(const float & new_ar)
 {
-	if (new_ar <= 0)
+	/*if (new_ar <= 0)
 	{
 		CONSOLE_LOG_WARNING("Can't set a fov of negative value : %d", new_ar);
 	}
-	else
+	else*/
 	{
-		frustum.SetVerticalFovAndAspectRatio(vertical_fov, new_ar);
+		aspect_ratio = new_ar;
+		frustum.horizontalFov = math::Atan(aspect_ratio * math::Tan(frustum.verticalFov / 2)) * 2;
 	}
 }
 
@@ -124,15 +126,38 @@ float Camera::GetAspectRatio() const
 	return aspect_ratio;
 }
 
- float * Camera::GetViewMatrix()
+
+
+ float * Camera::GetViewMatrix()const
 {
-	return  &ViewMatrix[0][0];
+	 static float4x4 matrix;
+	 matrix = frustum.ViewMatrix();
+	 matrix.Transpose();
+
+	 return (float*)matrix.v;
 }
 
- float * Camera::GetProjectionMatrix()
+ float * Camera::GetProjMatrix() const
  {
-	 return nullptr;
+	 static float4x4 matrix;
+	 matrix = frustum.ProjectionMatrix();
+	 matrix.Transpose();
+
+	 return (float*)matrix.v;
  }
+
+ void Camera::UpdateProjectionMatrix()
+ {
+	 glMatrixMode(GL_PROJECTION);
+	 glLoadIdentity();
+
+	 glLoadMatrixf(GetProjMatrix());
+
+	 glMatrixMode(GL_MODELVIEW);
+	 glLoadIdentity();
+ }
+
+
 
 
 bool Camera::IsCulling() const
@@ -161,6 +186,8 @@ void Camera::UpdatePosition(float3 newpos)
 {
 	Position += newpos;
 	Reference += newpos;
+
+	CalculateViewMatrix();
 }
 
 void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoting)
@@ -171,9 +198,8 @@ void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoti
 
 	float3 diff = Position - Reference;
 	Z = diff.Normalized();
-	float3 YcrossZ = float3(0.0f, 1.0f, 0.0f).Cross(Z);
-	X = YcrossZ.Normalized();
-	Y = Z.Cross(X);
+	X = (Cross(float3(0.0f, 1.0f, 0.0f), Z)).Normalized();
+	Y = Cross(Z, X);
 
 	if (!Pivoting)
 	{
@@ -188,7 +214,6 @@ void Camera::LookAt(const float3 & at)
 {
 	Reference = at;
 
-
 	float3 diff = Position - Reference;
 	Z = diff.Normalized();
 	float3 YcrossZ = float3(0.0f, 1.0f, 0.0f).Cross(Z);
@@ -197,7 +222,10 @@ void Camera::LookAt(const float3 & at)
 
 	CalculateViewMatrix();
 }
-
+TextureMSAA * Camera::SceneMSAA()
+{
+	return viewport_texture;
+}
 void Camera::HandleMouse()
 {
 	int dx = -App->input->GetMouseXMotion();
@@ -229,6 +257,7 @@ void Camera::HandleMouse()
 	}
 
 	Position = Reference + Z * Position.Length();
+	CalculateViewMatrix();
 }
 
 float3 Camera::Rotate(const float3 & u, float angle, const float3 & v)

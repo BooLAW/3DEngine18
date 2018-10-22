@@ -51,7 +51,6 @@ bool ModuleRenderer3D::Init()
 		//Reset Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-
 		//Check for error
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
@@ -76,7 +75,8 @@ bool ModuleRenderer3D::Init()
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.f);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Check for error
 		error = glGetError();
@@ -91,7 +91,6 @@ bool ModuleRenderer3D::Init()
 	}
 	SDL_GL_SetSwapInterval(0);
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	App->profiler.SaveInitData("Render");
 	return ret;
 }
@@ -138,15 +137,20 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	App->isVsyncActive();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	
+	/*
 	Color c = {0,0,0,1 };
 	glClearColor(c.r, c.g, c.b, c.a); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-	glLoadIdentity();
+	glLoadIdentity();*/
 
-	glMatrixMode(GL_MODELVIEW); 
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	/*glMatrixMode(GL_MODELVIEW); 
+	glLoadMatrixf(App->camera->GetCurrentCam()->GetViewMatrix());
 
+	glMatrixMode(GL_PROJECTION);
+	Frustum frustum = App->camera->GetCurrentCam()->GetFrustum();
+	ProjectionMatrix = frustum.ProjectionMatrix();
+
+	glLoadMatrixf(&ProjectionMatrix[0][0]);*/
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->GetCurrentCam()->Position.x, App->camera->GetCurrentCam()->Position.y, App->camera->GetCurrentCam()->Position.z);
 
@@ -167,7 +171,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
+	
 	//Debug Draw
 	if (attributes.debug_draw_atribute)
 	{
@@ -175,15 +179,23 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->DebugDrawBB();
 		SetNormalAttributes();
 	}
+	//GO
 	App->scene_intro->DrawGameObjects();
+	//IMGUI
 	App->imgui->DrawImGui();
 	SetSceneLights();
-	SDL_GL_SwapWindow(App->window->window);
-	
-	ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
-	aux->SceneMSAA()->Bind();
+	if (App->camera->GetCurrentCam() != nullptr && App->camera->GetCurrentCam()->viewport_texture != nullptr)
+	{
+		App->camera->GetCurrentCam()->viewport_texture->Bind();
+		App->camera->GetCurrentCam()->UpdateProjectionMatrix();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(App->camera->GetViewMatrix());
+	}
 
 	
+	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
 }
@@ -201,16 +213,23 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
 	if (App->camera->GetCurrentCam() != nullptr)
 	{
-		ProjectionMatrix = App->camera->GetCurrentCam()->GetFrustum().ProjectionMatrix();
-		glLoadMatrixf(&ProjectionMatrix[0][0]);
+		App->camera->GetCurrentCam()->viewport_texture->Destroy();
+		App->camera->GetCurrentCam()->viewport_texture->Create(width, height, 2);
+		float ratio = (float)width / (float)height;
+		App->camera->GetCurrentCam()->SetAspectRatio(ratio);
+
+		glViewport(0, 0, width, height);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+
+		glLoadMatrixf(App->camera->GetCurrentCam()->GetProjMatrix());
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 	}
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	
 }
 
 void ModuleRenderer3D::SetUILights()
@@ -329,7 +348,6 @@ void ModuleRenderer3D::CPUCapabilities()
 
 void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 {
-
 	//wireframe
 	if (attributes.wireframe)
 	{
