@@ -29,7 +29,7 @@ bool ComponentCamera::Start()
 
 bool ComponentCamera::Update()
 {
-	//debug draw for the frustum
+	owner->transform->SetGlobalPos(cam->GetFrustum().pos);
 	return false;
 }
 

@@ -175,16 +175,14 @@ void ModuleCamera3D::Move(const float &speed)
 
 	aux->cam->GetFrustum().Translate(newPos);
 
-	aux->UpdatePos();
+	//aux->UpdatePos();
 	
 }
-void ModuleCamera3D::MoveCam(const float3 &speed)
+void ModuleCamera3D::MoveCam(const float3 &pos)
 {
 	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
 
-	float3 newPos(speed.x, speed.y, speed.z);
-
-	
+	aux->cam->GetFrustum().Translate(pos);
 	//aux->cam->SetPosition(newPos);
 //	aux->cam->SetReference(newPos);
 	
@@ -362,7 +360,8 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box)
 	newpos.y += bounding_box.Diagonal().Length();
 	MoveCam({newpos.x,newpos.y,-newpos.z});
 	LookAt({ 0,0,0 });
-	//aux->cam->CalculateViewMatrix();
+
+
 }
 
 

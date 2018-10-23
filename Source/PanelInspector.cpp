@@ -122,31 +122,38 @@ void PanelInspector::Draw()
 				if (ImGui::CollapsingHeader("Camera"))
 				{
 					Camera* cam = selected_go->GetCamera();
-
+					//AR
 					ImGui::Text("Aspect Ratio:");
 					ImGui::SameLine();
-					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Text("  %f", cam->GetAspectRatio());
 					ImGui::Spacing();
+					ImGui::Separator();
+					//Frustum 
+					ImGui::Text("Frustum Info");
+					ImGui::Spacing();
+					//Frustum Pos
+					ImGui::Text("Position: ");
+					ImGui::Text(" X    %f ", cam->GetFrustum().pos.x);					
+					ImGui::Text(" Y    %f ", cam->GetFrustum().pos.y);					
+					ImGui::Text(" Z    %f ", cam->GetFrustum().pos.z);
 
-					ImGui::Text("Aspect Ratio:");
-					ImGui::SameLine();
-					ImGui::Text("  %i", cam->GetAspectRatio());
 					ImGui::Spacing();
-
-					ImGui::Text("Aspect Ratio:");
+					//Far Plane
+					ImGui::Text("Far Plane: ");
 					ImGui::SameLine();
-					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Text(" %f", cam->GetFarPlane());
 					ImGui::Spacing();
-
-					ImGui::Text("Aspect Ratio:");
+					//Near Plane
+					ImGui::Text("Near Plane: ");
 					ImGui::SameLine();
-					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Text(" %f", cam->GetNearPlane());
 					ImGui::Spacing();
-
-					ImGui::Text("Aspect Ratio:");
+					//FOV
+					ImGui::Text("FOV: ");
 					ImGui::SameLine();
-					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Text(" %f", cam->GetVerticalFOV());
 					ImGui::Spacing();
+					
 			
 				}
 			}
