@@ -3,6 +3,7 @@
 #include "ImGui/imgui.h"
 #include "imgui_impl_sdl.h"
 #include "MathGeoLib\MathGeoLib.h"
+#include <fstream>
 
 #include "rapidjson/document.h"
 #include "rapidjson/filereadstream.h"

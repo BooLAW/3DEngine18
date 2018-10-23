@@ -100,6 +100,9 @@
     <Filter Include="Sources\Modules\GameObjects\Components\Camera">
       <UniqueIdentifier>{1752be37-31e1-43c7-8767-80389e750b9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Files">
+      <UniqueIdentifier>{b3c156cc-fa22-41c1-bba9-4bdc57a74597}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -943,5 +946,10 @@
     <None Include="..\Game\my_mesh.piformat">
       <Filter>Sources\json</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Game\holas.txt">
+      <Filter>Sources\Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

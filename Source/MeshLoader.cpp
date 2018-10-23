@@ -12,6 +12,7 @@
 #include "ComponentTransform.h"
 #include "mmgr/mmgr.h"
 
+
 MeshLoader::MeshLoader()
 {
 }
@@ -88,6 +89,13 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 				uint ranges[2] = { (uint)ai_mesh->mNumFaces * 3, (uint)ai_mesh->mNumVertices };
 				
 				uint size = sizeof(ranges) + sizeof(uint)*node->mNumMeshes + sizeof(float)*ai_mesh->mNumVertices * 3;
+
+				std::ofstream file;
+				file.open("holas.txt", std::ofstream::out | std::ofstream::binary);
+				const char* specialbuffer = "asdfasdf";
+				
+				file.write(specialbuffer,9);
+				file.close();
 
 				Value my_mesh(kObjectType);
 				my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
