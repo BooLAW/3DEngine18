@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "Camera.h"
 
 
 
@@ -115,6 +116,39 @@ void PanelInspector::Draw()
 													
 				
 				}							
+			}
+			if (selected_go->HasCam()) //Checking if it the mesh has a texture to display.
+			{
+				if (ImGui::CollapsingHeader("Camera"))
+				{
+					Camera* cam = selected_go->GetCamera();
+
+					ImGui::Text("Aspect Ratio:");
+					ImGui::SameLine();
+					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Spacing();
+
+					ImGui::Text("Aspect Ratio:");
+					ImGui::SameLine();
+					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Spacing();
+
+					ImGui::Text("Aspect Ratio:");
+					ImGui::SameLine();
+					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Spacing();
+
+					ImGui::Text("Aspect Ratio:");
+					ImGui::SameLine();
+					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Spacing();
+
+					ImGui::Text("Aspect Ratio:");
+					ImGui::SameLine();
+					ImGui::Text("  %i", cam->GetAspectRatio());
+					ImGui::Spacing();
+			
+				}
 			}
 			
 		}

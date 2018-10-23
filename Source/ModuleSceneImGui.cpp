@@ -84,7 +84,7 @@ update_status ModuleSceneGui::PostUpdate(float dt)
 
 }
 void ModuleSceneGui::DrawImGui() {
-	//App->renderer3D->SetUILights();
+	App->renderer3D->SetUILights();
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
 	flags |= ImGuiWindowFlags_NoMove;
 	flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
@@ -95,7 +95,6 @@ void ModuleSceneGui::DrawImGui() {
 
 	ImGui::SetNextWindowPos(ImVec2(w_offset, h_offset));
 	ImGui::SetNextWindowSize(ImVec2(App->window->width - w_offset, App->window->height - h_offset));
-
 
 	if (ImGui::Begin("Dock", 0, flags))
 	{

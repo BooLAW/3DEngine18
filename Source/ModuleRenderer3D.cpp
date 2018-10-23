@@ -135,27 +135,27 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	App->profiler.StartTimer("Render");
 	App->isVsyncActive();
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glLoadIdentity();
-	//
-	//Color c = {0,0,0,1 };
-	//glClearColor(c.r, c.g, c.b, c.a); 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-	//glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	
+	Color c = {0,0,0,1 };
+	glClearColor(c.r, c.g, c.b, c.a); 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	glLoadIdentity();
 
-	//glMatrixMode(GL_MODELVIEW); 
-	//glLoadMatrixf(App->camera->GetCurrentCam()->GetViewMatrix());
+	/*glMatrixMode(GL_MODELVIEW); 
+	glLoadMatrixf(App->camera->GetCurrentCam()->GetViewMatrix());
 
-	//glMatrixMode(GL_PROJECTION);
-	//Frustum frustum = App->camera->GetCurrentCam()->GetFrustum();
-	//ProjectionMatrix = frustum.ProjectionMatrix();
+	glMatrixMode(GL_PROJECTION);
+	Frustum frustum = App->camera->GetCurrentCam()->GetFrustum();
+	ProjectionMatrix = frustum.ProjectionMatrix();*/
 
 	//glLoadMatrixf(&ProjectionMatrix[0][0]);
-	//// light 0 on cam pos
-	//lights[0].SetPos(0, 0, 0);
+	// light 0 on cam pos
+	lights[0].SetPos(0, 0, 0);
 
-	//for(uint i = 0; i < MAX_LIGHTS; ++i)
-	//	lights[i].Render();
+	for(uint i = 0; i < MAX_LIGHTS; ++i)
+		lights[i].Render();
 
 	App->profiler.SaveRunTimeData("Render");
 
@@ -165,12 +165,12 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	glEnable(GL_LIGHTING);
 	//Wireframe Mode
 	if (attributes.wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
 	//Debug Draw
 	if (attributes.debug_draw_atribute)
@@ -179,6 +179,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->DebugDrawBB();
 		SetNormalAttributes();
 	}
+
 	if (App->camera->GetCurrentCam() != nullptr && App->camera->GetCurrentCam()->viewport_texture != nullptr)
 	{
 		App->camera->GetCurrentCam()->viewport_texture->Bind();
@@ -191,13 +192,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//GO
 	App->scene_intro->DrawGameObjects();
 	//IMGUI
-	glDisable(GL_LIGHTING);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	App->imgui->DrawImGui();
 	SetSceneLights();
-
-
+	
+	
 	
 	SDL_GL_SwapWindow(App->window->window);
 

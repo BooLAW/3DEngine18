@@ -71,7 +71,7 @@ bool ModulePhysics3D::CleanUp()
 	return true;
 }
 
-void ModulePhysics3D::CreateSphere(vec position, int radius)
+void ModulePhysics3D::CreateSphere(float3 position, int radius)
 {
 	Sphere new_sphere;
 	new_sphere.pos = position;
@@ -79,7 +79,7 @@ void ModulePhysics3D::CreateSphere(vec position, int radius)
 	spheres_list.push_back(new_sphere);
 }
 
-void ModulePhysics3D::CreateCube(vec minPoint, vec maxPoint)
+void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 {
 	AABB new_cube;
 	new_cube.minPoint = minPoint;

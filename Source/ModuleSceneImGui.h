@@ -73,9 +73,9 @@ public:
 	pcg32_random_t rng = PCG32_INITIALIZER;
 	float random_float = 0.0f;
 	
-	vec pos_aux;
-	vec min_pos_aux;
-	vec max_pos_aux;
+	float3 pos_aux;
+	float3 min_pos_aux;
+	float3 max_pos_aux;
 public:
 	std::vector<Panel*> panels;
 

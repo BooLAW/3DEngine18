@@ -16,8 +16,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void CreateSphere(vec position, int radius);
-	void CreateCube(vec minPoint, vec maxPoint);
+	void CreateSphere(float3 position, int radius);
+	void CreateCube(float3 minPoint, float3 maxPoint);
 	std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	

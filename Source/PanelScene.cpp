@@ -22,15 +22,19 @@ void PanelScene::Draw()
 	if (ImGui::BeginDock("Scene", &active))
 	{
 		ImVec2 size = ImGui::GetContentRegionAvail();
-		glEnable(GL_TEXTURE_2D);
 		if (aux->cam->SceneMSAA() != nullptr)
 		{
 			ImGui::Image((void*)aux->cam->SceneMSAA()->GetTextureID() ,size, ImVec2(0, 1), ImVec2(1, 0));
 		}
-		glDisable(GL_TEXTURE_2D);
 
 	}
 	ImGui::EndDock();
+
+	if (App->camera->editor_camera->GetCamera()->SceneMSAA() != nullptr)
+	{
+		App->camera->editor_camera->GetCamera()->SceneMSAA()->Render();
+		App->camera->editor_camera->GetCamera()->SceneMSAA()->Unbind();
+	}
 
 
 }

@@ -38,59 +38,55 @@ void GameObject::Draw()
 {
 	if (!active)
 		return;
-	//if (!childs_list.empty())
-	//{
-		//for (std::vector<GameObject*>::iterator  it = childs_list.begin(); it != childs_list.end(); it++)
-		//{
-			//Enable Client
-			glEnableClientState(GL_VERTEX_ARRAY);
-			ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
-			ComponentMaterial* aux_material = (ComponentMaterial*)GetComponent(MATERIAL);
-			
-			glPushMatrix();
-			glMultMatrixf(transform->trans_matrix_g.Transposed().ptr());
-			//Bind Vertices
-			if (aux_mesh != nullptr)
+	
+		//Enable Client
+		glEnableClientState(GL_VERTEX_ARRAY);
+		ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
+		ComponentMaterial* aux_material = (ComponentMaterial*)GetComponent(MATERIAL);
+		
+		glPushMatrix();
+		glMultMatrixf(transform->trans_matrix_g.Transposed().ptr());
+		//Bind Vertices
+		if (aux_mesh != nullptr)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->vertices_id);
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
+
+			//Draw
+			if (App->renderer3D->attributes.debug_draw_atribute) 
 			{
-				glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->vertices_id);
-				glVertexPointer(3, GL_FLOAT, 0, NULL);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
-
-				//Draw
-				if (App->renderer3D->attributes.debug_draw_atribute) 
-				{
-					DebugDrawing(aux_mesh->mesh, Red);
-				}
-				//BindMaterial
-
-				if (aux_mesh->mesh->num_tex_coords != 0)
-				{
-					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-					glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->tex_coords_id);
-					glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-				}
-				//Bind Indices
-				if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
-					glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
-
-				glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
+				DebugDrawing(aux_mesh->mesh, Red);
 			}
-			
-			
-			
-			//Unbind
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
+			//BindMaterial
 
-			//Disable Client
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glPopMatrix();
-			
-			
-		//}
-	//}
+			if (aux_mesh->mesh->num_tex_coords != 0)
+			{
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->tex_coords_id);
+				glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+			}
+			//Bind Indices
+			if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
+				glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
+
+			glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
+		}
+		
+		
+		
+		//Unbind
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		//Disable Client
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glPopMatrix();
+		
+		
+
 }
 
 AABB GameObject::GetBB()
