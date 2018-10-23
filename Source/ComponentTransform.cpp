@@ -2,13 +2,14 @@
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "Globals.h"
-
+#include "Camera.h"
 
 ComponentTransform::ComponentTransform(GameObject * owner)
 {
 	this->SetOwner(owner);
 	this->SetActive(true);
 	SetName("Component Transform");
+	
 
 	type = ComponentType::TANSFORM;
 
@@ -25,7 +26,7 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::UpdateTransformValues()
 {
-	if(owner->GetParent() == nullptr)
+	if(owner->GetParent() == nullptr)//IS ROOT
 		trans_matrix_g = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
 	else
 	{
@@ -34,6 +35,7 @@ void ComponentTransform::UpdateTransformValues()
 	}
 	//Make a function to update recursively all the childs and components related
 	owner->RecursiveUpdateTransformChilds();
+	//owner->UpdateCamera();
 }
 
 void ComponentTransform::DrawInspectorInfo()

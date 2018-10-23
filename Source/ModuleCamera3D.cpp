@@ -7,6 +7,8 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ModuleScene.h"
+
 
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
@@ -27,16 +29,16 @@ bool ModuleCamera3D::Start()
 {
 	//CONSOLE_LOG("Setting up the camera");
 	bool ret = true;
-	editor_camera = new GameObject();
-	editor_camera->SetName("Editor Camera");
-	//editor_camera->SetParent(App->scene_intro->scene_root);
-	float3 root_pos = float3::zero;
-	Quat root_rotation = Quat::identity;
-	float3 root_scale = float3::one;
-	editor_camera->transform->SetTransform(root_pos, root_rotation, root_scale);
-	editor_camera->transform->SetGlobalPos({ 0, 10, 0 });
-	editor_camera->transform->SetLocalPos({ 0,0,0 });
-	editor_camera->transform->UpdateTransformValues();
+	//editor_camera = new GameObject();
+	//editor_camera->SetName("Editor Camera");
+	////editor_camera->SetParent(App->scene_intro->scene_root);
+	//float3 root_pos = float3::zero;
+	//Quat root_rotation = Quat::identity;
+	//float3 root_scale = float3::one;
+	//editor_camera->transform->SetTransform(root_pos, root_rotation, root_scale);
+	//editor_camera->transform->SetGlobalPos({ 0, 10, 0 });
+	//editor_camera->transform->SetLocalPos({ 0,0,0 });
+	//editor_camera->transform->UpdateTransformValues();
 
 	
 
@@ -59,9 +61,10 @@ void ModuleCamera3D::DrawModuleConfig()
 	//MODULE CAMERA ONLY DRAWS EDITOR CAMERA INFO, NOT CURRENT CAMERA INFO
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		Camera* aux_cam = App->camera->editor_camera->GetCamera();
+		Camera* aux_cam = App->camera->editor_cam;
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
-		if (ImGui::SliderFloat3("Position", (float*)&App->camera->editor_camera->transform->transform.pos, -100.0f, 100.0f))
+		float3 aux_pos = aux_cam->GetFrustum().pos;
+		if (ImGui::SliderFloat3("Position", (float*)&aux_pos, -100.0f, 100.0f))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
 			App->audio->camera_tick_arr[1] = FALSEBOOL;
@@ -86,8 +89,8 @@ void ModuleCamera3D::DrawModuleConfig()
 
 		if (ImGui::Button("Reset"))
 		{
-			App->camera->editor_camera->transform->transform.SetPosition(0, 5, 10);
-			LookAt({ 0, 0, 0 });
+			//App->camera->editor_camera->transform->transform.SetPosition(0, 5, 10);
+			//LookAt({ 0, 0, 0 });
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
 		}
 		else
@@ -137,7 +140,7 @@ update_status ModuleCamera3D::Update(float dt)
 	if (!locked)
 		CameraMovement(dt);
 	if (draw_frustum) {
-		editor_camera->GetCamera()->DrawFrustum();
+		editor_cam->DrawFrustum();
 	}
 	//Profiler
 	App->profiler.SaveRunTimeData("Camera");
@@ -147,44 +150,37 @@ update_status ModuleCamera3D::Update(float dt)
 // -----------------------------------------------------------------
 void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
-	aux->cam->Look(Position, Reference, RotateAroundReference);
+	editor_cam->Look(Position, Reference, RotateAroundReference);
 }
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::LookAt( const float3 &Spot)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
-
-	aux->cam->LookAt(Spot);
+	editor_cam->LookAt(Spot);
 }
 
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const float &speed)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
 
 	float3 newPos(0, 0, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= aux->cam->GetFrustum().front * speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += aux->cam->GetFrustum().front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= editor_cam->GetFrustum().front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += editor_cam->GetFrustum().front * speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= aux->cam->GetFrustum().WorldRight() * speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += aux->cam->GetFrustum().WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->GetFrustum().WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->GetFrustum().WorldRight() * speed;
 
-	aux->cam->GetFrustum().Translate(newPos);
+	editor_cam->GetFrustum().Translate(newPos);
 
-	//aux->UpdatePos();
 	
 }
 void ModuleCamera3D::MoveCam(const float3 &pos)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
 
-	aux->cam->GetFrustum().Translate(pos);
-	//aux->cam->SetPosition(newPos);
-//	aux->cam->SetReference(newPos);
+	editor_cam->GetFrustum().Translate(pos);
+
 	
 }
 
@@ -196,57 +192,47 @@ bool ModuleCamera3D::MouseOverScene(PanelScene* Scene)
 }
 
 Camera * ModuleCamera3D::GetCurrentCam() const
-{
-	ComponentCamera* aux;
-	if (editor_camera != nullptr)
-	 aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
-	else
-		return nullptr;
-	
-	if (aux != nullptr)
-		return aux->cam;
+{	
+	if (editor_cam != nullptr)
+		return editor_cam;
 	else
 		return nullptr;
 }
 
 void ModuleCamera3D::StartEditorCamera()
 {
-	editor_camera->SetParent(App->scene_intro->scene_root);
-	ComponentCamera* c_camera = new ComponentCamera();
-	c_camera->SetOwner(editor_camera);
-	c_camera->Start();
-	editor_camera->PushComponent(c_camera);
-
-	c_camera->cam->viewport_texture = new TextureMSAA();
-	c_camera->cam->viewport_texture->Create(1500, 1000, 2);
+	//editor_camera->SetParent(App->scene_intro->scene_root);
+	//ComponentCamera* c_camera = new ComponentCamera();
+	//c_camera->SetOwner(editor_camera);
+	//c_camera->Start();
+	//editor_camera->PushComponent(c_camera);
+	editor_cam = new Camera();
+	editor_cam->viewport_texture = new TextureMSAA();
+	editor_cam->viewport_texture->Create(1500, 1000, 2);
 }
 
 void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
-
 	float3 newPos(0, 0, 0);
 
 	if (direction == 1)
-		newPos -= aux->cam->GetFrustum().front * mouse_speed;
+		newPos -= editor_cam->GetFrustum().front * mouse_speed;
 	else
-		newPos += aux->cam->GetFrustum().front * mouse_speed;
+		newPos += editor_cam->GetFrustum().front * mouse_speed;
 
-	aux->cam->GetFrustum().Translate(newPos);
-	aux->UpdatePos();
+	editor_cam->GetFrustum().Translate(newPos);
+	//aux->UpdatePos();
 
 }
 
-void ModuleCamera3D::HandleMouse()
+void ModuleCamera3D::HandleMouse(const float dt)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
-
-	aux->cam->HandleMouse();
+	editor_cam->HandleMouse(dt);
 }
 
-void ModuleCamera3D::Orbit()
+void ModuleCamera3D::Orbit(const float dt)
 {
-	HandleMouse();
+	HandleMouse(dt);
 	LookAt({ 0,0,0 });
 }
 
@@ -284,11 +270,11 @@ void ModuleCamera3D::CameraMovement(float dt)
 	// ROTATION
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		HandleMouse();
+		HandleMouse(dt);
 		Move(speed);
 	}
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT))
-		Orbit();
+		Orbit(dt);
 	//MOUSE WHEEL
 	int wheel = App->input->GetMouseZ();
 	float wheel_speed = wheel_speed_base * dt * 100;
@@ -296,7 +282,13 @@ void ModuleCamera3D::CameraMovement(float dt)
 		WheelMove(wheel_speed, wheel);
 	//Look at Target
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-		LookAt({ 0,0,0 });
+	{
+		if (App->scene_intro->GetSelected() != nullptr)
+			AdaptCamera(App->scene_intro->GetSelected()->GetBB());
+		else
+			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
+	}
+
 
 
 }
@@ -353,15 +345,15 @@ bool ModuleCamera3D::Load(Document * config_r)
 
 void ModuleCamera3D::AdaptCamera(AABB bounding_box)
 {
-	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
+	editor_cam->GetFrustum().pos.Set(bounding_box.maxPoint.x, bounding_box.maxPoint.y + 20, bounding_box.maxPoint.z);
 
-	float3 newpos = bounding_box.CenterPoint();
-	newpos.z -= bounding_box.Diagonal().Length();
-	newpos.y += bounding_box.Diagonal().Length();
-	MoveCam({newpos.x,newpos.y,-newpos.z});
-	LookAt({ 0,0,0 });
+	float3 look_at_pos;
 
+	look_at_pos.x = bounding_box.CenterPoint().x;
+	look_at_pos.y = bounding_box.CenterPoint().y;
+	look_at_pos.z = bounding_box.CenterPoint().z;
 
+	LookAt(look_at_pos);
 }
 
 

@@ -50,7 +50,7 @@ bool ModuleScene::Start()
 	go_list.push_back(scene_root);
 	
 	App->camera->StartEditorCamera();
-	go_list.push_back(App->camera->editor_camera);
+	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
@@ -80,7 +80,6 @@ void ModuleScene::DrawGameObjects()
 	if (App->renderer3D->show_plane == true)
 	{
 		PPlane base_plane(0, 1, 0, 0);
-		base_plane.SetPos(App->camera->editor_camera->transform->GetTransform().pos.x, App->camera->editor_camera->transform->GetTransform().pos.y, App->camera->editor_camera->transform->GetTransform().pos.z);
 		base_plane.axis = true;
 		base_plane.wire = false;
 		base_plane.color = White;
@@ -129,7 +128,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 void ModuleScene::ClearScene()
 {
 	go_list.clear();
-	go_list.push_back(App->camera->editor_camera);
+	//go_list.push_back(App->camera->editor_camera);
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;

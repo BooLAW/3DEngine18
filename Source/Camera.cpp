@@ -153,7 +153,7 @@ void Camera::SetCulling(bool culling)
 	is_culling = culling;
 }
 
-Frustum Camera::GetFrustum()const
+Frustum Camera::GetFrustum()
 {
 	return frustum;
 }
@@ -174,7 +174,7 @@ void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoti
 
 void Camera::LookAt(const float3 & at)
 {
-	Frustum* editor_frustum = &App->camera->editor_camera->GetCamera()->GetFrustum();
+	Frustum* editor_frustum = &App->camera->editor_cam->GetFrustum();
 	float3 direction = at - editor_frustum->pos;
 
 	float3x3 matrix = float3x3::LookAt(editor_frustum->front, direction.Normalized(), editor_frustum->up, float3::unitY);
@@ -186,12 +186,13 @@ TextureMSAA * Camera::SceneMSAA()
 {
 	return viewport_texture;
 }
-void Camera::HandleMouse()
+void Camera::HandleMouse(const float dt)
 {
-	int dx = -App->input->GetMouseXMotion();
-	int dy = -App->input->GetMouseYMotion();
 
-	Frustum* editor_frustum = &App->camera->editor_camera->GetCamera()->frustum;
+	float dx = -App->input->GetMouseXMotion() * App->camera->GetMouseSensitivity() * dt * 50;
+	float dy = -App->input->GetMouseYMotion() * App->camera->GetMouseSensitivity() * dt * 50;
+
+	Frustum* editor_frustum = &App->camera->editor_cam->frustum;
 	if (dx != 0)
 	{
 		Quat X_rot = Quat::RotateY(dx);

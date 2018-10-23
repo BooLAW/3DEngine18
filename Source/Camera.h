@@ -11,7 +11,7 @@ public:
 
 	bool IsCulling()const;
 	void SetCulling(bool culling);
-	Frustum GetFrustum()const;
+	Frustum GetFrustum();
 
 	void SetPosition(const float3& new_pos);
 	void SetFront(const float3& front);
@@ -38,8 +38,8 @@ public:
 	void UpdatePosition(float3 newpos);
 	void Look(const float3 &Position, const float3 &Reference, bool Pivoting);
 	void LookAt(const float3& at);
-	void HandleMouse();
-	
+	void HandleMouse(const float dt);
+	void UpdatePosCam();
 	void CreateNewFrustum();
 	void DrawFrustum();
 	TextureMSAA* SceneMSAA();

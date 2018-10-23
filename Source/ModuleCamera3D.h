@@ -25,8 +25,8 @@ public:
 	void LookAt(const float3 &Spot);
 	void Move(const float &speed);
 	void WheelMove(const float &mouse_speed,int direction);
-	void HandleMouse();
-	void Orbit();
+	void HandleMouse(const float dt);
+	void Orbit(const float dt);
 	float* GetViewMatrix();
 
 	void SetSpeed(float new_speed); 
@@ -56,7 +56,8 @@ private:
 public:
 	//active camera when playing game
 	//camera of the scene in the editor
-	GameObject* editor_camera = nullptr;
+	GameObject* editor_camera_gameobject = nullptr;
+	Camera* editor_cam = nullptr;
 	bool draw_frustum = false;
 	std::vector<Camera*> cams_list;
 
