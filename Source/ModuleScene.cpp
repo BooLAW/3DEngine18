@@ -50,6 +50,7 @@ bool ModuleScene::Start()
 	go_list.push_back(scene_root);
 	
 	App->camera->StartEditorCamera();
+	go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
@@ -128,6 +129,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 void ModuleScene::ClearScene()
 {
 	go_list.clear();
+	go_list.push_back(App->camera->editor_camera);
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;

@@ -28,7 +28,7 @@ bool ModuleCamera3D::Start()
 	//CONSOLE_LOG("Setting up the camera");
 	bool ret = true;
 	editor_camera = new GameObject();
-	editor_camera->SetName("Main Camera");
+	editor_camera->SetName("Editor Camera");
 	//editor_camera->SetParent(App->scene_intro->scene_root);
 	float3 root_pos = float3::zero;
 	Quat root_rotation = Quat::identity;
@@ -40,7 +40,7 @@ bool ModuleCamera3D::Start()
 
 	
 
-	App->scene_intro->go_list.push_back(editor_camera);
+	//App->scene_intro->go_list.push_back(editor_camera);
 
 	App->profiler.SaveInitData("Camera");
 	return ret;
@@ -56,53 +56,72 @@ bool ModuleCamera3D::CleanUp()
 
 void ModuleCamera3D::DrawModuleConfig()
 {
+	//MODULE CAMERA ONLY DRAWS EDITOR CAMERA INFO, NOT CURRENT CAMERA INFO
 	if (ImGui::CollapsingHeader("Camera"))
 	{
+		Camera* aux_cam = App->camera->editor_camera->GetCamera();
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
-	//	if (ImGui::SliderFloat3("Position", (float*)&GetCurrentCam()->Position, -100.0f, 100.0f))
-	//	{
-	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
-	//		App->audio->camera_tick_arr[1] = FALSEBOOL;
-	//	}
-	//	ImGui::Spacing();
-	//	if (ImGui::Button("Reset"))
-	//	{
-	//		//GetCurrentCam()->Position.Set(0, 5, 10);
-	//		LookAt({ 0, 0, 0 });
-	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
-	//	}
-	//	else
-	//		App->audio->camera_tick_arr[2] = FALSEBOOL;
-	//	ImGui::Spacing();
-	//	ImGui::Separator();
-	//	ImGui::Spacing();
-	//	if (ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f))
-	//	{
-	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
-	//		App->audio->camera_tick_arr[3] = FALSEBOOL;
-	//	}				
-	//	ImGui::Spacing();
-	//	if (ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f))
-	//	{
-	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
-	//		App->audio->camera_tick_arr[4] = FALSEBOOL;
-	//	}			
-	//	ImGui::Spacing();
-	//	if (ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f))
-	//	{
-	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
-	//	}
-	//	else
-	//		App->audio->camera_tick_arr[5] = FALSEBOOL;
+		if (ImGui::SliderFloat3("Position", (float*)&App->camera->editor_camera->transform->transform.pos, -100.0f, 100.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			App->audio->camera_tick_arr[1] = FALSEBOOL;
+		}
+		ImGui::Spacing();
+		float  a = aux_cam->GetAspectRatio();
+		if (ImGui::SliderFloat("Aspect Ratio", &a, 0.0f, 2.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			aux_cam->SetAspectRatio(a);
+			App->audio->camera_tick_arr[1] = FALSEBOOL;
+		}
+
+		float  f = aux_cam->GetVerticalFOV();
+		if (ImGui::SliderFloat("FOV", &f, 45.0f, 90.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			aux_cam->SetFOV(f);
+			App->audio->camera_tick_arr[1] = FALSEBOOL;
+		}
+		ImGui::Spacing();
+
+		if (ImGui::Button("Reset"))
+		{
+			App->camera->editor_camera->transform->transform.SetPosition(0, 5, 10);
+			LookAt({ 0, 0, 0 });
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
+		}
+		else
+			App->audio->camera_tick_arr[2] = FALSEBOOL;
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+		if (ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
+			App->audio->camera_tick_arr[3] = FALSEBOOL;
+		}				
+		ImGui::Spacing();
+		if (ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
+			App->audio->camera_tick_arr[4] = FALSEBOOL;
+		}			
+		ImGui::Spacing();
+		if (ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
+		}
+		else
+			App->audio->camera_tick_arr[5] = FALSEBOOL;
 
 
-	//	ImGui::Spacing();
-	//	if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
-	//	{
-	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[6]);
-	//	}
-	//	else
-	//		App->audio->camera_tick_arr[6] = FALSEBOOL;
+		ImGui::Spacing();
+		if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[6]);
+		}
+		else
+			App->audio->camera_tick_arr[6] = FALSEBOOL;
 
 
 	}
