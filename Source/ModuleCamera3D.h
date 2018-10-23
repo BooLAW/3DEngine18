@@ -23,8 +23,8 @@ public:
 
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);
-	void Move(const float3 &speed);
-	void WheelMove(const float3 &mouse_speed,int direction);
+	void Move(const float &speed);
+	void WheelMove(const float &mouse_speed,int direction);
 	void HandleMouse();
 	void Orbit();
 	float* GetViewMatrix();

@@ -97,7 +97,7 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 
 				//Vertices
 				float3* points = new float3[ai_mesh->mNumVertices];
-				memcpy(points, ai_mesh->mVertices, sizeof(vec) * ai_mesh->mNumVertices);
+				memcpy(points, ai_mesh->mVertices, sizeof(float3) * ai_mesh->mNumVertices);
 				Value vertices_values(kArrayType);
 				for (int i = 0; i < ai_mesh->mNumVertices; ++i)
 				{
@@ -257,12 +257,12 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Vertices----------------------
 				new_mesh->num_vertices = mesh->mNumVertices;
 				new_mesh->vertices = new float3[new_mesh->num_vertices];				
-				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(vec) * new_mesh->num_vertices);
+				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(float3) * new_mesh->num_vertices);
 				
 
 				glGenBuffers(1, (GLuint*)&new_mesh->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * new_mesh->num_vertices, new_mesh->vertices, GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * new_mesh->num_vertices, new_mesh->vertices, GL_STATIC_DRAW);
 
 				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", new_mesh->num_vertices);
 				//reset buffer

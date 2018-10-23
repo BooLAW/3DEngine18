@@ -13,6 +13,8 @@
 #include "Primitive.h"
 #include "Camera.h"
 #include "TextureMSAA.h"
+#include "ComponentCamera.h"
+#include "GameObject.h"
 
 #define RADIUS 44
 
@@ -77,6 +79,7 @@ void ModuleScene::DrawGameObjects()
 	if (App->renderer3D->show_plane == true)
 	{
 		PPlane base_plane(0, 1, 0, 0);
+		base_plane.SetPos(App->camera->editor_camera->transform->GetTransform().pos.x, App->camera->editor_camera->transform->GetTransform().pos.y, App->camera->editor_camera->transform->GetTransform().pos.z);
 		base_plane.axis = true;
 		base_plane.wire = false;
 		base_plane.color = White;
@@ -86,11 +89,7 @@ void ModuleScene::DrawGameObjects()
 	{
 		go_list[i]->Draw();
 	}
-	if (App->camera->editor_camera->GetCamera()->SceneMSAA() != nullptr)
-	{
-		App->camera->editor_camera->GetCamera()->SceneMSAA()->Render();
-		App->camera->editor_camera->GetCamera()->SceneMSAA()->Unbind();
-	}
+	
 }
 
 

@@ -8,11 +8,11 @@
 Camera::Camera()
 {
 
-	frustum.SetPos(float3::zero);
-	frustum.SetFront(float3::unitZ);
-	frustum.SetUp(float3::unitY);
-	SetFOV(60);
-	frustum.nearPlaneDistance = 0.3;//needs to be higher than 0.4
+	frustum.pos = (float3::zero);
+	frustum.front = (float3::unitZ);
+	frustum.up = (float3::unitY);
+	SetFOV(80);
+	frustum.nearPlaneDistance = 0.4;//needs to be higher than 0.4
 	frustum.farPlaneDistance = 1000;
 
 	frustum.type = FrustumType::PerspectiveFrustum;
@@ -31,7 +31,7 @@ Camera::~Camera()
 
 void Camera::SetPosition(const float3 & new_pos)
 {
-	frustum.SetPos(new_pos);
+	frustum.pos = new_pos;
 	//Position = frustum.pos;
 	//CalculateViewMatrix();
 }
@@ -40,12 +40,12 @@ void Camera::SetPosition(const float3 & new_pos)
 
 void Camera::SetFront(const float3 & front)
 {
-	frustum.SetFront(front);
+	frustum.pos = front; 
 }
 
 void Camera::SetUp(const float3 & up)
 {
-	frustum.SetUp(up);
+	frustum.up = up;
 }
 
 void Camera::SetFOV(const float & new_fov)
@@ -63,12 +63,12 @@ void Camera::SetFOV(const float & new_fov)
 
 void Camera::SetFarPlane(const float & new_fp)
 {
-	frustum.SetViewPlaneDistances(frustum.nearPlaneDistance, new_fp);
+	frustum.farPlaneDistance =  new_fp;
 }
 
 void Camera::SetNearPlane(const float & new_np)
 {
-	frustum.SetViewPlaneDistances(new_np, frustum.farPlaneDistance);
+	frustum.nearPlaneDistance = new_np;
 }
 
 void Camera::SetAspectRatio(const float & new_ar)
@@ -86,22 +86,22 @@ void Camera::SetAspectRatio(const float & new_ar)
 
 float Camera::GetVerticalFOV() const
 {
-	return frustum.VerticalFov() * RADTODEG;
+	return frustum.verticalFov * RADTODEG;
 }
 
 float Camera::GetHorizontalFOV() const
 {
-	return frustum.HorizontalFov() * RADTODEG;
+	return frustum.horizontalFov * RADTODEG;
 }
 
 float Camera::GetFarPlane() const
 {
-	return frustum.FarPlaneDistance();
+	return frustum.farPlaneDistance;
 }
 
 float Camera::GetNearPlane() const
 {
-	return frustum.NearPlaneDistance();
+	return frustum.nearPlaneDistance;
 }
 
 float Camera::GetAspectRatio() const
@@ -158,18 +158,12 @@ Frustum Camera::GetFrustum()const
 	return frustum;
 }
 
-// -----------------------------------------------------------------
-//void Camera::CalculateViewMatrix()
-//{
-//	frustumViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
-//	ViewMatrixInverse = ViewMatrix.Inverted();
-//}
 
 void Camera::UpdatePosition(float3 newpos)
 {
 	//TODO
 	//Position += newpos;
-
+	frustum.Translate(newpos);
 	//CalculateViewMatrix();
 }
 
@@ -201,8 +195,8 @@ void Camera::HandleMouse()
 	if (dx != 0)
 	{
 		Quat X_rot = Quat::RotateY(dx);
-		editor_frustum->SetFront(X_rot.Mul(editor_frustum->front).Normalized());
-		editor_frustum->SetUp(X_rot.Mul(editor_frustum->up).Normalized());
+		editor_frustum->front = X_rot.Mul(editor_frustum->front).Normalized();
+		editor_frustum->up = X_rot.Mul(editor_frustum->up).Normalized();
 	}
 
 	if (dy != 0)

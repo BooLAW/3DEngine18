@@ -25,7 +25,7 @@ bool ModuleCamera3D::Init()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	LOG("Setting up the camera");
+	//CONSOLE_LOG("Setting up the camera");
 	bool ret = true;
 	editor_camera = new GameObject();
 	editor_camera->SetName("Main Camera");
@@ -34,7 +34,7 @@ bool ModuleCamera3D::Start()
 	Quat root_rotation = Quat::identity;
 	float3 root_scale = float3::one;
 	editor_camera->transform->SetTransform(root_pos, root_rotation, root_scale);
-	editor_camera->transform->SetGlobalPos({ 0, 0, 0 });
+	editor_camera->transform->SetGlobalPos({ 0, 10, 0 });
 	editor_camera->transform->SetLocalPos({ 0,0,0 });
 	editor_camera->transform->UpdateTransformValues();
 
@@ -49,7 +49,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	//LOG("Cleaning camera");
 
 	return true;
 }
@@ -142,19 +142,21 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::Move(const float3 &speed)
+void ModuleCamera3D::Move(const float &speed)
 {
 	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
 
 	float3 newPos(0, 0, 0);
 
-	//if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= aux->cam->Z.Mul(speed);
-//	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += aux->cam->Z.Mul(speed);
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= aux->cam->GetFrustum().front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += aux->cam->GetFrustum().front * speed;
 
-	//if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= aux->cam->X.Mul(speed);
-	//if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += aux->cam->X.Mul(speed);
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= aux->cam->GetFrustum().WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += aux->cam->GetFrustum().WorldRight() * speed;
 
-	aux->cam->UpdatePosition(newPos);
+	aux->cam->GetFrustum().Translate(newPos);
+
+	aux->UpdatePos();
 	
 }
 void ModuleCamera3D::MoveCam(const float3 &speed)
@@ -163,7 +165,7 @@ void ModuleCamera3D::MoveCam(const float3 &speed)
 
 	float3 newPos(speed.x, speed.y, speed.z);
 
-
+	
 	//aux->cam->SetPosition(newPos);
 //	aux->cam->SetReference(newPos);
 	
@@ -202,18 +204,19 @@ void ModuleCamera3D::StartEditorCamera()
 	c_camera->cam->viewport_texture->Create(1500, 1000, 2);
 }
 
-void ModuleCamera3D::WheelMove(const float3 & mouse_speed, int direction)
+void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)
 {
 	ComponentCamera* aux = (ComponentCamera*)editor_camera->GetComponent(CAMERA);
 
 	float3 newPos(0, 0, 0);
 
-	/*if (direction == 1)
-		newPos -= aux->cam->Z.Mul(mouse_speed);
+	if (direction == 1)
+		newPos -= aux->cam->GetFrustum().front * mouse_speed;
 	else
-		newPos += aux->cam->Z.Mul(mouse_speed);*/
+		newPos += aux->cam->GetFrustum().front * mouse_speed;
 
-	aux->cam->UpdatePosition(newPos);
+	aux->cam->GetFrustum().Translate(newPos);
+	aux->UpdatePos();
 
 }
 
@@ -265,7 +268,7 @@ void ModuleCamera3D::CameraMovement(float dt)
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		HandleMouse();
-		Move({ speed ,speed ,speed });
+		Move(speed);
 	}
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT))
 		Orbit();
@@ -273,13 +276,12 @@ void ModuleCamera3D::CameraMovement(float dt)
 	int wheel = App->input->GetMouseZ();
 	float wheel_speed = wheel_speed_base * dt * 100;
 	if (App->input->GetMouseZ() != 0)
-		WheelMove({ wheel_speed ,wheel_speed ,wheel_speed }, wheel);
+		WheelMove(wheel_speed, wheel);
 	//Look at Target
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		LookAt({ 0,0,0 });
 
-	// Recalculate matrix -------------
-	//GetCurrentCam()->CalculateViewMatrix();
+
 }
 
 float ModuleCamera3D::GetSpeed() const
