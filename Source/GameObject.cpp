@@ -154,6 +154,8 @@ bool GameObject::HasCam() const
 	return ret;
 }
 
+
+
 void GameObject::SetActive(bool active)
 {
 	this->active = active;
@@ -245,9 +247,10 @@ int GameObject::GetNumChilds() const
 
 Camera * GameObject::GetCamera()
 {
-	ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
+	/*ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
 	if (aux != nullptr)
-		return aux->cam;
+		return aux->cam;*/
+	return nullptr;
 }
 
 void GameObject::ActivateBB()

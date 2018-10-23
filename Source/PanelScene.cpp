@@ -17,23 +17,22 @@ PanelScene::~PanelScene()
 
 void PanelScene::Draw()
 {
-	ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
-
+	
 	if (ImGui::BeginDock("Scene", &active))
 	{
 		ImVec2 size = ImGui::GetContentRegionAvail();
-		if (aux->cam->SceneMSAA() != nullptr)
+		if (App->camera->editor_cam->SceneMSAA() != nullptr)
 		{
-			ImGui::Image((void*)aux->cam->SceneMSAA()->GetTextureID() ,size, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((void*)App->camera->editor_cam->SceneMSAA()->GetTextureID() ,size, ImVec2(0, 1), ImVec2(1, 0));
 		}
 
 	}
 	ImGui::EndDock();
 
-	if (App->camera->editor_camera->GetCamera()->SceneMSAA() != nullptr)
+	if (App->camera->editor_cam->SceneMSAA() != nullptr)
 	{
-		App->camera->editor_camera->GetCamera()->SceneMSAA()->Render();
-		App->camera->editor_camera->GetCamera()->SceneMSAA()->Unbind();
+		App->camera->editor_cam->SceneMSAA()->Render();
+		App->camera->editor_cam->SceneMSAA()->Unbind();
 	}
 
 

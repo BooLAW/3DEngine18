@@ -28,7 +28,6 @@ public:
 	bool HasMesh()const;
 	bool HasTex()const;
 	bool HasCam()const;
-
 	//flags interaction
 	void SetActive(bool active);
 	bool IsActive()const;

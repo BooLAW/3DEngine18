@@ -152,6 +152,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	//glLoadMatrixf(&ProjectionMatrix[0][0]);
 	// light 0 on cam pos
+
 	lights[0].SetPos(0, 0, 0);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
@@ -171,7 +172,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
+	
 	//Debug Draw
 	if (attributes.debug_draw_atribute)
 	{
