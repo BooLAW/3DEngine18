@@ -70,7 +70,11 @@ void ComponentTransform::DrawInspectorInfo()
 			updated_transform = true;
 		}
 		if (updated_transform)
+		{
 			UpdateTransformValues();
+			if(owner->HasMesh())
+				owner->GetMesh()->RecalculateBoundingBox();
+		}
 	}
 	else
 		CONSOLE_LOG_INFO("Changed to non static");

@@ -378,7 +378,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				}
 				App->scene_intro->go_list.push_back(new_child);
 				
-				App->camera->AdaptCamera(bb);
+				App->camera->AdaptCamera(bb,new_child->transform->transform.pos);
 			}
 			GO = parent;
 		}

@@ -63,10 +63,11 @@ void ModuleCamera3D::DrawModuleConfig()
 	{
 		Camera* aux_cam = App->camera->editor_cam;
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
-		float3 aux_pos = aux_cam->GetFrustum().pos;
+		float3 aux_pos = aux_cam->frustum	.pos;
 		if (ImGui::SliderFloat3("Position", (float*)&aux_pos, -100.0f, 100.0f))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			aux_cam->frustum.pos = aux_pos;
 			App->audio->camera_tick_arr[1] = FALSEBOOL;
 		}
 		ImGui::Spacing();
@@ -163,23 +164,26 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const float &speed)
 {
-
 	float3 newPos(0, 0, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= editor_cam->GetFrustum().front * speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += editor_cam->GetFrustum().front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += editor_cam->frustum.front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= editor_cam->frustum.front * speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->GetFrustum().WorldRight() * speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->GetFrustum().WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->frustum.WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->frustum.WorldRight() * speed;
 
-	editor_cam->GetFrustum().Translate(newPos);
+
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -=  speed;
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y +=  speed;
+	if(!newPos.IsZero())
+		editor_cam->frustum.Translate(newPos);
 
 	
 }
 void ModuleCamera3D::MoveCam(const float3 &pos)
 {
 
-	editor_cam->GetFrustum().Translate(pos);
+	editor_cam->frustum.Translate(pos);
 
 	
 }
@@ -216,12 +220,13 @@ void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)
 	float3 newPos(0, 0, 0);
 
 	if (direction == 1)
-		newPos -= editor_cam->GetFrustum().front * mouse_speed;
+		newPos -= editor_cam->frustum.front * mouse_speed;
 	else
-		newPos += editor_cam->GetFrustum().front * mouse_speed;
-
-	editor_cam->GetFrustum().Translate(newPos);
-	//aux->UpdatePos();
+		newPos += editor_cam->frustum.front * mouse_speed;
+	
+	if(!newPos.IsZero())
+		editor_cam->frustum.Translate(newPos);
+	//aux->UdatePos();
 
 }
 
@@ -284,7 +289,7 @@ void ModuleCamera3D::CameraMovement(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		if (App->scene_intro->GetSelected() != nullptr)
-			AdaptCamera(App->scene_intro->GetSelected()->GetBB());
+			AdaptCamera(App->scene_intro->GetSelected()->GetBB(),App->scene_intro->GetSelected()->transform->transform.pos);
 		else
 			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
 	}
@@ -343,15 +348,22 @@ bool ModuleCamera3D::Load(Document * config_r)
 	return true;
 }
 
-void ModuleCamera3D::AdaptCamera(AABB bounding_box)
+void ModuleCamera3D::AdaptCamera(AABB bounding_box,float3 transformpos)
 {
-	editor_cam->GetFrustum().pos.Set(bounding_box.maxPoint.x, bounding_box.maxPoint.y + 20, bounding_box.maxPoint.z);
+	float3 newpos = bounding_box.CenterPoint();
+	newpos.z -= (bounding_box.Diagonal().Length());
+	newpos.y += (bounding_box.Diagonal().Length());
+	newpos.x += transformpos.x;
+	newpos.y += transformpos.y;
+	newpos.z += transformpos.z;
 
-	float3 look_at_pos;
+	editor_cam->frustum.pos.Set(newpos.x,newpos.y,newpos.z);
 
-	look_at_pos.x = bounding_box.CenterPoint().x;
-	look_at_pos.y = bounding_box.CenterPoint().y;
-	look_at_pos.z = bounding_box.CenterPoint().z;
+	float3 look_at_pos{0,0,0};
+
+	look_at_pos.x = bounding_box.CenterPoint().x + transformpos.x;
+	look_at_pos.y = bounding_box.CenterPoint().y + transformpos.y;
+	look_at_pos.z = bounding_box.CenterPoint().z + transformpos.z;
 
 	LookAt(look_at_pos);
 }

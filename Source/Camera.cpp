@@ -12,7 +12,7 @@ Camera::Camera()
 	frustum.front = (float3::unitZ);
 	frustum.up = (float3::unitY);
 	SetFOV(80);
-	frustum.nearPlaneDistance = 0.4;//needs to be higher than 0.4
+	frustum.nearPlaneDistance = 0.5;//needs to be higher than 0.4
 	frustum.farPlaneDistance = 1000;
 
 	frustum.type = FrustumType::PerspectiveFrustum;
@@ -29,12 +29,6 @@ Camera::~Camera()
 {
 }
 
-void Camera::SetPosition(const float3 & new_pos)
-{
-	frustum.pos = new_pos;
-	//Position = frustum.pos;
-	//CalculateViewMatrix();
-}
 
 
 
@@ -174,7 +168,7 @@ void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoti
 
 void Camera::LookAt(const float3 & at)
 {
-	Frustum* editor_frustum = &App->camera->editor_cam->GetFrustum();
+	Frustum* editor_frustum = &App->camera->editor_cam->frustum;
 	float3 direction = at - editor_frustum->pos;
 
 	float3x3 matrix = float3x3::LookAt(editor_frustum->front, direction.Normalized(), editor_frustum->up, float3::unitY);
@@ -189,8 +183,8 @@ TextureMSAA * Camera::SceneMSAA()
 void Camera::HandleMouse(const float dt)
 {
 
-	float dx = -App->input->GetMouseXMotion() * App->camera->GetMouseSensitivity() * dt * 50;
-	float dy = -App->input->GetMouseYMotion() * App->camera->GetMouseSensitivity() * dt * 50;
+	float dx = -App->input->GetMouseXMotion() * App->camera->GetMouseSensitivity() * dt ;
+	float dy = -App->input->GetMouseYMotion() * App->camera->GetMouseSensitivity() * dt ;
 
 	Frustum* editor_frustum = &App->camera->editor_cam->frustum;
 	if (dx != 0)

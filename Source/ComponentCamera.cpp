@@ -29,7 +29,7 @@ bool ComponentCamera::Start()
 
 bool ComponentCamera::Update()
 {
-	owner->transform->SetGlobalPos(cam->GetFrustum().pos);
+	//owner->transform->SetGlobalPos(cam->GetFrustum().pos);
 	return false;
 }
 
@@ -45,9 +45,9 @@ Camera * ComponentCamera::GetCamera()
 
 void ComponentCamera::UpdatePos()
 {
-	cam->GetFrustum().pos = GetOwner()->transform->trans_matrix_g.TranslatePart();
-	cam->GetFrustum().front = GetOwner()->transform->trans_matrix_g.WorldZ().Normalized();
-	cam->GetFrustum().up = GetOwner()->transform->trans_matrix_g.WorldY().Normalized();
+	//cam->GetFrustum().pos = GetOwner()->transform->trans_matrix_g.TranslatePart();
+	//cam->GetFrustum().front = GetOwner()->transform->trans_matrix_g.WorldZ().Normalized();
+	//cam->GetFrustum().up = GetOwner()->transform->trans_matrix_g.WorldY().Normalized();
 }
 
 

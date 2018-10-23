@@ -183,12 +183,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	if (App->camera->GetCurrentCam() != nullptr && App->camera->GetCurrentCam()->viewport_texture != nullptr)
 	{
-		App->camera->GetCurrentCam()->viewport_texture->Bind();
-		App->camera->GetCurrentCam()->UpdateProjectionMatrix();
+		App->camera->editor_cam->viewport_texture->Bind();
+		App->camera->editor_cam->UpdateProjectionMatrix();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(App->camera->GetViewMatrix());
+		glLoadMatrixf(App->camera->editor_cam->GetViewMatrix());
 	}
 	//GO
 	App->scene_intro->DrawGameObjects();
@@ -196,9 +196,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	App->imgui->DrawImGui();
 	SetSceneLights();
-	
-	
-	
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;

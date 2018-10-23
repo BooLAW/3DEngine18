@@ -39,16 +39,15 @@ public:
 	void Look(const float3 &Position, const float3 &Reference, bool Pivoting);
 	void LookAt(const float3& at);
 	void HandleMouse(const float dt);
-	void UpdatePosCam();
 	void CreateNewFrustum();
 	void DrawFrustum();
 	TextureMSAA* SceneMSAA();
 
 	TextureMSAA* viewport_texture;
-
+	Frustum frustum;
 private:
 
-	Frustum frustum;
+	
 	float	aspect_ratio = 0.0f;
 	float3 frustum_vertices[8];
 

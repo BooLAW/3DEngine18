@@ -133,9 +133,9 @@ void PanelInspector::Draw()
 					ImGui::Spacing();
 					//Frustum Pos
 					ImGui::Text("Position: ");
-					ImGui::Text(" X    %f ", cam->GetFrustum().pos.x);					
-					ImGui::Text(" Y    %f ", cam->GetFrustum().pos.y);					
-					ImGui::Text(" Z    %f ", cam->GetFrustum().pos.z);
+					ImGui::Text(" X    %f ", cam->frustum.pos.x);					
+					ImGui::Text(" Y    %f ", cam->frustum.pos.y);					
+					ImGui::Text(" Z    %f ", cam->frustum.pos.z);
 
 					ImGui::Spacing();
 					//Far Plane
