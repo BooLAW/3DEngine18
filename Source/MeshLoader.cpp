@@ -31,7 +31,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	{
 		aiNode* root = new_scene->mRootNode;
 
-		SaveSceneMeshesLW(new_scene, root,file_path);
+		//SaveSceneMeshesLW(new_scene, root,file_path);
 		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
 
 		aiReleaseImport(new_scene);
