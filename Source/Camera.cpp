@@ -7,31 +7,19 @@
 
 Camera::Camera()
 {
-	CalculateViewMatrix();
 
-	X = float3(1.0f, 0.0f, 0.0f);
-	Y = float3(0.0f, 1.0f, 0.0f);
-	Z = float3(0.0f, 0.0f, 1.0f);
-
-
-	Position = float3(0.0f, 0.0f, 5.0f);
-	Reference = float3(0.0f, 0.0f, 0.0f);
-
-	frustum.SetPos(float3(0, 1, -1));
-	frustum.SetFront(float3(0, 0, 1));
-	frustum.SetUp(float3(0, 1, 0));
-	frustum.horizontalFov = DegToRad(80);
-	frustum.verticalFov = DegToRad(60);
-	frustum.nearPlaneDistance = 0.4;//needs to be higher than 0.4
-	frustum.farPlaneDistance = 800;
+	frustum.SetPos(float3::zero);
+	frustum.SetFront(float3::unitZ);
+	frustum.SetUp(float3::unitY);
+	SetFOV(60);
+	frustum.nearPlaneDistance = 0.3;//needs to be higher than 0.4
+	frustum.farPlaneDistance = 1000;
 
 	frustum.type = FrustumType::PerspectiveFrustum;
 
-	frustum.SetWorldMatrix(float3x4::identity);
+	//frustum.SetWorldMatrix(float3x4::identity);
 
-	//frustum.Translate(float3(0,0,0));
-	//frustum.pos = Position;
-	frustum.Translate(Position);
+
 
 	CreateNewFrustum();
 	
@@ -44,16 +32,11 @@ Camera::~Camera()
 void Camera::SetPosition(const float3 & new_pos)
 {
 	frustum.SetPos(new_pos);
-	Position = frustum.pos;
-	CalculateViewMatrix();
+	//Position = frustum.pos;
+	//CalculateViewMatrix();
 }
 
-void Camera::SetReference(const float3 & new_pos)
-{
-	Reference = new_pos;
-	CalculateViewMatrix();
 
-}
 
 void Camera::SetFront(const float3 & front)
 {
@@ -67,15 +50,15 @@ void Camera::SetUp(const float3 & up)
 
 void Camera::SetFOV(const float & new_fov)
 {
-	/*if (new_fov <= 0)
+	if (new_fov <= 0)
 	{
 		CONSOLE_LOG_WARNING("Can't set a fov of negative value : %d", new_fov);
 	}
 	else
-	{*/
+	{
 		frustum.verticalFov = new_fov * DEGTORAD;
 		frustum.horizontalFov = math::Atan(aspect_ratio * math::Tan(frustum.verticalFov / 2)) * 2;
-	//}
+	}
 }
 
 void Camera::SetFarPlane(const float & new_fp)
@@ -90,11 +73,11 @@ void Camera::SetNearPlane(const float & new_np)
 
 void Camera::SetAspectRatio(const float & new_ar)
 {
-	/*if (new_ar <= 0)
+	if (new_ar <= 0)
 	{
 		CONSOLE_LOG_WARNING("Can't set a fov of negative value : %d", new_ar);
 	}
-	else*/
+	else
 	{
 		aspect_ratio = new_ar;
 		frustum.horizontalFov = math::Atan(aspect_ratio * math::Tan(frustum.verticalFov / 2)) * 2;
@@ -176,51 +159,34 @@ Frustum Camera::GetFrustum()const
 }
 
 // -----------------------------------------------------------------
-void Camera::CalculateViewMatrix()
-{
-	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
-	ViewMatrixInverse = ViewMatrix.Inverted();
-}
+//void Camera::CalculateViewMatrix()
+//{
+//	frustumViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
+//	ViewMatrixInverse = ViewMatrix.Inverted();
+//}
 
 void Camera::UpdatePosition(float3 newpos)
 {
-	Position += newpos;
-	Reference += newpos;
+	//TODO
+	//Position += newpos;
 
-	CalculateViewMatrix();
+	//CalculateViewMatrix();
 }
 
 void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoting)
 {
-	this->Position = Position;
-	this->Reference = Reference;
 
-
-	float3 diff = Position - Reference;
-	Z = diff.Normalized();
-	X = (Cross(float3(0.0f, 1.0f, 0.0f), Z)).Normalized();
-	Y = Cross(Z, X);
-
-	if (!Pivoting)
-	{
-		this->Reference = this->Position;
-		this->Position += Z * 0.05f;
-	}
-
-	CalculateViewMatrix();
 }
 
 void Camera::LookAt(const float3 & at)
 {
-	Reference = at;
+	Frustum* editor_frustum = &App->camera->editor_camera->GetCamera()->GetFrustum();
+	float3 direction = at - editor_frustum->pos;
 
-	float3 diff = Position - Reference;
-	Z = diff.Normalized();
-	float3 YcrossZ = float3(0.0f, 1.0f, 0.0f).Cross(Z);
-	X = YcrossZ.Normalized();
-	Y = Z.Cross(X);
+	float3x3 matrix = float3x3::LookAt(editor_frustum->front, direction.Normalized(), editor_frustum->up, float3::unitY);
 
-	CalculateViewMatrix();
+	editor_frustum->front = matrix.MulDir(editor_frustum->front).Normalized();
+	editor_frustum->up = matrix.MulDir(editor_frustum->up).Normalized();
 }
 TextureMSAA * Camera::SceneMSAA()
 {
@@ -231,38 +197,27 @@ void Camera::HandleMouse()
 	int dx = -App->input->GetMouseXMotion();
 	int dy = -App->input->GetMouseYMotion();
 
-	Position -= Reference;
-
+	Frustum* editor_frustum = &App->camera->editor_camera->GetCamera()->frustum;
 	if (dx != 0)
 	{
-		float DeltaX = (float)dx * App->camera->GetMouseSensitivity();
-
-		X = Rotate(X, DeltaX, float3(0.0f, 1.0f, 0.0f));
-		Y = Rotate(Y, DeltaX, float3(0.0f, 1.0f, 0.0f));
-		Z = Rotate(Z, DeltaX, float3(0.0f, 1.0f, 0.0f));
+		Quat X_rot = Quat::RotateY(dx);
+		editor_frustum->SetFront(X_rot.Mul(editor_frustum->front).Normalized());
+		editor_frustum->SetUp(X_rot.Mul(editor_frustum->up).Normalized());
 	}
 
 	if (dy != 0)
 	{
-		float DeltaY = (float)dy *  App->camera->GetMouseSensitivity();
+		Quat rotation_y = Quat::RotateAxisAngle(editor_frustum->WorldRight(), dy);
 
-		Y = Rotate(Y, DeltaY, X);
-		Z =Rotate(Z, DeltaY, X);
+		float3 new_up = rotation_y.Mul(editor_frustum->up).Normalized();
 
-		if (Y.y < 0.0f)
+		if (new_up.y > 0.0f)
 		{
-			Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-			Y = Z.Cross(X);
+			editor_frustum->up = new_up;
+			editor_frustum->front = rotation_y.Mul(editor_frustum->front).Normalized();
 		}
 	}
 
-	Position = Reference + Z * Position.Length();
-	CalculateViewMatrix();
-}
-
-float3 Camera::Rotate(const float3 & u, float angle, const float3 & v)
-{
-	return *(float3*)&(float4x4::RotateAxisAngle(v, angle) * float4(u, 1.0f));
 }
 
 void Camera::CreateNewFrustum()

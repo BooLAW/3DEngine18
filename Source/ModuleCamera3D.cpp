@@ -35,6 +35,7 @@ bool ModuleCamera3D::Start()
 	float3 root_scale = float3::one;
 	editor_camera->transform->SetTransform(root_pos, root_rotation, root_scale);
 	editor_camera->transform->SetGlobalPos({ 0, 0, 0 });
+	editor_camera->transform->SetLocalPos({ 0,0,0 });
 	editor_camera->transform->UpdateTransformValues();
 
 	
@@ -58,50 +59,50 @@ void ModuleCamera3D::DrawModuleConfig()
 	if (ImGui::CollapsingHeader("Camera"))
 	{
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
-		if (ImGui::SliderFloat3("Position", (float*)&GetCurrentCam()->Position, -100.0f, 100.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
-			App->audio->camera_tick_arr[1] = FALSEBOOL;
-		}
-		ImGui::Spacing();
-		if (ImGui::Button("Reset"))
-		{
-			GetCurrentCam()->Position.Set(0, 5, 10);
-			LookAt({ 0, 0, 0 });
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
-		}
-		else
-			App->audio->camera_tick_arr[2] = FALSEBOOL;
-		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::Spacing();
-		if (ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
-			App->audio->camera_tick_arr[3] = FALSEBOOL;
-		}				
-		ImGui::Spacing();
-		if (ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
-			App->audio->camera_tick_arr[4] = FALSEBOOL;
-		}			
-		ImGui::Spacing();
-		if (ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
-		}
-		else
-			App->audio->camera_tick_arr[5] = FALSEBOOL;
+	//	if (ImGui::SliderFloat3("Position", (float*)&GetCurrentCam()->Position, -100.0f, 100.0f))
+	//	{
+	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+	//		App->audio->camera_tick_arr[1] = FALSEBOOL;
+	//	}
+	//	ImGui::Spacing();
+	//	if (ImGui::Button("Reset"))
+	//	{
+	//		//GetCurrentCam()->Position.Set(0, 5, 10);
+	//		LookAt({ 0, 0, 0 });
+	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
+	//	}
+	//	else
+	//		App->audio->camera_tick_arr[2] = FALSEBOOL;
+	//	ImGui::Spacing();
+	//	ImGui::Separator();
+	//	ImGui::Spacing();
+	//	if (ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f))
+	//	{
+	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
+	//		App->audio->camera_tick_arr[3] = FALSEBOOL;
+	//	}				
+	//	ImGui::Spacing();
+	//	if (ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f))
+	//	{
+	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
+	//		App->audio->camera_tick_arr[4] = FALSEBOOL;
+	//	}			
+	//	ImGui::Spacing();
+	//	if (ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f))
+	//	{
+	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
+	//	}
+	//	else
+	//		App->audio->camera_tick_arr[5] = FALSEBOOL;
 
 
-		ImGui::Spacing();
-		if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[6]);
-		}
-		else
-			App->audio->camera_tick_arr[6] = FALSEBOOL;
+	//	ImGui::Spacing();
+	//	if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
+	//	{
+	//		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[6]);
+	//	}
+	//	else
+	//		App->audio->camera_tick_arr[6] = FALSEBOOL;
 
 
 	}
@@ -147,11 +148,11 @@ void ModuleCamera3D::Move(const float3 &speed)
 
 	float3 newPos(0, 0, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= aux->cam->Z.Mul(speed);
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += aux->cam->Z.Mul(speed);
+	//if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= aux->cam->Z.Mul(speed);
+//	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += aux->cam->Z.Mul(speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= aux->cam->X.Mul(speed);
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += aux->cam->X.Mul(speed);
+	//if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= aux->cam->X.Mul(speed);
+	//if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += aux->cam->X.Mul(speed);
 
 	aux->cam->UpdatePosition(newPos);
 	
@@ -163,8 +164,8 @@ void ModuleCamera3D::MoveCam(const float3 &speed)
 	float3 newPos(speed.x, speed.y, speed.z);
 
 
-	aux->cam->SetPosition(newPos);
-	aux->cam->SetReference(newPos);
+	//aux->cam->SetPosition(newPos);
+//	aux->cam->SetReference(newPos);
 	
 }
 
@@ -207,10 +208,10 @@ void ModuleCamera3D::WheelMove(const float3 & mouse_speed, int direction)
 
 	float3 newPos(0, 0, 0);
 
-	if (direction == 1)
+	/*if (direction == 1)
 		newPos -= aux->cam->Z.Mul(mouse_speed);
 	else
-		newPos += aux->cam->Z.Mul(mouse_speed);
+		newPos += aux->cam->Z.Mul(mouse_speed);*/
 
 	aux->cam->UpdatePosition(newPos);
 
@@ -278,7 +279,7 @@ void ModuleCamera3D::CameraMovement(float dt)
 		LookAt({ 0,0,0 });
 
 	// Recalculate matrix -------------
-	GetCurrentCam()->CalculateViewMatrix();
+	//GetCurrentCam()->CalculateViewMatrix();
 }
 
 float ModuleCamera3D::GetSpeed() const
@@ -340,7 +341,7 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box)
 	newpos.y += bounding_box.Diagonal().Length();
 	MoveCam({newpos.x,newpos.y,-newpos.z});
 	LookAt({ 0,0,0 });
-	aux->cam->CalculateViewMatrix();
+	//aux->cam->CalculateViewMatrix();
 }
 
 

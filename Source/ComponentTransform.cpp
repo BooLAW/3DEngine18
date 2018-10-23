@@ -25,6 +25,7 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::UpdateTransformValues()
 {
+	
 	if(owner->GetParent() == nullptr)
 		trans_matrix_g = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
 	else

@@ -6,6 +6,8 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "Transform.h"
+#include "MathGeoLib/MathGeoLib.h"
+#include "GameObject.h"
 
 ComponentCamera::ComponentCamera()
 {
@@ -19,7 +21,7 @@ ComponentCamera::ComponentCamera()
 bool ComponentCamera::Start()
 {
 	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TANSFORM);
-	cam->SetPosition(trans->transform.pos);
+	UpdatePos();
 
 
 	return true;
@@ -39,6 +41,13 @@ ComponentCamera::~ComponentCamera()
 Camera * ComponentCamera::GetCamera()
 {
 	return cam;
+}
+
+void ComponentCamera::UpdatePos()
+{
+	cam->GetFrustum().pos = GetOwner()->transform->trans_matrix_g.TranslatePart();
+	cam->GetFrustum().front = GetOwner()->transform->trans_matrix_g.WorldZ().Normalized();
+	cam->GetFrustum().up = GetOwner()->transform->trans_matrix_g.WorldY().Normalized();
 }
 
 

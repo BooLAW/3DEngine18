@@ -11,6 +11,7 @@ public:
 	bool Update()override;
 	virtual ~ComponentCamera();
 	Camera* GetCamera();
+	void UpdatePos();
 public:
 	Camera * cam;
 

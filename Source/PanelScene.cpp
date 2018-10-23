@@ -32,9 +32,5 @@ void PanelScene::Draw()
 	}
 	ImGui::EndDock();
 
-	if (aux->cam->SceneMSAA() != nullptr)
-	{
-		aux->cam->SceneMSAA()->Render();
-		aux->cam->SceneMSAA()->Unbind();
-	}
+
 }

@@ -11,6 +11,8 @@
 #include "Transform.h"
 #include "ComponentTransform.h"
 #include "Primitive.h"
+#include "Camera.h"
+#include "TextureMSAA.h"
 
 #define RADIUS 44
 
@@ -84,7 +86,11 @@ void ModuleScene::DrawGameObjects()
 	{
 		go_list[i]->Draw();
 	}
-
+	if (App->camera->editor_camera->GetCamera()->SceneMSAA() != nullptr)
+	{
+		App->camera->editor_camera->GetCamera()->SceneMSAA()->Render();
+		App->camera->editor_camera->GetCamera()->SceneMSAA()->Unbind();
+	}
 }
 
 

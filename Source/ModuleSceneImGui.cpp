@@ -84,7 +84,7 @@ update_status ModuleSceneGui::PostUpdate(float dt)
 
 }
 void ModuleSceneGui::DrawImGui() {
-	App->renderer3D->SetUILights();
+	//App->renderer3D->SetUILights();
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
 	flags |= ImGuiWindowFlags_NoMove;
 	flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
