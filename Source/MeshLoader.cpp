@@ -77,25 +77,60 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
 {
 
+
+
+
+
+
 	if (scene != nullptr && node->mNumMeshes > 0)
 	{
 		if (scene->HasMeshes())
 		{
 			Document::AllocatorType& allocator = config->GetAllocator();
 
+			FILE* fileifile = fopen("hola.txt", "rb");
+
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
-				uint ranges[2] = { (uint)ai_mesh->mNumFaces * 3, (uint)ai_mesh->mNumVertices };
-				
-				uint size = sizeof(ranges) + sizeof(uint)*node->mNumMeshes + sizeof(float)*ai_mesh->mNumVertices * 3;
+				unsigned int total_size = 0;
 
-				std::ofstream file;
-				file.open("holas.txt", std::ofstream::out | std::ofstream::binary);
-				const char* specialbuffer = "asdfasdf";
+				std::string final_file_name;
+				final_file_name.append(node->mName.C_Str());
+				final_file_name.append(".lw");
+				FILE* fp = fopen(final_file_name.c_str(), "w");
+				aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
 				
-				file.write(specialbuffer,9);
-				file.close();
+				//memcpy(pointss, ai_mesh->mVertices, sizeof(float3) * ai_mesh->mNumVertices);
+
+				//--------------------------- Copy indices
+
+
+				
+				
+
+
+
+				/*file.write(data, size);*/
+				/*int number = 12345;
+				ofile << number << std::endl;*/
+				//ofile.write(1234, 20);
+
+				/*ofile.close();*/
+				//--------------------------
+				//char* data_output;
+				//std::ifstream ifile;
+				//ifile.open("holas.txt", std::ifstream::in | std::ifstream::binary | std::ifstream::ate);
+				//
+				//int size_read = ifile.tellg();
+				//data_output = new char[20];
+				//ifile.seekg(0, std::ifstream::beg);
+				//
+				//ifile.read(data_output, size_read);
+
+				//ifile.close();
+				//delete[] data_output;
+
+				//---------------------------
 
 				Value my_mesh(kObjectType);
 				my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
@@ -103,9 +138,13 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 				my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices * 3, allocator);
 				my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
 
+
+
+
 				//Vertices
 				float3* points = new float3[ai_mesh->mNumVertices];
 				memcpy(points, ai_mesh->mVertices, sizeof(float3) * ai_mesh->mNumVertices);
+				total_size = sizeof(float3)*ai_mesh->mNumVertices;
 				Value vertices_values(kArrayType);
 				for (int i = 0; i < ai_mesh->mNumVertices; ++i)
 				{
@@ -139,6 +178,30 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 
 				Value n(node->mName.C_Str(), config->GetAllocator());
 				config->AddMember(n, my_mesh, allocator);
+
+				uint ranges[2] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
+
+				// Vertices
+				uint bytes = sizeof(ranges);
+				uint fileSize = sizeof(ranges) + sizeof(float)*ai_mesh->mNumVertices * 3 + sizeof(uint)*(uint)ai_mesh->mNumFaces * 3;
+				char* data = new char[fileSize];
+				char* bookmark = data;
+
+				bytes = sizeof(ranges);
+				memcpy(bookmark, ranges, bytes);
+
+				bookmark += bytes;
+
+				bytes = sizeof(float3) * ai_mesh->mNumVertices;
+				memcpy(bookmark, ai_mesh->mVertices, bytes);
+				bookmark += bytes;
+
+				fwrite(data, sizeof(char), fileSize, fp);
+				fclose(fp);
+
+
+				fread(data, sizeof(char), fileSize, fileifile);
+				fclose(fileifile);
 			}
 		}
 	}
@@ -411,19 +474,6 @@ void MeshLoader::Absolute(LineSegment& line)
 	{
 		//line.a.z = line.a.z * -1;
 	}
-	/*
-		if (line.b.x < 0)
-	{
-		line.b.x = line.b.x * -1;
-	}
-	if (line.b.y < 0)
-	{
-		line.b.y = line.b.y * -1;
-	}
-	if (line.b.z < 0)
-	{
-		line.b.z = line.b.z * -1;
-	}
-	*/
+
 
 }

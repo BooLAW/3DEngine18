@@ -336,7 +336,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\json\config.json" />
-    <None Include="..\Game\my_mesh.piformat" />
     <None Include="MathGeoLib\Geometry\KDTree.inl" />
     <None Include="MathGeoLib\Geometry\QuadTree.inl" />
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
