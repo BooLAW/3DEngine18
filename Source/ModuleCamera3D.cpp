@@ -88,13 +88,41 @@ void ModuleCamera3D::DrawModuleConfig()
 		}
 		ImGui::Spacing();
 
+		float  np = aux_cam->GetNearPlane();
+		if (ImGui::SliderFloat("Near Plane", &np, 0.5, 10.0))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[8]);
+			aux_cam->SetNearPlane(np);
+			App->audio->camera_tick_arr[8] = FALSEBOOL;
+		}
+		ImGui::Spacing();
+
+		float  fp = aux_cam->GetFarPlane();
+		if (ImGui::SliderFloat("Far Plane", &fp, 50.0f, 1000.f))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[9]);
+			aux_cam->SetFarPlane(fp);
+			App->audio->camera_tick_arr[9] = FALSEBOOL;
+		}
+		ImGui::Spacing();
+
 		if (ImGui::Button("Reset"))
 		{
 			if (App->scene_intro->GetSelected() != nullptr)
-				App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+			{
+				if (App->scene_intro->GetSelected()->HasMesh())
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+				else
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->transform->transform.pos);
+			}
 			else
 				CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
+
+			aux_cam->SetFOV(80);
+			aux_cam->SetNearPlane(0.5);
+			aux_cam->SetFarPlane(1000);
+
 		}
 		else
 			App->audio->camera_tick_arr[4] = FALSEBOOL;
@@ -119,7 +147,6 @@ void ModuleCamera3D::DrawModuleConfig()
 		}
 		else
 			App->audio->camera_tick_arr[6] = FALSEBOOL;
-
 
 		ImGui::Spacing();
 		if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
@@ -291,7 +318,12 @@ void ModuleCamera3D::CameraMovement(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		if (App->scene_intro->GetSelected() != nullptr)
-			AdaptCamera(App->scene_intro->GetSelected()->GetBB(),App->scene_intro->GetSelected()->transform->transform.pos);
+		{
+			if (App->scene_intro->GetSelected()->HasMesh())
+				AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+			else
+				AdaptCamera(App->scene_intro->GetSelected()->transform->transform.pos);
+		}
 		else
 			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
 	}
@@ -352,6 +384,7 @@ bool ModuleCamera3D::Load(Document * config_r)
 
 void ModuleCamera3D::AdaptCamera(AABB bounding_box,float3 transformpos)
 {
+	
 	float3 newpos = bounding_box.CenterPoint();
 	newpos.z -= (bounding_box.Diagonal().Length());
 	newpos.y += (bounding_box.Diagonal().Length());
@@ -368,6 +401,17 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box,float3 transformpos)
 	look_at_pos.z = bounding_box.CenterPoint().z + transformpos.z;
 
 	LookAt(look_at_pos);
+}
+void ModuleCamera3D::AdaptCamera(float3 transformpos)
+{
+
+	float3 newpos = transformpos;
+	newpos.y += 10;
+	newpos.z += 10;
+
+	editor_cam->frustum.pos.Set(newpos.x, newpos.y, newpos.z);
+
+	LookAt(transformpos);
 }
 
 

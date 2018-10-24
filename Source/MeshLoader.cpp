@@ -332,7 +332,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 			GO->transform->SetTransform(pos, rot, scale);
 
-
+			
 		}
 		App->scene_intro->go_list.push_back(GO);
 	}
@@ -484,7 +484,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 	{
 		InitMesh(scene, node->mChildren[i], GO,path);
 	}
-		
+	GO->transform->UpdateTransformValues();
 
 	return true;
 }

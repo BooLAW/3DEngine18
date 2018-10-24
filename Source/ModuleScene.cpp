@@ -127,6 +127,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 	GameObject* tmp_GO = new GameObject();
 	tmp_GO->SetParent(scene_root);
 	go_list.push_back(tmp_GO);
+	tmp_GO->transform->UpdateTransformValues();
 
 
 	return tmp_GO;
