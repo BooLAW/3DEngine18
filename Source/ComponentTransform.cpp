@@ -21,6 +21,7 @@ ComponentTransform::~ComponentTransform()
 
 bool ComponentTransform::Update()
 {
+	
 	return false;
 }
 
@@ -33,9 +34,7 @@ void ComponentTransform::UpdateTransformValues()
 		ComponentTransform* owner_transform = (ComponentTransform*)GetOwner()->GetParent()->GetComponent(ComponentType::TANSFORM);
 		trans_matrix_g = owner_transform->trans_matrix_g*float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
 	}
-	//Make a function to update recursively all the childs and components related
 	owner->RecursiveUpdateTransformChilds();
-	//owner->UpdateCamera();
 }
 
 void ComponentTransform::DrawInspectorInfo()
