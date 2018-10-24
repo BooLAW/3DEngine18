@@ -83,7 +83,6 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 	FILE* wfile = fopen(final_file_name.c_str(), "wb");
 
-
 	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
 
 	float3* vertices = (float3*)ai_mesh->mVertices;
@@ -91,15 +90,14 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	// Vertices
 	//--------------------------------------------------------------------- Save as .lw
 	//We store the number of vertices inside an array
-	uint header[3]; 
-	header[0] = (uint)ai_mesh->mNumVertices * 3;
-	header[1] = ai_mesh->mNumVertices;
+	uint header[3] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
+	
 	if (ai_mesh->HasTextureCoords(0))
 	{
 		header[2] = (uint)ai_mesh->mNumVertices;
 	}
 	uint bytes = sizeof(header);
-	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices;
+	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
 	char* sbuffer = new char[size];
 	char* cursor = sbuffer;
 
@@ -116,8 +114,8 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 	//Save Tex_coord
 	bytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
-	memcpy(tex_points, ai_mesh->mTextureCoords[0], bytes);
-	cursor += bytes;
+	memcpy(cursor, ai_mesh->mTextureCoords[0], bytes);
+	
 
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
@@ -141,11 +139,11 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	FILE* rfile = fopen(final_file_name.c_str(), "rb");
 
 	//Init Header
-	uint rheader[2];
+	uint rheader[3];
 	uint rbytes = sizeof(rheader);
 
 	//Import Buffer
-	uint rsize = sizeof(rheader) + sizeof(float3)*ai_mesh->mNumVertices;
+	uint rsize = sizeof(rheader) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
 	char* rbuffer = new char[rsize];
 	fread(rbuffer, sizeof(char), rsize, rfile);
 	char* rcursor = rbuffer;
@@ -159,10 +157,25 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	rbytes = sizeof(float3) * ai_mesh->mNumVertices;
 	float3* rvertices = new float3[ret->num_vertices];
 	memcpy(rvertices, rcursor, rbytes);
+	rcursor += rbytes;
+
+	//Store them in the mesh
+	ret->vertices = new float3[ret->num_vertices];
+	memcpy(ret->vertices, rvertices, rbytes);
 
 
+	//Read tex_coord
+	rbytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
+	float* rtex_points = new float[ai_mesh->mNumVertices * 3];
+	memcpy(rtex_points, rcursor, rbytes);
+	rcursor += rbytes;
 
-	ret->vertices = rvertices;
+	//Store them in the mesh
+	ret->tex_coords = new float[ai_mesh->mNumVertices * 3];
+	memcpy(ret->tex_coords, rtex_points, rbytes);
+
+	
+
 	fclose(rfile);
 	return ret;
 }
