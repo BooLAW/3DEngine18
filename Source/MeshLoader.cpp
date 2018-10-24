@@ -31,7 +31,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	{
 		aiNode* root = new_scene->mRootNode;
 
-		//SaveSceneMeshesLW(new_scene, root,file_path);
+		SaveSceneMeshesLW(new_scene, root,file_path);
 		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
 
 		aiReleaseImport(new_scene);
@@ -74,72 +74,119 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	return true;
 }
 
-bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
+bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
 {
 
+	std::string final_file_name;
+	final_file_name.append(node->mName.C_Str());
+	final_file_name.append(".lw");
+
+	FILE* wfile = fopen(final_file_name.c_str(), "wb");
+
+
+	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
+
+	float3* vertices = (float3*)ai_mesh->mVertices;
+	float* tex_points = new float[ai_mesh->mNumVertices * 3];
+	// Vertices
+	//--------------------------------------------------------------------- Save as .lw
+	//We store the number of vertices inside an array
+	uint header[3]; 
+	header[0] = (uint)ai_mesh->mNumVertices * 3;
+	header[1] = ai_mesh->mNumVertices;
+	if (ai_mesh->HasTextureCoords(0))
+	{
+		header[2] = (uint)ai_mesh->mNumVertices;
+	}
+	uint bytes = sizeof(header);
+	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices;
+	char* sbuffer = new char[size];
+	char* cursor = sbuffer;
+
+	//And push it to the cursor
+	bytes = sizeof(header);
+	memcpy(cursor, header, bytes);
+
+	cursor += bytes;
+
+	//Save Vertices
+	bytes = sizeof(float3) * ai_mesh->mNumVertices;
+	memcpy(cursor, vertices, bytes);
+	cursor += bytes;
+
+	//Save Tex_coord
+	bytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
+	memcpy(tex_points, ai_mesh->mTextureCoords[0], bytes);
+	cursor += bytes;
+
+	fwrite(sbuffer, sizeof(char), size, wfile);
+	fclose(wfile);
+
+	//------------------------------------------------------------------Load as .lw
 
 
 
+	return false;
+}
+
+Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
+{
+	Mesh* ret = new Mesh();
+	std::string final_file_name;
+	final_file_name.append(node->mName.C_Str());
+	final_file_name.append(".lw");
+	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
+
+	//creates a file
+	FILE* rfile = fopen(final_file_name.c_str(), "rb");
+
+	//Init Header
+	uint rheader[2];
+	uint rbytes = sizeof(rheader);
+
+	//Import Buffer
+	uint rsize = sizeof(rheader) + sizeof(float3)*ai_mesh->mNumVertices;
+	char* rbuffer = new char[rsize];
+	fread(rbuffer, sizeof(char), rsize, rfile);
+	char* rcursor = rbuffer;
+
+	//Read Header
+	memcpy(rheader, rcursor, rbytes);
+	ret->num_vertices = rheader[0];
+	rcursor += rbytes;
+
+	//Read Vertices	
+	rbytes = sizeof(float3) * ai_mesh->mNumVertices;
+	float3* rvertices = new float3[ret->num_vertices];
+	memcpy(rvertices, rcursor, rbytes);
 
 
+
+	ret->vertices = rvertices;
+	fclose(rfile);
+	return ret;
+}
+
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
+{
 	if (scene != nullptr && node->mNumMeshes > 0)
 	{
 		if (scene->HasMeshes())
 		{
 			Document::AllocatorType& allocator = config->GetAllocator();
-
-			FILE* fileifile = fopen("hola.txt", "rb");
-
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
 				unsigned int total_size = 0;
 
-				std::string final_file_name;
-				final_file_name.append(node->mName.C_Str());
-				final_file_name.append(".lw");
-				FILE* fp = fopen(final_file_name.c_str(), "w");
+				SaveMeshBinary(scene, node, i);
+
 				aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
-				
-				//memcpy(pointss, ai_mesh->mVertices, sizeof(float3) * ai_mesh->mNumVertices);
-
-				//--------------------------- Copy indices
-
-
-				
-				
-
-
-
-				/*file.write(data, size);*/
-				/*int number = 12345;
-				ofile << number << std::endl;*/
-				//ofile.write(1234, 20);
-
-				/*ofile.close();*/
-				//--------------------------
-				//char* data_output;
-				//std::ifstream ifile;
-				//ifile.open("holas.txt", std::ifstream::in | std::ifstream::binary | std::ifstream::ate);
-				//
-				//int size_read = ifile.tellg();
-				//data_output = new char[20];
-				//ifile.seekg(0, std::ifstream::beg);
-				//
-				//ifile.read(data_output, size_read);
-
-				//ifile.close();
-				//delete[] data_output;
-
-				//---------------------------
 
 				Value my_mesh(kObjectType);
 				my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
 				my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces * 3, allocator);
 				my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices * 3, allocator);
 				my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
-
-
-
 
 				//Vertices
 				float3* points = new float3[ai_mesh->mNumVertices];
@@ -179,29 +226,8 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 				Value n(node->mName.C_Str(), config->GetAllocator());
 				config->AddMember(n, my_mesh, allocator);
 
-				uint ranges[2] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
-
-				// Vertices
-				uint bytes = sizeof(ranges);
-				uint fileSize = sizeof(ranges) + sizeof(float)*ai_mesh->mNumVertices * 3 + sizeof(uint)*(uint)ai_mesh->mNumFaces * 3;
-				char* data = new char[fileSize];
-				char* bookmark = data;
-
-				bytes = sizeof(ranges);
-				memcpy(bookmark, ranges, bytes);
-
-				bookmark += bytes;
-
-				bytes = sizeof(float3) * ai_mesh->mNumVertices;
-				memcpy(bookmark, ai_mesh->mVertices, bytes);
-				bookmark += bytes;
-
-				fwrite(data, sizeof(char), fileSize, fp);
-				fclose(fp);
 
 
-				fread(data, sizeof(char), fileSize, fileifile);
-				fclose(fileifile);
 			}
 		}
 	}
@@ -316,15 +342,18 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		{
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				LoadSceneMeshLW(App->scene_intro->fbx_name, node);
-
 				//Put the name
 				GameObject* new_child = new GameObject();
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;
 				//MESH
+				LoadSceneMeshLW(App->scene_intro->fbx_name, node);
+
+				
+
 				Mesh* new_mesh = new Mesh();
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
 				//Vertices----------------------
 				new_mesh->num_vertices = mesh->mNumVertices;
 				new_mesh->vertices = new float3[new_mesh->num_vertices];				
