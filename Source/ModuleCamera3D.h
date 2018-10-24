@@ -42,6 +42,7 @@ public:
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
 	void AdaptCamera(AABB bounding_box,float3 transformpos);
+	void AdaptCamera(float3 transformpos);
 	void MoveCam(const float3 &speed);
 	bool MouseOverScene(PanelScene* Scene);
 	Camera* GetCurrentCam()const;

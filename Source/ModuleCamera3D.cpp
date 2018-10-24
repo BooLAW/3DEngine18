@@ -109,7 +109,12 @@ void ModuleCamera3D::DrawModuleConfig()
 		if (ImGui::Button("Reset"))
 		{
 			if (App->scene_intro->GetSelected() != nullptr)
-				App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+			{
+				if (App->scene_intro->GetSelected()->HasMesh())
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+				else
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->transform->transform.pos);
+			}
 			else
 				CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
@@ -313,7 +318,12 @@ void ModuleCamera3D::CameraMovement(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		if (App->scene_intro->GetSelected() != nullptr)
-			AdaptCamera(App->scene_intro->GetSelected()->GetBB(),App->scene_intro->GetSelected()->transform->transform.pos);
+		{
+			if (App->scene_intro->GetSelected()->HasMesh())
+				AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+			else
+				AdaptCamera(App->scene_intro->GetSelected()->transform->transform.pos);
+		}
 		else
 			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
 	}
@@ -391,6 +401,17 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box,float3 transformpos)
 	look_at_pos.z = bounding_box.CenterPoint().z + transformpos.z;
 
 	LookAt(look_at_pos);
+}
+void ModuleCamera3D::AdaptCamera(float3 transformpos)
+{
+
+	float3 newpos = transformpos;
+	newpos.y += 10;
+	newpos.z += 10;
+
+	editor_cam->frustum.pos.Set(newpos.x, newpos.y, newpos.z);
+
+	LookAt(transformpos);
 }
 
 
