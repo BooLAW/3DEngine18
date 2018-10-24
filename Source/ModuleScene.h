@@ -32,6 +32,7 @@ public:
 	GameObject* GetSelected();
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
+	std::vector<GameObject*> go_to_draw;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
 	bool has_meshes = false;

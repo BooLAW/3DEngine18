@@ -1,6 +1,7 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 #include "MathGeoLib/MathGeoLib.h"
+#define FRUSTUM_PLANES 6
 
 class TextureMSAA;
 class Camera {
@@ -42,7 +43,7 @@ public:
 	void CreateNewFrustum();
 	void DrawFrustum();
 	TextureMSAA* SceneMSAA();
-
+	bool IsGameObjectInFrustum(AABB& bb);
 	TextureMSAA* viewport_texture;
 	Frustum frustum;
 private:

@@ -180,6 +180,25 @@ TextureMSAA * Camera::SceneMSAA()
 {
 	return viewport_texture;
 }
+bool Camera::IsGameObjectInFrustum(AABB& bb)
+{
+	bool ret = true;
+	int num_vertices = bb.NumVertices();
+	for (int i = 0; i < FRUSTUM_PLANES; i++)
+	{
+		int outside_vertices = 0;
+		for (int j = 0; j < num_vertices; j++)
+		{
+			Plane plane = frustum.GetPlane(i);
+			if (plane.IsOnPositiveSide(bb.CornerPoint(j)))
+				outside_vertices++;
+		}
+		if (outside_vertices == 8)
+			ret = false;
+		
+	}
+	return ret;
+}
 void Camera::HandleMouse(const float dt)
 {
 

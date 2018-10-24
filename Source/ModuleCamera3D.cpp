@@ -74,58 +74,60 @@ void ModuleCamera3D::DrawModuleConfig()
 		float  a = aux_cam->GetAspectRatio();
 		if (ImGui::SliderFloat("Aspect Ratio", &a, 0.0f, 2.0f))
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
 			aux_cam->SetAspectRatio(a);
-			App->audio->camera_tick_arr[1] = FALSEBOOL;
+			App->audio->camera_tick_arr[2] = FALSEBOOL;
 		}
 
 		float  f = aux_cam->GetVerticalFOV();
 		if (ImGui::SliderFloat("FOV", &f, 45.0f, 90.0f))
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
 			aux_cam->SetFOV(f);
-			App->audio->camera_tick_arr[1] = FALSEBOOL;
+			App->audio->camera_tick_arr[3] = FALSEBOOL;
 		}
 		ImGui::Spacing();
 
 		if (ImGui::Button("Reset"))
 		{
-			//App->camera->editor_camera->transform->transform.SetPosition(0, 5, 10);
-			//LookAt({ 0, 0, 0 });
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
+			if (App->scene_intro->GetSelected() != nullptr)
+				App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->transform->transform.pos);
+			else
+				CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
 		}
 		else
-			App->audio->camera_tick_arr[2] = FALSEBOOL;
+			App->audio->camera_tick_arr[4] = FALSEBOOL;
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
 		if (ImGui::DragFloat("Speed", &speed_base, 1, 0.0f, 10.0f))
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
-			App->audio->camera_tick_arr[3] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
+			App->audio->camera_tick_arr[4] = FALSEBOOL;
 		}				
 		ImGui::Spacing();
 		if (ImGui::DragFloat("Wheel Speed", &wheel_speed_base, 1, 0.0f, 10.0f))
 		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[4]);
-			App->audio->camera_tick_arr[4] = FALSEBOOL;
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
+			App->audio->camera_tick_arr[5] = FALSEBOOL;
 		}			
 		ImGui::Spacing();
 		if (ImGui::DragFloat("Rotation Speed", &mouse_sensitivity, 0.1, 0.0f, 2.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[5]);
-		}
-		else
-			App->audio->camera_tick_arr[5] = FALSEBOOL;
-
-
-		ImGui::Spacing();
-		if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[6]);
 		}
 		else
 			App->audio->camera_tick_arr[6] = FALSEBOOL;
+
+
+		ImGui::Spacing();
+		if (ImGui::Checkbox("Draw Frustum", &draw_frustum))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[7]);
+		}
+		else
+			App->audio->camera_tick_arr[7] = FALSEBOOL;
 
 
 	}

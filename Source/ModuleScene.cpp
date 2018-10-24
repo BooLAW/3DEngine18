@@ -87,7 +87,14 @@ void ModuleScene::DrawGameObjects()
 	}
 	for (int i = 0; i < go_list.size(); i++)
 	{
-		go_list[i]->Draw();
+		if (go_list[i]->HasMesh())
+		{
+			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB()))
+				go_list[i]->Draw();
+			else
+				CONSOLE_LOG_INFO("DISCARDED %d", i);
+		}
+			
 	}
 	
 }
