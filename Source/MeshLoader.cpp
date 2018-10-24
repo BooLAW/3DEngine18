@@ -364,29 +364,29 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 				
 
-				Mesh* new_mesh = new Mesh();
+				//Mesh* my_mesh2 = new Mesh();
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
 				//Vertices----------------------
-				new_mesh->num_vertices = mesh->mNumVertices;
-				new_mesh->vertices = new float3[new_mesh->num_vertices];				
-				memcpy(new_mesh->vertices, mesh->mVertices, sizeof(float3) * new_mesh->num_vertices);
+				my_mesh2->num_vertices = mesh->mNumVertices;
+				my_mesh2->vertices = new float3[my_mesh2->num_vertices];				
+				memcpy(my_mesh2->vertices, mesh->mVertices, sizeof(float3) * my_mesh2->num_vertices);
 				
 
-				glGenBuffers(1, (GLuint*)&new_mesh->vertices_id);
-				glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * new_mesh->num_vertices, new_mesh->vertices, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
+				glBindBuffer(GL_ARRAY_BUFFER, my_mesh2->vertices_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh2->num_vertices, my_mesh2->vertices, GL_STATIC_DRAW);
 
-				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", new_mesh->num_vertices);
+				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh2->num_vertices);
 				//reset buffer
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				//Indices--------------------------
 				if (mesh->HasFaces())
 				{
-					new_mesh->num_indices = mesh->mNumFaces * 3;
-					new_mesh->num_normal = mesh->mNumVertices * 3;
-					new_mesh->indices = new int[new_mesh->num_indices];
+					my_mesh2->num_indices = mesh->mNumFaces * 3;
+					my_mesh2->num_normal = mesh->mNumVertices * 3;
+					my_mesh2->indices = new int[my_mesh2->num_indices];
 					
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
@@ -397,26 +397,26 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						}
 						else
 						{
-							memcpy(&new_mesh->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
+							memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
 						}
 					}
 					for (int i = 0; i < mesh->mNumVertices; ++i)
 					{
 						int u = i + 1;
 						int w = i + 2;
-						LineSegment face_normal = CalculateTriangleNormal(new_mesh->vertices[i], new_mesh->vertices[u], new_mesh->vertices[w]);
+						LineSegment face_normal = CalculateTriangleNormal(my_mesh2->vertices[i], my_mesh2->vertices[u], my_mesh2->vertices[w]);
 						Absolute(face_normal);
 
 
-						new_mesh->face_normal.push_back(face_normal);
+						my_mesh2->face_normal.push_back(face_normal);
 					}
-					glGenBuffers(1, (GLuint*)&new_mesh->indices_id);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->indices_id);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_indices, new_mesh->indices, GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)&my_mesh2->indices_id);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh2->indices_id);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_indices, my_mesh2->indices, GL_STATIC_DRAW);
 					//reset buffer
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-					CONSOLE_LOG_INFO("%d indices", new_mesh->num_indices);
+					CONSOLE_LOG_INFO("%d indices", my_mesh2->num_indices);
 
 				}
 				else
@@ -426,17 +426,17 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))
 				{
-					new_mesh->num_tex_coords = mesh->mNumVertices;
-					new_mesh->tex_coords = new float[new_mesh->num_tex_coords * 3];
-					memcpy(new_mesh->tex_coords, mesh->mTextureCoords[0], sizeof(float)*new_mesh->num_tex_coords * 3);
+					my_mesh2->num_tex_coords = mesh->mNumVertices;
+					my_mesh2->tex_coords = new float[my_mesh2->num_tex_coords * 3];
+					memcpy(my_mesh2->tex_coords, mesh->mTextureCoords[0], sizeof(float)*my_mesh2->num_tex_coords * 3);
 
 
-					glGenBuffers(1, (GLuint*)&new_mesh->tex_coords_id);
-					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)new_mesh->tex_coords_id);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_tex_coords * 3, new_mesh->tex_coords, GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)&my_mesh2->tex_coords_id);
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh2->tex_coords_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_tex_coords * 3, my_mesh2->tex_coords, GL_STATIC_DRAW);
 
 					//reset buffer
-					CONSOLE_LOG_INFO("%d tex coords", new_mesh->num_tex_coords);
+					CONSOLE_LOG_INFO("%d tex coords", my_mesh2->num_tex_coords);
 				}
 				else
 				{
@@ -447,13 +447,13 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				AABB bb;
 				bb.SetNegativeInfinity();
 				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-				new_mesh->bounding_box = bb;
-				new_mesh->show_bb = false;
+				my_mesh2->bounding_box = bb;
+				my_mesh2->show_bb = false;
 			
 
 
 				ComponentMesh*  new_comp_mesh = new ComponentMesh();
-				new_comp_mesh->AddMesh(new_mesh);
+				new_comp_mesh->AddMesh(my_mesh2);
 				new_comp_mesh->SetOwner(new_child);
 				new_comp_mesh->SetType(ComponentType::MESH);
 				new_comp_mesh->Enable();
