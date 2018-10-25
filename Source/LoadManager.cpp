@@ -45,7 +45,7 @@ void LoadManager::Load(const char * path)
 
 			ComponentMaterial* aux = material_loader->LoadPNG(path);
 			int auxi = App->scene_intro->go_list.size();
-			for (int i = 2; i < auxi; i++)
+			for (int i = 1; i < auxi; i++)
 				App->scene_intro->go_list[i]->PushComponent((Component*)aux);
 			unique_material_path = path;
 			tex_name_file = App->GetFileName(path).c_str();
