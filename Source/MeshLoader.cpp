@@ -63,20 +63,15 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 
 	SaveMesh(scene, node,&testconfig_w); //Starts Recursive
 
-
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
 	fclose(fp);
-
-	
-
 
 	return true;
 }
 
 bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
 {
-
 	std::string final_file_name;
 	final_file_name.append(node->mName.C_Str());
 	final_file_name.append(".lw");
@@ -87,17 +82,19 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 	float3* vertices = (float3*)ai_mesh->mVertices;
 	float* tex_points = new float[ai_mesh->mNumVertices * 3];
-	// Vertices
-	//--------------------------------------------------------------------- Save as .lw
 	//We store the number of vertices inside an array
-	uint header[3] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
+	uint header[4] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
 	
 	if (ai_mesh->HasTextureCoords(0))
 	{
 		header[2] = (uint)ai_mesh->mNumVertices;
 	}
+	if (ai_mesh->HasFaces())
+	{
+		header[3] = (uint)ai_mesh->mNumFaces * 3;
+	}
 	uint bytes = sizeof(header);
-	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
+	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
 	char* sbuffer = new char[size];
 	char* cursor = sbuffer;
 
@@ -115,14 +112,49 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	//Save Tex_coord
 	bytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
 	memcpy(cursor, ai_mesh->mTextureCoords[0], bytes);
-	
+	cursor += bytes;
+
+	//Save Indices
+	if (ai_mesh->HasFaces())
+	{
+		
+		bytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
+		int* indices = new int[ai_mesh->mNumFaces * 3 ];
+		for (int i = 0; i < ai_mesh->mNumFaces; ++i)
+		{
+			if (ai_mesh->mFaces[i].mNumIndices != 3)
+			{
+				CONSOLE_LOG_WARNING("WARNING, face indices != 3");
+			}
+			else
+			{
+				memcpy(&indices[i * 3], ai_mesh->mFaces[i].mIndices, sizeof(int) * 3);
+
+			}
+		}
+		memcpy(cursor, indices, bytes);
+
+	}
+	/*
+	my_mesh2->num_indices = mesh->mNumFaces * 3;
+	my_mesh2->num_normal = mesh->mNumVertices * 3;
+	my_mesh2->indices = new int[my_mesh2->num_indices];
+
+
+	for (int i = 0; i < mesh->mNumFaces; ++i)
+	{
+		if (mesh->mFaces[i].mNumIndices != 3)
+		{
+			CONSOLE_LOG_WARNING("WARNING, face indices != 3");
+		}
+		else
+		{
+			memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
+		}
+	}*/
 
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
-
-	//------------------------------------------------------------------Load as .lw
-
-
 
 	return false;
 }
@@ -139,11 +171,11 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	FILE* rfile = fopen(final_file_name.c_str(), "rb");
 
 	//Init Header
-	uint rheader[3];
+	uint rheader[4];
 	uint rbytes = sizeof(rheader);
 
 	//Import Buffer
-	uint rsize = sizeof(rheader) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
+	uint rsize = sizeof(rheader) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
 	char* rbuffer = new char[rsize];
 	fread(rbuffer, sizeof(char), rsize, rfile);
 	char* rcursor = rbuffer;
@@ -151,6 +183,7 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	//Read Header
 	memcpy(rheader, rcursor, rbytes);
 	ret->num_vertices = rheader[0];
+	ret->num_indices = rheader[3];
 	rcursor += rbytes;
 
 	//Read Vertices	
@@ -174,6 +207,15 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	ret->tex_coords = new float[ai_mesh->mNumVertices * 3];
 	memcpy(ret->tex_coords, rtex_points, rbytes);
 
+	//Read Indices
+	rbytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
+	int* indices = new int[ai_mesh->mNumFaces * 3];
+	memcpy(indices, rcursor, rbytes);
+	rcursor += rbytes;
+
+	//Store them in the mesh
+	ret->indices = new int[ai_mesh->mNumFaces * 3];
+	memcpy(ret->indices, indices, rbytes);
 	
 
 	fclose(rfile);
@@ -186,61 +228,12 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 	{
 		if (scene->HasMeshes())
 		{
-			Document::AllocatorType& allocator = config->GetAllocator();
+			//SaveMeshJson(scene, node, config);
+
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				unsigned int total_size = 0;
-
 				SaveMeshBinary(scene, node, i);
-
-				aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
-
-				Value my_mesh(kObjectType);
-				my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
-				my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces * 3, allocator);
-				my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices * 3, allocator);
-				my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
-
-				//Vertices
-				float3* points = new float3[ai_mesh->mNumVertices];
-				memcpy(points, ai_mesh->mVertices, sizeof(float3) * ai_mesh->mNumVertices);
-				total_size = sizeof(float3)*ai_mesh->mNumVertices;
-				Value vertices_values(kArrayType);
-				for (int i = 0; i < ai_mesh->mNumVertices; ++i)
-				{
-					int u = i + 1;
-					int w = i + 2;
-					points[i];
-					points[u];
-					points[w];
-
-					vertices_values.PushBack((float)points[i].x, allocator);
-					vertices_values.PushBack((float)points[i].y, allocator);
-					vertices_values.PushBack((float)points[i].z, allocator);
-				}
-
-				my_mesh.AddMember("all_vertex", vertices_values, allocator);
-				//Textures
-
-				if (ai_mesh->HasTextureCoords(0))
-				{
-					my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
-
-					float* tex_points = new float[ai_mesh->mNumVertices * 3];
-					memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
-					Value texture_values(kArrayType);
-					for (int i = 0; i<(uint)ai_mesh->mNumVertices; i++)
-					{
-						texture_values.PushBack((float)tex_points[i], allocator);
-					}
-					my_mesh.AddMember("texture_coords", texture_values, allocator);
-				}
-
-				Value n(node->mName.C_Str(), config->GetAllocator());
-				config->AddMember(n, my_mesh, allocator);
-
-
-
+			
 			}
 		}
 	}
@@ -253,7 +246,64 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 	return false;
 }
 
-Mesh * MeshLoader::LoadSceneMeshLW(std::string file_name,const aiNode* node)
+bool MeshLoader::SaveMeshJson(const aiScene * scene, aiNode * node, Document * config)
+{
+	Document::AllocatorType& allocator = config->GetAllocator();
+	for (int i = 0; i < node->mNumMeshes; i++)
+	{
+		unsigned int total_size = 0;
+
+		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
+
+		Value my_mesh(kObjectType);
+		my_mesh.AddMember("num_vertices", ai_mesh->mNumVertices, allocator);
+		my_mesh.AddMember("num_indices", (uint)ai_mesh->mNumFaces * 3, allocator);
+		my_mesh.AddMember("num_normals", (uint)ai_mesh->mNumVertices * 3, allocator);
+		my_mesh.AddMember("indices", (int)ai_mesh->mNumVertices * 3, allocator);
+
+		//Vertices
+		float3* points = new float3[ai_mesh->mNumVertices];
+		memcpy(points, ai_mesh->mVertices, sizeof(float3) * ai_mesh->mNumVertices);
+		total_size = sizeof(float3)*ai_mesh->mNumVertices;
+		Value vertices_values(kArrayType);
+		for (int i = 0; i < ai_mesh->mNumVertices; ++i)
+		{
+			int u = i + 1;
+			int w = i + 2;
+			points[i];
+			points[u];
+			points[w];
+
+			vertices_values.PushBack((float)points[i].x, allocator);
+			vertices_values.PushBack((float)points[i].y, allocator);
+			vertices_values.PushBack((float)points[i].z, allocator);
+		}
+
+		my_mesh.AddMember("all_vertex", vertices_values, allocator);
+		//Textures
+
+		if (ai_mesh->HasTextureCoords(0))
+		{
+			my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
+
+			float* tex_points = new float[ai_mesh->mNumVertices * 3];
+			memcpy(tex_points, ai_mesh->mTextureCoords[0], sizeof(float)*(uint)ai_mesh->mNumVertices * 3);
+			Value texture_values(kArrayType);
+			for (int i = 0; i<(uint)ai_mesh->mNumVertices; i++)
+			{
+				texture_values.PushBack((float)tex_points[i], allocator);
+			}
+			my_mesh.AddMember("texture_coords", texture_values, allocator);
+		}
+
+		Value n(node->mName.C_Str(), config->GetAllocator());
+		config->AddMember(n, my_mesh, allocator);
+	}
+
+	return false;
+}
+
+Mesh * MeshLoader::LoadSceneMeshJson(std::string file_name,const aiNode* node)
 {
 	//TODO JOSEP
 
@@ -360,7 +410,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;
 				//MESH
-				LoadSceneMeshLW(App->scene_intro->fbx_name, node);
+				LoadSceneMeshJson(App->scene_intro->fbx_name, node);
 
 				
 
@@ -368,9 +418,9 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
 				//Vertices----------------------
-				my_mesh2->num_vertices = mesh->mNumVertices;
-				my_mesh2->vertices = new float3[my_mesh2->num_vertices];				
-				memcpy(my_mesh2->vertices, mesh->mVertices, sizeof(float3) * my_mesh2->num_vertices);
+				//my_mesh2->num_vertices = mesh->mNumVertices;
+				//my_mesh2->vertices = new float3[my_mesh2->num_vertices];				
+				//memcpy(my_mesh2->vertices, mesh->mVertices, sizeof(float3) * my_mesh2->num_vertices);
 				
 
 				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
@@ -384,6 +434,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Indices--------------------------
 				if (mesh->HasFaces())
 				{
+					/*
 					my_mesh2->num_indices = mesh->mNumFaces * 3;
 					my_mesh2->num_normal = mesh->mNumVertices * 3;
 					my_mesh2->indices = new int[my_mesh2->num_indices];
@@ -399,7 +450,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						{
 							memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
 						}
-					}
+					}*/
 					for (int i = 0; i < mesh->mNumVertices; ++i)
 					{
 						int u = i + 1;
