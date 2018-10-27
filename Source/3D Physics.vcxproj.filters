@@ -642,8 +642,15 @@
     <ClInclude Include="ComponentCamera.h">
       <Filter>Sources\Modules\GameObjects\Components\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\Complex.h" />
-    <ClInclude Include="MathGeoLib\Math\CoordinateAxisConvention.h" />
+    <ClInclude Include="Quadtree.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\CoordinateAxisConvention.h">
+      <Filter>Sources\External Tools\MathGeolib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\Complex.h">
+      <Filter>Sources\External Tools\MathGeolib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -873,6 +880,9 @@
     </ClCompile>
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Sources\Modules\GameObjects\Components\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Sources\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
