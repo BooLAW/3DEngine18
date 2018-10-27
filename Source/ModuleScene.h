@@ -4,6 +4,7 @@
 #include "Panel.h"
 #include "Mesh.h"
 #include "GameObject.h"
+#include "Quadtree.h"
 
 struct PhysBody3D;
 class ModuleScene : public Module
@@ -30,6 +31,9 @@ public:
 	void DrawChilds(GameObject* parent);
 	void ResetSelected();
 	GameObject* GetSelected();
+
+
+public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
 	std::vector<GameObject*> go_to_draw;
