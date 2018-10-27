@@ -109,15 +109,18 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	memcpy(cursor, vertices, bytes);
 	cursor += bytes;
 
-	//Save Tex_coord
-	bytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
-	memcpy(cursor, ai_mesh->mTextureCoords[0], bytes);
-	cursor += bytes;
+	if (ai_mesh->HasTextureCoords(0))
+	{
+		//Save Tex_coord
+		bytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
+		memcpy(cursor, ai_mesh->mTextureCoords[0], bytes);
+		cursor += bytes;
+	}
+
 
 	//Save Indices
 	if (ai_mesh->HasFaces())
-	{
-		
+	{		
 		bytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
 		int* indices = new int[ai_mesh->mNumFaces * 3 ];
 		for (int i = 0; i < ai_mesh->mNumFaces; ++i)
@@ -151,7 +154,8 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		{
 			memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
 		}
-	}*/
+	}
+	*/
 
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
@@ -190,32 +194,40 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	rbytes = sizeof(float3) * ai_mesh->mNumVertices;
 	float3* rvertices = new float3[ret->num_vertices];
 	memcpy(rvertices, rcursor, rbytes);
-	rcursor += rbytes;
 
 	//Store them in the mesh
 	ret->vertices = new float3[ret->num_vertices];
 	memcpy(ret->vertices, rvertices, rbytes);
-
-
-	//Read tex_coord
-	rbytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
-	float* rtex_points = new float[ai_mesh->mNumVertices * 3];
-	memcpy(rtex_points, rcursor, rbytes);
 	rcursor += rbytes;
 
-	//Store them in the mesh
-	ret->tex_coords = new float[ai_mesh->mNumVertices * 3];
-	memcpy(ret->tex_coords, rtex_points, rbytes);
+	if (ai_mesh->HasTextureCoords(0))
+	{
+		//Read tex_coord
+		rbytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
+		float* rtex_points = new float[ai_mesh->mNumVertices * 3];
+		memcpy(rtex_points, rcursor, rbytes);
+		
 
-	//Read Indices
-	rbytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
-	int* indices = new int[ai_mesh->mNumFaces * 3];
-	memcpy(indices, rcursor, rbytes);
-	rcursor += rbytes;
+		//Store them in the mesh
+		ret->tex_coords = new float[ai_mesh->mNumVertices * 3];
+		memcpy(ret->tex_coords, rtex_points, rbytes);
+		rcursor += rbytes;
+	}
 
-	//Store them in the mesh
-	ret->indices = new int[ai_mesh->mNumFaces * 3];
-	memcpy(ret->indices, indices, rbytes);
+	if (ai_mesh->HasFaces())
+	{
+		//Read Indices
+		rbytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
+		int* indices = new int[ai_mesh->mNumFaces * 3];
+		memcpy(indices, rcursor, rbytes);
+		
+
+		//Store them in the mesh
+		ret->indices = new int[ai_mesh->mNumFaces * 3];
+		memcpy(ret->indices, indices, rbytes);
+		rcursor += rbytes;
+	}
+
 	
 
 	fclose(rfile);
@@ -405,7 +417,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		{
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				//Put the name
+				//Create the Game Object
 				GameObject* new_child = new GameObject();
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;
@@ -478,8 +490,8 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				if (mesh->HasTextureCoords(0))
 				{
 					my_mesh2->num_tex_coords = mesh->mNumVertices;
-					my_mesh2->tex_coords = new float[my_mesh2->num_tex_coords * 3];
-					memcpy(my_mesh2->tex_coords, mesh->mTextureCoords[0], sizeof(float)*my_mesh2->num_tex_coords * 3);
+					//my_mesh2->tex_coords = new float[my_mesh2->num_tex_coords * 3];
+					//memcpy(my_mesh2->tex_coords, mesh->mTextureCoords[0], sizeof(float)*my_mesh2->num_tex_coords * 3);
 
 
 					glGenBuffers(1, (GLuint*)&my_mesh2->tex_coords_id);

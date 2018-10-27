@@ -30,6 +30,9 @@ public:
 	void DrawChilds(GameObject* parent);
 	void ResetSelected();
 	GameObject* GetSelected();
+
+
+public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
 	std::vector<GameObject*> go_to_draw;
