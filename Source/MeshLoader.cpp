@@ -136,7 +136,6 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 			}
 		}
 		memcpy(cursor, indices, bytes);
-
 	}
 	/*
 	my_mesh2->num_indices = mesh->mNumFaces * 3;

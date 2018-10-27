@@ -1,0 +1,10 @@
+{
+  
+  "Scene1": {
+    "GameObject": "BakerHouse.fbx",
+    "child": {
+      "GameObject": "Chimney",
+      "GameObject": "Baker_house"
+    }
+  }
+}
