@@ -31,6 +31,7 @@ public:
 	void DrawChilds(GameObject* parent);
 	void ResetSelected();
 	GameObject* GetSelected();
+	void SaveScene(std::vector<GameObject*> go_list);
 
 
 public:

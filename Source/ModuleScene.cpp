@@ -231,5 +231,72 @@ GameObject * ModuleScene::GetSelected()
 	return aux;
 }
 
+void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
+{
+	//Example of a saved scene
+	/*{"Game Objects":[
+	{
+		"UID":1642009359,
+			"ParentUID" : 1619219037,
+			"Name" : "RootNode",
+			"Translation" : [0, 0, 0],
+			"Scale" : [1, 1, 1],
+			"Rotation" : [0, 0, 0, 1],
+			"Components" : []},
+	{
+	"UID":1336602188,
+	"ParentUID" : 1642009359,
+	"Name" : "RPG-Character-Mesh",
+
+	"Translation" : [-0.178409,0,-0.079894],
+	"Scale" : [1,1,1],
+	"Rotation" : [-0.707107,0,0,0.707107],
+	"Components" : [
+		{
+			"Type":1,
+				"Resource" : 0,
+				"Alpha Test" : 0.500000,
+				"Transform" : [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]},
+	{
+	"Type":0,
+	"Resource" : 1784,
+	"Bones Root" : 0,
+	"Tint" : [1,1,1,1] }
+	] }
+	*/
+	FILE* fp = fopen("Assets/scenes/scene1.json", "wb"); // non-Windows use "w"
+	char writeBuffer[10000];
+	Document savescene_w;
+	savescene_w.SetObject();
+	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+
+	Document::AllocatorType& allocator = savescene_w.GetAllocator();
+
+	Value go(kObjectType);
+	Value go_child(kObjectType);
+	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	{
+		if ((*it)->childs_list.size() > 0)
+		{
+			Value name((*it)->name.c_str(), allocator);
+			go.AddMember("GameObject", name, allocator);
+		}
+		else
+		{
+
+			Value child_name((*it)->name.c_str(), allocator);
+			go_child.AddMember("GameObject", child_name, allocator);			
+		}
+	}
+	go.AddMember("child", go_child, allocator);
+	savescene_w.AddMember("Scene1", go, allocator);
+
+	Writer<FileWriteStream> writer(os);
+	savescene_w.Accept(writer);
+	fclose(fp);
+	App->imgui->want_to_save = false;
+
+}
+
 
 
