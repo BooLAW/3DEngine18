@@ -104,7 +104,6 @@
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleAudio.h" />
-    <ClInclude Include="ModuleJSON.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB.h" />
@@ -177,7 +176,6 @@
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
     <ClInclude Include="PanelScene.h" />
-    <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PCG\include\utime.h" />
     <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="Primitive.h" />
@@ -280,7 +278,6 @@
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
-    <ClCompile Include="ModuleJSON.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -327,7 +324,6 @@
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
     <ClCompile Include="PanelScene.cpp" />
-    <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Profiler.cpp" />
@@ -344,7 +340,6 @@
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="MathGeoLib\Math\Matrix.inl" />
-    <None Include="Parson\testconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Game\holas.txt" />

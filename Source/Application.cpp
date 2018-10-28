@@ -17,7 +17,6 @@ Application::Application()
 	camera = new ModuleCamera3D();
 	physics = new ModulePhysics3D();
 	imgui = new ModuleSceneGui();
-	json = new ModuleJSON(true);
 	audio = new ModuleAudio();
 	loading_manager = new LoadManager();
 	// The order of calls is very important!
@@ -29,7 +28,6 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(physics);
-	AddModule(json);
 	AddModule(audio);
 	AddModule(loading_manager);
 

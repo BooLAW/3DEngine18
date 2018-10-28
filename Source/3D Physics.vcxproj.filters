@@ -34,9 +34,6 @@
     <Filter Include="Sources\External Tools\PCG">
       <UniqueIdentifier>{d2187f24-af80-45be-bef5-6534397767e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\External Tools\Parson">
-      <UniqueIdentifier>{af0ad1ad-4c73-4660-8aae-20fa18a6e18c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Modules\GameObjects">
       <UniqueIdentifier>{0c0ecbf4-0f08-4bb4-93ff-a77538b49e5f}</UniqueIdentifier>
     </Filter>
@@ -63,9 +60,6 @@
     </Filter>
     <Filter Include="Sources\json">
       <UniqueIdentifier>{0172f92d-e1c4-42fd-9b09-8fd2c97ddb56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\External Tools\DevIL">
-      <UniqueIdentifier>{4028e36b-fda7-49bf-9dc1-198526d7c4c9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\Modules\GameObjects\Components">
       <UniqueIdentifier>{a2c6d5fd-82c7-4c06-89db-6860b8021dad}</UniqueIdentifier>
@@ -333,14 +327,8 @@
     <ClInclude Include="PCG\include\utime.h">
       <Filter>Sources\External Tools\PCG</Filter>
     </ClInclude>
-    <ClInclude Include="Parson\parson.h">
-      <Filter>Sources\External Tools\Parson</Filter>
-    </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Sources\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleJSON.h">
-      <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL.h">
       <Filter>Sources\Tools</Filter>
@@ -791,14 +779,8 @@
     <ClCompile Include="PCG\pcg_basic.c">
       <Filter>Sources\External Tools\PCG</Filter>
     </ClCompile>
-    <ClCompile Include="Parson\parson.c">
-      <Filter>Sources\External Tools\Parson</Filter>
-    </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Sources\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleJSON.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Profiler.cpp">
       <Filter>Sources\Tools</Filter>
@@ -903,9 +885,6 @@
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Sources\External Tools\MathGeolib</Filter>
-    </None>
-    <None Include="Parson\testconfig.json">
-      <Filter>Sources\External Tools\Parson</Filter>
     </None>
     <None Include="..\Game\Assets\json\config.json">
       <Filter>Sources\json</Filter>
