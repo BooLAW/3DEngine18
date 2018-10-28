@@ -1,4 +1,6 @@
-#pragma once
+
+#ifndef __ModuleInput__H__
+#define __ModuleInput__H__
 #include "Module.h"
 #include "Globals.h"
 
@@ -72,3 +74,4 @@ public:
 	bool file_droped = false;
 	bool tex_droped = false;
 };
+#endif

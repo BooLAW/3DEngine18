@@ -1,5 +1,5 @@
-#ifndef __PRIMITIVE_H__
-#define __PRIMITIVE_H__
+#ifndef __Primitive_H__
+#define __Primitive_H__
 
 #include "MathGeoLib/MathGeoLib.h"
 #include "Color.h"
@@ -57,3 +57,5 @@ public:
 };
 
 #endif
+
+

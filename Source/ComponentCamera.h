@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ComponentCamera__H__
+#define __ComponentCamera__H__
 #include "Component.h"
 class Camera;
 class TextureMSAA;
@@ -16,4 +17,4 @@ public:
 	Camera * cam;
 
 };
-
+#endif

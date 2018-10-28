@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Module__H__
+#define __Module__H__
 #include "Globals.h"
 #include "ImGui/imgui.h"
 #include "imgui_impl_sdl.h"
@@ -71,3 +72,4 @@ public:
 	virtual bool Load(Document* config_r) { return true; }
 };
 extern Application* App;
+#endif

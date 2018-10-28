@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __PANELHIERARCHY__H__
 #define __PANELHIERARCHY__H__
 #include "Panel.h"
