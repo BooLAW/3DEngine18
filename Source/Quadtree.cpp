@@ -3,18 +3,18 @@
 #include "ComponentMesh.h"
 
 
-QuadtreeItem::QuadtreeItem(AABB& box)
+OctreeItem::OctreeItem(AABB& box)
 {
 	SetChildsNull();
 	item_box = box;
 }
 
-QuadtreeItem::~QuadtreeItem()
+OctreeItem::~OctreeItem()
 {
 	ClearItems();
 }
 
-void QuadtreeItem::SetChildsNull()
+void OctreeItem::SetChildsNull()
 {
 	for (int i = 0; i < QUADTREECHILDS; i++)
 	{
@@ -22,7 +22,7 @@ void QuadtreeItem::SetChildsNull()
 	}
 }
 
-void QuadtreeItem::ClearItems()
+void OctreeItem::ClearItems()
 {
 	for (int i = 0; i < QUADTREECHILDS; i++)
 	{
@@ -30,12 +30,12 @@ void QuadtreeItem::ClearItems()
 	}
 }
 
-bool QuadtreeItem::IsItemFull() const
+bool OctreeItem::IsItemFull() const
 {
 	return item_elements.size() == 4;
 }
 
-void QuadtreeItem::InsertItem(Mesh * mesh_to_insert)
+void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 {
 	if (mesh_to_insert == nullptr) return;
 	if (childs[0] == nullptr)
@@ -63,7 +63,7 @@ void QuadtreeItem::InsertItem(Mesh * mesh_to_insert)
 	}
 }
 
-void QuadtreeItem::SubdivideItem()
+void OctreeItem::SubdivideItem()
 {
 	AABB new_box;
 	float3 center_point = item_box.CenterPoint();
@@ -82,7 +82,7 @@ void QuadtreeItem::SubdivideItem()
 
 				new_box.minPoint = min_point;
 				new_box.maxPoint = max_point;
-				childs[id] = new QuadtreeItem(new_box);
+				childs[id] = new OctreeItem(new_box);
 				id++;
 			}
 		}
@@ -108,18 +108,18 @@ void QuadtreeItem::SubdivideItem()
 	}
 }
 
-Quadtree::Quadtree()
+Octree::Octree()
 {
 	update_quadtree = false;
 }
 
 
-Quadtree::~Quadtree()
+Octree::~Octree()
 {
 	Clear();
 }
 
-void Quadtree::Create(float3 min,float3 max)
+void Octree::Create(float3 min,float3 max)
 {
 	AABB new_box(min, max);
 	root_item->item_box = new_box;
@@ -128,12 +128,12 @@ void Quadtree::Create(float3 min,float3 max)
 	update_quadtree = true;
 }
 
-void Quadtree::Clear()
+void Octree::Clear()
 {
 	RELEASE(root_item);
 }
 
-void Quadtree::Insert(GameObject * go_to_insert)
+void Octree::Insert(GameObject * go_to_insert)
 {
 	if (go_to_insert == nullptr || go_to_insert->HasMesh() == false)
 		return;
@@ -182,7 +182,7 @@ void Quadtree::Insert(GameObject * go_to_insert)
 		
 }
 
-void QuadtreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
+void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
 {
 	if (childs[0] != nullptr)
 	{

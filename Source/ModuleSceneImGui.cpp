@@ -280,20 +280,14 @@ void ModuleSceneGui::CreateMainMenu()
 				}
 				else
 					App->audio->menu_tick_arr[5] = FALSEBOOL;
-			/*	if (ImGui::MenuItem("Sphere Creator"))
+				if (ImGui::MenuItem("Draw Octree"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[6]);
-					show_sphere_creator = !show_sphere_creator;
+					App->scene_intro->draw_octree = !App->scene_intro->draw_octree;
 				}
 				else
 					App->audio->menu_tick_arr[6] = FALSEBOOL;
-				if (ImGui::MenuItem("Cube Creator"))
-				{
-					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[7]);
-					show_cube_creator = !show_cube_creator;
-				}
-				else
-					App->audio->menu_tick_arr[7] = FALSEBOOL;*/
+			
 				if (ImGui::MenuItem("Profiler"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[8]);

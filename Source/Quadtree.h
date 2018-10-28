@@ -6,10 +6,10 @@
 class GameObject;
 class ComponentMesh;
 class Mesh;
-class QuadtreeItem {
+class OctreeItem {
 public:
-	QuadtreeItem(AABB& box);
-	~QuadtreeItem();
+	OctreeItem(AABB& box);
+	~OctreeItem();
 	void SetChildsNull();
 	void ClearItems();
 	bool IsItemFull()const;
@@ -20,20 +20,20 @@ public:
 public:
 	AABB item_box;
 	std::list<Mesh*> item_elements;
-	QuadtreeItem* childs[QUADTREECHILDS];
+	OctreeItem* childs[QUADTREECHILDS];
 	int lvl = 0;
 };
 
-class Quadtree
+class Octree
 {
 public:
-	Quadtree();
-	virtual ~Quadtree();
+	Octree();
+	virtual ~Octree();
 	void Create(float3 min, float3 max);
 	void Clear();
 	void Insert(GameObject* go_to_insert);
 private:
-	QuadtreeItem * root_item = nullptr;
+	OctreeItem * root_item = nullptr;
 public:
 	bool update_quadtree;
 	float3 min_point, max_point;

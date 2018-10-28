@@ -39,7 +39,8 @@ public:
 	std::vector<GameObject*> go_to_draw;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
-	Quadtree octree;
+	Octree octree;
+	bool draw_octree = false;
 	bool has_meshes = false;
 	std::string fbx_name;
 
