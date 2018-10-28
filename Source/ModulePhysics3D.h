@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ModulePhysics3D__H__
+#define __ModulePhysics3D__H__
 #include "Module.h"
 #include "Globals.h"
 
@@ -30,4 +31,4 @@ public:
 	std::vector<Sphere> spheres_list;
 
 };
-
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Quadtree_H__
+#define __Quadtree_H__
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
 #define QUADTREECHILDS 8
@@ -45,3 +46,4 @@ public:
 	float3 min_point, max_point;
 };
 
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __PanelConfiguration__H__
+#define __PanelConfiguration__H__
 #include "Panel.h"
 #include "ImGui/imgui.h"
 #include "Application.h"
@@ -27,4 +28,4 @@ public:
 
 
 };
-
+#endif

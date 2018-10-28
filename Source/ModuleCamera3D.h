@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ModuleCamera3D__H__
+#define __ModuleCamera3D__H__
 #include "Module.h"
 #include "Globals.h"
 #include "MathGeoLib\MathGeoLib.h"
@@ -63,3 +64,4 @@ public:
 	std::vector<Camera*> cams_list;
 
 };
+#endif

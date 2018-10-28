@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __log_CPP__
+#define __log_CPP__
 #include "Globals.h"
 #include "ModuleScene.h"
 #include "Application.h"
@@ -79,3 +80,4 @@ void console_log_warning(const char file[], int line, const char* format, ...)
 	if (App)
 		App->imgui->Log(tmp_string, INFO_LOG);
 }
+#endif

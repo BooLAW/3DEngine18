@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __PANEL__H__
 #define __PANEL__H__
 #include "Globals.h"

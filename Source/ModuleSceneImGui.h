@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ModuleSceneImGui__H__
+#define __ModuleSceneImGui__H__
 #include "Module.h"
 #include "Globals.h"
 #include <stdint.h>
@@ -88,3 +89,4 @@ public:
 	PanelScene* scene = nullptr;
 	
 };
+#endif

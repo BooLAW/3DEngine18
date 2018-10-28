@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef __TextureMSAA_H__
+#define __TextureMSAA_H__
 #include "Globals.h"
 
 class TextureMSAA
@@ -42,4 +42,5 @@ private:
 	int max_msaa_samples;
 	int current_msaa_samples;
 };
+#endif
 
