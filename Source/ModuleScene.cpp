@@ -223,11 +223,15 @@ void ModuleScene::DrawModuleConfig()
 			if (GetSelected() != nullptr)
 			{
 				ImGui::Text("  Name:"); ImGui::SameLine();
-				/*ImGui::Text("%s", GetSelected()->GetName());
-				ImGui::Text("   AABB MinPoint:"); ImGui::SameLine();
-				ImGui::Text("%d", GetSelected()->GetBB().minPoint);
-				ImGui::Text("   AABB Max Point:"); ImGui::SameLine();
-				ImGui::Text("%d", GetSelected()->GetBB().maxPoint);*/
+				ImGui::Text("%s", GetSelected()->GetName());
+				ImGui::Text("   AABB MinPoint:"); 
+				ImGui::Text(" X: %d", GetSelected()->GetBB().minPoint.x);
+				ImGui::Text(" Y: %d", GetSelected()->GetBB().minPoint.y); 
+				ImGui::Text(" Z: %d", GetSelected()->GetBB().minPoint.z);
+				ImGui::Text("   AABB Max Point:"); 
+				ImGui::Text(" X: %d", GetSelected()->GetBB().maxPoint.x);
+				ImGui::Text(" Y: %d", GetSelected()->GetBB().maxPoint.y);
+				ImGui::Text(" Z: %d", GetSelected()->GetBB().maxPoint.z);
 
 			}
 			else

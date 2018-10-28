@@ -28,6 +28,7 @@ public:
 	bool HasMesh()const;
 	bool HasTex()const;
 	bool HasCam()const;
+	bool HasChilds()const;
 	//flags interaction
 	void SetActive(bool active);
 	bool IsActive()const;
@@ -49,6 +50,8 @@ public:
 	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();
+	void RecalculateBoundingBox(GameObject* child);
+	void RecursiveRecalculateBoundingBox(float4x4 transform, GameObject* go);
 	//Info
 	const char* GetName()const;
 	void SetName(const char* name);

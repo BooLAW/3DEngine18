@@ -16,10 +16,10 @@ public:
 	void SetGlobalPos(const float3& new_pos);
 
 	void SetTransform(float3 pos, Quat rot, float3 scale);
-	Transform GetTransform()const;
+	Transform* GetTransform()const;
 
 public:
-	Transform transform;
+	Transform* transform;
 
 	float4x4 trans_matrix_l;
 	float4x4 trans_matrix_g;

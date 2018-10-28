@@ -279,8 +279,4 @@ void Mesh::CalculateVertexNormal()
 
 }
 
-void Mesh::RecalculateBoundingBox()
-{
-	bounding_box.SetNegativeInfinity();
-	bounding_box.Enclose((float3*)vertices, num_vertices);
-}
+

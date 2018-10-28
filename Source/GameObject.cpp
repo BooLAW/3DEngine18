@@ -23,7 +23,7 @@ GameObject::GameObject()
 	PushComponent(new_transform);
 
 	transform = new_transform;
-
+	
 	new_transform->type = ComponentType::TANSFORM;
 }
 
@@ -152,6 +152,11 @@ bool GameObject::HasCam() const
 			ret = true;
 	}
 	return ret;
+}
+
+bool GameObject::HasChilds() const
+{
+	return childs_list.empty() == false;
 }
 
 
@@ -298,6 +303,44 @@ void GameObject::RecursiveUpdateTransformChilds()
 	for (int i = 0; i < GetNumChilds(); i++)
 	{
 		childs_list[i]->transform->UpdateTransformValues();
+	}
+
+}
+
+void GameObject::RecalculateBoundingBox(GameObject* child)
+{
+	Mesh* mesh = child->GetMesh();
+	ComponentTransform* c_transform = child->transform;
+	if (mesh == nullptr)
+	{
+		CONSOLE_LOG_DEBUG("Can't RecalculateBB, mesh == nullptr");
+		return;
+	}
+	else
+	{
+		mesh->bounding_box.SetNegativeInfinity();
+		mesh->bounding_box.Enclose(mesh->vertices, mesh->num_vertices);
+		mesh->bounding_box.TransformAsAABB(transform->trans_matrix_g);
+	}
+}
+
+void GameObject::RecursiveRecalculateBoundingBox(float4x4 transform, GameObject * go)
+{
+	//recalculate me
+	RecalculateBoundingBox(go);
+	//recalculate my childs
+	if (go->HasChilds())
+	{
+		for (int i = 0; i < go->GetNumChilds(); i++)
+		{
+			ComponentTransform* trans = go->transform;
+			Mesh*  mesh = go->GetMesh();
+			if (HasMesh())
+			{
+				RecursiveRecalculateBoundingBox(trans->trans_matrix_g, childs_list[i]);
+				trans->updated_transform = false;
+			}
+		}
 	}
 
 }

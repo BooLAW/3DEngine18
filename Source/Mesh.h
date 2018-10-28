@@ -30,7 +30,6 @@ public:
 	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);
 	void CalculateVertexNormal();
-	void RecalculateBoundingBox();
 public:
 	float3 color;
 	MESH_TYPE type;
