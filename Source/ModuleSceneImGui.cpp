@@ -279,21 +279,7 @@ void ModuleSceneGui::CreateMainMenu()
 					show_random_number_generator = !show_random_number_generator;
 				}
 				else
-					App->audio->menu_tick_arr[5] = FALSEBOOL;
-			/*	if (ImGui::MenuItem("Sphere Creator"))
-				{
-					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[6]);
-					show_sphere_creator = !show_sphere_creator;
-				}
-				else
-					App->audio->menu_tick_arr[6] = FALSEBOOL;
-				if (ImGui::MenuItem("Cube Creator"))
-				{
-					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[7]);
-					show_cube_creator = !show_cube_creator;
-				}
-				else
-					App->audio->menu_tick_arr[7] = FALSEBOOL;*/
+					App->audio->menu_tick_arr[5] = FALSEBOOL;			
 				if (ImGui::MenuItem("Profiler"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[8]);

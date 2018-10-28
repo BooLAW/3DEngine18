@@ -47,7 +47,11 @@ bool ModuleScene::Start()
 	
 
 	go_list.push_back(scene_root);
-	
+
+	octree.Create(float3::zero, float3::zero);
+	octree.update_quadtree = true;
+	draw_octree = false;
+
 	App->camera->StartEditorCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
@@ -69,12 +73,25 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	
+	if (octree.update_quadtree)
+	{
+		octree.min_point = float3::zero;
+		octree.max_point = float3::zero;
+		for (std::vector<Mesh*>::iterator it = octree_meshes.begin(); it != octree_meshes.end(); it++)
+		{
+			octree.Recalculate((*it)->bounding_box.minPoint, (*it)->bounding_box.maxPoint);
+		}
+		octree.Create(octree.min_point, octree.max_point);
+		for (std::vector<Mesh*>::iterator it = octree_meshes.begin(); it != octree_meshes.end(); it++)
+		{
+			octree.Insert((*it));
+		}
+		octree.update_quadtree = false;
+	}
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
 {
-	
 	//Base Plane
 	if (App->renderer3D->show_plane == true)
 	{
@@ -95,6 +112,9 @@ void ModuleScene::DrawGameObjects()
 		}
 			
 	}
+	//DrawOctree
+	octree.DrawOctree(draw_octree);
+	
 	
 }
 
@@ -146,6 +166,16 @@ bool ModuleScene::HasObjects()
 	return (go_list.size() > 1);
 }
 
+void ModuleScene::AddToOctree(GameObject * go)
+{
+	octree.Insert(go);
+}
+
+void ModuleScene::CollectOctreeIntersections(std::list<Mesh*>& item_elements, AABB* bounding_box)
+{
+	octree.CollectIntersections(item_elements, bounding_box);
+}
+
 void ModuleScene::DrawInspector()
 {
 
@@ -164,6 +194,36 @@ void ModuleScene::DrawHierarchy()
 	}
 }
 
+void ModuleScene::DrawModuleConfig()
+{
+	if (ImGui::CollapsingHeader("Scene"))
+	{
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->input_tick_arr[0]);
+		ImGui::Text("Octree");
+		ImGui::Separator();
+		ImGui::Checkbox("   DrawOctree", &draw_octree);
+
+			ImGui::Text("   Static meshes:"); ImGui::SameLine();
+			ImGui::Text(" %d", octree_meshes.size());
+
+			ImGui::Text("   Min Point:"); ImGui::SameLine();
+			ImGui::Text("   X:%d", octree.min_point.x); ImGui::SameLine();
+			ImGui::Text("   Y:%d", octree.min_point.y); ImGui::SameLine();
+			ImGui::Text("   Z:%d", octree.min_point.z);
+
+			ImGui::Text("   Max Point:"); ImGui::SameLine();
+			ImGui::Text("   X:%d", octree.max_point.x); ImGui::SameLine();
+			ImGui::Text("   Y:%d", octree.max_point.y); ImGui::SameLine();
+			ImGui::Text("   Z:%d", octree.max_point.z);
+
+
+		
+	}
+	else
+		App->audio->input_tick_arr[0] = FALSEBOOL;
+
+}
+
 void ModuleScene::DrawChilds(GameObject* parent)
 {
 	if (parent == nullptr)
@@ -179,14 +239,9 @@ void ModuleScene::DrawChilds(GameObject* parent)
 	if (parent->GetNumChilds() == 0)
 		flags |= ImGuiTreeNodeFlags_Leaf;
 
-	// ------------------------
 	// Draw line --------------
-	// ------------------------
 	bool opened = ImGui::TreeNodeEx(parent->GetName(), flags);
 
-	// ------------------------
-	// Input ------------------
-	// ------------------------
 	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
 	{
 			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())

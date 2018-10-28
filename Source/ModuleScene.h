@@ -25,22 +25,26 @@ public:
 	void DrawGameObjects();
 	void ClearScene();
 	bool HasObjects();
+	//Octree
+	void AddToOctree(GameObject* go);
+	void CollectOctreeIntersections(std::list<Mesh*>& item_elements,AABB* bounding_box);
 	//UI
 	void DrawInspector();
 	void DrawHierarchy();
+	void DrawModuleConfig()override;
 	void DrawChilds(GameObject* parent);
 	void ResetSelected();
 	GameObject* GetSelected();
 	void SaveScene(std::vector<GameObject*> go_list);
-
-
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
 	std::vector<GameObject*> go_to_draw;
+	std::vector<Mesh*> octree_meshes;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
-	Quadtree octree;
+	Octree octree;
+	bool draw_octree = false;
 	bool has_meshes = false;
 	std::string fbx_name;
 
