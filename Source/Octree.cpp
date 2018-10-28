@@ -33,7 +33,8 @@ void OctreeItem::ClearItems()
 
 bool OctreeItem::IsItemFull() const
 {
-	return item_elements.size() == 4;
+	bool ret = item_elements.size() == 4;
+	return ret;
 }
 
 void OctreeItem::InsertItem(Mesh * mesh_to_insert)
@@ -71,7 +72,7 @@ void OctreeItem::SubdivideItem()
 	float3 length = item_box.Size() / 2;
 
 	int id = 0;
-	//iterator to make the new 8 boxes
+	//iterator to make the new 8 boxes(2 to the 3)
 	for (int ix = 0; ix < 2; ix++)
 	{
 		for (int iy = 0; iy < 2; iy++)

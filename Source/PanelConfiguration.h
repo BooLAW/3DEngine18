@@ -19,8 +19,6 @@ public:
 	static char app_org_input;
 	int final_mem = 0;
 	int last_mem = 0;
-	
-
 public:
 	PanelConfiguration();
 	virtual ~PanelConfiguration();
