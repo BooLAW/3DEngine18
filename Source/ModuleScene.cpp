@@ -48,7 +48,11 @@ bool ModuleScene::Start()
 	
 
 	go_list.push_back(scene_root);
-	
+
+	octree.Create(float3::zero, float3::zero);
+	octree.update_quadtree = true;
+	draw_octree = false;
+
 	App->camera->StartEditorCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
@@ -70,12 +74,25 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	
+	if (octree.update_quadtree)
+	{
+		octree.min_point = float3::zero;
+		octree.max_point = float3::zero;
+		for (std::vector<Mesh*>::iterator it = octree_meshes.begin(); it != octree_meshes.end(); it++)
+		{
+			octree.Recalculate((*it)->bounding_box.minPoint, (*it)->bounding_box.maxPoint);
+		}
+		octree.Create(octree.min_point, octree.max_point);
+		for (std::vector<Mesh*>::iterator it = octree_meshes.begin(); it != octree_meshes.end(); it++)
+		{
+			octree.Insert((*it));
+		}
+		octree.update_quadtree = false;
+	}
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
 {
-	
 	//Base Plane
 	if (App->renderer3D->show_plane == true)
 	{
@@ -96,6 +113,9 @@ void ModuleScene::DrawGameObjects()
 		}
 			
 	}
+	//DrawOctree
+	octree.DrawOctree(draw_octree);
+	
 	
 }
 
@@ -145,6 +165,16 @@ void ModuleScene::ClearScene()
 bool ModuleScene::HasObjects()
 {
 	return (go_list.size() > 1);
+}
+
+void ModuleScene::AddToOctree(GameObject * go)
+{
+	octree.Insert(go);
+}
+
+void ModuleScene::CollectOctreeIntersections(std::list<Mesh*>& item_elements, AABB* bounding_box)
+{
+	octree.CollectIntersections(item_elements, bounding_box);
 }
 
 void ModuleScene::DrawInspector()

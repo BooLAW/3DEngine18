@@ -1,6 +1,7 @@
 #include "Quadtree.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "DebugDraw.h"
 
 
 OctreeItem::OctreeItem(AABB& box)
@@ -122,7 +123,7 @@ Octree::~Octree()
 void Octree::Create(float3 min,float3 max)
 {
 	AABB new_box(min, max);
-	root_item->item_box = new_box;
+	root_item = new OctreeItem(new_box);
 	min_point = min;
 	max_point = max;
 	update_quadtree = true;
@@ -131,6 +132,19 @@ void Octree::Create(float3 min,float3 max)
 void Octree::Clear()
 {
 	RELEASE(root_item);
+}
+
+void Octree::DrawOctree(bool active)
+{
+	if (!active)
+		return;
+	else
+	{
+		if (root_item != nullptr)
+		{
+			root_item->Draw();
+		}
+	}
 }
 
 void Octree::Insert(GameObject * go_to_insert)
@@ -173,6 +187,7 @@ void Octree::Insert(GameObject * go_to_insert)
 			update_quadtree = true;
 		}
 		//Add it to the root node
+
 		if (update_quadtree == false)
 		{
 			root_item->InsertItem(mesh);
@@ -180,6 +195,65 @@ void Octree::Insert(GameObject * go_to_insert)
 
 	}
 		
+}
+
+void Octree::Insert(Mesh * mesh)
+{
+	if (root_item != nullptr)
+	{
+		//Check if it's without the limits
+		if (mesh->bounding_box.minPoint.x < min_point.x)
+		{
+			min_point.x = mesh->bounding_box.minPoint.x;
+			update_quadtree = true;
+		}
+		if (mesh->bounding_box.minPoint.y < min_point.y)
+		{
+			min_point.y = mesh->bounding_box.minPoint.y;
+			update_quadtree = true;
+		}
+		if (mesh->bounding_box.minPoint.z < min_point.z)
+		{
+			min_point.z = mesh->bounding_box.minPoint.z;
+			update_quadtree = true;
+		}
+		if (mesh->bounding_box.maxPoint.x > max_point.x)
+		{
+			max_point.x = mesh->bounding_box.maxPoint.x;
+			update_quadtree = true;
+		}
+		if (mesh->bounding_box.maxPoint.y > max_point.y)
+		{
+			max_point.y = mesh->bounding_box.maxPoint.y;
+			update_quadtree = true;
+		}
+		if (mesh->bounding_box.maxPoint.z > max_point.z)
+		{
+			max_point.z = mesh->bounding_box.maxPoint.z;
+			update_quadtree = true;
+		}
+		//Add it to the root node
+		if (update_quadtree == false)
+		{
+			root_item->InsertItem(mesh);
+		}
+	}
+}
+
+void Octree::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
+{
+	if (root_item != nullptr)
+	{
+		if (bounding_box->Intersects(root_item->item_box))
+		{
+			root_item->CollectIntersections(intersections, bounding_box);
+		}
+	}
+}
+
+void Octree::Recalculate(float3 min, float3 max)
+{
+	//TODO
 }
 
 void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
@@ -203,4 +277,24 @@ void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bou
 			intersections.push_back(*it);
 		}
 	}
+}
+
+void OctreeItem::Draw()
+{
+	if (HasChilds())
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			static float3 points[8];//is a box
+			item_box.GetCornerPoints(points);
+			BoxDD(points,Blue);
+		}
+		
+	}
+
+}
+
+bool OctreeItem::HasChilds() const
+{
+	return childs[0] != nullptr;
 }

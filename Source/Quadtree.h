@@ -16,7 +16,8 @@ public:
 	void InsertItem(Mesh* mesh_to_insert);
 	void SubdivideItem();
 	void CollectIntersections(std::list<Mesh*> intersections, AABB* bounding_box);
-
+	void Draw();
+	bool HasChilds()const;
 public:
 	AABB item_box;
 	std::list<Mesh*> item_elements;
@@ -31,7 +32,11 @@ public:
 	virtual ~Octree();
 	void Create(float3 min, float3 max);
 	void Clear();
+	void DrawOctree(bool active);
 	void Insert(GameObject* go_to_insert);
+	void Insert(Mesh* mesh);
+	void CollectIntersections(std::list<Mesh*> intersections, AABB* bounding_box);
+	void Recalculate(float3 min, float3 max);
 private:
 	OctreeItem * root_item = nullptr;
 public:

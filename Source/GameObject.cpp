@@ -180,7 +180,15 @@ void GameObject::SetStatic(bool is_static)
 	if (childs_list.size() > 0)
 	{
 		for (int i = 0; i < childs_list.size(); i++)
+		{
 			childs_list[i]->SetStatic(is_static);
+			if (is_static)
+			{
+				App->scene_intro->AddToOctree(childs_list[i]);
+				App->scene_intro->octree_meshes.push_back(childs_list[i]->GetMesh());
+			}
+			//Later we will erase it 
+		}
 	}
 }
 

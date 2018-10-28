@@ -75,8 +75,7 @@ void ComponentTransform::DrawInspectorInfo()
 				owner->GetMesh()->RecalculateBoundingBox();
 		}
 	}
-	else
-		CONSOLE_LOG_INFO("Changed to non static");
+
 }
 void ComponentTransform::SetLocalPos(const float3 & new_pos)
 {
