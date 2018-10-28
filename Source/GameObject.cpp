@@ -294,7 +294,6 @@ Material * GameObject::GetMaterial()
 
 void GameObject::RecursiveUpdateTransformChilds()
 {
-	//PAUTODO
 	//Make a function to update recursively all the childs and components related
 	for (int i = 0; i < GetNumChilds(); i++)
 	{

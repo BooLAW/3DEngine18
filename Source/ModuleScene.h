@@ -31,12 +31,11 @@ public:
 	//UI
 	void DrawInspector();
 	void DrawHierarchy();
+	void DrawModuleConfig()override;
 	void DrawChilds(GameObject* parent);
 	void ResetSelected();
 	GameObject* GetSelected();
 	void SaveScene(std::vector<GameObject*> go_list);
-
-
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;

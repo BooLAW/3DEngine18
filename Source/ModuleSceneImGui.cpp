@@ -279,15 +279,7 @@ void ModuleSceneGui::CreateMainMenu()
 					show_random_number_generator = !show_random_number_generator;
 				}
 				else
-					App->audio->menu_tick_arr[5] = FALSEBOOL;
-				if (ImGui::MenuItem("Draw Octree"))
-				{
-					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[6]);
-					App->scene_intro->draw_octree = !App->scene_intro->draw_octree;
-				}
-				else
-					App->audio->menu_tick_arr[6] = FALSEBOOL;
-			
+					App->audio->menu_tick_arr[5] = FALSEBOOL;			
 				if (ImGui::MenuItem("Profiler"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[8]);

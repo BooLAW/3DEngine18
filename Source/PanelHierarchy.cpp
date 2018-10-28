@@ -23,7 +23,7 @@ PanelHierarchy::~PanelHierarchy()
 void PanelHierarchy::Draw()
 {
 	ImGui::BeginDock("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing);
-	
+	ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size());
 	App->scene_intro->DrawHierarchy();
 
 	ImGui::EndDock();

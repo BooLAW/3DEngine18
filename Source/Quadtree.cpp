@@ -253,7 +253,45 @@ void Octree::CollectIntersections(std::list<Mesh*> intersections, AABB * boundin
 
 void Octree::Recalculate(float3 min, float3 max)
 {
-	//TODO
+
+	if (min_point.Equals(min) && max_point.Equals(max))
+	{
+		min_point = min;
+		max_point = max;
+	}
+	else
+		ExpandBox(min,max);
+
+	
+}
+
+void Octree::ExpandBox(float3 min, float3 max)
+{
+
+	if (min.x < min_point.x)
+	{
+		min_point.x = min.x;
+	}
+	if (min.y < min_point.y)
+	{
+		min_point.y = min.y;
+	}
+	if (min.z < min_point.z)
+	{
+		min_point.z = min.z;
+	}
+	if (max.x > max_point.x)
+	{
+		max_point.x = max.x;
+	}
+	if (max.y > max_point.y)
+	{
+		max_point.y = max.y;
+	}
+	if (max.z > max_point.z)
+	{
+		max_point.z = max.z;
+	}
 }
 
 void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)

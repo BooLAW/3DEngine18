@@ -37,6 +37,7 @@ public:
 	void Insert(Mesh* mesh);
 	void CollectIntersections(std::list<Mesh*> intersections, AABB* bounding_box);
 	void Recalculate(float3 min, float3 max);
+	void ExpandBox(float3 min, float3 max);
 private:
 	OctreeItem * root_item = nullptr;
 public:
