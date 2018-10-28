@@ -201,6 +201,7 @@ void ModuleScene::DrawModuleConfig()
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->input_tick_arr[0]);
 		ImGui::Text("Octree");
 		ImGui::Separator();
+		ImGui::Spacing();
 		ImGui::Checkbox("   DrawOctree", &draw_octree);
 
 			ImGui::Text("   Static meshes:"); ImGui::SameLine();
@@ -215,6 +216,23 @@ void ModuleScene::DrawModuleConfig()
 			ImGui::Text("   X:%d", octree.max_point.x); ImGui::SameLine();
 			ImGui::Text("   Y:%d", octree.max_point.y); ImGui::SameLine();
 			ImGui::Text("   Z:%d", octree.max_point.z);
+			ImGui::Spacing();
+		ImGui::Text("Selected GameObject");
+			ImGui::Separator();
+			ImGui::Spacing();
+			if (GetSelected() != nullptr)
+			{
+				ImGui::Text("  Name:"); ImGui::SameLine();
+				/*ImGui::Text("%s", GetSelected()->GetName());
+				ImGui::Text("   AABB MinPoint:"); ImGui::SameLine();
+				ImGui::Text("%d", GetSelected()->GetBB().minPoint);
+				ImGui::Text("   AABB Max Point:"); ImGui::SameLine();
+				ImGui::Text("%d", GetSelected()->GetBB().maxPoint);*/
+
+			}
+			else
+				ImGui::Text("Select a GameObject to show its info");
+		
 
 
 		
