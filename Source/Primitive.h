@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __PRIMITIVE_H__
+#define __PRIMITIVE_H__
+
 #include "MathGeoLib/MathGeoLib.h"
 #include "Color.h"
 
@@ -53,3 +55,5 @@ public:
 	float3 normal;
 	float constant;
 };
+
+#endif

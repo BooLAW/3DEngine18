@@ -1,6 +1,8 @@
-#pragma once
+#ifndef __TEXTUREMSAA_H__
+#define __TEXTUREMSAA_H__
 
 #include "Globals.h"
+// Tutorial LINK https://sites.google.com/site/john87connor/framebuffer/tutorial-10-6-framebuffer-multisample
 
 class TextureMSAA
 {
@@ -43,3 +45,4 @@ private:
 	int current_msaa_samples;
 };
 
+#endif

@@ -1,4 +1,4 @@
-#include "Quadtree.h"
+#include "Octree.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "DebugDraw.h"
@@ -17,7 +17,7 @@ OctreeItem::~OctreeItem()
 
 void OctreeItem::SetChildsNull()
 {
-	for (int i = 0; i < QUADTREECHILDS; i++)
+	for (int i = 0; i < OCTREECHILDS; i++)
 	{
 		childs[i] = nullptr;
 	}
@@ -25,7 +25,7 @@ void OctreeItem::SetChildsNull()
 
 void OctreeItem::ClearItems()
 {
-	for (int i = 0; i < QUADTREECHILDS; i++)
+	for (int i = 0; i < OCTREECHILDS; i++)
 	{
 		RELEASE(childs[i]);
 	}
@@ -93,7 +93,7 @@ void OctreeItem::SubdivideItem()
 	{
 		if ((*item) != nullptr)
 		{
-			for (int i = 0; i < QUADTREECHILDS; i++)
+			for (int i = 0; i < OCTREECHILDS; i++)
 			{
 				if (childs[i]->item_box.Intersects((*item)->bounding_box))
 				{

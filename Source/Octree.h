@@ -1,7 +1,10 @@
-#pragma once
+#ifndef __OCTREE_H__
+#define __OCTREE_H__
+
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
-#define QUADTREECHILDS 8
+
+#define OCTREECHILDS 8
 
 class GameObject;
 class ComponentMesh;
@@ -21,7 +24,7 @@ public:
 public:
 	AABB item_box;
 	std::list<Mesh*> item_elements;
-	OctreeItem* childs[QUADTREECHILDS];
+	OctreeItem* childs[OCTREECHILDS];
 	int lvl = 0;
 };
 
@@ -45,3 +48,4 @@ public:
 	float3 min_point, max_point;
 };
 
+#endif
