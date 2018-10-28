@@ -102,6 +102,11 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 
+#ImGui
+/Game
+.imgui
+*.ini
+
 # Visual Studio profiler
 *.psess
 *.vsp
