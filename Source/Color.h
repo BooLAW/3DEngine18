@@ -1,5 +1,7 @@
+
 #ifndef __Color_H__
 #define __Color_H__
+
 struct Color
 {
 	float r, g, b, a;

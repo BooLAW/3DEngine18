@@ -1,8 +1,11 @@
-#ifndef __Quadtree_H__
-#define __Quadtree_H__
+
+#ifndef __OCTREE_H__
+#define __OCTREE_H__
+
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
-#define QUADTREECHILDS 8
+
+#define OCTREECHILDS 8
 
 class GameObject;
 class ComponentMesh;
@@ -22,7 +25,7 @@ public:
 public:
 	AABB item_box;
 	std::list<Mesh*> item_elements;
-	OctreeItem* childs[QUADTREECHILDS];
+	OctreeItem* childs[OCTREECHILDS];
 	int lvl = 0;
 };
 
@@ -47,3 +50,4 @@ public:
 };
 
 #endif
+

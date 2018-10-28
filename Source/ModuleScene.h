@@ -5,7 +5,7 @@
 #include "Panel.h"
 #include "Mesh.h"
 #include "GameObject.h"
-#include "Quadtree.h"
+#include "Octree.h"
 
 struct PhysBody3D;
 class ModuleScene : public Module

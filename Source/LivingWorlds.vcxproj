@@ -180,7 +180,7 @@
     <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Profiler.h" />
-    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Octree.h" />
     <ClInclude Include="SDL\include\begin_code.h" />
     <ClInclude Include="SDL\include\close_code.h" />
     <ClInclude Include="SDL\include\SDL.h" />
@@ -327,7 +327,7 @@
     <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Profiler.cpp" />
-    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Octree.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
