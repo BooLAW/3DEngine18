@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULE_PHYSICS_3D__
+#define __MODULE_PHYSICS_3D__
+
 #include "Module.h"
 #include "Globals.h"
 
@@ -31,3 +33,4 @@ public:
 
 };
 
+#endif

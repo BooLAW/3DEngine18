@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __MODULE_RENDERER_3D__
+#define __MODULE_RENDERER_3D__
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
@@ -47,3 +48,4 @@ public:
 	bool show_plane = true;
 	bool debug_draw = false;
 };
+#endif

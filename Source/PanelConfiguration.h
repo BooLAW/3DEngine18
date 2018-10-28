@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __PANEL_CONFIG_H__
+#define __PANEL_CONFIG_H__
+
 #include "Panel.h"
 #include "ImGui/imgui.h"
 #include "Application.h"
@@ -23,8 +25,5 @@ public:
 	virtual ~PanelConfiguration();
 	void Draw()override;
 	void Application();
-	
-
-
 };
-
+#endif
