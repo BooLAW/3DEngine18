@@ -51,8 +51,7 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	std::string file_name;
 	file_name.append(App->GetFileName(path.c_str()));
 	file_name.append(".lw");
-	App->json->CreateNewJSON(file_name.c_str());
-	json_file file1(file_name.c_str());
+
 	FILE* fp = fopen(file_name.c_str(), "wb"); // non-Windows use "w"
 
 	char writeBuffer[10000];
