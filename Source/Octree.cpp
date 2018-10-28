@@ -314,7 +314,8 @@ void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bou
 		{
 			intersections.push_back(*it);
 		}
-	}
+	}
+
 }
 
 void OctreeItem::Draw()
