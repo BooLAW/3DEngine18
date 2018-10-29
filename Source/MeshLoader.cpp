@@ -30,8 +30,8 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	if (new_scene != nullptr)
 	{
 		aiNode* root = new_scene->mRootNode;
-
-		SaveSceneMeshesLW(new_scene, root,file_path);
+		SaveMesh(new_scene,root); //Starts Recursive
+		//SaveSceneMeshesLW(new_scene, root,file_path);
 		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
 
 		aiReleaseImport(new_scene);
@@ -60,7 +60,7 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	testconfig_w.SetObject();
 	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
 
-	SaveMesh(scene, node,&testconfig_w); //Starts Recursive
+	
 
 	Writer<FileWriteStream> writer(os);
 	testconfig_w.Accept(writer);
@@ -72,6 +72,7 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
 {
 	std::string final_file_name;
+	final_file_name.append("Assets/Models/");
 	final_file_name.append(node->mName.C_Str());
 	final_file_name.append(".lw");
 
@@ -165,6 +166,7 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 {
 	Mesh* ret = new Mesh();
 	std::string final_file_name;
+	final_file_name.append("Assets/Models/");
 	final_file_name.append(node->mName.C_Str());
 	final_file_name.append(".lw");
 	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
@@ -232,7 +234,7 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	return ret;
 }
 
-bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config)
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 {
 	if (scene != nullptr && node->mNumMeshes > 0)
 	{
@@ -250,7 +252,7 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, Document* config
 	
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		SaveMesh(scene, node->mChildren[i], config);
+		SaveMesh(scene, node->mChildren[i]);
 	}
 
 	return false;

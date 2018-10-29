@@ -212,7 +212,7 @@ bool Application::Save()
 {
 	bool ret = true;
 
-	FILE* fp = fopen("Assets/json/config.json", "wb"); // non-Windows use "w"
+	FILE* fp = fopen("Assets/Settings/config.json", "wb"); // non-Windows use "w"
 	char writeBuffer[10000];
 	Document testconfig_w;
 	testconfig_w.Parse(readBuf);
@@ -244,7 +244,7 @@ bool Application::Save()
 bool Application::Load()
 {
 	bool ret = true;
-	FILE* fp = fopen("Assets/json/config.json", "rb"); // non-Windows use "r"
+	FILE* fp = fopen("Assets/Settings/config.json", "rb"); // non-Windows use "r"
 
 	Document testconfig_r;
 	FileReadStream is(fp, loadBuf, sizeof(loadBuf));
