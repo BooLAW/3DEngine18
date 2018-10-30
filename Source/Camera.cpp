@@ -4,6 +4,8 @@
 #include "ModuleCamera3D.h"
 #include "Application.h"
 #include "TextureMSAA.h"
+#include "Transform.h"
+#include "ComponentTransform.h"
 
 Camera::Camera()
 {
@@ -180,7 +182,7 @@ TextureMSAA * Camera::SceneMSAA()
 {
 	return viewport_texture;
 }
-bool Camera::IsGameObjectInFrustum(AABB& bb)
+bool Camera::IsGameObjectInFrustum(AABB& bb, float3 translation)
 {
 	bool ret = true;
 	int num_vertices = bb.NumVertices();
@@ -190,7 +192,7 @@ bool Camera::IsGameObjectInFrustum(AABB& bb)
 		for (int j = 0; j < num_vertices; j++)
 		{
 			Plane plane = frustum.GetPlane(i);
-			if (plane.IsOnPositiveSide(bb.CornerPoint(j)))
+			if (plane.IsOnPositiveSide(bb.CornerPoint(j) + translation))
 				outside_vertices++;
 		}
 		if (outside_vertices == 8)

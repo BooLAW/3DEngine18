@@ -26,9 +26,9 @@ void CleanUp()
 
 void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 {
-	glPushMatrix();
-	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
-	glPopMatrix();
+	//glPushMatrix();
+	//glMultMatrixf((GLfloat*)transform.Transposed().ptr());
+	//glPopMatrix();
 	//Bounding Box
 	static float3 points[8];//is a box
 	mesh->bounding_box.GetCornerPoints(points);
@@ -37,16 +37,14 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 	glDisable(GL_CULL_FACE);
 	glLineWidth(5.0f);
 	BoxDD(points, color);
-
+	glBegin(GL_LINES);
+	
 	//Normals
-
-	//glLineWidth(4.0f);
-	//glBegin(GL_LINES);
-
-	//for (uint i = 0; i < mesh->face_normal.size()-1; i++)
-	//{
-	//	LineSegmentDraw(&mesh->face_normal[i].b, &mesh->face_normal[i].a,Blue);
-	//}
+	/*glLineWidth(4.0f);
+	for (uint i = 0; i < mesh->face_normal.size()-1; i++)
+	{
+		LineSegmentDraw(&mesh->face_normal[i].b, &mesh->face_normal[i].a,Blue);
+	}*/
 	glEnd();
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);

@@ -56,7 +56,6 @@ void GameObject::Draw()
 				DebugDrawing(aux_mesh->mesh, Red);
 			}
 			//BindMaterial
-
 			if (aux_mesh->mesh->num_tex_coords != 0)
 			{
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);

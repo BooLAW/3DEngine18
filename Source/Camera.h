@@ -4,6 +4,7 @@
 #define FRUSTUM_PLANES 6
 
 class TextureMSAA;
+class GameObject;
 class Camera {
 public:
 	Camera();
@@ -43,7 +44,7 @@ public:
 	void CreateNewFrustum();
 	void DrawFrustum();
 	TextureMSAA* SceneMSAA();
-	bool IsGameObjectInFrustum(AABB& bb);
+	bool IsGameObjectInFrustum(AABB& bb, float3 translation);
 	TextureMSAA* viewport_texture;
 	Frustum frustum;
 private:
