@@ -39,10 +39,13 @@ void ComponentTransform::UpdateTransformValues()
 
 void ComponentTransform::DrawInspectorInfo()
 {
+	bool reset_transform = false;
 	float pos[3] = { transform->pos.x,transform->pos.y,transform->pos.z };
 	float rot[3] = { transform->rot.ToEulerXYZ().x*RADTODEG, transform->rot.ToEulerXYZ().y*RADTODEG, transform->rot.ToEulerXYZ().z*RADTODEG };
 	float scale[3] = { transform->scale.x,transform->scale.y,transform->scale.z };
 
+	if (ImGui::Button("Identity Reset"))
+		reset_transform = !reset_transform;
 
 	ImGui::DragFloat3("Position##transform", pos, 0.1f, -INFINITY, INFINITY);
 	ImGui::DragFloat3("Rotation##transform", rot, 0.1f, -360, 360);
@@ -73,6 +76,16 @@ void ComponentTransform::DrawInspectorInfo()
 			UpdateTransformValues();
 			if(owner->HasMesh())
 				owner->RecalculateBoundingBox(owner);
+		}
+		if (reset_transform)
+		{
+			transform->SetPosition(float3::zero.x, float3::zero.y, float3::zero.z);
+			Quat aux = Quat::FromEulerXYZ(float3::zero.x * DEGTORAD, float3::zero.y * DEGTORAD, float3::zero.z * DEGTORAD);
+
+			transform->SetRotation(aux);
+
+			transform->SetScale(float3::one.x, float3::one.y, float3::one.z);
+
 		}
 	}
 
