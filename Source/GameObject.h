@@ -56,6 +56,8 @@ public:
 	const char* GetName()const;
 	void SetName(const char* name);
 
+	void ClearRelations();
+
 public:
 	GameObject* parent;
 	std::string name = "GO_NAME";

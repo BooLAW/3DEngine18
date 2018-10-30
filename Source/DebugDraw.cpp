@@ -37,7 +37,7 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDisable(GL_CULL_FACE);
-	glLineWidth(10.0f);
+	glLineWidth(5.0f);
 	BoxDD(points, color);
 
 	//Normals
@@ -54,9 +54,6 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 	glColor3f(255, 255, 255);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
-
 }
 
 void BoxDD(const float3 * points, Color color, bool debug)

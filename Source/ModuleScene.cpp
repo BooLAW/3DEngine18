@@ -87,6 +87,7 @@ update_status ModuleScene::Update(float dt)
 		}
 		octree.update_quadtree = false;
 	}
+
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
@@ -107,7 +108,7 @@ void ModuleScene::DrawGameObjects()
 			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB()))
 				go_list[i]->Draw();
 			else
-				CONSOLE_LOG_INFO("DISCARDED %d", i);
+				CONSOLE_LOG_INFO("DISCARDED %s", go_list[i]->GetName());
 		}
 			
 	}
@@ -153,8 +154,13 @@ GameObject * ModuleScene::CreateNewGameObject()
 
 void ModuleScene::ClearScene()
 {
-	go_list.clear();
-	//go_list.push_back(App->camera->editor_camera);
+	if (scene_root->HasChilds())
+	{
+		scene_root->ClearRelations();
+		scene_root->childs_list.clear();
+		go_list.clear();
+	}
+		
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;
@@ -253,20 +259,20 @@ void ModuleScene::DrawChilds(GameObject* parent)
 {
 	if (parent == nullptr)
 		return;
-
 	// Flags ------------------
 
 	uint flags = ImGuiTreeNodeFlags_OpenOnArrow;
 
-	if (parent->IsActive())
+	if (parent->IsSelected())
 		flags |= ImGuiTreeNodeFlags_Selected;
-
+	
 	if (parent->GetNumChilds() == 0)
 		flags |= ImGuiTreeNodeFlags_Leaf;
 
 	// Draw line --------------
-	bool opened = ImGui::TreeNode(parent->GetName());
-
+	bool opened = ImGui::TreeNodeEx(parent->GetName(),flags);
+	
+	// Set Selected on click
 	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
 	{
 			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())

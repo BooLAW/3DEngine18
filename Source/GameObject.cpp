@@ -32,13 +32,10 @@ GameObject::~GameObject()
 {
 }
 
-
-
 void GameObject::Draw()
 {
 	if (!active)
 		return;
-	
 		//Enable Client
 		glEnableClientState(GL_VERTEX_ARRAY);
 		ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
@@ -54,7 +51,7 @@ void GameObject::Draw()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
 
 			//Draw
-			if (App->renderer3D->attributes.debug_draw_atribute) 
+			if (App->renderer3D->attributes.debug_draw_atribute && IsSelected()) 
 			{
 				DebugDrawing(aux_mesh->mesh, Red);
 			}
@@ -72,8 +69,6 @@ void GameObject::Draw()
 
 			glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
 		}
-		
-		
 		
 		//Unbind
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -235,7 +230,6 @@ void GameObject::AddChild(GameObject * new_child)
 	if (new_child != nullptr)
 	{
 		new_child->SetParent(this);
-		childs_list.push_back(new_child);
 	}
 }
 
@@ -318,9 +312,9 @@ void GameObject::RecalculateBoundingBox(GameObject* child)
 	}
 	else
 	{
-		mesh->bounding_box.SetNegativeInfinity();
-		mesh->bounding_box.Enclose(mesh->vertices, mesh->num_vertices);
-		mesh->bounding_box.TransformAsAABB(transform->trans_matrix_g);
+		//mesh->bounding_box.SetNegativeInfinity();
+		//mesh->bounding_box.Enclose(mesh->vertices, mesh->num_vertices);
+		//mesh->bounding_box.TransformAsAABB(transform->trans_matrix_g);
 	}
 }
 
@@ -353,4 +347,21 @@ const char * GameObject::GetName() const
 void GameObject::SetName(const char * name)
 {
 	this->name = name;
+}
+
+void GameObject::ClearRelations()
+{
+	for (int i = 0; i < childs_list.size(); i++)
+	{
+		childs_list[i]->parent = nullptr;
+		if (childs_list[i]->HasChilds())
+			childs_list[i]->ClearRelations();
+		else
+		{
+			childs_list[i] = nullptr;
+			
+		}
+			
+	}
+	childs_list.clear();
 }
