@@ -2,6 +2,9 @@
 #include "Globals.h"
 #include "OpenGL.h"
 #include "math.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "ComponentTransform.h"
 
 
 
@@ -45,6 +48,33 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 	{
 		LineSegmentDraw(&mesh->face_normal[i].b, &mesh->face_normal[i].a,Blue);
 	}*/
+	glEnd();
+	glLineWidth(1.0f);
+	glColor3f(255, 255, 255);
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+void DebugDrawingParent(GameObject* go, Color color)
+{
+	// Calculate New Bounding Box
+	AABB bb({0,0,0}, {1,1,1});
+	
+	for (int i = 0; i < go->GetNumChilds(); i++)
+	{
+		if(go->childs_list[i]->HasMesh())
+			bb.Enclose(go->childs_list[i]->GetBB());
+
+	}
+
+	static float3 points[8];//is a box
+	bb.GetCornerPoints(points);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_CULL_FACE);
+	glLineWidth(5.0f);
+	BoxDD(points, color);
+	glBegin(GL_LINES);
+
 	glEnd();
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);

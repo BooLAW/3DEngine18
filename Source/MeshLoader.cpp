@@ -379,7 +379,6 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 		if (node_name == "RootNode")//That's how assimp saves the rootnode
 		{
-			GO->root_go = true;
 			node_name = App->GetFileName(path);
 			App->scene_intro->fbx_name = node_name;
 		}

@@ -110,7 +110,9 @@ void ModuleScene::DrawGameObjects()
 			else
 				CONSOLE_LOG_INFO("DISCARDED %s", go_list[i]->GetName());
 		}
-			
+		else if (!go_list[i]->IsRoot())
+			go_list[i]->Draw();
+
 	}
 	//DrawOctree
 	octree.DrawOctree(draw_octree);

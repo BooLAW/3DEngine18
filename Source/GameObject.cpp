@@ -68,6 +68,14 @@ void GameObject::Draw()
 
 			glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
 		}
+		else 
+		{
+			if (App->renderer3D->attributes.debug_draw_atribute && IsSelected())
+			{
+				DebugDrawingParent(this, Red);
+			}
+		}
+			
 		
 		//Unbind
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

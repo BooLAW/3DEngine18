@@ -169,9 +169,9 @@ update_status ModuleCamera3D::Update(float dt)
 	App->profiler.StartTimer("Camera");
 	if (!locked)
 		CameraMovement(dt);
-	if (draw_frustum) {
+	if (draw_frustum) 
 		editor_cam->DrawFrustum();
-	}
+	
 	//Profiler
 	App->profiler.SaveRunTimeData("Camera");
 	return UPDATE_CONTINUE;
