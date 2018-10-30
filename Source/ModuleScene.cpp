@@ -108,7 +108,7 @@ void ModuleScene::DrawGameObjects()
 			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB()))
 				go_list[i]->Draw();
 			else
-				CONSOLE_LOG_INFO("DISCARDED %d", i);
+				CONSOLE_LOG_INFO("DISCARDED %s", go_list[i]->GetName());
 		}
 			
 	}
