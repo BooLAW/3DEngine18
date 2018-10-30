@@ -354,3 +354,20 @@ void GameObject::SetName(const char * name)
 {
 	this->name = name;
 }
+
+void GameObject::ClearRelations()
+{
+	for (int i = 0; i < childs_list.size(); i++)
+	{
+		childs_list[i]->parent = nullptr;
+		if (childs_list[i]->HasChilds())
+			childs_list[i]->ClearRelations();
+		else
+		{
+			childs_list[i] = nullptr;
+			
+		}
+			
+	}
+	childs_list.clear();
+}

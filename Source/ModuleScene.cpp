@@ -153,8 +153,13 @@ GameObject * ModuleScene::CreateNewGameObject()
 
 void ModuleScene::ClearScene()
 {
-	go_list.clear();
-	//go_list.push_back(App->camera->editor_camera);
+	if (scene_root->HasChilds())
+	{
+		scene_root->ClearRelations();
+		scene_root->childs_list.clear();
+		go_list.clear();
+	}
+		
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;
