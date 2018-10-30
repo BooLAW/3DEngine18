@@ -111,20 +111,15 @@ void ModuleSceneGui::DrawImGui() {
 
 bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 {
-
-
 	Document::AllocatorType& allocator = config_w.GetAllocator();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
-
 		Value test(kObjectType);
 
 		test.AddMember("posx", (*item)->render_pos.x, allocator);
 		test.AddMember("posy", (*item)->render_pos.y, allocator);
 		test.AddMember("sizex", (*item)->render_size.x, allocator);
 		test.AddMember("sizey", (*item)->render_size.y, allocator);
-
-
 
 		Value n((*item)->panel_name, config_w.GetAllocator());
 		config_w.AddMember(n, test,allocator);

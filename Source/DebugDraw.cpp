@@ -29,8 +29,6 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 	glPopMatrix();
-
-
 	//Bounding Box
 	static float3 points[8];//is a box
 	mesh->bounding_box.GetCornerPoints(points);
@@ -58,8 +56,6 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 
 void BoxDD(const float3 * points, Color color, bool debug)
 {
-
-
 	glColor3f(color.r, color.g, color.b);
 
 	glBegin(GL_QUADS);

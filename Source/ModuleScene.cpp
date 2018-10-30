@@ -55,8 +55,8 @@ bool ModuleScene::Start()
 	App->camera->StartEditorCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
-	App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
+	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
