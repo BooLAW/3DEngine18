@@ -84,7 +84,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	float* tex_points = new float[ai_mesh->mNumVertices * 3];
 	//We store the number of vertices inside an array
 	uint header[4] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
-	
+
 	if (ai_mesh->HasTextureCoords(0))
 	{
 		header[2] = (uint)ai_mesh->mNumVertices;
@@ -132,11 +132,11 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 			else
 			{
 				memcpy(&indices[i * 3], ai_mesh->mFaces[i].mIndices, sizeof(int) * 3);
-
 			}
 		}
 		memcpy(cursor, indices, bytes);
 	}
+
 	/*
 	my_mesh2->num_indices = mesh->mNumFaces * 3;
 	my_mesh2->num_normal = mesh->mNumVertices * 3;

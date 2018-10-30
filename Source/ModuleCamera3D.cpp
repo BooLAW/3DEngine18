@@ -204,6 +204,7 @@ void ModuleCamera3D::Move(const float &speed)
 
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -=  speed;
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y +=  speed;
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_UP) {}
 	if(!newPos.IsZero())
 		editor_cam->frustum.Translate(newPos);
 
