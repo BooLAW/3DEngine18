@@ -55,10 +55,9 @@ bool ModuleScene::Start()
 	App->camera->StartEditorCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
-	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
-	App->loading_manager->Load(".\\Assets\\Textures\\Baker_house.png");
-	App->loading_manager->unique_material_path = ".\\Assets\\Models\\BakerHouse.fbx";
+	App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
+
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
@@ -224,14 +223,18 @@ void ModuleScene::DrawModuleConfig()
 			{
 				ImGui::Text("  Name:"); ImGui::SameLine();
 				ImGui::Text("%s", GetSelected()->GetName());
-				ImGui::Text("   AABB MinPoint:"); 
-				ImGui::Text(" X: %d", GetSelected()->GetBB().minPoint.x);
-				ImGui::Text(" Y: %d", GetSelected()->GetBB().minPoint.y); 
-				ImGui::Text(" Z: %d", GetSelected()->GetBB().minPoint.z);
-				ImGui::Text("   AABB Max Point:"); 
-				ImGui::Text(" X: %d", GetSelected()->GetBB().maxPoint.x);
-				ImGui::Text(" Y: %d", GetSelected()->GetBB().maxPoint.y);
-				ImGui::Text(" Z: %d", GetSelected()->GetBB().maxPoint.z);
+				if (GetSelected()->HasMesh())
+				{
+					ImGui::Text("   AABB MinPoint:");
+					ImGui::Text(" X: %d", GetSelected()->GetBB().minPoint.x);
+					ImGui::Text(" Y: %d", GetSelected()->GetBB().minPoint.y);
+					ImGui::Text(" Z: %d", GetSelected()->GetBB().minPoint.z);
+					ImGui::Text("   AABB Max Point:");
+					ImGui::Text(" X: %d", GetSelected()->GetBB().maxPoint.x);
+					ImGui::Text(" Y: %d", GetSelected()->GetBB().maxPoint.y);
+					ImGui::Text(" Z: %d", GetSelected()->GetBB().maxPoint.z);
+				}
+		
 
 			}
 			else
@@ -262,7 +265,7 @@ void ModuleScene::DrawChilds(GameObject* parent)
 		flags |= ImGuiTreeNodeFlags_Leaf;
 
 	// Draw line --------------
-	bool opened = ImGui::TreeNodeEx(parent->GetName(), flags);
+	bool opened = ImGui::TreeNode(parent->GetName());
 
 	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
 	{
