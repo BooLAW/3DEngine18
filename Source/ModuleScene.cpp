@@ -87,6 +87,7 @@ update_status ModuleScene::Update(float dt)
 		}
 		octree.update_quadtree = false;
 	}
+
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
@@ -258,20 +259,20 @@ void ModuleScene::DrawChilds(GameObject* parent)
 {
 	if (parent == nullptr)
 		return;
-
 	// Flags ------------------
 
 	uint flags = ImGuiTreeNodeFlags_OpenOnArrow;
 
-	if (parent->IsActive())
+	if (parent->IsSelected())
 		flags |= ImGuiTreeNodeFlags_Selected;
-
+	
 	if (parent->GetNumChilds() == 0)
 		flags |= ImGuiTreeNodeFlags_Leaf;
 
 	// Draw line --------------
-	bool opened = ImGui::TreeNode(parent->GetName());
-
+	bool opened = ImGui::TreeNodeEx(parent->GetName(),flags);
+	
+	// Set Selected on click
 	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
 	{
 			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())

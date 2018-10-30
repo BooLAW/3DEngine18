@@ -235,7 +235,6 @@ void GameObject::AddChild(GameObject * new_child)
 	if (new_child != nullptr)
 	{
 		new_child->SetParent(this);
-		childs_list.push_back(new_child);
 	}
 }
 
