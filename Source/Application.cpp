@@ -54,7 +54,7 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
-
+	CreateDirectory("Assets/Settings", NULL);
 
 
 	// Call Init() in all modules
@@ -211,7 +211,6 @@ void Application::DebugDrawBB()
 bool Application::Save()
 {
 	bool ret = true;
-
 	FILE* fp = fopen("Assets/Settings/config.json", "wb"); // non-Windows use "w"
 	char writeBuffer[10000];
 	Document testconfig_w;
@@ -247,14 +246,15 @@ bool Application::Load()
 	FILE* fp = fopen("Assets/Settings/config.json", "rb"); // non-Windows use "r"
 
 	Document testconfig_r;
-	FileReadStream is(fp, loadBuf, sizeof(loadBuf));
-	if (is.Peek() == 0)
+
+	if (fp == NULL)
 	{
 		App->imgui->want_to_save = true;
 
 	}
 	else
 	{
+		FileReadStream is(fp, loadBuf, sizeof(loadBuf));
 		testconfig_r.ParseStream(is);
 		testconfig_r.IsObject();
 
@@ -270,9 +270,10 @@ bool Application::Load()
 		{
 			ret = (*item)->Load(&testconfig_r);
 		}
+		fclose(fp);
 	}
 
-	fclose(fp);
+
 	App->imgui->want_to_load = false;
 	return ret;
 }
