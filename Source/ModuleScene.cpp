@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <WinBase.h>
+#include <string>
+#include <sstream>
 
 #include "Transform.h"
 #include "ComponentTransform.h"
@@ -146,6 +148,12 @@ float ModuleScene::RandFloat(float min, float max)
 GameObject * ModuleScene::CreateNewGameObject()
 {
 	GameObject* tmp_GO = new GameObject();
+	std::string new_name = "New GameObject ";
+
+	new_name += std::to_string(id_new_go);
+
+	tmp_GO->SetName(new_name.c_str());
+	id_new_go++;
 	tmp_GO->SetParent(scene_root);
 	go_list.push_back(tmp_GO);
 	tmp_GO->transform->UpdateTransformValues();

@@ -1,6 +1,8 @@
 #include "PanelHierarchy.h"
 #include "stdio.h"
 #include "ImGui/imgui_dock.h"
+#include "GameObject.h"
+
 
 
 
@@ -23,7 +25,13 @@ PanelHierarchy::~PanelHierarchy()
 void PanelHierarchy::Draw()
 {
 	ImGui::BeginDock("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing);
-	ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size());
+	if (ImGui::Button("Add GO") )
+	{
+		App->scene_intro->CreateNewGameObject(); 
+	}
+	
+	ImGui::SameLine();  ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size());
+	ImGui::Separator();
 	App->scene_intro->DrawHierarchy();
 
 	ImGui::EndDock();

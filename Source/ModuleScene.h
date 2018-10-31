@@ -48,6 +48,7 @@ public:
 	bool draw_octree = false;
 	bool has_meshes = false;
 	std::string fbx_name;
+	int id_new_go = 0;
 
 };
 
