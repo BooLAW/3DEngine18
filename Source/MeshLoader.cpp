@@ -74,6 +74,10 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	std::string final_file_name;
 	final_file_name.append("Assets/Models/");
 	final_file_name.append(node->mName.C_Str());
+	if (node->mNumMeshes > 1)
+	{
+		final_file_name.append(std::to_string(num_mesh));
+	}
 	final_file_name.append(".lw");
 
 	FILE* wfile = fopen(final_file_name.c_str(), "wb");
@@ -169,6 +173,10 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	std::string final_file_name;
 	final_file_name.append("Assets/Models/");
 	final_file_name.append(node->mName.C_Str());
+	if (node->mNumMeshes > 1)
+	{
+		final_file_name.append(std::to_string(num_mesh));
+	}
 	final_file_name.append(".lw");
 	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
 
@@ -448,7 +456,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				if (mesh->HasFaces())
 				{
 
-					my_mesh2->num_indices = mesh->mNumFaces * 3;
+					//my_mesh2->num_indices = mesh->mNumFaces * 3;
 					my_mesh2->num_normal = mesh->mNumVertices * 3;
 
 					//my_mesh2->indices = new int[my_mesh2->num_indices];
