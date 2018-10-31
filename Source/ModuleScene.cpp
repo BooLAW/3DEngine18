@@ -359,7 +359,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 	"Tint" : [1,1,1,1] }
 	] }
 	*/
-	FILE* fp = fopen("Assets/scenes/scene1.json", "wb"); // non-Windows use "w"
+	FILE* fp = fopen("Assets/Settings/scene1.json", "wb"); // non-Windows use "w"
 	char writeBuffer[10000];
 	Document savescene_w;
 	savescene_w.SetObject();
