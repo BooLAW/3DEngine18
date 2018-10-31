@@ -57,8 +57,8 @@ bool ModuleScene::Start()
 	App->camera->StartEditorCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
-	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
+	App->loading_manager->Load(".//Assets//Models//warrior.FBX");
+	App->loading_manager->unique_fbx_path = ".//Assets//Models//Street.fbx";
 
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
@@ -367,31 +367,67 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 
 	Document::AllocatorType& allocator = savescene_w.GetAllocator();
 
-	Value go(kObjectType);
-	Value go_child(kObjectType);
+	Value scene(kObjectType);
 	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
 	{
 		if ((*it)->childs_list.size() > 0)
-		{
-			Value name((*it)->name.c_str(), allocator);
-			go.AddMember("GameObject", name, allocator);
+		{					
+			scene.AddMember("GameObject", SaveGO((*it), allocator), allocator);
 		}
-		else
-		{
-
-			Value child_name((*it)->name.c_str(), allocator);
-			go_child.AddMember("GameObject", child_name, allocator);			
-		}
+		//else
+		//{
+		//	
+		//	Value child_name((*it)->name.c_str(), allocator);
+		//	go_child.AddMember("GameObject", child_name, allocator);			
+		//}
 	}
-	go.AddMember("child", go_child, allocator);
-	savescene_w.AddMember("Scene1", go, allocator);
+	//scene.AddMember("child", go_child, allocator);
+	savescene_w.AddMember("Scene1", scene, allocator);
 
 	Writer<FileWriteStream> writer(os);
 	savescene_w.Accept(writer);
 	fclose(fp);
 	App->imgui->want_to_save = false;
-
 }
+Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
+{
+	Value data_go(kObjectType);
 
+	//Name of the object
+	Value name(go->name.c_str(), allocator);
+	data_go.AddMember("name", name, allocator);
+
+	//Components of the object
+	if (go->components_list.size() > 0)
+	{
+		Value comp(kObjectType);
+		for (int i = 0; i < go->components_list.size(); i++)
+		{
+			//Save name Component
+			Value comp_name(go->components_list[i]->GetName(), allocator);	
+			comp.AddMember("name", comp_name,allocator);
+			
+			//Save type Component
+			ComponentType check_type = go->components_list[i]->GetType();
+			int hola = go->components_list[i]->GetType();
+			std::string type;
+			type.append(std::to_string(hola));
+			Value type_trans(type.c_str(), allocator);
+			comp.AddMember("type", type_trans, allocator);
+
+			////Save owner Component
+			GameObject* owner = go->components_list[i]->GetOwner();
+			Value comp_owner(owner->GetName(), allocator);
+			comp.AddMember("owner", comp_owner, allocator);
+		}
+		data_go.AddMember("component", comp, allocator);
+	}
+	
+
+
+	
+
+	return data_go;
+}
 
 

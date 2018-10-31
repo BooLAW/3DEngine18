@@ -37,6 +37,8 @@ public:
 	void ResetSelected();
 	GameObject* GetSelected();
 	void SaveScene(std::vector<GameObject*> go_list);
+	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
+
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;
