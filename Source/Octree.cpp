@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "DebugDraw.h"
+#include "Mesh.h"
 
 
 OctreeItem::OctreeItem(AABB& box)
@@ -21,6 +22,7 @@ void OctreeItem::SetChildsNull()
 	{
 		childs[i] = nullptr;
 	}
+	item_elements.clear();
 }
 
 void OctreeItem::ClearItems()
@@ -40,7 +42,7 @@ bool OctreeItem::IsItemFull() const
 void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 {
 	if (mesh_to_insert == nullptr) return;
-	if (childs[0] == nullptr)
+	if (!HasChilds())
 	{
 		if (!IsItemFull())
 		{
@@ -52,7 +54,7 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 		}
 	}
 	//recursive function
-	if (childs[0] != nullptr)
+	else if (HasChilds())
 	{
 		for (int i = 0; i < 8; i++)
 		{
@@ -67,47 +69,60 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 
 void OctreeItem::SubdivideItem()
 {
-	AABB new_box;
-	float3 center_point = item_box.CenterPoint();
-	float3 length = item_box.Size() / 2;
-
-	int id = 0;
-	//iterator to make the new 8 boxes(2 to the 3)
-	for (int ix = 0; ix < 2; ix++)
+	if (!last)
 	{
-		for (int iy = 0; iy < 2; iy++)
+		for (int i = 0; i < OCTREECHILDS; i++)
 		{
-			for (int iz = 0; iz < 2; iz++)
-			{
-				float3 min_point(item_box.minPoint.x + ix * length.x , item_box.minPoint.y + iy * length.y, item_box.minPoint.z + iz * length.z);
-				float3 max_point(min_point.x + length.x,min_point.y + length.y,min_point.z + length.z);
-
-				new_box.minPoint = min_point;
-				new_box.maxPoint = max_point;
-				childs[id] = new OctreeItem(new_box);
-				id++;
-			}
+			childs[i]->SubdivideItem();
 		}
 	}
-
-	for (std::list<Mesh*>::iterator item = item_elements.begin(); item != item_elements.end(); item++)
+	else
 	{
-		if ((*item) != nullptr)
+		AABB new_box;
+		float3 center_point = item_box.CenterPoint();
+		float3 length = item_box.Size() / 2;
+
+		int id = 0;
+		//iterator to make the new 8 boxes(2 to the 3)
+		for (int ix = 0; ix < 2; ix++)
 		{
-			for (int i = 0; i < OCTREECHILDS; i++)
+			for (int iy = 0; iy < 2; iy++)
 			{
-				if (childs[i]->item_box.Intersects((*item)->bounding_box))
+				for (int iz = 0; iz < 2; iz++)
 				{
-					childs[i]->InsertItem((*item));
+					float3 min_point(item_box.minPoint.x + iz * length.x, item_box.minPoint.y + iy * length.y, item_box.minPoint.z + ix * length.z);
+					float3 max_point(min_point.x + length.x, min_point.y + length.y, min_point.z + length.z);
+
+					new_box.minPoint = min_point;
+					new_box.maxPoint = max_point;
+					childs[id] = new OctreeItem(new_box);
+					childs[id]->parent = this;
+					id++;
 				}
 			}
-			item = item_elements.erase(item);
 		}
-		else
+
+		for (int i = 0; i < OCTREECHILDS; i++)
 		{
-			item++;
+			for (int j = 0; j < item_elements.size(); j++)
+			{
+				//Check wheter it intersects or it's inside our bb
+				if (childs[i]->item_box.Contains(item_elements[j]->bounding_box) || childs[i]->item_box.Intersects(item_elements[j]->bounding_box))
+				{
+					childs[i]->item_elements.push_back(item_elements[j]);
+				}
+				if (childs[i]->IsItemFull())
+					childs[i]->SubdivideItem();
+			}
+		}
+		
+		for (int i = 0; i < item_elements.size(); i++)
+		{
+			item_elements.erase(item_elements.begin() + i);
+			i--;
 		}
 	}
+	
 }
 
 Octree::Octree()
@@ -295,9 +310,24 @@ void Octree::ExpandBox(float3 min, float3 max)
 	}
 }
 
+void Octree::Divide()
+{
+	if (root_item->last)
+	{
+		root_item->SubdivideItem();
+	}
+	else
+	{
+		for (int i = 0; i < OCTREECHILDS; i++)
+		{
+			root_item->childs[i]->SubdivideItem();
+		}
+	}
+}
+
 void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
 {
-	if (childs[0] != nullptr)
+	if (HasChilds())
 	{
 		for (int i = 0; i < 8; i++)
 		{
@@ -308,7 +338,7 @@ void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bou
 		}
 	}
 
-	for (std::list<Mesh*>::iterator it = item_elements.begin(); it != item_elements.end(); it++)
+	for (std::vector<Mesh*>::iterator it = item_elements.begin(); it != item_elements.end(); it++)
 	{
 		if ((*it) == nullptr) continue;
 		if ((*it)->bounding_box.Intersects(*bounding_box))
@@ -321,6 +351,10 @@ void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bou
 
 void OctreeItem::Draw()
 {
+	static float3 points[8];//is a box
+	item_box.GetCornerPoints(points);
+	BoxDD(points, Blue);
+
 	if (HasChilds())
 	{
 		for (int i = 0; i < 8; i++)

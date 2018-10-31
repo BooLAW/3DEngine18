@@ -317,12 +317,6 @@ void GameObject::RecalculateBoundingBox(GameObject* child)
 		CONSOLE_LOG_DEBUG("Can't RecalculateBB, mesh == nullptr");
 		return;
 	}
-	else
-	{
-		//mesh->bounding_box.SetNegativeInfinity();
-		//mesh->bounding_box.Enclose(mesh->vertices, mesh->num_vertices);
-		//mesh->bounding_box.TransformAsAABB(transform->trans_matrix_g);
-	}
 }
 
 void GameObject::RecursiveRecalculateBoundingBox(float4x4 transform, GameObject * go)
@@ -361,6 +355,7 @@ void GameObject::ClearRelations()
 	for (int i = 0; i < childs_list.size(); i++)
 	{
 		childs_list[i]->parent = nullptr;
+
 		if (childs_list[i]->HasChilds())
 			childs_list[i]->ClearRelations();
 		else
@@ -368,7 +363,6 @@ void GameObject::ClearRelations()
 			childs_list[i] = nullptr;
 			
 		}
-			
 	}
 	childs_list.clear();
 }
