@@ -24,9 +24,10 @@ public:
 	bool HasChilds()const;
 public:
 	AABB item_box;
-	std::list<Mesh*> item_elements;
+	std::vector<Mesh*> item_elements;
 	OctreeItem* childs[OCTREECHILDS];
-	int lvl = 0;
+	OctreeItem* parent;
+	bool last;
 };
 
 class Octree
@@ -42,11 +43,13 @@ public:
 	void CollectIntersections(std::list<Mesh*> intersections, AABB* bounding_box);
 	void Recalculate(float3 min, float3 max);
 	void ExpandBox(float3 min, float3 max);
+	void Divide();
 private:
 	OctreeItem * root_item = nullptr;
 public:
 	bool update_quadtree;
 	float3 min_point, max_point;
+	int num_elements = 0;
 };
 
 #endif

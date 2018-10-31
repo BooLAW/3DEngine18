@@ -27,23 +27,9 @@ bool ModuleCamera3D::Init()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	//CONSOLE_LOG("Setting up the camera");
+	CONSOLE_LOG_INFO("Setting up the camera");
 	bool ret = true;
-	//editor_camera = new GameObject();
-	//editor_camera->SetName("Editor Camera");
-	////editor_camera->SetParent(App->scene_intro->scene_root);
-	//float3 root_pos = float3::zero;
-	//Quat root_rotation = Quat::identity;
-	//float3 root_scale = float3::one;
-	//editor_camera->transform->SetTransform(root_pos, root_rotation, root_scale);
-	//editor_camera->transform->SetGlobalPos({ 0, 10, 0 });
-	//editor_camera->transform->SetLocalPos({ 0,0,0 });
-	//editor_camera->transform->UpdateTransformValues();
-
 	
-
-	//App->scene_intro->go_list.push_back(editor_camera);
-
 	App->profiler.SaveInitData("Camera");
 	return ret;
 }
@@ -51,7 +37,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	//LOG("Cleaning camera");
+	CONSOLE_LOG_INFO("Cleaning camera");
 
 	return true;
 }
