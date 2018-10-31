@@ -91,7 +91,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	}
 	if (ai_mesh->HasFaces())
 	{
-		header[3] = (uint)ai_mesh->mNumFaces * 3;
+		header[3] = ai_mesh->mNumFaces * 3;
 	}
 	uint bytes = sizeof(header);
 	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
@@ -131,6 +131,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 			}
 			else
 			{
+
 				memcpy(&indices[i * 3], ai_mesh->mFaces[i].mIndices, sizeof(int) * 3);
 			}
 		}
@@ -187,7 +188,7 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	//Read Header
 	memcpy(rheader, rcursor, rbytes);
 	ret->num_vertices = rheader[0];
-	ret->num_indices = rheader[3];
+
 	rcursor += rbytes;
 
 	//Read Vertices	
@@ -216,6 +217,7 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 
 	if (ai_mesh->HasFaces())
 	{
+		ret->num_indices = rheader[3];
 		//Read Indices
 		rbytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
 		int* indices = new int[ai_mesh->mNumFaces * 3];
@@ -445,11 +447,13 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 				//Indices--------------------------
 				if (mesh->HasFaces())
 				{
-					/*
+
 					my_mesh2->num_indices = mesh->mNumFaces * 3;
 					my_mesh2->num_normal = mesh->mNumVertices * 3;
-					my_mesh2->indices = new int[my_mesh2->num_indices];
-					
+
+					//my_mesh2->indices = new int[my_mesh2->num_indices];
+				
+
 
 					for (int i = 0; i < mesh->mNumFaces; ++i)
 					{
@@ -459,9 +463,9 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 						}
 						else
 						{
-							memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
+							//memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
 						}
-					}*/
+					}
 					for (int i = 0; i < mesh->mNumVertices; ++i)
 					{
 						int u = i + 1;
