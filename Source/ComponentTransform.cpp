@@ -11,7 +11,7 @@ ComponentTransform::ComponentTransform(GameObject * owner)
 	SetName("Component Transform");
 	transform = new Transform();
 
-	type = ComponentType::TANSFORM;
+	type = ComponentType::TRANSFORM;
 
 }
 
@@ -31,7 +31,7 @@ void ComponentTransform::UpdateTransformValues()
 		trans_matrix_g = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	else
 	{
-		ComponentTransform* owner_transform = (ComponentTransform*)GetOwner()->GetParent()->GetComponent(ComponentType::TANSFORM);
+		ComponentTransform* owner_transform = (ComponentTransform*)GetOwner()->GetParent()->GetComponent(ComponentType::TRANSFORM);
 		trans_matrix_g = owner_transform->trans_matrix_g*float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	}
 	owner->RecursiveUpdateTransformChilds();

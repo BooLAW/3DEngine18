@@ -395,17 +395,22 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 	if (go->components_list.size() > 0)
 	{
 		Value comp(kObjectType);
+		Value comp_transform(kArrayType);
 		for (int i = 0; i < go->components_list.size(); i++)
 		{
+
 			//Save name Component
-			Value comp_name(go->components_list[i]->GetName(), allocator);	
-			comp.AddMember("name", comp_name,allocator);
-			if (comp_name == "Component Transform")
-			{
-				go->transform->GetTransform();
-				
-			}
-			
+			Value comp_name(go->components_list[i]->GetName(), allocator);
+			comp.AddMember("name", comp_name, allocator);
+
+			//Save type Component
+			ComponentType check_type = go->components_list[i]->GetType();
+			int hola = go->components_list[i]->GetType();
+			std::string type;
+			type.append(std::to_string(hola));
+			Value type_trans(type.c_str(), allocator);
+			comp.AddMember("type", type_trans, allocator);
+
 			//Is active			
 			bool active = go->components_list[i]->active;
 			std::string s_active;
@@ -413,21 +418,30 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			Value comp_active(s_active.c_str(), allocator);
 			comp.AddMember("active", comp_active, allocator);
 
-			//Save type Component
-			ComponentType check_type = go->components_list[i]->GetType();			
-			int hola = go->components_list[i]->GetType();			
-			std::string type;
-			type.append(std::to_string(hola));
-			Value type_trans(type.c_str(), allocator);
-			comp.AddMember("type", type_trans, allocator);
-
 			//Save owner Component
 			GameObject* owner = go->components_list[i]->GetOwner();
 			Value comp_owner(owner->GetName(), allocator);
 			comp.AddMember("owner", comp_owner, allocator);
+
+			switch (check_type)
+			{
+			case TRANSFORM:
+			{
+
+				Transform * trans = go->transform->GetTransform();
+				comp_transform.PushBack((float)trans->pos.x, allocator);
+				comp_transform.PushBack((float)trans->pos.y, allocator);
+				comp_transform.PushBack((float)trans->pos.z, allocator);
+
+				comp.AddMember("TRANSFORM", comp_transform, allocator);
+			}
+			break;
+			default:
+				break;
+			}
+			//Add components values to member components
+			data_go.AddMember("Component", comp, allocator);
 		}
-		//Add components values to member components
-		data_go.AddMember("Component", comp, allocator);
 	}
 	
 

@@ -24,7 +24,7 @@ GameObject::GameObject()
 
 	transform = new_transform;
 	
-	new_transform->type = ComponentType::TANSFORM;
+	new_transform->type = ComponentType::TRANSFORM;
 }
 
 

@@ -20,7 +20,7 @@ ComponentCamera::ComponentCamera()
 
 bool ComponentCamera::Start()
 {
-	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TANSFORM);
+	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
 	UpdatePos();
 
 
