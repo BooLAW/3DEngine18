@@ -11,6 +11,8 @@
 
 #include "Transform.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+#include "Material.h"
 #include "Primitive.h"
 #include "Camera.h"
 #include "TextureMSAA.h"
@@ -42,9 +44,9 @@ bool ModuleScene::Start()
 	float3 root_pos = float3::zero;
 	Quat root_rotation = Quat::identity;
 	float3 root_scale = float3::one;
-	scene_root->transform->SetTransform(root_pos, root_rotation, root_scale);
-	scene_root->transform->SetGlobalPos({ 0, 0, 0 });
-	scene_root->transform->UpdateTransformValues();
+	scene_root->comp_transform->SetTransform(root_pos, root_rotation, root_scale);
+	scene_root->comp_transform->SetGlobalPos({ 0, 0, 0 });
+	scene_root->comp_transform->UpdateTransformValues();
 
 	
 
@@ -108,7 +110,7 @@ void ModuleScene::DrawGameObjects()
 	{
 		if (go_list[i]->HasMesh())
 		{
-			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->transform->trans_matrix_g.TranslatePart()))
+			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
 				go_list[i]->Draw();
 			else
 				CONSOLE_LOG_INFO("DISCARDED %s", go_list[i]->GetName());
@@ -157,7 +159,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 	id_new_go++;
 	tmp_GO->SetParent(scene_root);
 	go_list.push_back(tmp_GO);
-	tmp_GO->transform->UpdateTransformValues();
+	tmp_GO->comp_transform->UpdateTransformValues();
 
 
 	return tmp_GO;
@@ -369,12 +371,48 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 	Document::AllocatorType& allocator = savescene_w.GetAllocator();
 
 	Value scene(kObjectType);
+	Value childs(kObjectType);
 	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
 	{
 		if ((*it)->childs_list.size() > 0)
-		{					
-			scene.AddMember("GameObject", SaveGO((*it), allocator), allocator);
+		{		
+
+
+			for (int i = 0; i < (*it)->childs_list.size(); i++)
+			{
+				//Parent number
+				static int parent_i = 0;
+				static int child_i = 0;
+				if ((*it)->GetChild(i)->childs_list.size() > 0)
+				{
+					++parent_i;
+					std::string go_name;
+					go_name.append("GameObject_");
+					go_name.append(std::to_string(parent_i));
+					Value v_go_name(go_name.c_str(), allocator);
+					GameObject* go_childs = (*it)->GetChild(i);
+					scene.AddMember(v_go_name, SaveGO(go_childs, allocator), allocator);
+					child_i = 0;
+				}
+				else
+				{
+					//Child number based on parent
+					
+					std::string go_name;
+					go_name.append("GameObject_");
+					go_name.append(std::to_string(parent_i));
+					go_name.append("_");
+					go_name.append(std::to_string(child_i));
+					Value v_go_name(go_name.c_str(), allocator);
+					GameObject* go_childs = (*it)->GetChild(i);
+					scene.AddMember(v_go_name, SaveGO(go_childs, allocator), allocator);
+					child_i++;
+				}
+
+			}
 		}
+
+
 	}
 	savescene_w.AddMember("Scene1", scene, allocator);
 
@@ -393,54 +431,74 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 	//Components of the object
 	if (go->components_list.size() > 0)
-	{
-		Value comp(kObjectType);
-		Value comp_transform(kArrayType);
+	{	
 		for (int i = 0; i < go->components_list.size(); i++)
 		{
-
-			//Save name Component
-			Value comp_name(go->components_list[i]->GetName(), allocator);
-			comp.AddMember("name", comp_name, allocator);
-
+			Value arr_comp(kObjectType);
 			//Save type Component
 			ComponentType check_type = go->components_list[i]->GetType();
 			int hola = go->components_list[i]->GetType();
 			std::string type;
 			type.append(std::to_string(hola));
 			Value type_trans(type.c_str(), allocator);
-			comp.AddMember("type", type_trans, allocator);
+			arr_comp.AddMember("type", type_trans, allocator);
 
 			//Is active			
 			bool active = go->components_list[i]->active;
 			std::string s_active;
 			s_active.append(std::to_string(active));
 			Value comp_active(s_active.c_str(), allocator);
-			comp.AddMember("active", comp_active, allocator);
+			arr_comp.AddMember("active", comp_active, allocator);
 
 			//Save owner Component
 			GameObject* owner = go->components_list[i]->GetOwner();
 			Value comp_owner(owner->GetName(), allocator);
-			comp.AddMember("owner", comp_owner, allocator);
+			arr_comp.AddMember("owner", comp_owner, allocator);
 
+			//Create the name of the component
+			std::string s_comp_name;
+			s_comp_name.append("Component");
+			s_comp_name.append("_");
+			s_comp_name.append(std::to_string(i));
+			Value v_comp_name(s_comp_name.c_str(), allocator);
+
+			//Get Component Data based on type
 			switch (check_type)
 			{
 			case TRANSFORM:
 			{
+				//Getting the data from the GO
+				Value arr_comp_transform(kArrayType);
+				Transform * trans = go->comp_transform->GetTransform();
+				arr_comp_transform.PushBack((float)trans->pos.x, allocator);
+				arr_comp_transform.PushBack((float)trans->pos.y, allocator);
+				arr_comp_transform.PushBack((float)trans->pos.z, allocator);
 
-				Transform * trans = go->transform->GetTransform();
-				comp_transform.PushBack((float)trans->pos.x, allocator);
-				comp_transform.PushBack((float)trans->pos.y, allocator);
-				comp_transform.PushBack((float)trans->pos.z, allocator);
-
-				comp.AddMember("TRANSFORM", comp_transform, allocator);
+				//Adding data to the component
+				arr_comp.AddMember("TRANSFORM", arr_comp_transform, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
 			}
-			break;
+			case MATERIAL:
+			{
+				Value obj_comp_material(kObjectType);
+				ComponentMaterial* com_mat_aux = (ComponentMaterial*)go->components_list[i];
+				Material* mat_aux = com_mat_aux->data;
+				obj_comp_material.AddMember("id",mat_aux->textures_id, allocator);
+				obj_comp_material.AddMember("heigh", mat_aux->height, allocator);
+				obj_comp_material.AddMember("width", mat_aux->width, allocator);
+
+				//Adding data to the component
+				arr_comp.AddMember("MATERIAL", obj_comp_material, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);				
+				break;
+			}
 			default:
 				break;
 			}
-			//Add components values to member components
-			data_go.AddMember("Component", comp, allocator);
+
+
+
 		}
 	}
 	

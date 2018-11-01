@@ -59,7 +59,7 @@ void PanelInspector::Draw()
 
 
 			if (ImGui::CollapsingHeader("Transform"))
-				selected_go->transform->DrawInspectorInfo();
+				selected_go->comp_transform->DrawInspectorInfo();
 					
 			
 				//Check if has MEsh

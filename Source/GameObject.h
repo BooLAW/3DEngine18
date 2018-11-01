@@ -63,7 +63,7 @@ public:
 	std::string name = "GO_NAME";
 	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
-	ComponentTransform* transform;
+	ComponentTransform* comp_transform;
 	uint num_meshes;
 	//flags
 	bool active = true;

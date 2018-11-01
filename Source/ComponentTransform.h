@@ -22,7 +22,7 @@ public:
 	Transform* transform;
 
 	float4x4 trans_matrix_l;
-	float4x4 trans_matrix_g;
+	float4x4 trans_matrix_g;	
 
 	bool updated_transform;
 };

@@ -22,7 +22,7 @@ GameObject::GameObject()
 	ComponentTransform* new_transform = new ComponentTransform(this);
 	PushComponent(new_transform);
 
-	transform = new_transform;
+	comp_transform = new_transform;
 	
 	new_transform->type = ComponentType::TRANSFORM;
 }
@@ -42,7 +42,7 @@ void GameObject::Draw()
 		ComponentMaterial* aux_material = (ComponentMaterial*)GetComponent(MATERIAL);
 		
 		glPushMatrix();
-		glMultMatrixf(transform->trans_matrix_g.Transposed().ptr());
+		glMultMatrixf(comp_transform->trans_matrix_g.Transposed().ptr());
 		//Bind Vertices
 		if (aux_mesh != nullptr)
 		{
@@ -303,7 +303,7 @@ void GameObject::RecursiveUpdateTransformChilds()
 	//Make a function to update recursively all the childs and components related
 	for (int i = 0; i < GetNumChilds(); i++)
 	{
-		childs_list[i]->transform->UpdateTransformValues();
+		childs_list[i]->comp_transform->UpdateTransformValues();
 	}
 
 }
@@ -311,7 +311,7 @@ void GameObject::RecursiveUpdateTransformChilds()
 void GameObject::RecalculateBoundingBox(GameObject* child)
 {
 	Mesh* mesh = child->GetMesh();
-	ComponentTransform* c_transform = child->transform;
+	ComponentTransform* c_transform = child->comp_transform;
 	if (mesh == nullptr)
 	{
 		CONSOLE_LOG_DEBUG("Can't RecalculateBB, mesh == nullptr");
@@ -328,7 +328,7 @@ void GameObject::RecursiveRecalculateBoundingBox(float4x4 transform, GameObject 
 	{
 		for (int i = 0; i < go->GetNumChilds(); i++)
 		{
-			ComponentTransform* trans = go->transform;
+			ComponentTransform* trans = go->comp_transform;
 			Mesh*  mesh = go->GetMesh();
 			if (HasMesh())
 			{

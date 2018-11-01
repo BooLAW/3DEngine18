@@ -414,7 +414,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 			Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
 			float3 scale(aiScale.x, aiScale.y, aiScale.z);
 
-			GO->transform->SetTransform(pos, rot, scale);
+			GO->comp_transform->SetTransform(pos, rot, scale);
 
 			
 		}
@@ -551,13 +551,13 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 					Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
 					float3 scale(aiScale.x, aiScale.y, aiScale.z);
 
-					new_child->transform->SetTransform(pos, rot, scale);
+					new_child->comp_transform->SetTransform(pos, rot, scale);
 
 
 				}
 				App->scene_intro->go_list.push_back(new_child);
 				new_child->RecalculateBoundingBox(new_child);
-				App->camera->AdaptCamera(bb,new_child->transform->transform->pos);
+				App->camera->AdaptCamera(bb,new_child->comp_transform->transform->pos);
 			}
 			GO = parent;
 		}
@@ -571,7 +571,7 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 	{
 		InitMesh(scene, node->mChildren[i], GO,path);
 	}
-	GO->transform->UpdateTransformValues();
+	GO->comp_transform->UpdateTransformValues();
 
 	return true;
 }

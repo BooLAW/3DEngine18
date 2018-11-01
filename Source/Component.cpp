@@ -55,6 +55,12 @@ ComponentType Component::GetType() const
 	return type;
 }
 
+ComponentMaterial * Component::GetComponentMaterial() const
+{
+
+	return comp_material;
+}
+
 void Component::SetType(ComponentType type)
 {
 	this->type = type;
@@ -69,7 +75,6 @@ void Component::SetName(const char * _name)
 {
 	name = _name;
 }
-
 
 Component::~Component()
 {
