@@ -23,6 +23,7 @@ public:
 	void InitTexture();
 	void EndTexture();
 public:
+	
 	Material* data = nullptr;
 };
 

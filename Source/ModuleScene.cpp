@@ -57,7 +57,8 @@ bool ModuleScene::Start()
 	App->camera->StartEditorCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
-	App->loading_manager->Load(".//Assets//Models//warrior.FBX");
+	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
+	App->loading_manager->Load(".//Assets//Models//Bakerhouse.fbx");
 	App->loading_manager->unique_fbx_path = ".//Assets//Models//Street.fbx";
 
 	App->profiler.SaveRunTimeData("Scene");
@@ -374,14 +375,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 		{					
 			scene.AddMember("GameObject", SaveGO((*it), allocator), allocator);
 		}
-		//else
-		//{
-		//	
-		//	Value child_name((*it)->name.c_str(), allocator);
-		//	go_child.AddMember("GameObject", child_name, allocator);			
-		//}
 	}
-	//scene.AddMember("child", go_child, allocator);
 	savescene_w.AddMember("Scene1", scene, allocator);
 
 	Writer<FileWriteStream> writer(os);
@@ -406,23 +400,37 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			//Save name Component
 			Value comp_name(go->components_list[i]->GetName(), allocator);	
 			comp.AddMember("name", comp_name,allocator);
+			if (comp_name == "Component Transform")
+			{
+				go->transform->GetTransform();
+				
+			}
 			
+			//Is active			
+			bool active = go->components_list[i]->active;
+			std::string s_active;
+			s_active.append(std::to_string(active));
+			Value comp_active(s_active.c_str(), allocator);
+			comp.AddMember("active", comp_active, allocator);
+
 			//Save type Component
-			ComponentType check_type = go->components_list[i]->GetType();
-			int hola = go->components_list[i]->GetType();
+			ComponentType check_type = go->components_list[i]->GetType();			
+			int hola = go->components_list[i]->GetType();			
 			std::string type;
 			type.append(std::to_string(hola));
 			Value type_trans(type.c_str(), allocator);
 			comp.AddMember("type", type_trans, allocator);
 
-			////Save owner Component
+			//Save owner Component
 			GameObject* owner = go->components_list[i]->GetOwner();
 			Value comp_owner(owner->GetName(), allocator);
 			comp.AddMember("owner", comp_owner, allocator);
 		}
-		data_go.AddMember("component", comp, allocator);
+		//Add components values to member components
+		data_go.AddMember("Component", comp, allocator);
 	}
 	
+
 
 
 	

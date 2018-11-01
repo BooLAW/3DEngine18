@@ -20,14 +20,14 @@ public:
 	void SetActive(bool active);
 	GameObject* GetOwner()const;
 	ComponentType GetType()const;
-	//ComponentMaterial* GetMaterial()const;
+	ComponentMaterial* GetMaterial()const;
 	void SetType(ComponentType type);
 	const char* GetName();
 	void SetName(const char* _name);
 	virtual ~Component();
 public:
 	ComponentType type;
-	ComponentMaterial* material;
+	ComponentMaterial* comp_material;
 	GameObject* owner;
 	std::string name;
 	bool active = true;
