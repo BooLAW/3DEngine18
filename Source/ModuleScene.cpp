@@ -8,6 +8,7 @@
 #include <WinBase.h>
 #include <string>
 #include <sstream>
+#include <limits>
 
 #include "Transform.h"
 #include "ComponentTransform.h"
@@ -154,6 +155,11 @@ GameObject * ModuleScene::CreateNewGameObject()
 	std::string new_name = "New GameObject ";
 
 	new_name += std::to_string(id_new_go);
+
+	//Create Random UID
+	unsigned int max_int = UINT_MAX;
+	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+	tmp_GO->uid = random_int;
 
 	tmp_GO->SetName(new_name.c_str());
 	id_new_go++;
@@ -402,8 +408,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 				}
 				else
 				{
-					//Child number based on parent
-					
+					//Child number based on parent					
 					std::string go_name;
 					go_name.append("GameObject_");
 					go_name.append(std::to_string(parent_i));
@@ -414,11 +419,8 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 					scene.AddMember(v_go_name, SaveGO(go_childs, allocator), allocator);
 					child_i++;
 				}
-
 			}
 		}
-
-
 	}
 	savescene_w.AddMember("Scene1", scene, allocator);
 
@@ -434,6 +436,11 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 	//Name of the object
 	Value name(go->name.c_str(), allocator);
 	data_go.AddMember("name", name, allocator);
+	data_go.AddMember("active_go", go->active, allocator);
+
+	//UIDs
+	data_go.AddMember("uid", go->uid, allocator);
+	data_go.AddMember("parent uid", go->parent_uid, allocator);
 
 	//Components of the object
 	if (go->components_list.size() > 0)
@@ -444,17 +451,11 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			//Save type Component
 			ComponentType check_type = go->components_list[i]->GetType();
 			int hola = go->components_list[i]->GetType();
-			std::string type;
-			type.append(std::to_string(hola));
-			Value type_trans(type.c_str(), allocator);
-			arr_comp.AddMember("type", type_trans, allocator);
+			arr_comp.AddMember("type", hola, allocator);
 
 			//Is active			
 			bool active = go->components_list[i]->active;
-			std::string s_active;
-			s_active.append(std::to_string(active));
-			Value comp_active(s_active.c_str(), allocator);
-			arr_comp.AddMember("active", comp_active, allocator);
+			arr_comp.AddMember("active_comp", active, allocator);
 
 			//Save owner Component
 			GameObject* owner = go->components_list[i]->GetOwner();
@@ -468,7 +469,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			s_comp_name.append(std::to_string(i));
 			Value v_comp_name(s_comp_name.c_str(), allocator);
 
-			//Get Component Data based on type
+			//Get Specific Component Data based on type
 			switch (check_type)
 			{
 			case TRANSFORM:
@@ -479,6 +480,14 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				arr_comp_transform.PushBack((float)trans->pos.x, allocator);
 				arr_comp_transform.PushBack((float)trans->pos.y, allocator);
 				arr_comp_transform.PushBack((float)trans->pos.z, allocator);
+
+				arr_comp_transform.PushBack((float)trans->rot.x, allocator);
+				arr_comp_transform.PushBack((float)trans->rot.y, allocator);
+				arr_comp_transform.PushBack((float)trans->rot.z, allocator);
+
+				arr_comp_transform.PushBack((float)trans->scale.x, allocator);
+				arr_comp_transform.PushBack((float)trans->scale.y, allocator);
+				arr_comp_transform.PushBack((float)trans->scale.z, allocator);
 
 				//Adding data to the component
 				arr_comp.AddMember("TRANSFORM", arr_comp_transform, allocator);
@@ -502,9 +511,6 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			default:
 				break;
 			}
-
-
-
 		}
 	}
 	

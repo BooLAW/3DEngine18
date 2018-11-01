@@ -37,12 +37,12 @@ public:
 	void ResetSelected();
 	GameObject* GetSelected();
 	void SaveScene(std::vector<GameObject*> go_list);
+	void LoadScene(std::vector<GameObject*> go_list);
 	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
 
 public:
 	//Scene GameObjects(Now only meshes)
-	std::vector<GameObject*> go_list;
-	std::vector<GameObject*> go_to_draw;
+	std::vector<GameObject*> go_list;	
 	std::vector<Mesh*> octree_meshes;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;

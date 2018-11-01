@@ -381,6 +381,12 @@ void MeshLoader::CleanUp()
 bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* parent,const char* path)
 {
 	GameObject* GO = new GameObject();
+
+	//Create Random UID
+	unsigned int max_int = UINT_MAX;
+	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+	GO->uid = random_int;
+
 	if (node->mNumMeshes < 1)
 	{
 		std::string node_name(node->mName.C_Str());
@@ -537,6 +543,8 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 
 				//Add child to parent
 				parent->AddChild(new_child);
+				new_child->parent_uid = parent->uid;
+
 				//Transform
 				if (node != nullptr) 
 				{

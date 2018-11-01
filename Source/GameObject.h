@@ -65,6 +65,8 @@ public:
 	std::vector<Component*> components_list;
 	ComponentTransform* comp_transform;
 	uint num_meshes;
+	UINT32 uid;
+	UINT32 parent_uid;
 	//flags
 	bool active = true;
 	bool static_go = false;
