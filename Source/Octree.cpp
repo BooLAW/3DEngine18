@@ -27,10 +27,15 @@ void OctreeItem::SetChildsNull()
 
 void OctreeItem::ClearItems()
 {
-	for (int i = 0; i < OCTREECHILDS; i++)
+	if (HasChilds())
 	{
-		RELEASE(childs[i]);
+		for (int i = 0; i < OCTREECHILDS; i++)
+		{
+			RELEASE(childs[i]);
+		}
 	}
+	
+	item_elements.clear();
 }
 
 bool OctreeItem::IsItemFull() const
@@ -42,19 +47,7 @@ bool OctreeItem::IsItemFull() const
 void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 {
 	if (mesh_to_insert == nullptr) return;
-	if (!HasChilds())
-	{
-		if (!IsItemFull())
-		{
-			item_elements.push_back(mesh_to_insert);
-		}
-		else
-		{
-			SubdivideItem();
-		}
-	}
-	//recursive function
-	else if (HasChilds())
+	if (HasChilds())
 	{
 		for (int i = 0; i < 8; i++)
 		{
@@ -63,6 +56,19 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 				childs[i]->InsertItem(mesh_to_insert);
 				break;
 			}
+		}
+		
+	}
+	//recursive function
+	else if (!HasChilds())
+	{
+		if (!IsItemFull())
+		{
+			item_elements.push_back(mesh_to_insert);
+		}
+		else
+		{
+			SubdivideItem();
 		}
 	}
 }
@@ -174,10 +180,7 @@ void Octree::DrawOctree(bool active)
 		return;
 	else
 	{
-		if (root_item != nullptr)
-		{
-			root_item->Draw();
-		}
+		root_item->Draw();
 	}
 }
 
@@ -352,12 +355,10 @@ void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bou
 {
 	if (HasChilds())
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < OCTREECHILDS; i++)
 		{
-			if (childs[i]->item_box.Intersects(*bounding_box))
-			{
-				childs[i]->CollectIntersections(intersections, bounding_box);
-			}
+			childs[i]->CollectIntersections(intersections, bounding_box);
+		
 		}
 	}
 
@@ -382,9 +383,7 @@ void OctreeItem::Draw()
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			static float3 points[8];//is a box
-			item_box.GetCornerPoints(points);
-			BoxDD(points,Blue);
+			childs[i]->Draw();
 		}
 		
 	}

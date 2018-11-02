@@ -84,6 +84,9 @@ void DebugDrawingParent(GameObject* go, Color color)
 
 void BoxDD(const float3 * points, Color color, bool debug)
 {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(2.0f);
+	glDisable(GL_CULL_FACE);
 	glColor3f(color.r, color.g, color.b);
 
 	glBegin(GL_QUADS);
@@ -118,6 +121,12 @@ void BoxDD(const float3 * points, Color color, bool debug)
 	glVertex3fv((GLfloat*)&points[5]); //glVertex3f( sx, -sy,  sz);
 	glVertex3fv((GLfloat*)&points[1]); //glVertex3f(-sx, -sy,  sz);
 	glEnd();
+
+	glLineWidth(1.0f);
+	glColor3f(255, 255, 255);
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 }
 
 

@@ -49,7 +49,7 @@ void GameObject::Draw()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
 
 			//Draw
-			if (App->renderer3D->attributes.debug_draw_atribute && IsSelected()) 
+			if (App->renderer3D->attributes.debug_draw_atribute && IsSelected() && !App->scene_intro->draw_octree) 
 			{
 				DebugDrawing(aux_mesh->mesh, Red);
 			}
@@ -68,7 +68,7 @@ void GameObject::Draw()
 		}
 		else 
 		{
-			if (App->renderer3D->attributes.debug_draw_atribute && IsSelected())
+			if (App->renderer3D->attributes.debug_draw_atribute && IsSelected() && !App->scene_intro->draw_octree)
 			{
 				DebugDrawingParent(this, Red);
 			}
@@ -191,10 +191,10 @@ void GameObject::SetStatic(bool is_static)
 			{
 				App->scene_intro->AddToOctree(childs_list[i]);
 			}
-			else
+			/*else
 			{
 				App->scene_intro->RemoveFromOctree(childs_list[i]);
-			}
+			}*/
 		}
 	}
 }
