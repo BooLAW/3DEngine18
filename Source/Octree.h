@@ -18,6 +18,7 @@ public:
 	void ClearItems();
 	bool IsItemFull()const;
 	void InsertItem(Mesh* mesh_to_insert);
+	void RemoveItem();
 	void SubdivideItem();
 	void CollectIntersections(std::list<Mesh*> intersections, AABB* bounding_box);
 	void Draw();
@@ -40,6 +41,7 @@ public:
 	void DrawOctree(bool active);
 	void Insert(GameObject* go_to_insert);
 	void Insert(Mesh* mesh);
+	void Remove(GameObject* go_to_insert);
 	void CollectIntersections(std::list<Mesh*> intersections, AABB* bounding_box);
 	void Recalculate(float3 min, float3 max);
 	void ExpandBox(float3 min, float3 max);

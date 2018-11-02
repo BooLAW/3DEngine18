@@ -67,6 +67,24 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 	}
 }
 
+void OctreeItem::RemoveItem()
+{
+	if (HasChilds())
+	{
+		item_elements.clear();
+		parent = nullptr;
+
+		delete(this);
+	}
+	else
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			childs[i]->RemoveItem();
+		}
+	}
+}
+
 void OctreeItem::SubdivideItem()
 {
 	if (!last)
@@ -254,6 +272,11 @@ void Octree::Insert(Mesh * mesh)
 			root_item->InsertItem(mesh);
 		}
 	}
+}
+
+void Octree::Remove(GameObject * go_to_insert)
+{
+
 }
 
 void Octree::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)

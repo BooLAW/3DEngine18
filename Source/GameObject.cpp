@@ -190,9 +190,11 @@ void GameObject::SetStatic(bool is_static)
 			if (is_static)
 			{
 				App->scene_intro->AddToOctree(childs_list[i]);
-				App->scene_intro->octree_meshes.push_back(childs_list[i]->GetMesh());
 			}
-			//Later we will erase it 
+			else
+			{
+				App->scene_intro->RemoveFromOctree(childs_list[i]);
+			}
 		}
 	}
 }
@@ -363,4 +365,9 @@ void GameObject::ClearRelations()
 		}
 	}
 	childs_list.clear();
+}
+
+UINT32 GameObject::GetUID() const
+{
+	return uid;
 }

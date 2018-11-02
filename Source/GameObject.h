@@ -57,7 +57,7 @@ public:
 	void SetName(const char* name);
 
 	void ClearRelations();
-
+	UINT32 GetUID()const;
 public:
 	GameObject* parent;
 	std::string name = "GO_NAME";

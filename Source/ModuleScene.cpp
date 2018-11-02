@@ -89,12 +89,12 @@ update_status ModuleScene::Update(float dt)
 	{
 		octree.min_point = float3::zero;
 		octree.max_point = float3::zero;
-		for (std::vector<Mesh*>::iterator it = octree_meshes.begin(); it != octree_meshes.end(); it++)
+		for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
 		{
-			octree.Recalculate((*it)->bounding_box.minPoint, (*it)->bounding_box.maxPoint);
+			octree.Recalculate((*it)->GetMesh()->bounding_box.minPoint, (*it)->GetMesh()->bounding_box.maxPoint);
 		}
 		octree.Create(octree.min_point, octree.max_point);
-		for (std::vector<Mesh*>::iterator it = octree_meshes.begin(); it != octree_meshes.end(); it++)
+		for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
 		{
 			octree.Insert((*it));
 		}
@@ -195,6 +195,18 @@ bool ModuleScene::HasObjects()
 void ModuleScene::AddToOctree(GameObject * go)
 {
 	octree.Insert(go);
+	octree_objects.push_back(go);
+
+}
+
+void ModuleScene::RemoveFromOctree(GameObject * go)
+{
+	octree.Remove(go);
+	for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
+	{
+		if ((*it)->GetUID() == go->GetUID())
+			octree_objects.erase(it);
+	}
 }
 
 void ModuleScene::CollectOctreeIntersections(std::list<Mesh*>& item_elements, AABB* bounding_box)
@@ -231,7 +243,7 @@ void ModuleScene::DrawModuleConfig()
 		ImGui::Checkbox("   DrawOctree", &draw_octree);
 
 			ImGui::Text("   Static meshes:"); ImGui::SameLine();
-			ImGui::Text(" %d", octree_meshes.size());
+			ImGui::Text(" %d", octree_objects.size());
 
 			ImGui::Text("   Min Point:"); ImGui::SameLine();
 			ImGui::Text("   X:%d", octree.min_point.x); ImGui::SameLine();
