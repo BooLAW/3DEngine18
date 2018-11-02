@@ -39,6 +39,7 @@ public:
 	void SaveScene(std::vector<GameObject*> go_list);
 	void LoadScene();
 	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
+	GameObject* LoadGo(Document& docload_r);
 
 public:
 	//Scene GameObjects(Now only meshes)

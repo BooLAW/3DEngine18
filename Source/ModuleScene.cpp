@@ -435,27 +435,46 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 }
 void ModuleScene::LoadScene()
 {
-	FILE* fp = fopen("Assets/Settings/scene1.json", "wb"); // non-Windows use "w"
+	std::vector<GameObject*> my_go;
+	FILE* fp = fopen("Assets/Settings/scene1.json", "rb"); // non-Windows use "w"
 	Document docload_r;
 	const int sizeofbuffer = sizeof(scenewriteBuffer);
 	char scenereadBuffer[sizeofbuffer] = {};
-	if (fp == NULL)
-	{
-		App->imgui->want_to_save = true;
-	}
-	else
-	{
-		FileReadStream is(fp, scenereadBuffer, sizeof(scenereadBuffer));
-		docload_r.ParseStream(is);
-		docload_r.IsObject();
 
-		if (docload_r["Scene1"].IsObject())
+	GameObject* new_go = new GameObject();
+	FileReadStream is(fp, scenereadBuffer, sizeof(scenereadBuffer));
+	docload_r.ParseStream(is);
+	Document::AllocatorType& allocator = docload_r.GetAllocator();
+	for (Value::ConstMemberIterator itr = docload_r["Scene1"].MemberBegin(); itr != docload_r.MemberEnd(); ++itr)
+	{
+		const char* get_go_name = itr->name.GetString();
+		CONSOLE_LOG_INFO("%s", get_go_name);
+		for (Value::ConstMemberIterator itr2 = itr->value.MemberBegin(); itr2 != itr->value.MemberEnd(); ++itr2)
 		{
-			CONSOLE_LOG_DEBUG("HOLA");
-		}
+			const char* get_go_value = itr2->name.GetString();
+			CONSOLE_LOG_INFO("%s", get_go_value);
+			if (itr2->value.IsObject())
+			{					
+				for (Value::ConstMemberIterator itr3 = itr2->value.MemberBegin(); itr3 != itr2->value.MemberEnd(); ++itr3)
+				{
+					const char* get_comp_value = itr3->name.GetString();
+					CONSOLE_LOG_INFO("%s", get_comp_value);
+				}					
+			}					
+		}			
 	}
 	
+	fclose(fp);
 
+
+
+	
+
+}
+GameObject * ModuleScene::LoadGo(Document & docload_r)
+{
+
+	return nullptr;
 }
 Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 {
@@ -543,5 +562,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 	}
 	return data_go;
 }
+
+
 
 

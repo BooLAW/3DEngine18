@@ -12,8 +12,6 @@
 
 GameObject::GameObject()
 {
-	//Generate unique id
-
 	parent = nullptr;
 	active = true;
 	static_go = false;
