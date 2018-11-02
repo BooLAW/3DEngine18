@@ -30,9 +30,6 @@ public:
 	ModuleAudio* audio;
 	LoadManager* loading_manager;
 
-
-
-
 	char readBuf[10000];
 	char loadBuf[10000];
 

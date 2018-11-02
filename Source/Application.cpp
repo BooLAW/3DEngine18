@@ -5,9 +5,6 @@
 #include <chrono>
 #include <thread>
 
-
-
-
 Application::Application()
 {
 	window = new ModuleWindow();
@@ -30,7 +27,6 @@ Application::Application()
 	AddModule(physics);
 	AddModule(audio);
 	AddModule(loading_manager);
-
 	
 	// Scenes
 	AddModule(imgui);
@@ -213,28 +209,27 @@ bool Application::Save()
 	bool ret = true;
 	FILE* fp = fopen("Assets/Settings/config.json", "wb"); // non-Windows use "w"
 	char writeBuffer[10000];
-	Document testconfig_w;
-	testconfig_w.Parse(readBuf);
-	testconfig_w.SetObject();
+	Document config_w;
+	config_w.Parse(readBuf);
+	config_w.SetObject();
 	FileWriteStream os(fp, readBuf, sizeof(readBuf));
 
-	Document::AllocatorType& allocator = testconfig_w.GetAllocator();
+	Document::AllocatorType& allocator = config_w.GetAllocator();
 
 	Value app(kObjectType);
-
 
 	app.AddMember("engine_name", TITLE, allocator);
 	app.AddMember("organization", ORGANIZATION, allocator);
 	app.AddMember("max_fps", App->imgui->fps_slider, allocator);
-	testconfig_w.AddMember("app", app, allocator);
+	config_w.AddMember("app", app, allocator);
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
-		ret = (*item)->Save(testconfig_w,os);
+		ret = (*item)->Save(config_w,os);
 	}
 
 	Writer<FileWriteStream> writer(os);
-	testconfig_w.Accept(writer);
+	config_w.Accept(writer);
 	fclose(fp);
 	App->imgui->want_to_save = false;
 	return ret;
@@ -245,7 +240,7 @@ bool Application::Load()
 	bool ret = true;
 	FILE* fp = fopen("Assets/Settings/config.json", "rb"); // non-Windows use "r"
 
-	Document testconfig_r;
+	Document config_r;
 
 	if (fp == NULL)
 	{
@@ -255,20 +250,19 @@ bool Application::Load()
 	else
 	{
 		FileReadStream is(fp, loadBuf, sizeof(loadBuf));
-		testconfig_r.ParseStream(is);
-		testconfig_r.IsObject();
+		config_r.ParseStream(is);
+		config_r.IsObject();
 
-
-		tick_interval = testconfig_r["app"]["max_fps"].GetInt();
+		tick_interval = config_r["app"]["max_fps"].GetInt();
 		App->imgui->fps_slider = tick_interval;
 
 		std::string title;
-		title.append(testconfig_r["app"]["engine_name"].GetString());
+		title.append(config_r["app"]["engine_name"].GetString());
 		title.append(" - ");
-		title.append(testconfig_r["app"]["organization"].GetString());
+		title.append(config_r["app"]["organization"].GetString());
 		for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 		{
-			ret = (*item)->Load(&testconfig_r);
+			ret = (*item)->Load(&config_r);
 		}
 		fclose(fp);
 	}
@@ -302,10 +296,7 @@ std::string Application::GetFileName(const char * path)
 	
 		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
 	}
-
 	return ret;
-
-
 }
 
 

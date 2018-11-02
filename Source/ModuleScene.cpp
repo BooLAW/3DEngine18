@@ -10,15 +10,22 @@
 #include <sstream>
 #include <limits>
 
-#include "Transform.h"
+#include "GameObject.h"
+
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
-#include "Material.h"
-#include "Primitive.h"
-#include "Camera.h"
-#include "TextureMSAA.h"
 #include "ComponentCamera.h"
-#include "GameObject.h"
+#include "ComponentMesh.h"
+
+#include "Transform.h"
+#include "Material.h"
+#include "Camera.h"
+#include "Mesh.h"
+
+#include "Primitive.h"
+#include "TextureMSAA.h"
+
+
 
 #define RADIUS 44
 
@@ -156,11 +163,6 @@ GameObject * ModuleScene::CreateNewGameObject()
 
 	new_name += std::to_string(id_new_go);
 
-	//Create Random UID
-	unsigned int max_int = UINT_MAX;
-	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-	tmp_GO->uid = random_int;
-
 	tmp_GO->SetName(new_name.c_str());
 	id_new_go++;
 	tmp_GO->SetParent(scene_root);
@@ -258,16 +260,10 @@ void ModuleScene::DrawModuleConfig()
 					ImGui::Text(" X: %d", GetSelected()->GetBB().maxPoint.x);
 					ImGui::Text(" Y: %d", GetSelected()->GetBB().maxPoint.y);
 					ImGui::Text(" Z: %d", GetSelected()->GetBB().maxPoint.z);
-				}
-		
-
+				}	
 			}
 			else
-				ImGui::Text("Select a GameObject to show its info");
-		
-
-
-		
+				ImGui::Text("Select a GameObject to show its info");			
 	}
 	else
 		App->audio->input_tick_arr[0] = FALSEBOOL;
@@ -338,41 +334,50 @@ GameObject * ModuleScene::GetSelected()
 void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 {
 	//Example of a saved scene
-	/*{"Game Objects":[
-	{
-		"UID":1642009359,
+
+	/*{"Game Objects":
+	[
+		{
+			"UID":1642009359,
 			"ParentUID" : 1619219037,
 			"Name" : "RootNode",
 			"Translation" : [0, 0, 0],
 			"Scale" : [1, 1, 1],
 			"Rotation" : [0, 0, 0, 1],
-			"Components" : []},
-	{
-	"UID":1336602188,
-	"ParentUID" : 1642009359,
-	"Name" : "RPG-Character-Mesh",
-
-	"Translation" : [-0.178409,0,-0.079894],
-	"Scale" : [1,1,1],
-	"Rotation" : [-0.707107,0,0,0.707107],
-	"Components" : [
+			"Components" : []
+		},
 		{
-			"Type":1,
-				"Resource" : 0,
-				"Alpha Test" : 0.500000,
-				"Transform" : [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]},
-	{
-	"Type":0,
-	"Resource" : 1784,
-	"Bones Root" : 0,
-	"Tint" : [1,1,1,1] }
-	] }
-	*/
+			"UID":1336602188,
+			"ParentUID" : 1642009359,
+			"Name" : "RPG-Character-Mesh",
+
+			"Translation" : [-0.178409,0,-0.079894],
+			"Scale" : [1,1,1],
+			"Rotation" : [-0.707107,0,0,0.707107],
+			"Components" :
+			[
+				{
+					"Type":1,
+					"Resource" : 0,
+					"Alpha Test" : 0.500000,
+					"Transform" : [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+				},
+				{
+				"Type":0,
+				"Resource" : 1784,
+				"Bones Root" : 0,
+				"Tint" : [1,1,1,1]
+				}
+			]
+		}
+	};*/
+		
+	
 	FILE* fp = fopen("Assets/Settings/scene1.json", "wb"); // non-Windows use "w"
-	char writeBuffer[10000];
+	scenewriteBuffer[10000];
 	Document savescene_w;
 	savescene_w.SetObject();
-	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+	FileWriteStream os(fp, scenewriteBuffer, sizeof(scenewriteBuffer));
 
 	Document::AllocatorType& allocator = savescene_w.GetAllocator();
 
@@ -427,7 +432,30 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 	Writer<FileWriteStream> writer(os);
 	savescene_w.Accept(writer);
 	fclose(fp);
-	App->imgui->want_to_save = false;
+}
+void ModuleScene::LoadScene()
+{
+	FILE* fp = fopen("Assets/Settings/scene1.json", "wb"); // non-Windows use "w"
+	Document docload_r;
+	const int sizeofbuffer = sizeof(scenewriteBuffer);
+	char scenereadBuffer[sizeofbuffer] = {};
+	if (fp == NULL)
+	{
+		App->imgui->want_to_save = true;
+	}
+	else
+	{
+		FileReadStream is(fp, scenereadBuffer, sizeof(scenereadBuffer));
+		docload_r.ParseStream(is);
+		docload_r.IsObject();
+
+		if (docload_r["Scene1"].IsObject())
+		{
+			CONSOLE_LOG_DEBUG("HOLA");
+		}
+	}
+	
+
 }
 Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 {
@@ -513,12 +541,6 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			}
 		}
 	}
-	
-
-
-
-	
-
 	return data_go;
 }
 

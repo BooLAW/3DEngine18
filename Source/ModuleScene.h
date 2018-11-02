@@ -37,7 +37,7 @@ public:
 	void ResetSelected();
 	GameObject* GetSelected();
 	void SaveScene(std::vector<GameObject*> go_list);
-	void LoadScene(std::vector<GameObject*> go_list);
+	void LoadScene();
 	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
 
 public:
@@ -47,10 +47,14 @@ public:
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
 	Octree octree;
-	bool draw_octree = false;
-	bool has_meshes = false;
 	std::string fbx_name;
 	int id_new_go = 0;
+	char scenewriteBuffer[10000];
+
+
+	bool draw_octree = false;
+	bool has_meshes = false;
+
 
 };
 
