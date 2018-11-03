@@ -447,13 +447,13 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 }
 void ModuleScene::LoadScene()
 {
-	std::vector<GameObject*> my_go;
+	std::vector<GameObject*> test_list_go;
 	FILE* fp = fopen("Assets/Scenes/scene1.json", "rb"); // non-Windows use "w"
 	Document docload_r;
 	const int sizeofbuffer = sizeof(scenewriteBuffer);
 	char scenereadBuffer[sizeofbuffer] = {};
 
-	GameObject* new_go = new GameObject();
+
 	FileReadStream is(fp, scenereadBuffer, sizeof(scenereadBuffer));
 	docload_r.ParseStream(is);
 	Document::AllocatorType& allocator = docload_r.GetAllocator();
@@ -461,13 +461,17 @@ void ModuleScene::LoadScene()
 	{
 		//Create GameObject
 		GameObject* new_go = new GameObject();	
-
+		
 		for (Value::ConstMemberIterator m_go_itr = go_itr->value.MemberBegin(); m_go_itr != go_itr->value.MemberEnd(); ++m_go_itr)
 		{
 			//Iterate through values of GameObject
 			if (strcmp(m_go_itr->name.GetString(), "name") == 0)
-			{
-				new_go->SetName(m_go_itr->value.GetString());
+			{	
+				new_go->SetName(m_go_itr->value.GetString());	
+				if (strcmp(m_go_itr->value.GetString(), "ROOT") == 0) //if it's root
+				{
+					new_go->root_go = true;
+				}
 			}
 			else if (strcmp(m_go_itr->name.GetString(), "active_go") == 0)
 			{
@@ -480,10 +484,11 @@ void ModuleScene::LoadScene()
 			else if (strcmp(m_go_itr->name.GetString(), "parent_uid") == 0)
 			{
 				new_go->SetParentUID(m_go_itr->value.GetUint());
-			}
+			}	
+			
 			
 			if (m_go_itr->value.IsObject())
-			{					
+			{
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
 					//Iterate through GameObjects Component values
@@ -507,24 +512,27 @@ void ModuleScene::LoadScene()
 						default:
 							break;
 						}
-						
 					}
 					const char* get_comp_value = m_cmp_itr->name.GetString();
 					CONSOLE_LOG_INFO("%s", get_comp_value);
 					//new_go->PushComponent()
-				}					
-			}					
-		}	
-		my_go.push_back(new_go);
+				}
+			}
+		}
+		test_list_go.push_back(new_go);
+		delete new_go;
 	}
-	my_go;
+
+	//Add Parents and Childs
+	for (std::vector<GameObject*>::iterator go_itr = test_list_go.begin(); go_itr != test_list_go.end(); go_itr++)
+	{		
+		(*go_itr)->SetParent(test_list_go, (*go_itr)->parent_uid);
+	}
+	
+	uint this_size = sizeof(test_list_go);
+	uint other_size = sizeof(App->scene_intro->go_list);
 	App->scene_intro->go_list;
 	fclose(fp);
-
-
-
-	
-
 }
 GameObject * ModuleScene::LoadGo(Document & docload_r)
 {

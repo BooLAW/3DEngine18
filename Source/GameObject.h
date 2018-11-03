@@ -42,6 +42,7 @@ public:
 	void SetParent(GameObject* new_parent);
 	void SetParent(std::vector<GameObject*> go_list,UINT32 uid);
 	void AddChild(GameObject* new_child);
+	void AddChild(std::vector<GameObject*> go_list, UINT32 uid);
 	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
 	int GetNumChilds()const;

@@ -137,8 +137,8 @@ bool GameObject::HasTex() const
 	bool ret = false;
 	for (int i = 0; i < components_list.size(); i++)
 	{
-		if (components_list[i]->type == ComponentType::MATERIAL)
-			ret = true;
+if (components_list[i]->type == ComponentType::MATERIAL)
+ret = true;
 	}
 	return ret;
 }
@@ -170,7 +170,7 @@ void GameObject::SetActive(bool active)
 		for (int i = 0; i < childs_list.size(); i++)
 			childs_list[i]->SetActive(active);
 	}
-	
+
 }
 
 bool GameObject::IsActive() const
@@ -232,9 +232,24 @@ void GameObject::SetParent(GameObject * new_parent)
 	parent = new_parent;
 }
 
-void GameObject::SetParent(std::vector<GameObject*> go_list, UINT32 uid)
+void GameObject::SetParent(std::vector<GameObject*> go_list, UINT32 parent_uid)
 {
-	//for (std::vector<GameObject*>::iterator it = go_list)
+	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	{
+		//Find the uid of the input
+		if ((*it)->GetUID() == parent_uid)
+		{
+			if (parent == NULL)
+			{
+				if (strcmp(GetName(), "ROOT") != 0)
+				{
+					(*it)->AddChild(this);
+					parent = (*it);
+				}
+			}
+
+		}		
+	}
 }
 
 
@@ -244,6 +259,18 @@ void GameObject::AddChild(GameObject * new_child)
 	if (new_child != nullptr)
 	{
 		new_child->SetParent(this);
+	}
+}
+
+void GameObject::AddChild(std::vector<GameObject*> go_list, UINT32 uid)
+{
+	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	{
+		if ((*it)->GetUID() == uid)
+		{
+			(*it)->SetChild(this);
+			SetChild((*it));
+		}
 	}
 }
 
