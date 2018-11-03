@@ -474,7 +474,6 @@ void ModuleScene::LoadScene()
 				new_go->SetParentUID(m_go_itr->value.GetUint());
 			}	
 			
-			
 			if (m_go_itr->value.IsObject())
 			{
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
@@ -508,7 +507,7 @@ void ModuleScene::LoadScene()
 			}
 		}
 		test_list_go.push_back(new_go);
-		delete new_go;
+		
 	}
 
 	//Add Parents and Childs
@@ -521,11 +520,6 @@ void ModuleScene::LoadScene()
 	uint other_size = sizeof(App->scene_intro->go_list);
 	App->scene_intro->go_list;
 	fclose(fp);
-}
-GameObject * ModuleScene::LoadGo(Document & docload_r)
-{
-
-	return nullptr;
 }
 Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 {

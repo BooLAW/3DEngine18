@@ -1,1 +1,30 @@
-{"Scene1":{}}
+{
+  
+  "Scene1": {
+    "GameObject_0_0": {
+      "name": "Chimney",
+      "active_go": true,
+      "uid": 1483882979,
+      "parent_uid": 891730414,
+      "Component_0": {
+        "active_comp": true,
+        "owner": "Chimney",
+        "type": 0,
+        "TRANSFORM": [ 0.0, 0.0, 0.0, -0.7071068286895752, 0.0, 0.0, 100.0, 100.0, 100.0 ]
+      }
+    },
+    "GameObject_0_1": {
+      "name": "Baker_house",
+      "active_go": true,
+      "uid": 3766312848,
+      "parent_uid": 891730414,
+      "Component_0": {
+        "active_comp": true,
+        "owner": "Baker_house",
+        "type": 0,
+        "TRANSFORM": [ 0.0, 0.0, 0.0, -0.7071068286895752, 0.0, 0.0, 100.0, 100.0, 100.0 ]
+      }
+    }
+  }
+}
+
