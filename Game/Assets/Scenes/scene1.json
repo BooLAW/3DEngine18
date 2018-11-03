@@ -1,1 +1,53 @@
-{"Scene1":{"GameObject_0":{"name":"ROOT","active_go":true,"uid":4277009102,"parent uid":4277009102,"Component_0":{"type":0,"active_comp":true,"owner":"ROOT","TRANSFORM":[0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0]}},"GameObject_1":{"name":".//Assets//Models//Bakerhouse.fbx","active_go":true,"uid":1355248013,"parent uid":4277009102,"Component_0":{"type":0,"active_comp":true,"owner":".//Assets//Models//Bakerhouse.fbx","TRANSFORM":[0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0]}},"GameObject_1_0":{"name":"Chimney","active_go":true,"uid":1041705475,"parent uid":1355248013,"Component_0":{"type":0,"active_comp":true,"owner":"Chimney","TRANSFORM":[0.0,0.0,0.0,-0.7071068286895752,0.0,0.0,100.0,100.0,100.0]}},"GameObject_1_1":{"name":"Baker_house","active_go":true,"uid":111314419,"parent uid":1355248013,"Component_0":{"type":0,"active_comp":true,"owner":"Baker_house","TRANSFORM":[0.0,0.0,0.0,-0.7071068286895752,0.0,0.0,100.0,100.0,100.0]}}}}
+{
+  
+  "Scene1": {
+    "GameObject_0": {
+      "name": "ROOT",
+      "active_go": true,
+      "uid": 4277009102,
+      "parent_uid": 4277009102,
+      "Component_0": {
+        "type": 0,
+        "active_comp": true,
+        "owner": "ROOT",
+        "TRANSFORM": [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 ]
+      }
+    },
+    "GameObject_1": {
+      "name": ".//Assets//Models//Bakerhouse.fbx",
+      "active_go": true,
+      "uid": 1355248013,
+      "parent_uid": 4277009102,
+      "Component_0": {
+        "type": 0,
+        "active_comp": true,
+        "owner": ".//Assets//Models//Bakerhouse.fbx",
+        "TRANSFORM": [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 ]
+      }
+    },
+    "GameObject_1_0": {
+      "name": "Chimney",
+      "active_go": true,
+      "uid": 1041705475,
+      "parent_uid": 1355248013,
+      "Component_0": {
+        "type": 0,
+        "active_comp": true,
+        "owner": "Chimney",
+        "TRANSFORM": [ 0.0, 0.0, 0.0, -0.7071068286895752, 0.0, 0.0, 100.0, 100.0, 100.0 ]
+      }
+    },
+    "GameObject_1_1": {
+      "name": "Baker_house",
+      "active_go": true,
+      "uid": 111314419,
+      "parent_uid": 1355248013,
+      "Component_0": {
+        "type": 0,
+        "active_comp": true,
+        "owner": "Baker_house",
+        "TRANSFORM": [ 0.0, 0.0, 0.0, -0.7071068286895752, 0.0, 0.0, 100.0, 100.0, 100.0 ]
+      }
+    }
+  }
+}

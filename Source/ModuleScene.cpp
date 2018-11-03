@@ -457,28 +457,68 @@ void ModuleScene::LoadScene()
 	FileReadStream is(fp, scenereadBuffer, sizeof(scenereadBuffer));
 	docload_r.ParseStream(is);
 	Document::AllocatorType& allocator = docload_r.GetAllocator();
-	for (Value::ConstMemberIterator itr = docload_r["Scene1"].MemberBegin(); itr != docload_r.MemberEnd(); ++itr)
+	for (Value::ConstMemberIterator go_itr = docload_r["Scene1"].MemberBegin(); go_itr != docload_r["Scene1"].MemberEnd(); ++go_itr)
 	{
-		GameObject* new_go = new GameObject();
-		
-		const char* get_go_name = itr->name.GetString();
+		//Create GameObject
+		GameObject* new_go = new GameObject();	
 
-		CONSOLE_LOG_INFO("%s", get_go_name);
-		for (Value::ConstMemberIterator itr2 = itr->value.MemberBegin(); itr2 != itr->value.MemberEnd(); ++itr2)
+		for (Value::ConstMemberIterator m_go_itr = go_itr->value.MemberBegin(); m_go_itr != go_itr->value.MemberEnd(); ++m_go_itr)
 		{
-			const char* get_go_value = itr2->name.GetString();
-			CONSOLE_LOG_INFO("%s", get_go_value);
-			if (itr2->value.IsObject())
+			//Iterate through values of GameObject
+			if (strcmp(m_go_itr->name.GetString(), "name") == 0)
+			{
+				new_go->SetName(m_go_itr->value.GetString());
+			}
+			else if (strcmp(m_go_itr->name.GetString(), "active_go") == 0)
+			{
+				new_go->SetActive(m_go_itr->value.GetBool());
+			}
+			else if (strcmp(m_go_itr->name.GetString(), "uid") == 0)
+			{
+				new_go->SetUID(m_go_itr->value.GetUint());
+			}
+			else if (strcmp(m_go_itr->name.GetString(), "parent_uid") == 0)
+			{
+				new_go->SetParentUID(m_go_itr->value.GetUint());
+			}
+			
+			if (m_go_itr->value.IsObject())
 			{					
-				for (Value::ConstMemberIterator itr3 = itr2->value.MemberBegin(); itr3 != itr2->value.MemberEnd(); ++itr3)
+				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
-					const char* get_comp_value = itr3->name.GetString();
+					//Iterate through GameObjects Component values
+					Component* aux_comp;
+					if (strcmp(m_cmp_itr->name.GetString(), "type") == 0)
+					{
+						int cmp_type = m_cmp_itr->value.GetInt();
+						ComponentType comp_type = (ComponentType)cmp_type;
+						switch (comp_type)
+						{
+						case TRANSFORM:
+							aux_comp = new Component(TRANSFORM);
+							new_go->PushComponent(aux_comp);
+							break;
+						case MESH:
+							break;
+						case MATERIAL:
+							break;
+						case CAMERA:
+							break;
+						default:
+							break;
+						}
+						
+					}
+					const char* get_comp_value = m_cmp_itr->name.GetString();
 					CONSOLE_LOG_INFO("%s", get_comp_value);
+					//new_go->PushComponent()
 				}					
 			}					
-		}			
+		}	
+		my_go.push_back(new_go);
 	}
-	
+	my_go;
+	App->scene_intro->go_list;
 	fclose(fp);
 
 
@@ -502,7 +542,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 	//UIDs
 	data_go.AddMember("uid", go->uid, allocator);
-	data_go.AddMember("parent uid", go->parent_uid, allocator);
+	data_go.AddMember("parent_uid", go->parent_uid, allocator);
 
 	//Components of the object
 	if (go->components_list.size() > 0)
@@ -510,11 +550,6 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 		for (int i = 0; i < go->components_list.size(); i++)
 		{
 			Value arr_comp(kObjectType);
-			//Save type Component
-			ComponentType check_type = go->components_list[i]->GetType();
-			int hola = go->components_list[i]->GetType();
-			arr_comp.AddMember("type", hola, allocator);
-
 			//Is active			
 			bool active = go->components_list[i]->active;
 			arr_comp.AddMember("active_comp", active, allocator);
@@ -530,6 +565,11 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			s_comp_name.append("_");
 			s_comp_name.append(std::to_string(i));
 			Value v_comp_name(s_comp_name.c_str(), allocator);
+
+			//Save type Component
+			ComponentType check_type = go->components_list[i]->GetType();
+			int hola = go->components_list[i]->GetType();
+			arr_comp.AddMember("type", hola, allocator);
 
 			//Get Specific Component Data based on type
 			switch (check_type)

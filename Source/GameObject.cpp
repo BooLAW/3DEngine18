@@ -232,6 +232,13 @@ void GameObject::SetParent(GameObject * new_parent)
 	parent = new_parent;
 }
 
+void GameObject::SetParent(std::vector<GameObject*> go_list, UINT32 uid)
+{
+	//for (std::vector<GameObject*>::iterator it = go_list)
+}
+
+
+
 void GameObject::AddChild(GameObject * new_child)
 {
 	if (new_child != nullptr)
@@ -257,6 +264,16 @@ GameObject * GameObject::GetChild(int id)
 int GameObject::GetNumChilds() const
 {
 	return childs_list.size();
+}
+
+void GameObject::SetParentUID(UINT32 id)
+{
+	parent_uid = id;
+}
+
+void GameObject::SetUID(UINT32 id)
+{
+	uid = id;
 }
 
 Camera * GameObject::GetCamera()
