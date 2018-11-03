@@ -385,7 +385,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 	};*/
 		
 	
-	FILE* fp = fopen("Assets/Settings/scene1.json", "wb"); // non-Windows use "w"
+	FILE* fp = fopen("Assets/Scenes/scene1.json", "wb"); // non-Windows use "w"
 	scenewriteBuffer[10000];
 	Document savescene_w;
 	savescene_w.SetObject();
@@ -448,7 +448,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 void ModuleScene::LoadScene()
 {
 	std::vector<GameObject*> my_go;
-	FILE* fp = fopen("Assets/Settings/scene1.json", "rb"); // non-Windows use "w"
+	FILE* fp = fopen("Assets/Scenes/scene1.json", "rb"); // non-Windows use "w"
 	Document docload_r;
 	const int sizeofbuffer = sizeof(scenewriteBuffer);
 	char scenereadBuffer[sizeofbuffer] = {};
@@ -459,7 +459,10 @@ void ModuleScene::LoadScene()
 	Document::AllocatorType& allocator = docload_r.GetAllocator();
 	for (Value::ConstMemberIterator itr = docload_r["Scene1"].MemberBegin(); itr != docload_r.MemberEnd(); ++itr)
 	{
+		GameObject* new_go = new GameObject();
+		
 		const char* get_go_name = itr->name.GetString();
+
 		CONSOLE_LOG_INFO("%s", get_go_name);
 		for (Value::ConstMemberIterator itr2 = itr->value.MemberBegin(); itr2 != itr->value.MemberEnd(); ++itr2)
 		{

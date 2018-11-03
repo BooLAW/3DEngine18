@@ -889,6 +889,9 @@
     <None Include="..\Game\Assets\json\config.json">
       <Filter>Sources\json</Filter>
     </None>
+    <None Include="..\Game\Assets\Scenes\scene1.json">
+      <Filter>Sources\json</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Game\holas.txt">
