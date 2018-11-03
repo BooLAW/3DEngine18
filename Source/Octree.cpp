@@ -3,6 +3,9 @@
 #include "ComponentMesh.h"
 #include "DebugDraw.h"
 #include "Mesh.h"
+#include "Application.h"
+#include"ModuleScene.h"
+
 
 
 OctreeItem::OctreeItem(AABB& box)
@@ -33,9 +36,7 @@ void OctreeItem::ClearItems()
 		{
 			RELEASE(childs[i]);
 		}
-	}
-	
-	item_elements.clear();
+	}	
 }
 
 bool OctreeItem::IsItemFull() const
@@ -49,7 +50,7 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 	if (mesh_to_insert == nullptr) return;
 	if (HasChilds())
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < OCTREECHILDS; i++)
 		{
 			if (childs[i]->item_box.Intersects(mesh_to_insert->bounding_box))
 			{
@@ -60,7 +61,7 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 		
 	}
 	//recursive function
-	else if (!HasChilds())
+	if(!HasChilds())
 	{
 		if (!IsItemFull())
 		{
@@ -73,20 +74,26 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 	}
 }
 
-void OctreeItem::RemoveItem()
+void OctreeItem::RemoveItem(Mesh* mesh_to_remove)
 {
+	if (mesh_to_remove == nullptr) return;
+
+	for (std::vector<Mesh*>::iterator it = item_elements.begin(); it != item_elements.end(); it++)
+	{
+		if ((*it) == mesh_to_remove)
+			item_elements.erase(it);
+	}
 	if (HasChilds())
 	{
-		item_elements.clear();
-		parent = nullptr;
-
-		delete(this);
-	}
-	else
-	{
-		for (int i = 0; i < 8; i++)
+		int childs_contents_num = 0;
+		for (int i = 0; i < OCTREECHILDS; i++)
 		{
-			childs[i]->RemoveItem();
+			childs[i]->RemoveItem(mesh_to_remove);
+			childs_contents_num += childs[i]->item_elements.size();
+		}
+		if (childs_contents_num == 0)
+		{
+			ClearItems();
 		}
 	}
 }
@@ -120,7 +127,6 @@ void OctreeItem::SubdivideItem()
 					new_box.minPoint = min_point;
 					new_box.maxPoint = max_point;
 					childs[id] = new OctreeItem(new_box);
-					childs[id]->parent = this;
 					id++;
 				}
 			}
@@ -151,7 +157,7 @@ void OctreeItem::SubdivideItem()
 
 Octree::Octree()
 {
-	update_quadtree = false;
+	update_octree = false;
 }
 
 
@@ -162,11 +168,13 @@ Octree::~Octree()
 
 void Octree::Create(float3 min,float3 max)
 {
+	Clear();
+
 	AABB new_box(min, max);
 	root_item = new OctreeItem(new_box);
 	min_point = min;
 	max_point = max;
-	update_quadtree = true;
+	update_octree = true;
 }
 
 void Octree::Clear()
@@ -179,59 +187,27 @@ void Octree::DrawOctree(bool active)
 	if (!active)
 		return;
 	else
-	{
 		root_item->Draw();
-	}
+	
 }
 
 void Octree::Insert(GameObject * go_to_insert)
 {
 	if (go_to_insert == nullptr || go_to_insert->HasMesh() == false)
 		return;
-	update_quadtree = false;
+	update_octree = false;
 	Mesh* mesh = go_to_insert->GetMesh();
 	if (root_item != nullptr)
 	{
 		//Check if it's without the limits
-		if (mesh->bounding_box.minPoint.x < min_point.x)
-		{
-			min_point.x = mesh->bounding_box.minPoint.x;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.minPoint.y < min_point.y)
-		{
-			min_point.y = mesh->bounding_box.minPoint.y;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.minPoint.z < min_point.z)
-		{
-			min_point.z = mesh->bounding_box.minPoint.z;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.maxPoint.x > max_point.x)
-		{
-			max_point.x = mesh->bounding_box.maxPoint.x;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.maxPoint.y > max_point.y)
-		{
-			max_point.y = mesh->bounding_box.maxPoint.y;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.maxPoint.z > max_point.z)
-		{
-			max_point.z = mesh->bounding_box.maxPoint.z;
-			update_quadtree = true;
-		}
-		//Add it to the root node
+		update_octree = CheckNoResizeToInsert(mesh);
 
-		if (update_quadtree == false)
-		{
+		//Add it to the root node
+		if (update_octree == false)
 			root_item->InsertItem(mesh);
-		}
+		
 
 	}
-		
 }
 
 void Octree::Insert(Mesh * mesh)
@@ -239,47 +215,82 @@ void Octree::Insert(Mesh * mesh)
 	if (root_item != nullptr)
 	{
 		//Check if it's without the limits
-		if (mesh->bounding_box.minPoint.x < min_point.x)
-		{
-			min_point.x = mesh->bounding_box.minPoint.x;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.minPoint.y < min_point.y)
-		{
-			min_point.y = mesh->bounding_box.minPoint.y;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.minPoint.z < min_point.z)
-		{
-			min_point.z = mesh->bounding_box.minPoint.z;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.maxPoint.x > max_point.x)
-		{
-			max_point.x = mesh->bounding_box.maxPoint.x;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.maxPoint.y > max_point.y)
-		{
-			max_point.y = mesh->bounding_box.maxPoint.y;
-			update_quadtree = true;
-		}
-		if (mesh->bounding_box.maxPoint.z > max_point.z)
-		{
-			max_point.z = mesh->bounding_box.maxPoint.z;
-			update_quadtree = true;
-		}
+		update_octree = CheckNoResizeToInsert(mesh);
 		//Add it to the root node
-		if (update_quadtree == false)
-		{
+		if (update_octree == false)
 			root_item->InsertItem(mesh);
+		
+	}
+}
+
+bool Octree::CheckNoResizeToInsert(Mesh* mesh)
+{
+	bool ret = true;
+
+	if (mesh->bounding_box.minPoint.x < min_point.x)
+	{
+		min_point.x = mesh->bounding_box.minPoint.x;
+		ret = true;
+	}
+	if (mesh->bounding_box.minPoint.y < min_point.y)
+	{
+		min_point.y = mesh->bounding_box.minPoint.y;
+		ret = true;
+	}
+	if (mesh->bounding_box.minPoint.z < min_point.z)
+	{
+		min_point.z = mesh->bounding_box.minPoint.z;
+		ret = true;
+	}
+	if (mesh->bounding_box.maxPoint.x > max_point.x)
+	{
+		max_point.x = mesh->bounding_box.maxPoint.x;
+		ret = true;
+	}
+	if (mesh->bounding_box.maxPoint.y > max_point.y)
+	{
+		max_point.y = mesh->bounding_box.maxPoint.y;
+		ret = true;
+	}
+	if (mesh->bounding_box.maxPoint.z > max_point.z)
+	{
+		max_point.z = mesh->bounding_box.maxPoint.z;
+		update_octree = true;
+	}
+
+
+
+	return ret;
+}
+
+void Octree::Remove(GameObject * go_to_remove)
+{
+	if (root_item != nullptr && go_to_remove->HasMesh())
+	{
+		update_octree = go_to_remove->GetBB().minPoint.Equals(min_point) && go_to_remove->GetBB().maxPoint.Equals(max_point);
+		//If we need to update the octree, we will handle that in the scene update if not, just erase the box
+		if (!update_octree)
+		{
+			root_item->RemoveItem(go_to_remove->GetMesh());
 		}
 	}
 }
 
-void Octree::Remove(GameObject * go_to_insert)
+void Octree::RefactorOctree()
 {
-
+	// Recalculate New Dimensions
+	min_point = max_point = float3::zero;
+	for (std::vector<GameObject*>::iterator it = App->scene_intro->octree_objects.begin(); it != App->scene_intro->octree_objects.end(); it++)
+	{
+		Recalculate((*it)->GetBB().minPoint, (*it)->GetBB().maxPoint);
+	}
+	// Create Octree with that dimensions
+	Create(min_point, max_point);;
+	// Insert Elements
+	for (std::vector<GameObject*>::iterator it = App->scene_intro->octree_objects.begin(); it != App->scene_intro->octree_objects.end(); it++)
+	{
+		Insert(*it);
+	}
 }
 
 void Octree::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
@@ -375,13 +386,13 @@ void OctreeItem::CollectIntersections(std::list<Mesh*> intersections, AABB * bou
 
 void OctreeItem::Draw()
 {
-	static float3 points[8];//is a box
+	static float3 points[OCTREECHILDS];//is a box
 	item_box.GetCornerPoints(points);
 	BoxDD(points, Blue);
 
 	if (HasChilds())
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < OCTREECHILDS; i++)
 		{
 			childs[i]->Draw();
 		}

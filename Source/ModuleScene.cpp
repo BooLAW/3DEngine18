@@ -61,7 +61,7 @@ bool ModuleScene::Start()
 	go_list.push_back(scene_root);
 
 	octree.Create(float3::zero, float3::zero);
-	octree.update_quadtree = true;
+	octree.update_octree = true;
 	draw_octree = false;
 
 	App->camera->StartEditorCamera();
@@ -85,21 +85,9 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	if (octree.update_quadtree)
-	{
-		octree.min_point = float3::zero;
-		octree.max_point = float3::zero;
-		for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
-		{
-			octree.Recalculate((*it)->GetMesh()->bounding_box.minPoint, (*it)->GetMesh()->bounding_box.maxPoint);
-		}
-		octree.Create(octree.min_point, octree.max_point);
-		for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
-		{
-			octree.Insert((*it));
-		}
-		octree.update_quadtree = false;
-	}
+	if (octree.update_octree)
+		octree.RefactorOctree();
+
 
 	return UPDATE_CONTINUE;
 }
@@ -212,11 +200,6 @@ void ModuleScene::RemoveFromOctree(GameObject * go)
 void ModuleScene::CollectOctreeIntersections(std::list<Mesh*>& item_elements, AABB* bounding_box)
 {
 	octree.CollectIntersections(item_elements, bounding_box);
-}
-
-void ModuleScene::DrawInspector()
-{
-
 }
 
 void ModuleScene::DrawHierarchy()
