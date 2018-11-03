@@ -68,8 +68,8 @@ bool ModuleScene::Start()
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
-	App->loading_manager->Load(".//Assets//Models//Bakerhouse.fbx");
-	App->loading_manager->unique_fbx_path = ".//Assets//Models//Street.fbx";
+	App->loading_manager->Load(".//Assets//Models//warrior.fbx");
+	App->loading_manager->unique_fbx_path = ".//Assets//Models//warrior.fbx";
 
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
@@ -86,9 +86,10 @@ bool ModuleScene::CleanUp()
 update_status ModuleScene::Update(float dt)
 {
 	if (octree.update_octree)
+	{
 		octree.RefactorOctree();
-
-
+		octree.update_octree = false;
+	}
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
@@ -102,6 +103,8 @@ void ModuleScene::DrawGameObjects()
 		base_plane.color = White;
 		base_plane.Render();
 	}
+
+	//GameObjects
 	for (int i = 0; i < go_list.size(); i++)
 	{
 		if (go_list[i]->HasMesh())
@@ -115,7 +118,7 @@ void ModuleScene::DrawGameObjects()
 			go_list[i]->Draw();
 
 	}
-	//DrawOctree
+	//Octree
 	octree.DrawOctree(draw_octree);
 	
 	
@@ -168,6 +171,7 @@ void ModuleScene::ClearScene()
 		scene_root->ClearRelations();
 		scene_root->childs_list.clear();
 		go_list.clear();
+		go_list.push_back(scene_root);
 	}
 		
 	App->loading_manager->unique_fbx_path = "";
@@ -189,12 +193,13 @@ void ModuleScene::AddToOctree(GameObject * go)
 
 void ModuleScene::RemoveFromOctree(GameObject * go)
 {
-	octree.Remove(go);
 	for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
 	{
 		if ((*it)->GetUID() == go->GetUID())
 			octree_objects.erase(it);
 	}
+	octree.Remove(go);
+
 }
 
 void ModuleScene::CollectOctreeIntersections(std::list<Mesh*>& item_elements, AABB* bounding_box)

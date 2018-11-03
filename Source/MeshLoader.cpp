@@ -392,15 +392,15 @@ bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* p
 		{
 			node_name = App->GetFileName(path);
 			App->scene_intro->fbx_name = node_name;
-		}
-		else
-		{
 			GO->SetParent(App->scene_intro->scene_root);
 		}
 		GO->SetName(node_name.c_str());
 
 		if (parent != nullptr)
-			parent->SetChild(GO);
+		{
+			parent->AddChild(GO);
+
+		}
 
 		//Transform
 		if (node != nullptr) {

@@ -24,7 +24,6 @@ void LoadManager::Load(const char * path)
 		CONSOLE_LOG_INFO("FBX dropped");
 		if (unique_fbx_path != path)
 		{
-			App->scene_intro->ClearScene();
 			App->input->file_droped = true;
 			mesh_loader->LoadMesh(path);
 			App->scene_intro->has_meshes = true;

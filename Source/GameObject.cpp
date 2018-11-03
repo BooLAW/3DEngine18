@@ -191,10 +191,10 @@ void GameObject::SetStatic(bool is_static)
 			{
 				App->scene_intro->AddToOctree(childs_list[i]);
 			}
-			/*else
+			else
 			{
 				App->scene_intro->RemoveFromOctree(childs_list[i]);
-			}*/
+			}
 		}
 	}
 }

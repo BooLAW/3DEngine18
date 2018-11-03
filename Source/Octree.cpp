@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Application.h"
 #include"ModuleScene.h"
+#include"Globals.h"
 
 
 
@@ -76,7 +77,11 @@ void OctreeItem::InsertItem(Mesh * mesh_to_insert)
 
 void OctreeItem::RemoveItem(Mesh* mesh_to_remove)
 {
-	if (mesh_to_remove == nullptr) return;
+	if (mesh_to_remove == nullptr)
+	{
+		CONSOLE_LOG_INFO("Octree mesh was nullptr, can't remove it");
+		return;
+	}
 
 	for (std::vector<Mesh*>::iterator it = item_elements.begin(); it != item_elements.end(); it++)
 	{
@@ -92,23 +97,13 @@ void OctreeItem::RemoveItem(Mesh* mesh_to_remove)
 			childs_contents_num += childs[i]->item_elements.size();
 		}
 		if (childs_contents_num == 0)
-		{
 			ClearItems();
-		}
 	}
 }
 
 void OctreeItem::SubdivideItem()
 {
-	if (!last)
-	{
-		for (int i = 0; i < OCTREECHILDS; i++)
-		{
-			childs[i]->SubdivideItem();
-		}
-	}
-	else
-	{
+
 		AABB new_box;
 		float3 center_point = item_box.CenterPoint();
 		float3 length = item_box.Size() / 2;
@@ -132,26 +127,25 @@ void OctreeItem::SubdivideItem()
 			}
 		}
 
-		for (int i = 0; i < OCTREECHILDS; i++)
+		for (std::vector<Mesh*>::iterator it = item_elements.begin(); it != item_elements.end();)
 		{
-			for (int j = 0; j < item_elements.size(); j++)
+			if ((*it) != nullptr)
 			{
-				//Check wheter it intersects or it's inside our bb
-				if (childs[i]->item_box.Contains(item_elements[j]->bounding_box) || childs[i]->item_box.Intersects(item_elements[j]->bounding_box))
+				for (int i = 0; i < OCTREECHILDS; i++)
 				{
-					childs[i]->item_elements.push_back(item_elements[j]);
+					if (childs[i]->item_box.Intersects((*it)->bounding_box.ToOBB().MinimalEnclosingAABB()))
+					{
+						childs[i]->InsertItem(*it);
+					}
 				}
-				if (childs[i]->IsItemFull())
-					childs[i]->SubdivideItem();
+				it = item_elements.erase(it);
+			}
+			else
+			{
+				it++;
 			}
 		}
-		
-		for (int i = 0; i < item_elements.size(); i++)
-		{
-			item_elements.erase(item_elements.begin() + i);
-			i--;
-		}
-	}
+	
 	
 }
 
@@ -225,7 +219,7 @@ void Octree::Insert(Mesh * mesh)
 
 bool Octree::CheckNoResizeToInsert(Mesh* mesh)
 {
-	bool ret = true;
+	bool ret = false;
 
 	if (mesh->bounding_box.minPoint.x < min_point.x)
 	{
@@ -291,6 +285,7 @@ void Octree::RefactorOctree()
 	{
 		Insert(*it);
 	}
+	
 }
 
 void Octree::CollectIntersections(std::list<Mesh*> intersections, AABB * bounding_box)
@@ -349,7 +344,7 @@ void Octree::ExpandBox(float3 min, float3 max)
 
 void Octree::Divide()
 {
-	if (root_item->last)
+	if (!root_item->HasChilds())
 	{
 		root_item->SubdivideItem();
 	}
