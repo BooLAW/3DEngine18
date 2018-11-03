@@ -26,17 +26,22 @@ public:
 	void DrawGameObjects();
 	void ClearScene();
 	bool HasObjects();
+
 	//Octree
 	void AddToOctree(GameObject* go);
 	void RemoveFromOctree(GameObject * go);
 	void CollectOctreeIntersections(std::list<Mesh*>& item_elements,AABB* bounding_box);
+
 	//UI
-	void DrawInspector();
 	void DrawHierarchy();
 	void DrawModuleConfig()override;
 	void DrawChilds(GameObject* parent);
+
+	//Selected
 	void ResetSelected();
 	GameObject* GetSelected();
+
+	//Save&Load
 	void SaveScene(std::vector<GameObject*> go_list);
 	void LoadScene();
 	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
