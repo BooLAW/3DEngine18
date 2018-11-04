@@ -230,6 +230,7 @@ void GameObject::SetParent(GameObject * new_parent)
 	//PAU Update transform
 	new_parent->SetChild(this);
 	parent = new_parent;
+	parent_uid = new_parent->uid;
 }
 
 void GameObject::SetParent(std::vector<GameObject*> go_list, UINT32 parent_uid)
@@ -247,7 +248,6 @@ void GameObject::SetParent(std::vector<GameObject*> go_list, UINT32 parent_uid)
 					parent = (*it);
 				}
 			}
-
 		}		
 	}
 }

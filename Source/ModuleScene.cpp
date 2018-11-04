@@ -56,8 +56,11 @@ bool ModuleScene::Start()
 	scene_root->comp_transform->SetGlobalPos({ 0, 0, 0 });
 	scene_root->comp_transform->UpdateTransformValues();
 
+	////Create Random UID for Root
+	//unsigned int max_int = UINT_MAX;
+	//UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+	//scene_root->uid = random_int;
 	
-
 	go_list.push_back(scene_root);
 
 	octree.Create(float3::zero, float3::zero);
@@ -171,7 +174,7 @@ void ModuleScene::ClearScene()
 		scene_root->ClearRelations();
 		scene_root->childs_list.clear();
 		go_list.clear();
-		go_list.push_back(scene_root);
+		//go_list.push_back(scene_root);
 	}
 		
 	App->loading_manager->unique_fbx_path = "";
@@ -206,10 +209,19 @@ void ModuleScene::DrawHierarchy()
 {
 	if (!go_list.empty())
 	{
-		std::vector<GameObject*> root_childs = scene_root->childs_list;
+		std::vector<GameObject*> root_childs;
+		for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+		{
+			if ((*it)->IsRoot())
+			{
+				root_childs = (*it)->childs_list;
+			}
+		}
+		//std::vector<GameObject*> root_childs = scene_root->childs_list;
+
 		for (std::vector<GameObject*>::iterator it = root_childs.begin(); it != root_childs.end(); it++)
 		{
-			DrawChilds((*it));
+				DrawChilds((*it));					
 		}
 
 	}
@@ -329,45 +341,7 @@ GameObject * ModuleScene::GetSelected()
 void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 {
 	//Example of a saved scene
-
-	/*{"Game Objects":
-	[
-		{
-			"UID":1642009359,
-			"ParentUID" : 1619219037,
-			"Name" : "RootNode",
-			"Translation" : [0, 0, 0],
-			"Scale" : [1, 1, 1],
-			"Rotation" : [0, 0, 0, 1],
-			"Components" : []
-		},
-		{
-			"UID":1336602188,
-			"ParentUID" : 1642009359,
-			"Name" : "RPG-Character-Mesh",
-
-			"Translation" : [-0.178409,0,-0.079894],
-			"Scale" : [1,1,1],
-			"Rotation" : [-0.707107,0,0,0.707107],
-			"Components" :
-			[
-				{
-					"Type":1,
-					"Resource" : 0,
-					"Alpha Test" : 0.500000,
-					"Transform" : [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
-				},
-				{
-				"Type":0,
-				"Resource" : 1784,
-				"Bones Root" : 0,
-				"Tint" : [1,1,1,1]
-				}
-			]
-		}
-	};*/
 		
-	
 	FILE* fp = fopen("Assets/Scenes/scene1.json", "wb"); // non-Windows use "w"
 	scenewriteBuffer[10000];
 	Document savescene_w;
@@ -388,7 +362,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 				static int parent_i = 0;
 				static int child_i = 0;
 				if ((*it)->IsRoot())
-				{
+				{					
 					std::string go_name;
 					go_name.append("GameObject_");
 					go_name.append(std::to_string(parent_i));
@@ -430,7 +404,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 }
 void ModuleScene::LoadScene(const char* path)
 {
-	std::vector<GameObject*> test_list_go;
+	//std::vector<GameObject*> test_go_list;
 	
 
 	FILE* fp = fopen(path, "rb"); // non-Windows use "w"
@@ -438,10 +412,10 @@ void ModuleScene::LoadScene(const char* path)
 	const int sizeofbuffer = sizeof(scenewriteBuffer);
 	char scenereadBuffer[sizeofbuffer] = {};
 
-
 	FileReadStream is(fp, scenereadBuffer, sizeof(scenereadBuffer));
 	docload_r.ParseStream(is);
 	Document::AllocatorType& allocator = docload_r.GetAllocator();
+
 	for (Value::ConstMemberIterator go_itr = docload_r["Scene1"].MemberBegin(); go_itr != docload_r["Scene1"].MemberEnd(); ++go_itr)
 	{
 		//Create GameObject
@@ -452,11 +426,12 @@ void ModuleScene::LoadScene(const char* path)
 			//Iterate through values of GameObject
 			if (strcmp(m_go_itr->name.GetString(), "name") == 0)
 			{	
-				new_go->SetName(m_go_itr->value.GetString());	
+				
 				if (strcmp(m_go_itr->value.GetString(), "ROOT") == 0) //if it's root
-				{
+				{					
 					new_go->root_go = true;
 				}
+				new_go->SetName(m_go_itr->value.GetString());
 			}
 			else if (strcmp(m_go_itr->name.GetString(), "active_go") == 0)
 			{
@@ -505,7 +480,10 @@ void ModuleScene::LoadScene(const char* path)
 				}
 			}
 		}
+
 		go_list.push_back(new_go);
+		
+		
 		
 	}
 
@@ -515,9 +493,8 @@ void ModuleScene::LoadScene(const char* path)
 		(*go_itr)->SetParent(go_list, (*go_itr)->parent_uid);
 	}
 	
-	uint this_size = sizeof(go_list);
-//	uint other_size = sizeof(App->scene_intro->go_list);
-	App->scene_intro->go_list;
+	uint this_size = sizeof(App->scene_intro->go_list);
+	//uint other_size = sizeof(App->scene_intro->go_list);
 	fclose(fp);
 }
 Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
@@ -557,7 +534,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 			//Save type Component
 			ComponentType check_type = go->components_list[i]->GetType();
-			int hola = go->components_list[i]->GetType();
+			unsigned int hola = go->components_list[i]->GetType();
 			arr_comp.AddMember("type", hola, allocator);
 
 			//Get Specific Component Data based on type
@@ -597,6 +574,14 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				//Adding data to the component
 				arr_comp.AddMember("MATERIAL", obj_comp_material, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);				
+				break;
+			}
+			case MESH:
+			{
+				Value obj_comp_mesh(kObjectType);
+				ComponentMesh* com_mesh_aux = (ComponentMesh*)go->components_list[i];
+				Mesh* mesh_aux = com_mesh_aux->mesh;
+				//App->loading_manager->mesh_loader->LoadMesh();
 				break;
 			}
 			default:

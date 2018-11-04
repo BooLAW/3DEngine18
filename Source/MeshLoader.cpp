@@ -57,7 +57,15 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 		{
 			node_name = App->GetFileName(path);
 			App->scene_intro->fbx_name = node_name;
-			GO->SetParent(App->scene_intro->scene_root);
+
+			for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it != App->scene_intro->go_list.end(); it++)
+			{
+				if ((*it)->IsRoot())
+				{
+					GO->SetParent((*it));
+				}
+			}
+	
 		}
 
 		else if (parent != nullptr)
@@ -83,7 +91,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 			GO->comp_transform->SetTransform(pos, rot, scale);
 		}
 
-		//Create Random UID for Root
+		//Create Random UID for mesh Root
 		unsigned int max_int = UINT_MAX;
 		UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
 		GO->uid = random_int;
@@ -108,8 +116,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				new_child->num_meshes = node->mNumMeshes;
 
 				//MESH
-				LoadSceneMeshJson(App->scene_intro->fbx_name, node);
-
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
 				//Vertices----------------------
@@ -133,7 +139,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 						LineSegment face_normal = CalculateTriangleNormal(my_mesh2->vertices[i], my_mesh2->vertices[u], my_mesh2->vertices[w]);
 						Absolute(face_normal);
 
-
 						my_mesh2->face_normal.push_back(face_normal);
 					}
 					glGenBuffers(1, (GLuint*)&my_mesh2->indices_id);
@@ -147,7 +152,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				}
 				else
 					CONSOLE_LOG_WARNING("Mesh has no Faces");
-
 
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))
@@ -174,8 +178,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				my_mesh2->bounding_box = bb;
 				my_mesh2->show_bb = false;
 
-
-
 				ComponentMesh*  new_comp_mesh = new ComponentMesh();
 				new_comp_mesh->AddMesh(my_mesh2);
 				new_comp_mesh->SetOwner(new_child);
@@ -187,12 +189,10 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				//Add child to parent
 				parent->AddChild(new_child);
-				new_child->parent_uid = parent->uid;
 
 				//Transform
 				if (node != nullptr)
 				{
-
 					aiVector3D aiPos;
 					aiQuaternion aiQuat;
 					aiVector3D aiScale;
@@ -204,8 +204,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					float3 scale(aiScale.x, aiScale.y, aiScale.z);
 
 					new_child->comp_transform->SetTransform(pos, rot, scale);
-
-
 				}
 				App->scene_intro->go_list.push_back(new_child);
 				new_child->RecalculateBoundingBox(new_child);
@@ -224,32 +222,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 		InitMesh(scene, node->mChildren[i], GO, path);
 	}
 	GO->comp_transform->UpdateTransformValues();
-
-	return true;
-}
-
-bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std::string& path)
-{
-
-	char readBuf[100000];
-
-	std::string file_name;
-	file_name.append(App->GetFileName(path.c_str()));
-	file_name.append(".lw");
-
-	FILE* fp = fopen(file_name.c_str(), "wb"); // non-Windows use "w"
-
-	char writeBuffer[10000];
-
-	Document testconfig_w;
-	testconfig_w.SetObject();
-	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
-
-	
-
-	Writer<FileWriteStream> writer(os);
-	testconfig_w.Accept(writer);
-	fclose(fp);
 
 	return true;
 }
@@ -514,6 +486,32 @@ void MeshLoader::Absolute(LineSegment& line)
 	}
 
 
+}
+
+bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std::string& path)
+{
+
+	char readBuf[100000];
+
+	std::string file_name;
+	file_name.append(App->GetFileName(path.c_str()));
+	file_name.append(".lw");
+
+	FILE* fp = fopen(file_name.c_str(), "wb"); // non-Windows use "w"
+
+	char writeBuffer[10000];
+
+	Document testconfig_w;
+	testconfig_w.SetObject();
+	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+
+
+
+	Writer<FileWriteStream> writer(os);
+	testconfig_w.Accept(writer);
+	fclose(fp);
+
+	return true;
 }
 
 bool MeshLoader::SaveMeshJson(const aiScene * scene, aiNode * node, Document * config)

@@ -240,6 +240,7 @@ void ModuleSceneGui::CreateMainMenu()
 					
 				if (ImGui::MenuItem("Save")) 
 				{ 
+					App->scene_intro->SaveScene(App->scene_intro->go_list);
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[1]);
 					want_to_save = true; 
 				}

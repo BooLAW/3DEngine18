@@ -41,12 +41,13 @@ public:
 	GameObject* GetParent()const;
 	void SetParent(GameObject* new_parent);
 	void SetParent(std::vector<GameObject*> go_list,UINT32 uid);
+	void SetParentUID(UINT32 id);
 	void AddChild(GameObject* new_child);
 	void AddChild(std::vector<GameObject*> go_list, UINT32 uid);
 	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
 	int GetNumChilds()const;
-	void SetParentUID(UINT32 id);
+
 	void SetUID(UINT32 id);
 	//Mesh functionalities
 	void ActivateBB();

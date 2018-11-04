@@ -65,10 +65,11 @@ void LoadManager::Load(const char * path)
 	else if (App->GetTermination(path) == "json")
 	{
 		App->scene_intro->ClearScene();
+		App->scene_intro->LoadScene(path);
 		if (unique_scene_path != path)
 		{
 	
-			App->scene_intro->LoadScene(path);
+			
 			unique_scene_path = path;
 		}
 		//else

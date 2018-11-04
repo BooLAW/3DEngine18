@@ -25,7 +25,7 @@ PanelHierarchy::~PanelHierarchy()
 void PanelHierarchy::Draw()
 {
 	ImGui::BeginDock("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing);
-	if (ImGui::Button("Add GO") )
+	if (ImGui::Button("Add GO"))
 	{
 		App->scene_intro->CreateNewGameObject(); 
 	}
