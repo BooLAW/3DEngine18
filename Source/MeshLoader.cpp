@@ -43,6 +43,191 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	return ret;
 }
 
+bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)
+{
+	GameObject* GO = new GameObject();
+
+	if (node->mNumMeshes < 1)
+	{
+		std::string node_name(node->mName.C_Str());
+
+		GO = new GameObject();
+
+		if (node_name == "RootNode")//That's how assimp saves the rootnode
+		{
+			node_name = App->GetFileName(path);
+			App->scene_intro->fbx_name = node_name;
+			GO->SetParent(App->scene_intro->scene_root);
+		}
+
+		else if (parent != nullptr)
+		{
+			parent->AddChild(GO);
+
+		}
+		GO->SetName(node_name.c_str());
+
+		//Transform
+		if (node != nullptr) {
+
+			aiVector3D aiPos;
+			aiQuaternion aiQuat;
+			aiVector3D aiScale;
+
+			node->mTransformation.Decompose(aiScale, aiQuat, aiPos);
+
+			float3 pos(aiPos.x, aiPos.y, aiPos.z);
+			Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
+			float3 scale(aiScale.x, aiScale.y, aiScale.z);
+
+			GO->comp_transform->SetTransform(pos, rot, scale);
+		}
+
+		//Create Random UID for Root
+		unsigned int max_int = UINT_MAX;
+		UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+		GO->uid = random_int;
+
+		App->scene_intro->go_list.push_back(GO);
+	}
+	else
+	{
+		if (scene != nullptr && scene->HasMeshes())
+		{
+			for (int i = 0; i < node->mNumMeshes; i++)
+			{
+				//Create the Game Object
+				GameObject* new_child = new GameObject();
+
+				//Create Random UID for new_child
+				unsigned int max_int = UINT_MAX;
+				UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+				new_child->uid = random_int;
+
+				new_child->SetName(node->mName.C_Str());
+				new_child->num_meshes = node->mNumMeshes;
+
+				//MESH
+				LoadSceneMeshJson(App->scene_intro->fbx_name, node);
+
+				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
+				//Vertices----------------------
+				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
+				glBindBuffer(GL_ARRAY_BUFFER, my_mesh2->vertices_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh2->num_vertices, my_mesh2->vertices, GL_STATIC_DRAW);
+
+				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh2->num_vertices);
+
+				//reset buffer
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				//Indices--------------------------
+				if (mesh->HasFaces())
+				{
+					my_mesh2->num_normal = my_mesh2->num_vertices;
+					for (int i = 0; i < mesh->mNumVertices; ++i)
+					{
+						int u = i + 1;
+						int w = i + 2;
+						LineSegment face_normal = CalculateTriangleNormal(my_mesh2->vertices[i], my_mesh2->vertices[u], my_mesh2->vertices[w]);
+						Absolute(face_normal);
+
+
+						my_mesh2->face_normal.push_back(face_normal);
+					}
+					glGenBuffers(1, (GLuint*)&my_mesh2->indices_id);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh2->indices_id);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_indices, my_mesh2->indices, GL_STATIC_DRAW);
+					//reset buffer
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+					CONSOLE_LOG_INFO("%d indices", my_mesh2->num_indices);
+
+				}
+				else
+					CONSOLE_LOG_WARNING("Mesh has no Faces");
+
+
+				//Tex Coords-------------------
+				if (mesh->HasTextureCoords(0))
+				{
+					my_mesh2->num_tex_coords = mesh->mNumVertices;
+					my_mesh2->num_tex_coords = my_mesh2->num_vertices/3;
+
+					glGenBuffers(1, (GLuint*)&my_mesh2->tex_coords_id);
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh2->tex_coords_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_tex_coords * 3, my_mesh2->tex_coords, GL_STATIC_DRAW);
+
+					//reset buffer
+					CONSOLE_LOG_INFO("%d tex coords", my_mesh2->num_tex_coords);
+				}
+				else
+				{
+					CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
+				}
+
+				//Set the Bounding Box for the DEBUG DRAW
+				AABB bb;
+				bb.SetNegativeInfinity();
+				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+				my_mesh2->bounding_box = bb;
+				my_mesh2->show_bb = false;
+
+
+
+				ComponentMesh*  new_comp_mesh = new ComponentMesh();
+				new_comp_mesh->AddMesh(my_mesh2);
+				new_comp_mesh->SetOwner(new_child);
+				new_comp_mesh->SetType(ComponentType::MESH);
+				new_comp_mesh->Enable();
+
+				new_child->PushComponent((Component*)new_comp_mesh);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				//Add child to parent
+				parent->AddChild(new_child);
+				new_child->parent_uid = parent->uid;
+
+				//Transform
+				if (node != nullptr)
+				{
+
+					aiVector3D aiPos;
+					aiQuaternion aiQuat;
+					aiVector3D aiScale;
+
+					node->mTransformation.Decompose(aiScale, aiQuat, aiPos);
+
+					float3 pos(aiPos.x, aiPos.y, aiPos.z);
+					Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
+					float3 scale(aiScale.x, aiScale.y, aiScale.z);
+
+					new_child->comp_transform->SetTransform(pos, rot, scale);
+
+
+				}
+				App->scene_intro->go_list.push_back(new_child);
+				new_child->RecalculateBoundingBox(new_child);
+				App->camera->AdaptCamera(bb, new_child->comp_transform->transform->pos);
+			}
+			GO = parent;
+		}
+		else
+		{
+			CONSOLE_LOG_ERROR("Error loading FBX");
+		}
+	}
+
+	for (int i = 0; i < node->mNumChildren; i++)
+	{
+		InitMesh(scene, node->mChildren[i], GO, path);
+	}
+	GO->comp_transform->UpdateTransformValues();
+
+	return true;
+}
+
 bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std::string& path)
 {
 
@@ -67,6 +252,30 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	fclose(fp);
 
 	return true;
+}
+
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
+{
+	if (scene != nullptr && node->mNumMeshes > 0)
+	{
+		if (scene->HasMeshes())
+		{
+			//SaveMeshJson(scene, node, config);
+
+			for (int i = 0; i < node->mNumMeshes; i++)
+			{
+				SaveMeshBinary(scene, node, i);
+
+			}
+		}
+	}
+
+	for (int i = 0; i < node->mNumChildren; i++)
+	{
+		SaveMesh(scene, node->mChildren[i]);
+	}
+
+	return false;
 }
 
 bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
@@ -244,28 +453,67 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	return ret;
 }
 
-bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
+LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
 {
-	if (scene != nullptr && node->mNumMeshes > 0)
-	{
-		if (scene->HasMeshes())
-		{
-			//SaveMeshJson(scene, node, config);
+	LineSegment ret; //a = N, b = A
 
-			for (int i = 0; i < node->mNumMeshes; i++)
-			{
-				SaveMeshBinary(scene, node, i);
-			
-			}
-		}
-	}
-	
-	for (int i = 0; i < node->mNumChildren; i++)
+	float3 pv1;
+	pv1.x = p1.x;
+	pv1.y = p1.y;
+	pv1.z = p1.z;
+
+	float3 pv2;
+	pv2.x = p2.x;
+	pv2.y = p2.y;
+	pv2.z = p2.z;
+
+	float3 pv3;
+	pv3.x = p3.x;
+	pv3.y = p3.y;
+	pv3.z = p3.z;
+
+	float3 u = p2 - p1;
+	float3 v = p3 - p1;
+
+	float3 aux1 = pv2 - pv1;
+	float3 retcros = aux1.Cross(pv3 - pv1);
+	retcros = retcros.Normalized();
+
+	ret.b = retcros;
+
+	ret.a.x = (p1.x + p2.x + p3.x) / 3;
+	ret.a.y = (p1.y + p2.y + p3.y) / 3;
+	ret.a.z = (p1.z + p2.z + p3.z) / 3;
+	ret.b = ret.b + ret.a;
+
+	return ret;
+}
+
+void MeshLoader::Render()
+{
+}
+
+void MeshLoader::CleanUp()
+{
+	aiDetachAllLogStreams();
+}
+
+void MeshLoader::Absolute(LineSegment& line)
+{
+	if (line.a.x < 0)
 	{
-		SaveMesh(scene, node->mChildren[i]);
+		//line.a.x = line.a.x * -1;
+	}
+	if (line.a.y < 0)
+	{
+		line.a.y = line.a.y * -1;
+	}
+	if (line.a.z < 0)
+	{
+		//line.a.z = line.a.z * -1;
 	}
 
-	return false;
+
 }
 
 bool MeshLoader::SaveMeshJson(const aiScene * scene, aiNode * node, Document * config)
@@ -325,283 +573,10 @@ bool MeshLoader::SaveMeshJson(const aiScene * scene, aiNode * node, Document * c
 	return false;
 }
 
-Mesh * MeshLoader::LoadSceneMeshJson(std::string file_name,const aiNode* node)
+Mesh * MeshLoader::LoadSceneMeshJson(std::string file_name, const aiNode* node)
 {
 	//TODO JOSEP
 
 
 	return nullptr;
-}
-
-
-LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)
-{
-	LineSegment ret; //a = N, b = A
-
-	float3 pv1;
-	pv1.x = p1.x;
-	pv1.y = p1.y;
-	pv1.z = p1.z;
-
-	float3 pv2;
-	pv2.x = p2.x;
-	pv2.y = p2.y;
-	pv2.z = p2.z;
-
-	float3 pv3;
-	pv3.x = p3.x;
-	pv3.y = p3.y;
-	pv3.z = p3.z;
-
-	float3 u = p2 - p1;
-	float3 v = p3 - p1;
-
-	float3 aux1 = pv2 - pv1;
-	float3 retcros = aux1.Cross(pv3 - pv1);
-	retcros = retcros.Normalized();
-
-	ret.b = retcros;
-
-	ret.a.x = (p1.x + p2.x + p3.x) / 3;
-	ret.a.y = (p1.y + p2.y + p3.y) / 3;
-	ret.a.z = (p1.z + p2.z + p3.z) / 3;
-	ret.b = ret.b + ret.a;
-
-	return ret;
-}
-void MeshLoader::Render()
-{
-}
-
-void MeshLoader::CleanUp()
-{
-	aiDetachAllLogStreams();
-}
-
-bool MeshLoader::InitMesh(const aiScene* scene,const aiNode* node, GameObject* parent,const char* path)
-{
-	GameObject* GO = new GameObject();
-
-	if (node->mNumMeshes < 1)
-	{
-		std::string node_name(node->mName.C_Str());
-
-		GO = new GameObject();
-
-		if (node_name == "RootNode")//That's how assimp saves the rootnode
-		{
-			node_name = App->GetFileName(path);
-			App->scene_intro->fbx_name = node_name;
-			GO->SetParent(App->scene_intro->scene_root);
-		}
-
-		else if (parent != nullptr)
-		{
-			parent->AddChild(GO);
-
-		}
-		GO->SetName(node_name.c_str());
-
-		//Transform
-		if (node != nullptr) {
-
-			aiVector3D aiPos;
-			aiQuaternion aiQuat;
-			aiVector3D aiScale;
-
-			node->mTransformation.Decompose(aiScale, aiQuat, aiPos);
-
-			float3 pos(aiPos.x, aiPos.y, aiPos.z);
-			Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
-			float3 scale(aiScale.x, aiScale.y, aiScale.z);
-
-			GO->comp_transform->SetTransform(pos, rot, scale);			
-		}
-
-		//Create Random UID for Root
-		unsigned int max_int = UINT_MAX;
-		UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-		GO->uid = random_int;
-
-		App->scene_intro->go_list.push_back(GO);
-	}
-	else
-	{
-		if (scene != nullptr && scene->HasMeshes())
-		{
-			for (int i = 0; i < node->mNumMeshes; i++)
-			{
-				//Create the Game Object
-				GameObject* new_child = new GameObject();
-
-				//Create Random UID for new_child
-				unsigned int max_int = UINT_MAX;
-				UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-				new_child->uid = random_int;
-
-				new_child->SetName(node->mName.C_Str());
-				new_child->num_meshes = node->mNumMeshes;
-
-				//MESH
-				LoadSceneMeshJson(App->scene_intro->fbx_name, node);
-			
-				//Mesh* my_mesh2 = new Mesh();
-				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
-				//Vertices----------------------
-				//my_mesh2->num_vertices = mesh->mNumVertices;
-				//my_mesh2->vertices = new float3[my_mesh2->num_vertices];				
-				//memcpy(my_mesh2->vertices, mesh->mVertices, sizeof(float3) * my_mesh2->num_vertices);
-				
-
-				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
-				glBindBuffer(GL_ARRAY_BUFFER, my_mesh2->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh2->num_vertices, my_mesh2->vertices, GL_STATIC_DRAW);
-
-				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh2->num_vertices);
-				//reset buffer
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				//Indices--------------------------
-				if (mesh->HasFaces())
-				{
-
-					//my_mesh2->num_indices = mesh->mNumFaces * 3;
-					my_mesh2->num_normal = mesh->mNumVertices * 3;
-
-					//my_mesh2->indices = new int[my_mesh2->num_indices];
-				
-
-
-					for (int i = 0; i < mesh->mNumFaces; ++i)
-					{
-						if (mesh->mFaces[i].mNumIndices != 3) 
-						{
-							CONSOLE_LOG_WARNING("WARNING, face indices != 3");
-						}
-						else
-						{
-							//memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);							
-						}
-					}
-					for (int i = 0; i < mesh->mNumVertices; ++i)
-					{
-						int u = i + 1;
-						int w = i + 2;
-						LineSegment face_normal = CalculateTriangleNormal(my_mesh2->vertices[i], my_mesh2->vertices[u], my_mesh2->vertices[w]);
-						Absolute(face_normal);
-
-
-						my_mesh2->face_normal.push_back(face_normal);
-					}
-					glGenBuffers(1, (GLuint*)&my_mesh2->indices_id);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh2->indices_id);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_indices, my_mesh2->indices, GL_STATIC_DRAW);
-					//reset buffer
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-					CONSOLE_LOG_INFO("%d indices", my_mesh2->num_indices);
-
-				}
-				else
-					CONSOLE_LOG_WARNING("Mesh has no Faces");
-
-
-				//Tex Coords-------------------
-				if (mesh->HasTextureCoords(0))
-				{
-					my_mesh2->num_tex_coords = mesh->mNumVertices;
-					//my_mesh2->tex_coords = new float[my_mesh2->num_tex_coords * 3];
-					//memcpy(my_mesh2->tex_coords, mesh->mTextureCoords[0], sizeof(float)*my_mesh2->num_tex_coords * 3);
-
-
-					glGenBuffers(1, (GLuint*)&my_mesh2->tex_coords_id);
-					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh2->tex_coords_id);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_tex_coords * 3, my_mesh2->tex_coords, GL_STATIC_DRAW);
-
-					//reset buffer
-					CONSOLE_LOG_INFO("%d tex coords", my_mesh2->num_tex_coords);
-				}
-				else
-				{
-					CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
-				}
-
-				//Set the Bounding Box for the DEBUG DRAW
-				AABB bb;
-				bb.SetNegativeInfinity();
-				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-				my_mesh2->bounding_box = bb;
-				my_mesh2->show_bb = false;
-			
-
-
-				ComponentMesh*  new_comp_mesh = new ComponentMesh();
-				new_comp_mesh->AddMesh(my_mesh2);
-				new_comp_mesh->SetOwner(new_child);
-				new_comp_mesh->SetType(ComponentType::MESH);
-				new_comp_mesh->Enable();
-
-				new_child->PushComponent((Component*)new_comp_mesh);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				//Add child to parent
-				parent->AddChild(new_child);
-				new_child->parent_uid = parent->uid;
-
-				//Transform
-				if (node != nullptr) 
-				{
-
-					aiVector3D aiPos;
-					aiQuaternion aiQuat;
-					aiVector3D aiScale;
-
-					node->mTransformation.Decompose(aiScale,aiQuat, aiPos);
-
-					float3 pos(aiPos.x, aiPos.y, aiPos.z);
-					Quat rot(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w);
-					float3 scale(aiScale.x, aiScale.y, aiScale.z);
-
-					new_child->comp_transform->SetTransform(pos, rot, scale);
-
-
-				}
-				App->scene_intro->go_list.push_back(new_child);
-				new_child->RecalculateBoundingBox(new_child);
-				App->camera->AdaptCamera(bb,new_child->comp_transform->transform->pos);
-			}
-			GO = parent;
-		}
-		else
-		{
-			CONSOLE_LOG_ERROR("Error loading FBX");
-		}
-		
-	}
-	for (int i = 0; i < node->mNumChildren; i++)
-	{
-		InitMesh(scene, node->mChildren[i], GO,path);
-	}
-	GO->comp_transform->UpdateTransformValues();
-
-	return true;
-}
-
-void MeshLoader::Absolute(LineSegment& line)
-{
-	if (line.a.x < 0)
-	{
-		//line.a.x = line.a.x * -1;
-	}
-	if (line.a.y < 0)
-	{
-		line.a.y = line.a.y * -1;
-	}
-	if (line.a.z < 0)
-	{
-		//line.a.z = line.a.z * -1;
-	}
-
-
 }

@@ -428,10 +428,12 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 	savescene_w.Accept(writer);
 	fclose(fp);
 }
-void ModuleScene::LoadScene()
+void ModuleScene::LoadScene(const char* path)
 {
 	std::vector<GameObject*> test_list_go;
-	FILE* fp = fopen("Assets/Scenes/scene1.json", "rb"); // non-Windows use "w"
+	
+
+	FILE* fp = fopen(path, "rb"); // non-Windows use "w"
 	Document docload_r;
 	const int sizeofbuffer = sizeof(scenewriteBuffer);
 	char scenereadBuffer[sizeofbuffer] = {};
@@ -486,6 +488,8 @@ void ModuleScene::LoadScene()
 							new_go->PushComponent(aux_comp);
 							break;
 						case MESH:
+							aux_comp = new Component(MESH);
+							new_go->PushComponent(aux_comp);
 							break;
 						case MATERIAL:
 							break;
@@ -501,18 +505,18 @@ void ModuleScene::LoadScene()
 				}
 			}
 		}
-		test_list_go.push_back(new_go);
+		go_list.push_back(new_go);
 		
 	}
 
 	//Add Parents and Childs
-	for (std::vector<GameObject*>::iterator go_itr = test_list_go.begin(); go_itr != test_list_go.end(); go_itr++)
+	for (std::vector<GameObject*>::iterator go_itr = go_list.begin(); go_itr != go_list.end(); go_itr++)
 	{		
-		(*go_itr)->SetParent(test_list_go, (*go_itr)->parent_uid);
+		(*go_itr)->SetParent(go_list, (*go_itr)->parent_uid);
 	}
 	
-	uint this_size = sizeof(test_list_go);
-	uint other_size = sizeof(App->scene_intro->go_list);
+	uint this_size = sizeof(go_list);
+//	uint other_size = sizeof(App->scene_intro->go_list);
 	App->scene_intro->go_list;
 	fclose(fp);
 }

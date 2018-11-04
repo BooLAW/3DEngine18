@@ -44,6 +44,7 @@ public:
 
 	std::string unique_material_path;
 	std::string unique_fbx_path;
+	std::string unique_scene_path;
 
 	std::string tex_name_file;
 };
