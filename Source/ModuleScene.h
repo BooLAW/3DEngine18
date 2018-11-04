@@ -50,7 +50,7 @@ public:
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;	
-	std::vector<GameObject*> octree_objects;
+	std::list<GameObject*> octree_objects;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
 	Octree octree;

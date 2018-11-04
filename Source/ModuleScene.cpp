@@ -193,13 +193,8 @@ void ModuleScene::AddToOctree(GameObject * go)
 
 void ModuleScene::RemoveFromOctree(GameObject * go)
 {
-	for (std::vector<GameObject*>::iterator it = octree_objects.begin(); it != octree_objects.end(); it++)
-	{
-		if ((*it)->GetUID() == go->GetUID())
-			octree_objects.erase(it);
-	}
 	octree.Remove(go);
-
+	octree_objects.remove(go);
 }
 
 void ModuleScene::CollectOctreeIntersections(std::list<Mesh*>& item_elements, AABB* bounding_box)

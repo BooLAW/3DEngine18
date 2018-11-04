@@ -274,14 +274,14 @@ void Octree::RefactorOctree()
 {
 	// Recalculate New Dimensions
 	min_point = max_point = float3::zero;
-	for (std::vector<GameObject*>::iterator it = App->scene_intro->octree_objects.begin(); it != App->scene_intro->octree_objects.end(); it++)
+	for (std::list<GameObject*>::iterator it = App->scene_intro->octree_objects.begin(); it != App->scene_intro->octree_objects.end(); it++)
 	{
 		Recalculate((*it)->GetBB().minPoint, (*it)->GetBB().maxPoint);
 	}
 	// Create Octree with that dimensions
 	Create(min_point, max_point);;
 	// Insert Elements
-	for (std::vector<GameObject*>::iterator it = App->scene_intro->octree_objects.begin(); it != App->scene_intro->octree_objects.end(); it++)
+	for (std::list<GameObject*>::iterator it = App->scene_intro->octree_objects.begin(); it != App->scene_intro->octree_objects.end(); it++)
 	{
 		Insert(*it);
 	}
