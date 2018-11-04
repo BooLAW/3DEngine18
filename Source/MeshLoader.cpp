@@ -22,7 +22,7 @@ MeshLoader::~MeshLoader()
 {
 }
 
-bool MeshLoader::LoadMesh(const std::string &file_path)
+bool MeshLoader::LoadMesh(const std::string &file_path, const char* folder_path)
 {
 	bool ret = false;
 	const aiScene* new_scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
@@ -30,9 +30,9 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	if (new_scene != nullptr)
 	{
 		aiNode* root = new_scene->mRootNode;
-		SaveMesh(new_scene,root); //Starts Recursive
+		SaveMesh(new_scene,root,folder_path); //Starts Recursive
 		//SaveSceneMeshesLW(new_scene, root,file_path);
-		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str());
+		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str(),folder_path);
 
 		aiReleaseImport(new_scene);
 	}
@@ -43,7 +43,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	return ret;
 }
 
-bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)
+bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path, const char* folder_path)
 {
 	GameObject* GO = new GameObject();
 
@@ -117,7 +117,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				//MESH
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i);
+				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i,folder_path);
 				//Vertices----------------------
 				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, my_mesh2->vertices_id);
@@ -219,14 +219,14 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		InitMesh(scene, node->mChildren[i], GO, path);
+		InitMesh(scene, node->mChildren[i], GO, path,folder_path);
 	}
 	GO->comp_transform->UpdateTransformValues();
 
 	return true;
 }
 
-bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node,const char* folder_path)
 {
 	if (scene != nullptr && node->mNumMeshes > 0)
 	{
@@ -236,7 +236,7 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				SaveMeshBinary(scene, node, i);
+				SaveMeshBinary(scene, node, i,folder_path);
 
 			}
 		}
@@ -244,16 +244,17 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		SaveMesh(scene, node->mChildren[i]);
+		SaveMesh(scene, node->mChildren[i],folder_path);
 	}
 
 	return false;
 }
 
-bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
+bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh,const char* folder_path)
 {
 	std::string final_file_name;
-	final_file_name.append("Assets/Models/");
+	final_file_name.append(folder_path);
+	final_file_name.append("/");
 	final_file_name.append(node->mName.C_Str());
 	if (node->mNumMeshes > 1)
 	{
@@ -348,11 +349,12 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	return false;
 }
 
-Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
+Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh,const char* folder_path)
 {
 	Mesh* ret = new Mesh();
 	std::string final_file_name;
-	final_file_name.append("Assets/Models/");
+	final_file_name.append(folder_path);
+	final_file_name.append("/");
 	final_file_name.append(node->mName.C_Str());
 	if (node->mNumMeshes > 1)
 	{

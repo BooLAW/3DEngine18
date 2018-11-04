@@ -24,8 +24,16 @@ void LoadManager::Load(const char * path)
 		CONSOLE_LOG_INFO("FBX dropped");
 		if (unique_fbx_path != path)
 		{
+			std::string dir_name;
+			std::string final_dir_name;
+			dir_name.append("Assets/Models/");
+			dir_name.append(App->GetFileName(path));
+			final_dir_name = dir_name.substr(0, dir_name.length()-4);
+			CreateDirectory(final_dir_name.c_str(), NULL);
+
+
 			App->input->file_droped = true;
-			mesh_loader->LoadMesh(path);
+			mesh_loader->LoadMesh(path,final_dir_name.c_str());
 			App->scene_intro->has_meshes = true;
 			unique_fbx_path = path;
 		}

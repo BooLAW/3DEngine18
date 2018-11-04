@@ -71,8 +71,8 @@ bool ModuleScene::Start()
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
-	App->loading_manager->Load(".//Assets//Models//warrior.fbx");
-	App->loading_manager->unique_fbx_path = ".//Assets//Models//warrior.fbx";
+	App->loading_manager->Load(".\\Assets\\Models\\warrior.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\warrior.fbx";
 
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
@@ -581,7 +581,8 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				Value obj_comp_mesh(kObjectType);
 				ComponentMesh* com_mesh_aux = (ComponentMesh*)go->components_list[i];
 				Mesh* mesh_aux = com_mesh_aux->mesh;
-				//App->loading_manager->mesh_loader->LoadMesh();
+				
+				//App->loading_manager->mesh_loader->InitM
 				break;
 			}
 			default:

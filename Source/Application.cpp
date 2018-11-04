@@ -289,12 +289,11 @@ std::string Application::GetFileName(const char * path)
 	std::string ret;
 
 	//DeleteEndBars(full_path_str);
-
 	if (full_path_str.find('\\') != 0)
 	{
 		uint cut = full_path_str.find_last_of('\\');
 
-	
+
 		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
 	}
 	return ret;
