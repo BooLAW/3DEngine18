@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <WinBase.h>
-#include <string>
 #include <sstream>
 #include <limits>
 
@@ -426,12 +425,21 @@ void ModuleScene::LoadScene(const char* path)
 			//Iterate through values of GameObject
 			if (strcmp(m_go_itr->name.GetString(), "name") == 0)
 			{	
-				
+				std::string go_name;
 				if (strcmp(m_go_itr->value.GetString(), "ROOT") == 0) //if it's root
 				{					
 					new_go->root_go = true;
 				}
-				new_go->SetName(m_go_itr->value.GetString());
+				go_name.append(m_go_itr->value.GetString());
+				if (go_name.find("//") == 1)
+				{
+					std::string final_go_name;
+					final_go_name = App->GetFileName(go_name.c_str());
+					new_go->SetName(final_go_name.c_str());
+				}
+				else
+					new_go->SetName(m_go_itr->value.GetString());
+				
 			}
 			else if (strcmp(m_go_itr->name.GetString(), "active_go") == 0)
 			{
