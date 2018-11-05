@@ -22,28 +22,37 @@ MeshLoader::~MeshLoader()
 {
 }
 
-bool MeshLoader::LoadMesh(const std::string &file_path, const char* folder_path)
+bool MeshLoader::LoadMesh(const std::string &file_path)
 {
-	bool ret = false;
-	const aiScene* new_scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-
-	if (new_scene != nullptr)
+	bool ret = false;	
+	std::string termination = App->GetTermination(file_path.c_str());
+	if (termination.find(".lw") == 1)
 	{
-		aiNode* root = new_scene->mRootNode;
-		SaveMesh(new_scene,root,folder_path); //Starts Recursive
-		//SaveSceneMeshesLW(new_scene, root,file_path);
-		InitMesh(new_scene, root,App->scene_intro->scene_root,file_path.c_str(),folder_path);
-
-		aiReleaseImport(new_scene);
+		InitMesh(file_path);
 	}
 	else
-		CONSOLE_LOG_ERROR("Error Loading the scene with name %s", file_path);
+	{
+		const aiScene* new_scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+		if (new_scene != nullptr)
+		{
+			aiNode* root = new_scene->mRootNode;
+			SaveMesh(new_scene, root); //Starts Recursive
+									   //SaveSceneMeshesLW(new_scene, root,file_path);
+			InitMesh(new_scene, root, App->scene_intro->scene_root, file_path.c_str());
 
-
+			aiReleaseImport(new_scene);
+		}
+		else
+			CONSOLE_LOG_ERROR("Error Loading the scene with name %s", file_path);
+	}
 	return ret;
 }
+bool MeshLoader::InitMesh(std::string lw_path)
+{
 
-bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path, const char* folder_path)
+	return false;
+}
+bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)
 {
 	GameObject* GO = new GameObject();
 
@@ -117,7 +126,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				//MESH
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				Mesh* my_mesh2 = LoadMeshBinary(scene, node, i,folder_path);
+				Mesh* my_mesh2 = LoadMeshBinary(node->mName.C_Str(), i);
 				//Vertices----------------------
 				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, my_mesh2->vertices_id);
@@ -132,7 +141,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				if (mesh->HasFaces())
 				{
 					my_mesh2->num_normal = my_mesh2->num_vertices;
-					for (int i = 0; i < mesh->mNumVertices; ++i)
+					for (int i = 0; i < my_mesh2->num_vertices/3; ++i)
 					{
 						int u = i + 1;
 						int w = i + 2;
@@ -156,7 +165,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))
 				{
-					my_mesh2->num_tex_coords = mesh->mNumVertices;
+					
 					my_mesh2->num_tex_coords = my_mesh2->num_vertices/3;
 
 					glGenBuffers(1, (GLuint*)&my_mesh2->tex_coords_id);
@@ -219,24 +228,24 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		InitMesh(scene, node->mChildren[i], GO, path,folder_path);
+		InitMesh(scene, node->mChildren[i], GO, path);
 	}
 	GO->comp_transform->UpdateTransformValues();
 
 	return true;
 }
 
-bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node,const char* folder_path)
+
+
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 {
 	if (scene != nullptr && node->mNumMeshes > 0)
 	{
 		if (scene->HasMeshes())
 		{
-			//SaveMeshJson(scene, node, config);
-
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				SaveMeshBinary(scene, node, i,folder_path);
+				SaveMeshBinary(scene, node, i);
 
 			}
 		}
@@ -244,18 +253,18 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node,const char* folde
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		SaveMesh(scene, node->mChildren[i],folder_path);
+		SaveMesh(scene, node->mChildren[i]);
 	}
 
 	return false;
 }
 
-bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh,const char* folder_path)
+bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
 {
 	std::string final_file_name;
-	final_file_name.append(folder_path);
+	final_file_name.append(App->scene_intro->folder_path.c_str());
 	final_file_name.append("/");
-	final_file_name.append(node->mName.C_Str());
+	final_file_name.append(node->mName.C_Str());	
 	if (node->mNumMeshes > 1)
 	{
 		final_file_name.append(std::to_string(num_mesh));
@@ -269,15 +278,17 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	float3* vertices = (float3*)ai_mesh->mVertices;
 	float* tex_points = new float[ai_mesh->mNumVertices * 3];
 	//We store the number of vertices inside an array
-	uint header[4] = { (uint)ai_mesh->mNumVertices * 3,ai_mesh->mNumVertices };
+	uint header[5] = { (uint)ai_mesh->mNumVertices * 3, ai_mesh->mNumVertices ,num_mesh};
 
 	if (ai_mesh->HasTextureCoords(0))
 	{
-		header[2] = (uint)ai_mesh->mNumVertices;
+		header[3] = 1;
 	}
+	else
+		header[3] = 0;
 	if (ai_mesh->HasFaces())
 	{
-		header[3] = ai_mesh->mNumFaces * 3;
+		header[4] = ai_mesh->mNumFaces * 3;
 	}
 	uint bytes = sizeof(header);
 	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
@@ -349,29 +360,29 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	return false;
 }
 
-Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh,const char* folder_path)
+Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 {
 	Mesh* ret = new Mesh();
 	std::string final_file_name;
-	final_file_name.append(folder_path);
+	final_file_name.append(App->scene_intro->folder_path.c_str());
 	final_file_name.append("/");
-	final_file_name.append(node->mName.C_Str());
-	if (node->mNumMeshes > 1)
+	final_file_name.append(file_path);
+	if (num_mesh > 1)
 	{
 		final_file_name.append(std::to_string(num_mesh));
 	}
 	final_file_name.append(".lw");
-	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
-
+	ret->file_path.append(final_file_name.c_str());
+	
 	//creates a file
-	FILE* rfile = fopen(final_file_name.c_str(), "rb");
-
+	FILE* rfile = fopen(final_file_name.c_str(), "rb");	
+	
 	//Init Header
-	uint rheader[4];
+	uint rheader[5];
 	uint rbytes = sizeof(rheader);
 
 	//Import Buffer
-	uint rsize = sizeof(rheader) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
+	uint rsize = fsize(rfile);
 	char* rbuffer = new char[rsize];
 	fread(rbuffer, sizeof(char), rsize, rfile);
 	char* rcursor = rbuffer;
@@ -383,7 +394,7 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	rcursor += rbytes;
 
 	//Read Vertices	
-	rbytes = sizeof(float3) * ai_mesh->mNumVertices;
+	rbytes = sizeof(float3) * ret->num_vertices/3;
 	float3* rvertices = new float3[ret->num_vertices];
 	memcpy(rvertices, rcursor, rbytes);
 
@@ -392,39 +403,45 @@ Mesh * MeshLoader::LoadMeshBinary(const aiScene * scene, const aiNode * node, in
 	memcpy(ret->vertices, rvertices, rbytes);
 	rcursor += rbytes;
 
-	if (ai_mesh->HasTextureCoords(0))
+	if (rheader[3] == 1)
 	{
 		//Read tex_coord
-		rbytes = sizeof(float)*(uint)ai_mesh->mNumVertices * 3;
-		float* rtex_points = new float[ai_mesh->mNumVertices * 3];
+		rbytes = sizeof(float)*(uint)ret->num_vertices;
+		float* rtex_points = new float[ret->num_vertices];
 		memcpy(rtex_points, rcursor, rbytes);
 		
 
 		//Store them in the mesh
-		ret->tex_coords = new float[ai_mesh->mNumVertices * 3];
+		ret->tex_coords = new float[ret->num_vertices];
 		memcpy(ret->tex_coords, rtex_points, rbytes);
 		rcursor += rbytes;
 	}
 
-	if (ai_mesh->HasFaces())
+	if (rheader[4] != 0)
 	{
-		ret->num_indices = rheader[3];
+		ret->num_indices = rheader[4];
 		//Read Indices
-		rbytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
-		int* indices = new int[ai_mesh->mNumFaces * 3];
+		rbytes = sizeof(int) * ret->num_indices;
+		int* indices = new int[ret->num_indices];
 		memcpy(indices, rcursor, rbytes);
 		
 
 		//Store them in the mesh
-		ret->indices = new int[ai_mesh->mNumFaces * 3];
+		ret->indices = new int[ret->num_indices];
 		memcpy(ret->indices, indices, rbytes);
 		rcursor += rbytes;
 	}
 
-	
-
 	fclose(rfile);
 	return ret;
+}
+
+uint MeshLoader::fsize(FILE *fp)
+{
+	fseek(fp, 0, SEEK_END);
+	uint bytes = ftell(fp);
+	rewind(fp);
+	return bytes;
 }
 
 LineSegment MeshLoader::CalculateTriangleNormal(float3 p1, float3 p2, float3 p3)

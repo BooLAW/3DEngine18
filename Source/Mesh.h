@@ -35,7 +35,7 @@ public:
 	MESH_TYPE type;
 	//transform
 	float3 position = float3::zero;
-
+	std::string file_path;
 
 	//GL--------------------
 
@@ -63,6 +63,9 @@ public:
 	//AABB
 	AABB bounding_box;
 	uint id;
+
+	//Faces
+	uint num_faces;
 
 	bool show_bb;
 	bool show_normal;
