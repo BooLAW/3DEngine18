@@ -184,44 +184,18 @@ void ModuleScene::ClearScene()
 
 void ModuleScene::DeleteGameObject(GameObject* go_to_delete)
 {
+	if (go_to_delete->HasChilds())
+	{
+		for (std::vector<GameObject*>::iterator it = go_to_delete->childs_list.begin(); it != go_to_delete->childs_list.end(); it++)
+		{
+			DeleteGameObject((*it));
+		}
+	}
 	to_delete.push_back(go_to_delete);
-	
-	
-	////Delete from parent childs list
-	//if (go_to_delete->GetParent() != nullptr)
-	//{
-	//	GameObject* parent = go_to_delete->GetParent();
-	//	if (parent != nullptr && parent->HasChilds())
-	//	{
-	//		for (std::vector<GameObject*>::iterator it = parent->childs_list.begin(); it != parent->childs_list.end(); it++)
-	//		{
-	//			if ((*it) == go_to_delete)
-	//			{
-	//				parent->childs_list.erase(it);
-	//				break;
-	//			}
-	//		}
-	//	}
-	//}
-	////Clear its relations
-	//go_to_delete->ClearRelations();
-	////remove it from go_list
-	//for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
-	//{
-	//	if ((*it) == go_to_delete)
-	//	{
-	//		go_list.erase(it);
-	//		break;
-	//	}
-	//}
-	
-
-
 }
 
 void ModuleScene::DeleteGameObjectsInList()
 {
-	
 	for (std::vector<GameObject*>::iterator it = to_delete.begin(); it != to_delete.end(); it++)
 	{
 		(*it)->SetSelected(false);
@@ -230,11 +204,10 @@ void ModuleScene::DeleteGameObjectsInList()
 		if ((*it)->parent != nullptr)
 			(*it)->parent->DeleteChild((*it));
 
-		(*it)->parent = nullptr;
+		//(*it)->parent = nullptr;
 
-		//delete (*it); 
 		//delete it from go_list
-		for (std::vector<GameObject*>::iterator item = go_list.begin(); it != go_list.end(); it++)
+		for (std::vector<GameObject*>::iterator item = go_list.begin(); item != go_list.end(); item++)
 		{
 			if ((*item) == (*it))
 			{
@@ -242,8 +215,9 @@ void ModuleScene::DeleteGameObjectsInList()
 				return;
 			}
 		}		
-		it = to_delete.erase(it);
 	}
+	to_delete.clear();
+
 }
 
 bool ModuleScene::HasObjects()
