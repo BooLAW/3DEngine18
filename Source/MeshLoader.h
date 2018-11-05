@@ -27,7 +27,7 @@ public:
 	bool SaveMesh(const aiScene* scene, aiNode* node);
 	bool SaveMeshJson(const aiScene* scene, aiNode* node, Document* config);
 	Mesh* LoadSceneMeshJson(std::string file_name,const aiNode* node);
-	uint fsize(FILE *fp);
+	long fsize(FILE *fp);
 	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
 
 	void Render();

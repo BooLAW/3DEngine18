@@ -26,7 +26,8 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 {
 	bool ret = false;	
 	std::string termination = App->GetTermination(file_path.c_str());
-	if (termination.find(".lw") == 1)
+	std::size_t found_it = termination.find("lw");
+	if (found_it == 0)
 	{
 		InitMesh(file_path);
 	}
@@ -49,7 +50,28 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 }
 bool MeshLoader::InitMesh(std::string lw_path)
 {
+	std::string subsctract_begining = lw_path;
+	std::string substract_format;
+	std::string substract_file_format;
+	std::string final_file_name;
+	std::size_t found_it = lw_path.find('_$');
+	uint mesh_number = 0;
+	if (found_it != UINT_MAX)
+	{
+		uint cut = lw_path.find_last_of('_$');
+		subsctract_begining = lw_path.substr(cut+1, lw_path.length() - cut+1);
+		substract_format = subsctract_begining;
+		uint cut2 = subsctract_begining.find_last_of('.');
+		substract_format = subsctract_begining.substr(0, cut2);
+		mesh_number = std::stoi(substract_format.c_str());
+	}
+	substract_file_format = App->GetFileName(lw_path.c_str());
 
+	uint cut3 = substract_file_format.find_last_of('.');
+	final_file_name = substract_file_format.substr(0, cut3);
+
+	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
+	my_mesh;
 	return false;
 }
 bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)
@@ -235,8 +257,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 	return true;
 }
 
-
-
 bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 {
 	if (scene != nullptr && node->mNumMeshes > 0)
@@ -265,8 +285,9 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	final_file_name.append(App->scene_intro->folder_path.c_str());
 	final_file_name.append("/");
 	final_file_name.append(node->mName.C_Str());	
-	if (node->mNumMeshes > 1)
+	if (num_mesh >= 1)
 	{
+		final_file_name.append("_$");
 		final_file_name.append(std::to_string(num_mesh));
 	}
 	final_file_name.append(".lw");
@@ -335,25 +356,6 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		memcpy(cursor, indices, bytes);
 	}
 
-	/*
-	my_mesh2->num_indices = mesh->mNumFaces * 3;
-	my_mesh2->num_normal = mesh->mNumVertices * 3;
-	my_mesh2->indices = new int[my_mesh2->num_indices];
-
-
-	for (int i = 0; i < mesh->mNumFaces; ++i)
-	{
-		if (mesh->mFaces[i].mNumIndices != 3)
-		{
-			CONSOLE_LOG_WARNING("WARNING, face indices != 3");
-		}
-		else
-		{
-			memcpy(&my_mesh2->indices[i * 3], mesh->mFaces[i].mIndices, sizeof(int) * 3);
-		}
-	}
-	*/
-
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
 
@@ -367,8 +369,9 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	final_file_name.append(App->scene_intro->folder_path.c_str());
 	final_file_name.append("/");
 	final_file_name.append(file_path);
-	if (num_mesh > 1)
+	if (num_mesh >= 1)
 	{
+		final_file_name.append("_$");
 		final_file_name.append(std::to_string(num_mesh));
 	}
 	final_file_name.append(".lw");
@@ -377,15 +380,15 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	//creates a file
 	FILE* rfile = fopen(final_file_name.c_str(), "rb");	
 	
-	//Init Header
-	uint rheader[5];
-	uint rbytes = sizeof(rheader);
-
 	//Import Buffer
-	uint rsize = fsize(rfile);
+	long rsize = fsize(rfile);
 	char* rbuffer = new char[rsize];
 	fread(rbuffer, sizeof(char), rsize, rfile);
 	char* rcursor = rbuffer;
+
+	//Init Header
+	uint rheader[5];
+	uint rbytes = sizeof(rheader);
 
 	//Read Header
 	memcpy(rheader, rcursor, rbytes);
@@ -436,10 +439,10 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	return ret;
 }
 
-uint MeshLoader::fsize(FILE *fp)
+long MeshLoader::fsize(FILE *fp)
 {
 	fseek(fp, 0, SEEK_END);
-	uint bytes = ftell(fp);
+	long bytes = ftell(fp);
 	rewind(fp);
 	return bytes;
 }

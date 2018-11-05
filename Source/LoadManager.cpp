@@ -80,6 +80,7 @@ void LoadManager::Load(const char * path)
 		if (unique_scene_path != path)
 		{			
 			unique_scene_path = path;
+
 		}
 		//else
 		//{
@@ -89,6 +90,19 @@ void LoadManager::Load(const char * path)
 	}
 	else if (App->GetTermination(path) == "lw")
 	{
+
+		std::string sub_beg;
+		std::string old_path(path);
+		std::string new_path;
+		uint cut = old_path.find("Models");
+		cut = cut + 7;
+		uint cut2 = old_path.find_last_of("\\");
+		cut2 = cut2 - cut;
+		sub_beg = old_path.substr(cut , cut2);
+		new_path.append("Assets/Models/");
+		new_path.append(sub_beg.c_str());
+
+		App->scene_intro->folder_path = new_path;
 		App->loading_manager->mesh_loader->LoadMesh(path);
 	}
 }
