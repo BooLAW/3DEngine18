@@ -279,4 +279,14 @@ void Mesh::CalculateVertexNormal()
 
 }
 
+bool Mesh::BBNeedsUpdate()
+{
+	return update_bb;
+}
+
+void Mesh::BBToUpdate(bool active)
+{
+	update_bb = active;
+}
+
 

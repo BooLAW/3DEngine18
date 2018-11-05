@@ -17,6 +17,7 @@ public:
 	bool Update();
 	void DrawInspectorInfo();
 	void CleanUp();
+	void UpdateBoundingBox();
 
 public:
 	Mesh* mesh;
