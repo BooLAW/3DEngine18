@@ -17,6 +17,8 @@ public:
 	~GameObject();
 
 	void Draw();
+	void DrawBB();
+	void DrawNormals();
 	//AABB
 	AABB GetBB();
 	void ResizeBB(GameObject* bb_owner);
@@ -78,6 +80,7 @@ public:
 	bool static_go = false;
 	bool selected = false;
 	bool root_go = false;
+	bool draw_normals = false;
 
 	
 

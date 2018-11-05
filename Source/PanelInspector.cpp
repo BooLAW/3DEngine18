@@ -90,6 +90,8 @@ void PanelInspector::Draw()
 						ImGui::SameLine();
 						ImGui::Text("      %i", aux->num_tex_coords);
 						ImGui::Spacing();
+						ImGui::Checkbox("Draw Normals", &selected_go->draw_normals);
+
 					}
 				}
 				//Check if it has Materials and then it draws it
