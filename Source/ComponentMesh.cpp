@@ -52,7 +52,7 @@ void ComponentMesh::UpdateBoundingBox()
 	{
 		mesh->bounding_box.SetNegativeInfinity();
 		mesh->bounding_box = mesh->bounding_box.MinimalEnclosingAABB(mesh->vertices, mesh->num_vertices);
-		mesh->bounding_box.TransformAsAABB(owner_transform->trans_matrix_g.Transposed());
+		mesh->bounding_box.TransformAsAABB(owner_transform->trans_matrix_g);
 	}
 }
 

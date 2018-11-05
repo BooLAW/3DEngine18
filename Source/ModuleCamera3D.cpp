@@ -8,6 +8,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ModuleScene.h"
+#include "PanelScene.h"
 
 
 
@@ -157,7 +158,12 @@ update_status ModuleCamera3D::Update(float dt)
 		CameraMovement(dt);
 	if (draw_frustum) 
 		editor_cam->DrawFrustum();
-	
+	//Mouse Picking
+	bool mouse_picking_working = false;
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && CheckMouseInWindow(App->input->GetMouseX(), App->input->GetMouseY()) && mouse_picking_working)
+	{
+		CreateRayTest(App->input->GetMouseX(), App->input->GetMouseY());
+	}
 	//Profiler
 	App->profiler.SaveRunTimeData("Camera");
 	return UPDATE_CONTINUE;
@@ -229,6 +235,27 @@ void ModuleCamera3D::StartEditorCamera()
 	editor_cam = new Camera();
 	editor_cam->viewport_texture = new TextureMSAA();
 	editor_cam->viewport_texture->Create(1500, 1000, 2);
+}
+
+void ModuleCamera3D::CreateRayTest(int x, int y)
+{
+	//Serialize  x & y
+	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) *2) - 1;
+	float n_y = ((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y);
+
+	//Create Ray or LineSegment??
+	LineSegment picking = editor_cam->frustum.UnProjectLineSegment(n_x, n_y);
+	//Check Collisions
+		//bool hit = my_ray.Intersects(game_object->aabb); // ray vs. AABB
+		//bool hit = ray_local_space.Intersects(tri, &distance, &hit_point); // ray vs. triangle
+}
+
+bool ModuleCamera3D::CheckMouseInWindow(int x, int y)
+{
+	ImVec2 pos_w = App->imgui->scene->GetPos();
+	ImVec2 size_w = App->imgui->scene->GetSize();
+	return (x > pos_w.x && y > pos_w.y && x < pos_w.x + size_w.x && y < pos_w.y + size_w.y);
+
 }
 
 void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)

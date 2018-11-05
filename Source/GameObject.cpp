@@ -35,17 +35,17 @@ void GameObject::Draw()
 	if (!active)
 		return;
 	//Update Components
-	/*for (int i = 0; i < components_list.size(); i++)
+	for (int i = 0; i < components_list.size(); i++)
 	{
 		components_list[i]->Update();
-	}*/
+	}
 	//Enable Client
 	glEnableClientState(GL_VERTEX_ARRAY);
 	ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
 	ComponentMaterial* aux_material = (ComponentMaterial*)GetComponent(MATERIAL);
 	
-	glPushMatrix();
-	glMultMatrixf(comp_transform->trans_matrix_g.Transposed().ptr());
+	//glPushMatrix();
+	//glMultMatrixf(comp_transform->trans_matrix_g.Transposed().ptr());
 	//Bind Vertices
 	if (aux_mesh != nullptr)
 	{
@@ -87,7 +87,7 @@ void GameObject::Draw()
 	//Disable Client
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glPopMatrix();
+	//glPopMatrix();
 	
 	if (IsSelected())
 		DrawBB();

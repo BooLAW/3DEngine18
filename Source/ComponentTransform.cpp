@@ -32,7 +32,7 @@ void ComponentTransform::UpdateTransformValues()
 	else
 	{
 		ComponentTransform* owner_transform = (ComponentTransform*)GetOwner()->GetParent()->GetComponent(ComponentType::TRANSFORM);
-		trans_matrix_g = owner_transform->trans_matrix_g*float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
+		trans_matrix_g = owner_transform->trans_matrix_g * float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	}
 	owner->RecursiveUpdateTransformChilds();
 }

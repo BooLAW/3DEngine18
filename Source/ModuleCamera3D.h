@@ -48,6 +48,10 @@ public:
 	bool MouseOverScene(PanelScene* Scene);
 	Camera* GetCurrentCam()const;
 	void StartEditorCamera();
+	//MousePicking
+	void CreateRayTest(int x, int y);
+	bool CheckMouseInWindow(int x, int y);
+
 private:
 	float speed_base = 4.0f;
 	float wheel_speed_base = 4.0f;
