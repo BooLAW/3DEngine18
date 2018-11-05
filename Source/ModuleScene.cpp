@@ -441,7 +441,8 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 void ModuleScene::LoadScene(const char* path)
 {
 	//std::vector<GameObject*> test_go_list;
-	
+	App->scene_intro->go_list;
+	App->scene_intro->ClearScene();
 
 	FILE* fp = fopen(path, "rb"); // non-Windows use "w"
 	Document docload_r;
@@ -455,7 +456,7 @@ void ModuleScene::LoadScene(const char* path)
 	for (Value::ConstMemberIterator go_itr = docload_r["Scene1"].MemberBegin(); go_itr != docload_r["Scene1"].MemberEnd(); ++go_itr)
 	{
 		//Create GameObject
-		GameObject* new_go = new GameObject();	
+		GameObject* new_go = new GameObject();
 		
 		for (Value::ConstMemberIterator m_go_itr = go_itr->value.MemberBegin(); m_go_itr != go_itr->value.MemberEnd(); ++m_go_itr)
 		{
@@ -497,20 +498,23 @@ void ModuleScene::LoadScene(const char* path)
 				{
 					//Iterate through GameObjects Component values
 					Component* aux_comp;
-					if (strcmp(m_cmp_itr->name.GetString(), "type") == 0)
+					if (strcmp(m_cmp_itr->name.GetString(), "type") >= 0)
 					{
 						int cmp_type = m_cmp_itr->value.GetInt();
 						ComponentType comp_type = (ComponentType)cmp_type;
 						switch (comp_type)
 						{
 						case TRANSFORM:
-							aux_comp = new Component(TRANSFORM);
-							new_go->PushComponent(aux_comp);
+						{
 							break;
+						}							
 						case MESH:
-							aux_comp = new Component(MESH);
+						{
+							aux_comp = new Component(MESH);	
+							//App->loading_manager->mesh_loader->LoadMesh()
 							new_go->PushComponent(aux_comp);
 							break;
+						}
 						case MATERIAL:
 							break;
 						case CAMERA:
@@ -525,11 +529,7 @@ void ModuleScene::LoadScene(const char* path)
 				}
 			}
 		}
-
-		go_list.push_back(new_go);
-		
-		
-		
+		go_list.push_back(new_go);		
 	}
 
 	//Add Parents and Childs
@@ -626,8 +626,12 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				Value obj_comp_mesh(kObjectType);
 				ComponentMesh* com_mesh_aux = (ComponentMesh*)go->components_list[i];
 				Mesh* mesh_aux = com_mesh_aux->mesh;
+				Value mesh_name(mesh_aux->file_path.c_str(), allocator);
+				obj_comp_mesh.AddMember("file_path", mesh_name,allocator);
 				
-				//App->loading_manager->mesh_loader->InitM
+				//Adding data to the component
+				arr_comp.AddMember("MESH", obj_comp_mesh, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
 				break;
 			}
 			default:

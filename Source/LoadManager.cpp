@@ -31,9 +31,12 @@ void LoadManager::Load(const char * path)
 			final_dir_name = dir_name.substr(0, dir_name.length()-4);
 			CreateDirectory(final_dir_name.c_str(), NULL);
 
-
+			App->scene_intro->folder_path = final_dir_name;
+			
+			
 			App->input->file_droped = true;
-			mesh_loader->LoadMesh(path,final_dir_name.c_str());
+			mesh_loader->LoadMesh(path);
+
 			App->scene_intro->has_meshes = true;
 			unique_fbx_path = path;
 		}
@@ -72,12 +75,10 @@ void LoadManager::Load(const char * path)
 	}
 	else if (App->GetTermination(path) == "json")
 	{
-		App->scene_intro->ClearScene();
+
 		App->scene_intro->LoadScene(path);
 		if (unique_scene_path != path)
-		{
-	
-			
+		{			
 			unique_scene_path = path;
 		}
 		//else
@@ -85,6 +86,10 @@ void LoadManager::Load(const char * path)
 		//	CONSOLE_LOG_WARNING("Scene: %s was already loaded", App->GetFileName(path).c_str());
 		//}
 
+	}
+	else if (App->GetTermination(path) == "lw")
+	{
+		App->loading_manager->mesh_loader->LoadMesh(path);
 	}
 }
 

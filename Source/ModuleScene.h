@@ -57,6 +57,7 @@ public:
 	GameObject* imported_go = nullptr;
 	Octree octree;
 	std::string fbx_name;
+	std::string folder_path;
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];
 
