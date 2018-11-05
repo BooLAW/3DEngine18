@@ -30,6 +30,9 @@ public:
 	void DefineArrowVertices(float3 new_position);
 	void DefineSphereVertices(float radius, uint rings, uint sectors);
 	void CalculateVertexNormal();
+
+	bool BBNeedsUpdate();
+	void BBToUpdate(bool active);
 public:
 	float3 color;
 	MESH_TYPE type;
@@ -62,6 +65,8 @@ public:
 
 	//AABB
 	AABB bounding_box;
+	bool update_bb;
+
 	uint id;
 
 	//Faces

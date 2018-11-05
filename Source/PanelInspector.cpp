@@ -46,14 +46,9 @@ void PanelInspector::Draw()
 		if (selected_go != nullptr)
 		{	
 			ImGui::Text("Name: %s", selected_go->GetName()); ImGui::SameLine();
-			if (ImGui::Button("Delete"))
-			{
-				App->scene_intro->DeleteGameObject(selected_go);
-				
-			}
+			
 			ImGui::Separator();
-			if (selected_go != nullptr)
-			{
+		
 				bool static_go = selected_go->IsStatic();
 				if (ImGui::Checkbox("Static", &static_go))
 					selected_go->SetStatic(static_go);
@@ -61,15 +56,20 @@ void PanelInspector::Draw()
 				bool active = selected_go->IsActive();
 				if (ImGui::Checkbox("Active", &active))
 					selected_go->SetActive(active);
+				ImGui::SameLine();
+				if (ImGui::Button("Delete"))
+				{
+					App->scene_intro->DeleteGameObject(selected_go);
 
+				}
 				ImGui::Separator();
 
-
+			if (selected_go != nullptr)
+			{
 				if (ImGui::CollapsingHeader("Transform"))
 					selected_go->comp_transform->DrawInspectorInfo();
 
-
-				//Check if has MEsh
+				//Check if has Mesh
 				if (selected_go->HasMesh())
 				{
 					if (ImGui::CollapsingHeader("Geometry"))

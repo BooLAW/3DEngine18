@@ -199,12 +199,9 @@ void ModuleScene::DeleteGameObjectsInList()
 	for (std::vector<GameObject*>::iterator it = to_delete.begin(); it != to_delete.end(); it++)
 	{
 		(*it)->SetSelected(false);
-		//(*it)->DeleteAllComponents();
 
 		if ((*it)->parent != nullptr)
 			(*it)->parent->DeleteChild((*it));
-
-		//(*it)->parent = nullptr;
 
 		//delete it from go_list
 		for (std::vector<GameObject*>::iterator item = go_list.begin(); item != go_list.end(); item++)
