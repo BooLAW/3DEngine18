@@ -288,6 +288,18 @@ GameObject * GameObject::GetChild(int id)
 	return childs_list[id];
 }
 
+void GameObject::DeleteChild(GameObject * child)
+{
+	for (std::vector<GameObject*>::iterator it = childs_list.begin(); it != childs_list.end(); it++)
+	{
+		if ((*it) == child)
+		{
+			childs_list.erase(it);
+			return;
+		}
+	}
+}
+
 int GameObject::GetNumChilds() const
 {
 	return childs_list.size();

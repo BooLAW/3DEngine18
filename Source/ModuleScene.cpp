@@ -92,6 +92,7 @@ update_status ModuleScene::Update(float dt)
 		octree.RefactorOctree();
 		octree.update_octree = false;
 	}
+	DeleteGameObjectsInList();
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
@@ -173,12 +174,76 @@ void ModuleScene::ClearScene()
 		scene_root->ClearRelations();
 		scene_root->childs_list.clear();
 		go_list.clear();
-		//go_list.push_back(scene_root);
+		go_list.push_back(scene_root);
 	}
 		
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;
+}
+
+void ModuleScene::DeleteGameObject(GameObject* go_to_delete)
+{
+	to_delete.push_back(go_to_delete);
+	
+	
+	////Delete from parent childs list
+	//if (go_to_delete->GetParent() != nullptr)
+	//{
+	//	GameObject* parent = go_to_delete->GetParent();
+	//	if (parent != nullptr && parent->HasChilds())
+	//	{
+	//		for (std::vector<GameObject*>::iterator it = parent->childs_list.begin(); it != parent->childs_list.end(); it++)
+	//		{
+	//			if ((*it) == go_to_delete)
+	//			{
+	//				parent->childs_list.erase(it);
+	//				break;
+	//			}
+	//		}
+	//	}
+	//}
+	////Clear its relations
+	//go_to_delete->ClearRelations();
+	////remove it from go_list
+	//for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	//{
+	//	if ((*it) == go_to_delete)
+	//	{
+	//		go_list.erase(it);
+	//		break;
+	//	}
+	//}
+	
+
+
+}
+
+void ModuleScene::DeleteGameObjectsInList()
+{
+	
+	for (std::vector<GameObject*>::iterator it = to_delete.begin(); it != to_delete.end(); it++)
+	{
+		(*it)->SetSelected(false);
+		//(*it)->DeleteAllComponents();
+
+		if ((*it)->parent != nullptr)
+			(*it)->parent->DeleteChild((*it));
+
+		(*it)->parent = nullptr;
+
+		//delete (*it); 
+		//delete it from go_list
+		for (std::vector<GameObject*>::iterator item = go_list.begin(); it != go_list.end(); it++)
+		{
+			if ((*item) == (*it))
+			{
+				go_list.erase(item);
+				return;
+			}
+		}		
+		it = to_delete.erase(it);
+	}
 }
 
 bool ModuleScene::HasObjects()
@@ -255,7 +320,8 @@ void ModuleScene::DrawModuleConfig()
 			if (GetSelected() != nullptr)
 			{
 				ImGui::Text("  Name:"); ImGui::SameLine();
-				ImGui::Text("%s", GetSelected()->GetName());
+				ImGui::Text("%s", GetSelected()->GetName()); ImGui::SameLine();
+		
 				if (GetSelected()->HasMesh())
 				{
 					ImGui::Text("   AABB MinPoint:");

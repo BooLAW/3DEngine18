@@ -25,6 +25,8 @@ public:
 	GameObject* CreateNewGameObject();
 	void DrawGameObjects();
 	void ClearScene();
+	void DeleteGameObject(GameObject* go_to_delete);
+	void DeleteGameObjectsInList();
 	bool HasObjects();
 
 	//Octree
@@ -49,6 +51,7 @@ public:
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;	
+	std::vector<GameObject*> to_delete;
 	std::list<GameObject*> octree_objects;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;

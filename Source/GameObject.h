@@ -46,6 +46,7 @@ public:
 	void AddChild(std::vector<GameObject*> go_list, UINT32 uid);
 	void SetChild(GameObject* child);
 	GameObject* GetChild(int id);
+	void DeleteChild(GameObject* child);
 	int GetNumChilds()const;
 
 	void SetUID(UINT32 id);
