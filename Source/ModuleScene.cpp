@@ -70,8 +70,8 @@ bool ModuleScene::Start()
 	//go_list.push_back(App->camera->editor_camera);
 	//Load BakerHouse
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
-	App->loading_manager->Load(".\\Assets\\Models\\warrior.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\warrior.fbx";
+	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
@@ -497,34 +497,37 @@ void ModuleScene::LoadScene(const char* path)
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
 					//Iterate through GameObjects Component values
-					Component* aux_comp;
-					if (strcmp(m_cmp_itr->name.GetString(), "type") >= 0)
-					{
-						int cmp_type = m_cmp_itr->value.GetInt();
-						ComponentType comp_type = (ComponentType)cmp_type;
-						switch (comp_type)
-						{
-						case TRANSFORM:
-						{
-							break;
-						}							
-						case MESH:
-						{
-							aux_comp = new Component(MESH);	
-							//App->loading_manager->mesh_loader->LoadMesh()
-							new_go->PushComponent(aux_comp);
-							break;
-						}
-						case MATERIAL:
-							break;
-						case CAMERA:
-							break;
-						default:
-							break;
-						}
-					}
 					const char* get_comp_value = m_cmp_itr->name.GetString();
 					CONSOLE_LOG_INFO("%s", get_comp_value);
+
+					Component* aux_comp;
+
+					if (strcmp(m_cmp_itr->name.GetString(), "type") >= 0)
+					{
+						ComponentType comp_type;
+						int cmp_type = m_cmp_itr->value.GetInt();
+						comp_type = (ComponentType)cmp_type;
+					}
+
+					if (m_cmp_itr->value.IsArray())
+					{
+						//aux_comp = new Component(TRANSFORM);
+						//for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr->value.Begin(); m_cmp_trans_itr != m_cmp_itr->value.End(); ++m_cmp_trans_itr)
+						//{
+						//	float stat = m_cmp_trans_itr->GetFloat();
+						//}
+						//arr_obj = m_go_itr->value.GetArray();
+						break;
+					}
+
+					if (m_go_itr->value.IsString())
+					{
+						aux_comp = new Component(MESH);
+						//App->loading_manager->mesh_loader->LoadMesh()
+						break;
+					}
+
+
 					//new_go->PushComponent()
 				}
 			}

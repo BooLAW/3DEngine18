@@ -17,7 +17,7 @@ public:
 	bool Update();
 	void DrawInspectorInfo();
 	void CleanUp();
-	void UpdateBoundingBox();
+	void UpdateBoundingBox(float4x4 global_matrix);
 
 public:
 	Mesh* mesh;

@@ -38,16 +38,12 @@ void ComponentMesh::CleanUp()
 {
 }
 
-void ComponentMesh::UpdateBoundingBox()
+void ComponentMesh::UpdateBoundingBox(float4x4 global_matrix)
 {
-	ComponentTransform* owner_transform = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
-
-	if (owner_transform != nullptr)
-	{
-		mesh->bounding_box.SetNegativeInfinity();
-		mesh->bounding_box = mesh->bounding_box.MinimalEnclosingAABB(mesh->vertices, mesh->num_vertices);
-		mesh->bounding_box.TransformAsAABB(owner_transform->trans_matrix_g);
-	}
+	mesh->bounding_box.SetNegativeInfinity();
+	mesh->bounding_box = mesh->bounding_box.MinimalEnclosingAABB(mesh->vertices, mesh->num_vertices);
+	mesh->bounding_box.Transform(global_matrix);
+	
 }
 
 

@@ -308,7 +308,7 @@ float ModuleCamera3D::GetMouseSensitivity() const
 
 void ModuleCamera3D::CameraMovement(float dt)
 {
-	//Define Speed
+	//Define Speed	
 	float speed = speed_base * dt;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 2.0f * dt * speed_base;
@@ -316,17 +316,17 @@ void ModuleCamera3D::CameraMovement(float dt)
 
 	// MOUSE MOTION ----------------
 	// ROTATION
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if (App->imgui->scene->MouseOver() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		HandleMouse(dt);
 		Move(speed);
 	}
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT))
+	if (App->imgui->scene->MouseOver() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT))
 		Orbit(dt);
 	//MOUSE WHEEL
 	int wheel = App->input->GetMouseZ();
 	float wheel_speed = wheel_speed_base * dt * 100;
-	if (App->input->GetMouseZ() != 0)
+	if (App->imgui->scene->MouseOver() && App->input->GetMouseZ() != 0)
 		WheelMove(wheel_speed, wheel);
 	//Look at Target
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
