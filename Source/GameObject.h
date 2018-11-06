@@ -8,6 +8,7 @@ class Material;
 class Component;
 enum ComponentType;
 class ComponentTransform;
+class ComponentMesh;
 class Camera;
 class GameObject
 {
@@ -55,6 +56,7 @@ public:
 	//Mesh functionalities
 	void ActivateBB();
 	Mesh* GetMesh();
+	ComponentMesh* GetCMesh();
 	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();

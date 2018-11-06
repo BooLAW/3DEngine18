@@ -34,18 +34,23 @@ void GameObject::Draw()
 {
 	if (!active)
 		return;
-	//Update Components
-	for (int i = 0; i < components_list.size(); i++)
-	{
-		components_list[i]->Update();
-	}
 	//Enable Client
 	glEnableClientState(GL_VERTEX_ARRAY);
 	ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
 	ComponentMaterial* aux_material = (ComponentMaterial*)GetComponent(MATERIAL);
+	ComponentTransform* aux_trans = comp_transform;
 	
-	//glPushMatrix();
-	//glMultMatrixf(comp_transform->trans_matrix_g.Transposed().ptr());
+	float4x4 v_matrix = float4x4::identity;
+	//Similar to Pushing a matrix
+	if (aux_trans != nullptr)
+	{
+		GLfloat matrix[16];
+		glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+		v_matrix.Set((float*)matrix);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf((GLfloat*)((aux_trans->trans_matrix_g).Transposed() * v_matrix).v);
+	}
 	//Bind Vertices
 	if (aux_mesh != nullptr)
 	{
@@ -53,10 +58,6 @@ void GameObject::Draw()
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
 
-		//Draw
-		if (App->renderer3D->attributes.debug_draw_atribute && IsSelected() ) 
-		{
-		}
 		//BindMaterial
 		if (aux_mesh->mesh->num_tex_coords != 0)
 		{
@@ -70,15 +71,11 @@ void GameObject::Draw()
 
 		glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
-	else 
-	{
-		if (App->renderer3D->attributes.debug_draw_atribute && IsSelected() && !App->scene_intro->draw_octree)
-		{
-			DebugDrawingParent(this, Red);
-		}
-	}
-		
 	
+	//"Poping" Global Matrix
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf((GLfloat*)v_matrix.v);
 	//Unbind
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -87,16 +84,12 @@ void GameObject::Draw()
 	//Disable Client
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	//glPopMatrix();
 	
-	if (IsSelected())
+	if (IsSelected() && HasMesh())
 		DrawBB();
 	if (draw_normals)
 	{
-		glPushMatrix();
-		glMultMatrixf(comp_transform->trans_matrix_g.Transposed().ptr());
 		DrawNormals();
-		glPopMatrix();
 	}
 
 }
@@ -366,6 +359,18 @@ Mesh * GameObject::GetMesh()
 		ComponentMesh* mesh_tmp = (ComponentMesh*)GetComponent(ComponentType::MESH);
 		if (mesh_tmp != nullptr)
 			return mesh_tmp->mesh;
+		else
+			return nullptr;
+	}
+}
+
+ComponentMesh * GameObject::GetCMesh()
+{
+	if (this->IsActive())
+	{
+		ComponentMesh* mesh_tmp = (ComponentMesh*)GetComponent(ComponentType::MESH);
+		if (mesh_tmp != nullptr)
+			return mesh_tmp;
 		else
 			return nullptr;
 	}

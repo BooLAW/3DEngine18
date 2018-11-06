@@ -4,6 +4,10 @@
 
 Transform::Transform()
 {
+	pos = float3(0.0f, 0.0f, 0.0f);
+	rot = Quat::identity;
+	scale = float3(1.0f, 1.0f, 1.0f);
+
 }
 
 
@@ -18,6 +22,8 @@ void Transform::SetPosition(float x, float y, float z)
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
+	
+	
 
 
 }

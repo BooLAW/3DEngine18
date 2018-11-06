@@ -27,12 +27,14 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::UpdateTransformValues()
 {
+	trans_matrix_g = float4x4::identity;
+	trans_matrix_l = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	if(owner->GetParent() == nullptr)//IS ROOT
-		trans_matrix_g = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
+		trans_matrix_g = trans_matrix_l;
 	else
 	{
 		ComponentTransform* owner_transform = (ComponentTransform*)GetOwner()->GetParent()->GetComponent(ComponentType::TRANSFORM);
-		trans_matrix_g = owner_transform->trans_matrix_g * float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
+		trans_matrix_g = owner_transform->trans_matrix_g * trans_matrix_l;
 	}
 	owner->RecursiveUpdateTransformChilds();
 }
@@ -74,8 +76,8 @@ void ComponentTransform::DrawInspectorInfo()
 		if (updated_transform)
 		{
 			UpdateTransformValues();
-			if(owner->HasMesh())
-				owner->RecalculateBoundingBox(owner);
+			if (owner->HasMesh())
+				owner->GetCMesh()->UpdateBoundingBox();
 		}
 		if (reset_transform)
 		{
@@ -85,7 +87,7 @@ void ComponentTransform::DrawInspectorInfo()
 			transform->SetRotation(aux);
 
 			transform->SetScale(float3::one.x, float3::one.y, float3::one.z);
-
+			updated_transform = true;
 		}
 	}
 
@@ -97,13 +99,12 @@ void ComponentTransform::SetLocalPos(const float3 & new_pos)
 	if (owner != nullptr)//it should never happen
 	{
 		mesh = (ComponentMesh*)owner->GetComponent(ComponentType::MESH);
-		//implement static checking
 	}
 	else
 		CONSOLE_LOG_WARNING("Component Transform has no owner");
 
 	transform->pos = new_pos;
-	trans_matrix_l.Set(float4x4::FromTRS(transform->pos, transform->rot, transform->scale));
+	trans_matrix_l = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	updated_transform = true;
 
 }
@@ -115,13 +116,12 @@ void ComponentTransform::SetGlobalPos(const float3 & new_pos)
 	if (owner != nullptr)//it should never happen
 	{
 		mesh = (ComponentMesh*)owner->GetComponent(ComponentType::MESH);
-		//implement static checking
 	}
 	else
 		CONSOLE_LOG_WARNING("Component Transform has no owner");
 
 	transform->pos = new_pos;
-	trans_matrix_g.Set(float4x4::FromTRS(transform->pos, transform->rot, transform->scale));
+	trans_matrix_g = trans_matrix_g * float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	updated_transform = true;
 }
 
@@ -131,6 +131,7 @@ void ComponentTransform::SetTransform(float3 pos, Quat rot,float3 scale)
 	this->transform->rot = rot;
 	this->transform->scale = scale;
 
+	trans_matrix_l = float4x4::FromTRS(pos, rot, scale);
 }
 
 Transform* ComponentTransform::GetTransform() const

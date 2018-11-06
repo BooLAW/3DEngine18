@@ -41,11 +41,12 @@ void DebugDrawing(const Mesh* mesh, Color color, const float4x4 & transform)
 	glBegin(GL_LINES);
 	
 
-	glEnd();
+
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnd();
 }
 void DebugDrawNormals(const Mesh* mesh, Color color)
 {

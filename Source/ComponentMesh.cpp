@@ -27,13 +27,7 @@ bool ComponentMesh::Update()
 {
 	if (active == false)
 		return false;
-	ComponentTransform* owner_trnasform = owner->comp_transform;
-	if (owner_trnasform->updated_transform)
-	{
-		UpdateBoundingBox();
-		owner_trnasform->updated_transform = false;
-	}
-	
+
 }
 
 void ComponentMesh::DrawInspectorInfo()
