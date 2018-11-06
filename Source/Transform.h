@@ -14,6 +14,7 @@ public:
 public:
 	float3 pos = float3::zero;
 	Quat rot = Quat::identity;
+	float3 rot_euler = float3::zero;
 	float3 scale = float3::one;
 };
 

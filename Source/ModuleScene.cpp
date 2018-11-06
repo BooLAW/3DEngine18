@@ -52,8 +52,7 @@ bool ModuleScene::Start()
 	Quat root_rotation = Quat::identity;
 	float3 root_scale = float3::one;
 	scene_root->comp_transform->SetTransform(root_pos, root_rotation, root_scale);
-	scene_root->comp_transform->SetGlobalPos({ 0, 0, 0 });
-	scene_root->comp_transform->UpdateTransformValues();
+	scene_root->comp_transform->CalculateGlobalMatrix();
 
 	////Create Random UID for Root
 	//unsigned int max_int = UINT_MAX;
@@ -337,6 +336,11 @@ void ModuleScene::DrawChilds(GameObject* parent)
 			{
 				ResetSelected();
 				parent->SetSelected(true);
+				
+				if (parent->HasMesh())
+				{
+					parent->GetCMesh()->UpdateBoundingBox(parent->comp_transform->trans_matrix_g);
+				}
 			}
 		
 	}
@@ -592,18 +596,18 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			{
 				//Getting the data from the GO
 				Value arr_comp_transform(kArrayType);
-				Transform * trans = go->comp_transform->GetTransform();
-				arr_comp_transform.PushBack((float)trans->pos.x, allocator);
-				arr_comp_transform.PushBack((float)trans->pos.y, allocator);
-				arr_comp_transform.PushBack((float)trans->pos.z, allocator);
+				Transform  trans = go->comp_transform->GetTransform();
+				arr_comp_transform.PushBack((float)trans.pos.x, allocator);
+				arr_comp_transform.PushBack((float)trans.pos.y, allocator);
+				arr_comp_transform.PushBack((float)trans.pos.z, allocator);
 
-				arr_comp_transform.PushBack((float)trans->rot.x, allocator);
-				arr_comp_transform.PushBack((float)trans->rot.y, allocator);
-				arr_comp_transform.PushBack((float)trans->rot.z, allocator);
+				arr_comp_transform.PushBack((float)trans.rot.x, allocator);
+				arr_comp_transform.PushBack((float)trans.rot.y, allocator);
+				arr_comp_transform.PushBack((float)trans.rot.z, allocator);
 
-				arr_comp_transform.PushBack((float)trans->scale.x, allocator);
-				arr_comp_transform.PushBack((float)trans->scale.y, allocator);
-				arr_comp_transform.PushBack((float)trans->scale.z, allocator);
+				arr_comp_transform.PushBack((float)trans.scale.x, allocator);
+				arr_comp_transform.PushBack((float)trans.scale.y, allocator);
+				arr_comp_transform.PushBack((float)trans.scale.z, allocator);
 
 				//Adding data to the component
 				arr_comp.AddMember("TRANSFORM", arr_comp_transform, allocator);

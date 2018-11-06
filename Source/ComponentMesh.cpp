@@ -41,7 +41,7 @@ void ComponentMesh::CleanUp()
 void ComponentMesh::UpdateBoundingBox(float4x4 global_matrix)
 {
 	mesh->bounding_box.SetNegativeInfinity();
-	mesh->bounding_box = mesh->bounding_box.MinimalEnclosingAABB(mesh->vertices, mesh->num_vertices);
+	mesh->bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertices);
 	mesh->bounding_box.Transform(global_matrix);
 	
 }

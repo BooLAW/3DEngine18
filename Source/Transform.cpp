@@ -4,9 +4,7 @@
 
 Transform::Transform()
 {
-	pos = float3(0.0f, 0.0f, 0.0f);
-	rot = Quat::identity;
-	scale = float3(1.0f, 1.0f, 1.0f);
+
 
 }
 
@@ -31,11 +29,13 @@ void Transform::SetPosition(float x, float y, float z)
 void Transform::SetRotation(float x, float y, float z)
 {
 	rot = Quat::FromEulerXYZ(x, y, z);
+	rot_euler = { x,y,z };
 }
 
 void Transform::SetRotation(Quat quat)
 {
 	rot = quat;
+	rot_euler = quat.ToEulerXYZ();
 }
 
 void Transform::SetScale(float x, float y, float z)

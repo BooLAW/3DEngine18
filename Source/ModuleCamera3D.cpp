@@ -98,9 +98,9 @@ void ModuleCamera3D::DrawModuleConfig()
 			if (App->scene_intro->GetSelected() != nullptr)
 			{
 				if (App->scene_intro->GetSelected()->HasMesh())
-					App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform->pos);
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform.pos);
 				else
-					App->camera->AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform->pos);
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform.pos);
 			}
 			else
 				CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
@@ -334,9 +334,9 @@ void ModuleCamera3D::CameraMovement(float dt)
 		if (App->scene_intro->GetSelected() != nullptr)
 		{
 			if (App->scene_intro->GetSelected()->HasMesh())
-				AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform->pos);
+				AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform.pos);
 			else
-				AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform->pos);
+				AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform.pos);
 		}
 		else
 			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");

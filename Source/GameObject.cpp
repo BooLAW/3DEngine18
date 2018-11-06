@@ -394,7 +394,7 @@ void GameObject::RecursiveUpdateTransformChilds()
 	//Make a function to update recursively all the childs and components related
 	for (int i = 0; i < GetNumChilds(); i++)
 	{
-		childs_list[i]->comp_transform->UpdateTransformValues();
+		childs_list[i]->comp_transform->CalculateGlobalMatrix();
 	}
 
 }
