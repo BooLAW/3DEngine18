@@ -71,7 +71,156 @@ bool MeshLoader::InitMesh(std::string lw_path)
 	final_file_name = substract_file_format.substr(0, cut3);
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
-	my_mesh;
+	////Vertices----------------------
+	//glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
+	//glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh->num_vertices, my_mesh->vertices, GL_STATIC_DRAW);
+
+	//CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh->num_vertices);
+
+	////reset buffer
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	////Indices--------------------------
+	//if (my_mesh->num_vertices != 0) //Has Faces()
+	//{
+	//	my_mesh->num_normal = my_mesh->num_vertices;
+	//	for (int i = 0; i < my_mesh->num_vertices / 3; ++i)
+	//	{
+	//		int u = i + 1;
+	//		int w = i + 2;
+	//		LineSegment face_normal = CalculateTriangleNormal(my_mesh->vertices[i], my_mesh->vertices[u], my_mesh->vertices[w]);
+	//		Absolute(face_normal);
+
+	//		my_mesh->face_normal.push_back(face_normal);
+	//	}
+	//	glGenBuffers(1, (GLuint*)&my_mesh->indices_id);
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh->indices_id);
+	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_indices, my_mesh->indices, GL_STATIC_DRAW);
+	//	//reset buffer
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	//	CONSOLE_LOG_INFO("%d indices", my_mesh->num_indices);
+
+	//}
+	//else
+	//	CONSOLE_LOG_WARNING("Mesh has no Faces");
+
+	////Tex Coords-------------------
+	//if (my_mesh->num_vertices != 0) //Has Text Coords
+	//{
+
+	//	my_mesh->num_tex_coords = my_mesh->num_vertices / 3;
+
+	//	glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
+	//	glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh->tex_coords_id);
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_tex_coords * 3, my_mesh->tex_coords, GL_STATIC_DRAW);
+
+	//	//reset buffer
+	//	CONSOLE_LOG_INFO("%d tex coords", my_mesh->num_tex_coords);
+	//}
+	//else
+	//{
+	//	CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
+	//}
+
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Create the Game Object
+	GameObject* new_child = new GameObject();
+
+	//Create Random UID for new_child
+	unsigned int max_int = UINT_MAX;
+	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+	new_child->uid = random_int;
+
+	new_child->SetName(my_mesh->file_path.c_str());
+	new_child->num_meshes = mesh_number;
+	//Vertices----------------------
+	glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh->num_vertices, my_mesh->vertices, GL_STATIC_DRAW);
+
+	CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh->num_vertices);
+
+	//reset buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Indices--------------------------
+	if (my_mesh->num_vertices != 0) //Has Faces()
+	{
+		my_mesh->num_normal = my_mesh->num_vertices;
+		for (int i = 0; i < my_mesh->num_vertices / 3; ++i)
+		{
+			int u = i + 1;
+			int w = i + 2;
+			LineSegment face_normal = CalculateTriangleNormal(my_mesh->vertices[i], my_mesh->vertices[u], my_mesh->vertices[w]);
+			Absolute(face_normal);
+
+			my_mesh->face_normal.push_back(face_normal);
+		}
+		glGenBuffers(1, (GLuint*)&my_mesh->indices_id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh->indices_id);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_indices, my_mesh->indices, GL_STATIC_DRAW);
+		//reset buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		CONSOLE_LOG_INFO("%d indices", my_mesh->num_indices);
+
+	}
+	else
+		CONSOLE_LOG_WARNING("Mesh has no Faces");
+
+	//Tex Coords-------------------
+	if (my_mesh->num_vertices != 0) //Has Text Coords
+	{
+
+		my_mesh->num_tex_coords = my_mesh->num_vertices / 3;
+
+		glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
+		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh->tex_coords_id);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_tex_coords * 3, my_mesh->tex_coords, GL_STATIC_DRAW);
+
+		//reset buffer
+		CONSOLE_LOG_INFO("%d tex coords", my_mesh->num_tex_coords);
+	}
+	else
+	{
+		CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
+	}
+
+	//Set the Bounding Box for the DEBUG DRAW
+	AABB bb;
+	bb.SetNegativeInfinity();
+	bb.Enclose((float3*)my_mesh->vertices, my_mesh->num_vertices);
+	my_mesh->bounding_box = bb;
+	my_mesh->show_bb = false;
+
+	ComponentMesh*  new_comp_mesh = new ComponentMesh();
+	new_comp_mesh->AddMesh(my_mesh);
+	new_comp_mesh->SetOwner(new_child);
+	new_comp_mesh->SetType(ComponentType::MESH);
+	new_comp_mesh->Enable();
+
+	new_child->PushComponent((Component*)new_comp_mesh);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Add child to parent
+	//parent->AddChild(new_child);
+
+	//Transform
+
+	float3 pos(0, 0, 0);
+	Quat rot(0, 0, 0, 0);
+	float3 scale(1,1,1);
+
+	new_child->comp_transform->SetTransform(pos, rot, scale);
+	
+	App->scene_intro->go_list.push_back(new_child);
+	new_child->RecalculateBoundingBox(new_child);
+	//App->camera->AdaptCamera(bb, new_child->comp_transform->transform.pos);
+
+
 	return false;
 }
 bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)

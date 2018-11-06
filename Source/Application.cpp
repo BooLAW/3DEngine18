@@ -110,7 +110,7 @@ update_status Application::Update()
 	if (ret == UPDATE_STOP)
 	{
 		Save();
-		App->scene_intro->SaveScene(App->scene_intro->go_list);
+		//App->scene_intro->SaveScene(App->scene_intro->go_list);
 		//App->scene_intro->LoadScene();
 	}
 	FinishUpdate();

@@ -30,7 +30,7 @@ void PanelHierarchy::Draw()
 		App->scene_intro->CreateNewGameObject(); 
 	}
 	
-	ImGui::SameLine();  ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size()-1);
+	ImGui::SameLine();  ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size()/*-1*/); //Why there is a -1 here?
 	ImGui::Separator();
 	App->scene_intro->DrawHierarchy();
 

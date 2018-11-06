@@ -173,7 +173,8 @@ void ModuleScene::ClearScene()
 		scene_root->ClearRelations();
 		scene_root->childs_list.clear();
 		go_list.clear();
-		go_list.push_back(scene_root);
+		//TODO: Josep comented this to test scene.json. The scene does not work if the cleanup deletes the root node.
+		//go_list.push_back(scene_root);
 	}
 		
 	App->loading_manager->unique_fbx_path = "";
@@ -495,40 +496,43 @@ void ModuleScene::LoadScene(const char* path)
 			{
 				new_go->SetParentUID(m_go_itr->value.GetUint());
 			}	
-			
+			const char* my_string2 = m_go_itr->name.GetString();
 			if (m_go_itr->value.IsObject())
 			{
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
 					//Iterate through GameObjects Component values
-					const char* get_comp_value = m_cmp_itr->name.GetString();
-					CONSOLE_LOG_INFO("%s", get_comp_value);
-
 					Component* aux_comp;
+					if (strcmp(m_cmp_itr->name.GetString(), "active_comp") == 0)
+					{
 
-					if (strcmp(m_cmp_itr->name.GetString(), "type") >= 0)
+					}
+					else if (strcmp(m_cmp_itr->name.GetString(), "type") == 0)
 					{
 						ComponentType comp_type;
 						int cmp_type = m_cmp_itr->value.GetInt();
 						comp_type = (ComponentType)cmp_type;
 					}
-
-					if (m_cmp_itr->value.IsArray())
+					else if (m_cmp_itr->value.IsArray())
 					{
-						//aux_comp = new Component(TRANSFORM);
-						//for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr->value.Begin(); m_cmp_trans_itr != m_cmp_itr->value.End(); ++m_cmp_trans_itr)
-						//{
-						//	float stat = m_cmp_trans_itr->GetFloat();
-						//}
-						//arr_obj = m_go_itr->value.GetArray();
-						break;
+						aux_comp = new Component(TRANSFORM);
+						int i = 0;
+						float stat[9] = {};
+						for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr->value.Begin(); m_cmp_trans_itr != m_cmp_itr->value.End(); ++m_cmp_trans_itr)
+						{
+							stat[i] = m_cmp_trans_itr->GetFloat();
+							i++;
+						}
+						
+			
 					}
-
-					if (m_go_itr->value.IsString())
+					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
 					{
 						aux_comp = new Component(MESH);
-						//App->loading_manager->mesh_loader->LoadMesh()
-						break;
+						std::string file_path;
+						file_path.append(m_cmp_itr->value.GetString());
+
+						App->loading_manager->mesh_loader->LoadMesh(file_path);
 					}
 
 
@@ -569,13 +573,9 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 		{
 			Value arr_comp(kObjectType);
 			//Is active			
-			bool active = go->components_list[i]->active;
-			arr_comp.AddMember("active_comp", active, allocator);
-
-			//Save owner Component
-			GameObject* owner = go->components_list[i]->GetOwner();
-			Value comp_owner(owner->GetName(), allocator);
-			arr_comp.AddMember("owner", comp_owner, allocator);
+			bool active_cmp = go->components_list[i]->active;
+			Value v_active((char*)active_cmp, allocator);
+			arr_comp.AddMember("active_comp", v_active, allocator);
 
 			//Create the name of the component
 			std::string s_comp_name;
@@ -634,10 +634,10 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				ComponentMesh* com_mesh_aux = (ComponentMesh*)go->components_list[i];
 				Mesh* mesh_aux = com_mesh_aux->mesh;
 				Value mesh_name(mesh_aux->file_path.c_str(), allocator);
-				obj_comp_mesh.AddMember("file_path", mesh_name,allocator);
+				//obj_comp_mesh.AddMember("file_path", mesh_name,allocator);
 				
 				//Adding data to the component
-				arr_comp.AddMember("MESH", obj_comp_mesh, allocator);
+				arr_comp.AddMember("MESH", mesh_name, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
 				break;
 			}
