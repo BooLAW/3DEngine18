@@ -71,60 +71,6 @@ bool MeshLoader::InitMesh(std::string lw_path)
 	final_file_name = substract_file_format.substr(0, cut3);
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
-	////Vertices----------------------
-	//glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
-	//glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh->num_vertices, my_mesh->vertices, GL_STATIC_DRAW);
-
-	//CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh->num_vertices);
-
-	////reset buffer
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	////Indices--------------------------
-	//if (my_mesh->num_vertices != 0) //Has Faces()
-	//{
-	//	my_mesh->num_normal = my_mesh->num_vertices;
-	//	for (int i = 0; i < my_mesh->num_vertices / 3; ++i)
-	//	{
-	//		int u = i + 1;
-	//		int w = i + 2;
-	//		LineSegment face_normal = CalculateTriangleNormal(my_mesh->vertices[i], my_mesh->vertices[u], my_mesh->vertices[w]);
-	//		Absolute(face_normal);
-
-	//		my_mesh->face_normal.push_back(face_normal);
-	//	}
-	//	glGenBuffers(1, (GLuint*)&my_mesh->indices_id);
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh->indices_id);
-	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_indices, my_mesh->indices, GL_STATIC_DRAW);
-	//	//reset buffer
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	//	CONSOLE_LOG_INFO("%d indices", my_mesh->num_indices);
-
-	//}
-	//else
-	//	CONSOLE_LOG_WARNING("Mesh has no Faces");
-
-	////Tex Coords-------------------
-	//if (my_mesh->num_vertices != 0) //Has Text Coords
-	//{
-
-	//	my_mesh->num_tex_coords = my_mesh->num_vertices / 3;
-
-	//	glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
-	//	glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh->tex_coords_id);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_tex_coords * 3, my_mesh->tex_coords, GL_STATIC_DRAW);
-
-	//	//reset buffer
-	//	CONSOLE_LOG_INFO("%d tex coords", my_mesh->num_tex_coords);
-	//}
-	//else
-	//{
-	//	CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
-	//}
-
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Create the Game Object
 	GameObject* new_child = new GameObject();
@@ -174,9 +120,7 @@ bool MeshLoader::InitMesh(std::string lw_path)
 	//Tex Coords-------------------
 	if (my_mesh->num_vertices != 0) //Has Text Coords
 	{
-
 		my_mesh->num_tex_coords = my_mesh->num_vertices / 3;
-
 		glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
 		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh->tex_coords_id);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_tex_coords * 3, my_mesh->tex_coords, GL_STATIC_DRAW);

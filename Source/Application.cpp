@@ -289,7 +289,8 @@ std::string Application::GetFileName(const char * path)
 	std::string ret;
 
 	//DeleteEndBars(full_path_str);
-	if (full_path_str.find('\\') >= 1)
+	std::size_t found_it = full_path_str.find('\\');
+	if (found_it != UINT_MAX)
 	{
 		uint cut = full_path_str.find_last_of('\\');
 		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
@@ -297,6 +298,12 @@ std::string Application::GetFileName(const char * path)
 	else if (full_path_str.find('//') >= 1)
 	{
 		uint cut = full_path_str.find_last_of('//');
+		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
+	}
+	found_it = full_path_str.find('/');
+	if (found_it != UINT_MAX)
+	{
+		uint cut = full_path_str.find_last_of('/');
 		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
 	}
 	return ret;
