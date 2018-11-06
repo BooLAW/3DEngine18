@@ -29,6 +29,7 @@ void ComponentTransform::UpdateTransformValues()
 {
 	trans_matrix_g = float4x4::identity;
 	trans_matrix_l = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
+
 	if(owner->GetParent() == nullptr)//IS ROOT
 		trans_matrix_g = trans_matrix_l;
 	else
@@ -36,14 +37,16 @@ void ComponentTransform::UpdateTransformValues()
 		ComponentTransform* owner_transform = (ComponentTransform*)GetOwner()->GetParent()->GetComponent(ComponentType::TRANSFORM);
 		trans_matrix_g = owner_transform->trans_matrix_g * trans_matrix_l;
 	}
-	owner->RecursiveUpdateTransformChilds();
+	if(owner->HasChilds())	
+		owner->RecursiveUpdateTransformChilds();
 }
 
 void ComponentTransform::DrawInspectorInfo()
 {
 	bool reset_transform = false;
+
 	float pos[3] = { transform->pos.x,transform->pos.y,transform->pos.z };
-	float rot[3] = { transform->rot.ToEulerXYZ().x*RADTODEG, transform->rot.ToEulerXYZ().y*RADTODEG, transform->rot.ToEulerXYZ().z*RADTODEG };
+	float rot[3] = { transform->rot.ToEulerXYZ().x * RADTODEG, transform->rot.ToEulerXYZ().y * RADTODEG, transform->rot.ToEulerXYZ().z *RADTODEG };
 	float scale[3] = { transform->scale.x,transform->scale.y,transform->scale.z };
 
 	if (ImGui::Button("Identity Reset"))
@@ -68,7 +71,7 @@ void ComponentTransform::DrawInspectorInfo()
 			transform->SetRotation(aux);
 			updated_transform = true;
 		}
-		if (pos[0] != transform->scale.x || pos[1] != transform->scale.y || pos[2] != transform->scale.z)
+		if (scale[0] != transform->scale.x || scale[1] != transform->scale.y || scale[2] != transform->scale.z)
 		{
 			transform->SetScale(scale[0], scale[1], scale[2]);
 			updated_transform = true;
@@ -77,7 +80,7 @@ void ComponentTransform::DrawInspectorInfo()
 		{
 			UpdateTransformValues();
 			if (owner->HasMesh())
-				owner->GetCMesh()->UpdateBoundingBox();
+				owner->GetMesh()->BBToUpdate(updated_transform);
 		}
 		if (reset_transform)
 		{

@@ -50,10 +50,14 @@ void GameObject::Draw()
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)((aux_trans->trans_matrix_g).Transposed() * v_matrix).v);
+
+		
 	}
 	//Bind Vertices
 	if (aux_mesh != nullptr)
 	{
+		if (GetMesh()->BBNeedsUpdate())
+			aux_mesh->UpdateBoundingBox(aux_trans->trans_matrix_g);
 		glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->vertices_id);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
@@ -156,8 +160,8 @@ bool GameObject::HasTex() const
 	bool ret = false;
 	for (int i = 0; i < components_list.size(); i++)
 	{
-if (components_list[i]->type == ComponentType::MATERIAL)
-ret = true;
+		if (components_list[i]->type == ComponentType::MATERIAL)
+			ret = true;
 	}
 	return ret;
 }
