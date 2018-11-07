@@ -23,5 +23,4 @@ public:
 	Mesh* mesh;
 
 };
-
 #endif

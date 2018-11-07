@@ -59,6 +59,7 @@ public:
 	uint indices_id;
 
 	//Tex Coords
+	bool has_tex_coord = false;
 	float* tex_coords;
 	uint num_tex_coords;
 	uint tex_coords_id;

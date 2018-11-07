@@ -128,7 +128,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		CONSOLE_LOG_WARNING("Mesh has no Faces");
 
 	//Tex Coords-------------------
-	if (my_mesh->num_vertices != 0) //Has Text Coords
+	if (my_mesh->has_tex_coord == true) //Has Text Coords
 	{
 		my_mesh->num_tex_coords = my_mesh->num_vertices / 3;
 		glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
@@ -238,13 +238,13 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				//MESH
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				Mesh* my_mesh2 = LoadMeshBinary(node->mName.C_Str(), i);
+				Mesh* my_mesh = LoadMeshBinary(node->mName.C_Str(), i);
 				//Vertices----------------------
-				glGenBuffers(1, (GLuint*)&my_mesh2->vertices_id);
-				glBindBuffer(GL_ARRAY_BUFFER, my_mesh2->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh2->num_vertices, my_mesh2->vertices, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
+				glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * my_mesh->num_vertices, my_mesh->vertices, GL_STATIC_DRAW);
 
-				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh2->num_vertices);
+				CONSOLE_LOG_INFO("New mesh with:\n%d vertices", my_mesh->num_vertices);
 
 				//reset buffer
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -252,23 +252,23 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Indices--------------------------
 				if (mesh->HasFaces())
 				{
-					my_mesh2->num_normal = my_mesh2->num_vertices;
-					for (int i = 0; i < my_mesh2->num_vertices/3; ++i)
+					my_mesh->num_normal = my_mesh->num_vertices;
+					for (int i = 0; i < my_mesh->num_vertices/3; ++i)
 					{
 						int u = i + 1;
 						int w = i + 2;
-						LineSegment face_normal = CalculateTriangleNormal(my_mesh2->vertices[i], my_mesh2->vertices[u], my_mesh2->vertices[w]);
+						LineSegment face_normal = CalculateTriangleNormal(my_mesh->vertices[i], my_mesh->vertices[u], my_mesh->vertices[w]);
 						Absolute(face_normal);
 
-						my_mesh2->face_normal.push_back(face_normal);
+						my_mesh->face_normal.push_back(face_normal);
 					}
-					glGenBuffers(1, (GLuint*)&my_mesh2->indices_id);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh2->indices_id);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_indices, my_mesh2->indices, GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)&my_mesh->indices_id);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh->indices_id);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_indices, my_mesh->indices, GL_STATIC_DRAW);
 					//reset buffer
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-					CONSOLE_LOG_INFO("%d indices", my_mesh2->num_indices);
+					CONSOLE_LOG_INFO("%d indices", my_mesh->num_indices);
 
 				}
 				else
@@ -278,14 +278,14 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				if (mesh->HasTextureCoords(0))
 				{
 					
-					my_mesh2->num_tex_coords = my_mesh2->num_vertices/3;
+					my_mesh->num_tex_coords = my_mesh->num_vertices/3;
 
-					glGenBuffers(1, (GLuint*)&my_mesh2->tex_coords_id);
-					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh2->tex_coords_id);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh2->num_tex_coords * 3, my_mesh2->tex_coords, GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)my_mesh->tex_coords_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_tex_coords * 3, my_mesh->tex_coords, GL_STATIC_DRAW);
 
 					//reset buffer
-					CONSOLE_LOG_INFO("%d tex coords", my_mesh2->num_tex_coords);
+					CONSOLE_LOG_INFO("%d tex coords", my_mesh->num_tex_coords);
 				}
 				else
 				{
@@ -296,11 +296,11 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				AABB bb;
 				bb.SetNegativeInfinity();
 				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-				my_mesh2->bounding_box = bb;
-				my_mesh2->show_bb = false;
+				my_mesh->bounding_box = bb;
+				my_mesh->show_bb = false;
 
 				ComponentMesh*  new_comp_mesh = new ComponentMesh();
-				new_comp_mesh->AddMesh(my_mesh2);
+				new_comp_mesh->AddMesh(my_mesh);
 				new_comp_mesh->SetOwner(new_child);
 				new_comp_mesh->SetType(ComponentType::MESH);
 				new_comp_mesh->Enable();
@@ -401,6 +401,8 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	{
 		header[4] = ai_mesh->mNumFaces * 3;
 	}
+	else
+		header[4] = 0;
 	uint bytes = sizeof(header);
 	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
 	char* sbuffer = new char[size];
@@ -461,8 +463,8 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	final_file_name.append(file_path);
 	if (num_mesh >= 1)
 	{
-		final_file_name.append("_$");
-		final_file_name.append(std::to_string(num_mesh));
+		//final_file_name.append("_$");
+		//final_file_name.append(std::to_string(num_mesh));
 	}
 	final_file_name.append(".lw");
 	ret->file_path.append(final_file_name.c_str());
@@ -496,8 +498,9 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	memcpy(ret->vertices, rvertices, rbytes);
 	rcursor += rbytes;
 
-	if (rheader[3] == 1)
+	if (rheader[3] == 1) //Has Texture Coords
 	{
+		ret->has_tex_coord = true;
 		//Read tex_coord
 		rbytes = sizeof(float)*(uint)ret->num_vertices;
 		float* rtex_points = new float[ret->num_vertices];
@@ -505,12 +508,12 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		
 
 		//Store them in the mesh
-		ret->tex_coords = new float[ret->num_vertices];
+		ret->tex_coords = new float[ret->num_vertices];		
 		memcpy(ret->tex_coords, rtex_points, rbytes);
 		rcursor += rbytes;
 	}
 
-	if (rheader[4] != 0)
+	if (rheader[4] != 0) //Has Faces
 	{
 		ret->num_indices = rheader[4];
 		//Read Indices
