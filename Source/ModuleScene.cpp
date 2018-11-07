@@ -450,8 +450,8 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 void ModuleScene::LoadScene(const char* path)
 {
 	//std::vector<GameObject*> test_go_list;
-	App->scene_intro->go_list;
 	App->scene_intro->ClearScene();
+	
 
 	FILE* fp = fopen(path, "rb"); // non-Windows use "w"
 	Document docload_r;
@@ -473,20 +473,20 @@ void ModuleScene::LoadScene(const char* path)
 			if (strcmp(m_go_itr->name.GetString(), "name") == 0)
 			{	
 				std::string go_name;
+				go_name.append(m_go_itr->value.GetString());
 				if (strcmp(m_go_itr->value.GetString(), "ROOT") == 0) //if it's root
 				{					
 					new_go->root_go = true;
+					new_go->SetName(m_go_itr->value.GetString());
 				}
-				go_name.append(m_go_itr->value.GetString());
-				if (go_name.find("//") == 1)
+				else if (go_name.find("//") == 1)
 				{
 					std::string final_go_name;
 					final_go_name = App->GetFileName(go_name.c_str());
 					new_go->SetName(final_go_name.c_str());
-				}
+				}									
 				else
 					new_go->SetName(m_go_itr->value.GetString());
-				
 			}
 			else if (strcmp(m_go_itr->name.GetString(), "active_go") == 0)
 			{
@@ -506,10 +506,13 @@ void ModuleScene::LoadScene(const char* path)
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
 					//Iterate through GameObjects Component values
-					Component* aux_comp;
+					Component* aux_comp = new Component();
 					if (strcmp(m_cmp_itr->name.GetString(), "active_comp") == 0)
 					{
-
+						if (m_cmp_itr->value.IsBool())
+						{
+							aux_comp->active = m_cmp_itr->value.GetBool();
+						}						
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "type") == 0)
 					{
@@ -527,20 +530,27 @@ void ModuleScene::LoadScene(const char* path)
 							stat[i] = m_cmp_trans_itr->GetFloat();
 							i++;
 						}
-						
+						float3 pos(stat[0], stat[1], stat[2]);
+						Quat rot(stat[3], stat[4], stat[5], 1);
+						float3 scale(stat[6], stat[7], stat[8]);
+						new_go->comp_transform->SetTransform(pos, rot, scale);
 			
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
 					{
 						aux_comp = new Component(MESH);
-						std::string file_path;
+						std::string file_path;						
 						file_path.append(m_cmp_itr->value.GetString());
+						
 
-						App->loading_manager->mesh_loader->LoadMesh(file_path);
+						//Set Folder Path
+						std::string dir_name;
+						dir_name = App->GetFolderNameLW(file_path.c_str());
+
+						App->scene_intro->folder_path = dir_name;
+
+						App->loading_manager->mesh_loader->InitMesh(file_path, new_go);
 					}
-
-
-					//new_go->PushComponent()
 				}
 			}
 		}
@@ -578,8 +588,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			Value arr_comp(kObjectType);
 			//Is active			
 			bool active_cmp = go->components_list[i]->active;
-			Value v_active((char*)active_cmp, allocator);
-			arr_comp.AddMember("active_comp", v_active, allocator);
+			arr_comp.AddMember("active_comp", active_cmp, allocator);
 
 			//Create the name of the component
 			std::string s_comp_name;

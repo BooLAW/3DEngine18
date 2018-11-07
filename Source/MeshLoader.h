@@ -29,12 +29,12 @@ public:
 	Mesh* LoadSceneMeshJson(std::string file_name,const aiNode* node);
 	long fsize(FILE *fp);
 	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
+	bool InitMesh(std::string lw_path, GameObject* go);
 
 	void Render();
 	void CleanUp();
 private:
 	bool InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent,const char* path);
-	bool InitMesh(std::string lw_path);
 	void Absolute(LineSegment& line);
 public:
 	//change to list when we have to load more than one mesh

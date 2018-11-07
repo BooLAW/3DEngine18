@@ -29,7 +29,19 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	std::size_t found_it = termination.find("lw");
 	if (found_it == 0)
 	{
-		InitMesh(file_path);
+		//Create the Game Object
+		GameObject* new_child = new GameObject();
+		InitMesh(file_path, new_child);
+		//Transform
+
+		float3 pos(0, 0, 0);
+		Quat rot(0, 0, 0, 0);
+		float3 scale(1, 1, 1);
+		new_child->comp_transform->SetTransform(pos, rot, scale);
+
+		App->scene_intro->go_list.push_back(new_child);
+		new_child->RecalculateBoundingBox(new_child);
+		//App->camera->AdaptCamera(bb, new_child->comp_transform->transform.pos);
 	}
 	else
 	{
@@ -37,8 +49,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 		if (new_scene != nullptr)
 		{
 			aiNode* root = new_scene->mRootNode;
-			SaveMesh(new_scene, root); //Starts Recursive
-									   //SaveSceneMeshesLW(new_scene, root,file_path);
+			SaveMesh(new_scene, root); //Starts Recursive									   
 			InitMesh(new_scene, root, App->scene_intro->scene_root, file_path.c_str());
 
 			aiReleaseImport(new_scene);
@@ -48,7 +59,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	}
 	return ret;
 }
-bool MeshLoader::InitMesh(std::string lw_path)
+bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 {
 	std::string subsctract_begining = lw_path;
 	std::string substract_format;
@@ -72,15 +83,14 @@ bool MeshLoader::InitMesh(std::string lw_path)
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
 
-	//Create the Game Object
-	GameObject* new_child = new GameObject();
+
 
 	//Create Random UID for new_child
 	unsigned int max_int = UINT_MAX;
 	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
 	new_child->uid = random_int;
 
-	new_child->SetName(my_mesh->file_path.c_str());
+	//new_child->SetName(my_mesh->file_path.c_str());
 	new_child->num_meshes = mesh_number;
 	//Vertices----------------------
 	glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
@@ -152,20 +162,7 @@ bool MeshLoader::InitMesh(std::string lw_path)
 	//Add child to parent
 	//parent->AddChild(new_child);
 
-	//Transform
-
-	float3 pos(0, 0, 0);
-	Quat rot(0, 0, 0, 0);
-	float3 scale(1,1,1);
-
-	new_child->comp_transform->SetTransform(pos, rot, scale);
-	
-	App->scene_intro->go_list.push_back(new_child);
-	new_child->RecalculateBoundingBox(new_child);
-	//App->camera->AdaptCamera(bb, new_child->comp_transform->transform.pos);
-
-
-	return false;
+	return true;
 }
 bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)
 {

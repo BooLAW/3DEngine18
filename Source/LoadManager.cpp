@@ -25,13 +25,11 @@ void LoadManager::Load(const char * path)
 		if (unique_fbx_path != path)
 		{
 			std::string dir_name;
-			std::string final_dir_name;
-			dir_name.append("Assets/Models/");
-			dir_name.append(App->GetFileName(path));
-			final_dir_name = dir_name.substr(0, dir_name.length()-4);
-			CreateDirectory(final_dir_name.c_str(), NULL);
+			dir_name = App->GetFolderName(path);
+			
+			CreateDirectory(dir_name.c_str(), NULL);
 
-			App->scene_intro->folder_path = final_dir_name;
+			App->scene_intro->folder_path = dir_name;
 			
 			
 			App->input->file_droped = true;
