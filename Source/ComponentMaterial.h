@@ -25,6 +25,7 @@ public:
 public:
 	
 	Material* data = nullptr;
+	std::string tex_path;
 };
 
 #endif

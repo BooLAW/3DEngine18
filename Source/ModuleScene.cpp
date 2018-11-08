@@ -100,6 +100,7 @@ update_status ModuleScene::Update(float dt)
 }
 void ModuleScene::DrawGameObjects()
 {
+	go_list;
 	//Base Plane
 	if (App->renderer3D->show_plane == true)
 	{
@@ -525,16 +526,17 @@ void ModuleScene::LoadScene(const char* path)
 					{
 						aux_comp = new Component(TRANSFORM);
 						int i = 0;
-						float stat[9] = {};
+						float stat[10] = {};
 						for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr->value.Begin(); m_cmp_trans_itr != m_cmp_itr->value.End(); ++m_cmp_trans_itr)
 						{
 							stat[i] = m_cmp_trans_itr->GetFloat();
 							i++;
 						}
 						float3 pos(stat[0], stat[1], stat[2]);
-						Quat rot(stat[3], stat[4], stat[5], 1);
-						float3 scale(stat[6], stat[7], stat[8]);
+						Quat rot(stat[3], stat[4], stat[5], stat[6]);
+						float3 scale(stat[7], stat[8], stat[9]);
 						new_go->comp_transform->SetTransform(pos, rot, scale);
+						
 			
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
@@ -551,6 +553,11 @@ void ModuleScene::LoadScene(const char* path)
 						App->scene_intro->folder_path = dir_name;
 
 						App->loading_manager->mesh_loader->InitMesh(file_path, new_go);
+						//App->camera->AdaptCamera(, new_go->comp_transform->transform.pos);
+					}
+					else if (strcmp(m_cmp_itr->name.GetString(), "MATERIAL") == 0)
+					{
+
 					}
 				}
 			}
@@ -622,6 +629,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				arr_comp_transform.PushBack((float)trans.rot.x, allocator);
 				arr_comp_transform.PushBack((float)trans.rot.y, allocator);
 				arr_comp_transform.PushBack((float)trans.rot.z, allocator);
+				arr_comp_transform.PushBack((float)trans.rot.w, allocator);
 
 				arr_comp_transform.PushBack((float)trans.scale.x, allocator);
 				arr_comp_transform.PushBack((float)trans.scale.y, allocator);
@@ -637,9 +645,12 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				Value obj_comp_material(kObjectType);
 				ComponentMaterial* com_mat_aux = (ComponentMaterial*)go->components_list[i];
 				Material* mat_aux = com_mat_aux->data;
-				obj_comp_material.AddMember("id",mat_aux->textures_id, allocator);
+				Value path_name(com_mat_aux->tex_path.c_str() , allocator);
+				obj_comp_material.AddMember("path", path_name, allocator);
+				obj_comp_material.AddMember("id", mat_aux->textures_id, allocator);
 				obj_comp_material.AddMember("heigh", mat_aux->height, allocator);
 				obj_comp_material.AddMember("width", mat_aux->width, allocator);
+
 
 				//Adding data to the component
 				arr_comp.AddMember("MATERIAL", obj_comp_material, allocator);

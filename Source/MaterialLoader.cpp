@@ -42,6 +42,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 		comp->data = new Material();		
 		comp->SetActive(true);
 		comp->Enable();
+		comp->tex_path.append(file_name);
 		success = ilLoadImage(file_name);
 
 
