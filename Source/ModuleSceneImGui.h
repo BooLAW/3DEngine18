@@ -71,7 +71,7 @@ public:
 	int x_aux2 = 0, y_aux2 = 0, z_aux2 = 0;
 	int aux1 = 0, aux2 = 100;
 	int random_int = 0;
-	pcg32_random_t rng = PCG32_INITIALIZER;
+	pcg32_random_t rng = PCG32_INITIALIZER;	
 	float random_float = 0.0f;
 	
 	float3 pos_aux;

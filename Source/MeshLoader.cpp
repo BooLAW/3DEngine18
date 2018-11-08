@@ -83,12 +83,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
 
-
-
-	//Create Random UID for new_child
-	unsigned int max_int = UINT_MAX;
-	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-	new_child->uid = random_int;
+	new_child->uid = App->GetRandUID();
 
 	//new_child->SetName(my_mesh->file_path.c_str());
 	new_child->num_meshes = mesh_number;
@@ -184,11 +179,11 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				if ((*it)->IsRoot())
 				{
 					GO->SetParent((*it));
+					GO->parent_uid = (*it)->uid;
 				}
 			}
 	
 		}
-
 		else if (parent != nullptr)
 		{
 			parent->AddChild(GO);
@@ -211,12 +206,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 			GO->comp_transform->SetTransform(pos, rot, scale);
 		}
-
-		//Create Random UID for mesh Root
-		unsigned int max_int = UINT_MAX;
-		UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-		GO->uid = random_int;
-
+		GO->uid = App->GetRandUID();
 		App->scene_intro->go_list.push_back(GO);
 	}
 	else
@@ -227,11 +217,8 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 			{
 				//Create the Game Object
 				GameObject* new_child = new GameObject();
-
-				//Create Random UID for new_child
-				unsigned int max_int = UINT_MAX;
-				UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-				new_child->uid = random_int;
+				
+				new_child->uid = App->GetRandUID();
 
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;

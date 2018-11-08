@@ -260,16 +260,18 @@ void GameObject::SetParent(std::vector<GameObject*> go_list, UINT32 parent_uid)
 {
 	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
 	{
-		//Find the uid of the input
+		//Find the parent uid in the go_list
 		if ((*it)->GetUID() == parent_uid)
 		{
+			//Check if you don't have a parent assigned
 			if (parent == NULL)
-			{
-				if (strcmp(GetName(), "ROOT") != 0)
-				{
-					(*it)->AddChild(this);
-					parent = (*it);
-				}
+			{								
+				const char* name_go = GetName();
+				//Assign the parent of the GO;
+				parent = (*it);
+				(*it)->AddChild(this);
+					
+				
 			}
 		}		
 	}

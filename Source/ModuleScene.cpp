@@ -54,10 +54,10 @@ bool ModuleScene::Start()
 	scene_root->comp_transform->SetTransform(root_pos, root_rotation, root_scale);
 	scene_root->comp_transform->CalculateGlobalMatrix();
 
-	////Create Random UID for Root
-	//unsigned int max_int = UINT_MAX;
-	//UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
-	//scene_root->uid = random_int;
+	scene_root->uid = 1355249013;
+	scene_root->parent_uid = NULL;
+	scene_root->parent = NULL;
+	
 	
 	go_list.push_back(scene_root);
 
@@ -178,7 +178,7 @@ void ModuleScene::ClearScene()
 		scene_root->childs_list.clear();
 		go_list.clear();
 		//TODO: Josep comented this to test scene.json. The scene does not work if the cleanup deletes the root node.
-		//go_list.push_back(scene_root);
+		go_list.push_back(scene_root);
 	}
 		
 	App->loading_manager->unique_fbx_path = "";
@@ -449,7 +449,7 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 }
 void ModuleScene::LoadScene(const char* path)
 {
-	//std::vector<GameObject*> test_go_list;
+	App->scene_intro->go_list;
 	App->scene_intro->ClearScene();
 	
 
@@ -475,7 +475,8 @@ void ModuleScene::LoadScene(const char* path)
 				std::string go_name;
 				go_name.append(m_go_itr->value.GetString());
 				if (strcmp(m_go_itr->value.GetString(), "ROOT") == 0) //if it's root
-				{					
+				{		
+					
 					new_go->root_go = true;
 					new_go->SetName(m_go_itr->value.GetString());
 				}
@@ -554,7 +555,11 @@ void ModuleScene::LoadScene(const char* path)
 				}
 			}
 		}
-		go_list.push_back(new_go);		
+		if (!new_go->IsRoot())
+		{
+			go_list.push_back(new_go);
+		}
+		
 	}
 
 	//Add Parents and Childs

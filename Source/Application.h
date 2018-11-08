@@ -65,6 +65,8 @@ public:
 
 	bool Save();
 	bool Load();
+	//RandUINT
+	INT32 GetRandUID();
 	//File path string
 	std::string GetTermination(const char* path);
 	std::string GetFileName(const char* path);

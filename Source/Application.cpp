@@ -273,6 +273,14 @@ bool Application::Load()
 	return ret;
 }
 
+INT32 Application::GetRandUID()
+{
+	//Create Random UID for mesh Root
+	unsigned int max_int = UINT_MAX;
+	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+	return random_int;
+}
+
 std::string Application::GetTermination(const char * path)
 {
 	std::string ret;
