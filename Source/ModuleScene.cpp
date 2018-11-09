@@ -70,9 +70,13 @@ bool ModuleScene::Start()
 	//Load Warrior
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
-	//Load Baker HOuse
+	////Load Baker HOuse
 	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
+
+	////Load Street
+	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
+	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
 
 	//Loading Scene
 	//App->loading_manager->Load("\\Assets\\Scenes\\scene1.json");
@@ -520,7 +524,6 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (m_cmp_itr->value.IsArray())
 					{
-						aux_comp = new Component(TRANSFORM);
 						int i = 0;
 						float stat[10] = {};
 						for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr->value.Begin(); m_cmp_trans_itr != m_cmp_itr->value.End(); ++m_cmp_trans_itr)
@@ -537,11 +540,9 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
 					{
-						aux_comp = new Component(MESH);
 						std::string file_path;						
 						file_path.append(m_cmp_itr->value.GetString());
 						
-
 						//Set Folder Path
 						std::string dir_name;
 						dir_name = App->GetFolderNameLW(file_path.c_str());
@@ -553,7 +554,10 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MATERIAL") == 0)
 					{
-
+						//TODO JOSEP
+						aux_comp = new Component(MATERIAL);
+						std::string file_path;
+						
 					}
 				}
 			}

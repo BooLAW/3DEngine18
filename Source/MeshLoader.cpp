@@ -138,18 +138,12 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
 	}
 
-	//Set the Bounding Box for the DEBUG DRAW
-	AABB bb;
-	bb.SetNegativeInfinity();
-	bb.Enclose((float3*)my_mesh->vertices, my_mesh->num_vertices);
-	my_mesh->bounding_box = bb;
-	my_mesh->show_bb = false;
-
 	ComponentMesh*  new_comp_mesh = new ComponentMesh();
 	new_comp_mesh->AddMesh(my_mesh);
 	new_comp_mesh->SetOwner(new_child);
 	new_comp_mesh->SetType(ComponentType::MESH);
 	new_comp_mesh->Enable();
+	new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
 
 	new_child->PushComponent((Component*)new_comp_mesh);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -222,10 +216,13 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;
+				
 
 				//MESH
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+				
 				Mesh* my_mesh = LoadMeshBinary(node->mName.C_Str(), i);
+				
 				//Vertices----------------------
 				glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
@@ -264,7 +261,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))
 				{
-					
+					my_mesh->material_index = mesh->mMaterialIndex;
 					my_mesh->num_tex_coords = my_mesh->num_vertices/3;
 
 					glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);

@@ -63,6 +63,7 @@ public:
 	float* tex_coords;
 	uint num_tex_coords;
 	uint tex_coords_id;
+	uint material_index;
 
 	//AABB
 	AABB bounding_box;

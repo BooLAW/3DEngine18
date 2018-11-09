@@ -51,14 +51,16 @@ void LoadManager::Load(const char * path)
 		{
 			App->input->tex_droped = true;
 			Component* comp_aux = new Component(MATERIAL);
-			ComponentMaterial* comp_mat_aux = material_loader->LoadPNG(path);
+			ComponentMaterial* comp_mat_aux = material_loader->LoadPNG(path);			
 			comp_aux->comp_material = comp_mat_aux;
 			int auxi = App->scene_intro->go_list.size();
 			for (int i = 1; i < auxi; i++)
 			{
-
-				comp_mat_aux->SetOwner(App->scene_intro->go_list[i]);
-				App->scene_intro->go_list[i]->PushComponent((Component*)comp_aux->comp_material);
+				if (App->scene_intro->go_list[i])
+				{
+					comp_mat_aux->SetOwner(App->scene_intro->go_list[i]);
+					App->scene_intro->go_list[i]->PushComponent((Component*)comp_aux->comp_material);
+				}				
 			}
 				
 			unique_material_path = path;
