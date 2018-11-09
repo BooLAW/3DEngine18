@@ -280,17 +280,18 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				}
 
 				//Set the Bounding Box for the DEBUG DRAW
-				AABB bb;
+				/*/AABB bb;
 				bb.SetNegativeInfinity();
 				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 				my_mesh->bounding_box = bb;
-				my_mesh->show_bb = false;
+				my_mesh->show_bb = false;*/
 
 				ComponentMesh*  new_comp_mesh = new ComponentMesh();
 				new_comp_mesh->AddMesh(my_mesh);
 				new_comp_mesh->SetOwner(new_child);
 				new_comp_mesh->SetType(ComponentType::MESH);
 				new_comp_mesh->Enable();
+				new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
 
 				new_child->PushComponent((Component*)new_comp_mesh);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -314,8 +315,8 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					new_child->comp_transform->SetTransform(pos, rot, scale);
 				}
 				App->scene_intro->go_list.push_back(new_child);
-				new_child->RecalculateBoundingBox(new_child);
-				App->camera->AdaptCamera(bb, new_child->comp_transform->transform.pos);
+				//new_child->RecalculateBoundingBox(new_child);
+				//App->camera->AdaptCamera(new_child->GetBB(), new_child->comp_transform->transform.pos);
 			}
 			GO = parent;
 		}

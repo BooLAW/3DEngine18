@@ -41,9 +41,11 @@ void ComponentMesh::CleanUp()
 void ComponentMesh::UpdateBoundingBox(float4x4 global_matrix)
 {
 	mesh->bounding_box.SetNegativeInfinity();
-	mesh->bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertices);
-	mesh->bounding_box.Transform(global_matrix);
+	//The problem is with the vertices and the num vertices
+	mesh->bounding_box.Enclose(mesh->vertices, mesh->num_vertices);
 	
+	mesh->bounding_box.TransformAsAABB(global_matrix);
+
 }
 
 

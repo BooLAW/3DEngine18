@@ -76,23 +76,25 @@ void ComponentTransform::DrawInspectorInfo()
 		if (!transform.rot.Equals(aux));
 		{
 			transform.SetRotation(aux);
-			updated_transform = true;
+			//updated_transform = true;
 		}
 		if (scale[0] != transform.scale.x || scale[1] != transform.scale.y || scale[2] != transform.scale.z)
 		{
 			transform.SetScale(scale[0], scale[1], scale[2]);
 			updated_transform = true;
 		}
+		if (reset_transform)
+		{
+			ResetTransform();
+			updated_transform = true;
+		}
 		if (updated_transform)
 		{
 			UpdateTransformValues();
 			if (owner->HasMesh())
-				owner->GetMesh()->BBToUpdate(updated_transform);
+				owner->GetCMesh()->UpdateBoundingBox(trans_matrix_g);
 		}
-		if (reset_transform)
-		{
-			ResetTransform();
-		}
+		
 	}
 
 }

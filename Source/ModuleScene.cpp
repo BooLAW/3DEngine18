@@ -343,10 +343,6 @@ void ModuleScene::DrawChilds(GameObject* parent)
 				ResetSelected();
 				parent->SetSelected(true);
 				
-				if (parent->HasMesh())
-				{
-					parent->GetCMesh()->UpdateBoundingBox(parent->comp_transform->trans_matrix_g);
-				}
 			}
 		
 	}

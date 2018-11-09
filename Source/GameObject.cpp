@@ -56,8 +56,6 @@ void GameObject::Draw()
 	//Bind Vertices
 	if (aux_mesh != nullptr)
 	{
-		if (GetMesh()->BBNeedsUpdate())
-			aux_mesh->UpdateBoundingBox(aux_trans->trans_matrix_g);
 		glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->vertices_id);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aux_mesh->mesh->indices_id);
