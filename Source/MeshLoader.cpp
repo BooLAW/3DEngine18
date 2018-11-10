@@ -290,17 +290,26 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 					//Create Materials Folder inside Library and FBX name folder inside Materials
 					std::string input_path(App->scene_intro->fbx_name);
-					std::string mat_folder_path;
-					mat_folder_path.append("Library/Materials");
-					CreateDirectory(mat_folder_path.c_str(), NULL); //Creates Material Folder
+					std::string tex_folder_path;
+					tex_folder_path.append("Library/Textures");
+					CreateDirectory(tex_folder_path.c_str(), NULL); 
 
-					mat_folder_path.append("/");
-					mat_folder_path.append(App->EraseTerination(input_path.c_str()));
+					//Creates BakerHouse Folder inside Materials folder
+					tex_folder_path.append("/");
+					tex_folder_path.append(App->EraseTerination(input_path.c_str()));					
+					CreateDirectory(tex_folder_path.c_str(), NULL);
 					
-					CreateDirectory(mat_folder_path.c_str(), NULL); //Creates BakerHouse Folder inside Materials folder
-					
+					//Loading the texture on the mesh from the assets folder
+					std::string tex_path("Assets/Textures/");
+					tex_path.append(texture_name.C_Str());
+					new_child->PushComponent((Component*)App->loading_manager->material_loader->LoadPNG(tex_path.c_str()));
 
-					std::string folder_to_check = App->scene_intro->folder_path;
+					//Storing the texture inside the Library
+					std::string lib_tex_path("Library/Textures/");
+					lib_tex_path.append(App->EraseTerination(input_path.c_str()));
+					lib_tex_path.append("/");
+					lib_tex_path.append(texture_name.C_Str());
+					CopyFile(tex_path.c_str(), lib_tex_path.c_str(),NULL);				
 				}
 
 				//Set the Bounding Box for the DEBUG DRAW
