@@ -419,11 +419,11 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box,float3 transformpos)
 void ModuleCamera3D::AdaptCamera(float3 transformpos)
 {
 
-	float3 newpos = transformpos;
+	/*float3 newpos = transformpos;
 	newpos.y += 10;
-	newpos.z += 10;
+	newpos.z += 10;*/
 
-	editor_cam->frustum.pos.Set(newpos.x, newpos.y, newpos.z);
+	editor_cam->frustum.pos.Set(transformpos.x, transformpos.y, transformpos.z);
 
 	LookAt(transformpos);
 }
