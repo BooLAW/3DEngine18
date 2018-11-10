@@ -86,7 +86,11 @@ void OctreeItem::RemoveItem(Mesh* mesh_to_remove)
 	for (std::vector<Mesh*>::iterator it = item_elements.begin(); it != item_elements.end(); it++)
 	{
 		if ((*it) == mesh_to_remove)
+		{
 			item_elements.erase(it);
+			break;
+		}
+		
 	}
 	if (HasChilds())
 	{
