@@ -535,8 +535,6 @@ void ModuleScene::LoadScene(const char* path)
 						Quat rot(stat[3], stat[4], stat[5], stat[6]);
 						float3 scale(stat[7], stat[8], stat[9]);
 						new_go->comp_transform->SetTransform(pos, rot, scale);
-						
-			
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
 					{
@@ -550,7 +548,11 @@ void ModuleScene::LoadScene(const char* path)
 						App->scene_intro->folder_path = dir_name;
 
 						App->loading_manager->mesh_loader->InitMesh(file_path, new_go);
-						//App->camera->AdaptCamera(, new_go->comp_transform->transform.pos);
+						if(new_go->HasMesh())
+							App->camera->AdaptCamera(new_go->GetBB(), new_go->comp_transform->transform.pos);
+						else
+							App->camera->AdaptCamera(new_go->comp_transform->transform.pos);
+
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MATERIAL") == 0)
 					{

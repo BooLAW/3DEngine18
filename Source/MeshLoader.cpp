@@ -349,7 +349,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				}
 				App->scene_intro->go_list.push_back(new_child);
 				//new_child->RecalculateBoundingBox(new_child);
-				//App->camera->AdaptCamera(new_child->GetBB(), new_child->comp_transform->transform.pos);
+				App->camera->AdaptCamera(new_child->GetBB(), new_child->comp_transform->transform.pos);
 			}
 					
 		}
