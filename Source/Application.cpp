@@ -317,13 +317,38 @@ std::string Application::GetFileName(const char * path)
 	return ret;
 }
 
-std::string Application::GetFolderName(const char * path)
+std::string Application::GetFolderNameFBX(const char * path)
 {
 	std::string dir_name;
 	std::string final_dir_name;
-	dir_name.append("Assets/Models/");
+	dir_name.append("Library/Models/");
 	dir_name.append(App->GetFileName(path));
 	final_dir_name = dir_name.substr(0, dir_name.length() - 4);
+	return final_dir_name;
+}
+
+std::string Application::GetMainFolderNameFBX(const char * path)
+{
+	std::string input_path(path);
+	std::string dir_name;
+	std::string final_dir_name;
+
+	uint cut = input_path.find_first_of("/") + 1;
+	
+
+	final_dir_name = input_path.substr(0, cut);
+	return final_dir_name;
+}
+
+std::string Application::GetSecondaryFolderNameFBX(const char * path)
+{
+	std::string input_path(path);
+	std::string dir_name;
+	std::string final_dir_name;
+	
+	uint cut = input_path.find_last_of("/");
+
+	final_dir_name = input_path.substr(0, cut);
 	return final_dir_name;
 }
 
@@ -332,7 +357,7 @@ std::string Application::GetFolderNameLW(const char * path)
 	std::string input_path(path);
 	std::string dir_name;
 	std::string final_dir_name;
-	dir_name.append("Assets/Models/");
+	dir_name.append("Library/Models/");
 	uint cut = input_path.find("Models/") + 7; 
 	uint cut2 = input_path.find_last_of("/");
 	

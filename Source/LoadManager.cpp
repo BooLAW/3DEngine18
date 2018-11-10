@@ -25,9 +25,17 @@ void LoadManager::Load(const char * path)
 		if (unique_fbx_path != path)
 		{
 			std::string dir_name;
-			dir_name = App->GetFolderName(path);
+			std::string main_dir_name;
+			std::string secondary_dir_name;
+
+			dir_name = App->GetFolderNameFBX(path);
+			secondary_dir_name = App->GetSecondaryFolderNameFBX(dir_name.c_str());
+			main_dir_name = App->GetMainFolderNameFBX(dir_name.c_str());
 			
-			CreateDirectory(dir_name.c_str(), NULL);
+
+			CreateDirectory(main_dir_name.c_str(), NULL); //Create Library Folder
+			CreateDirectory(secondary_dir_name.c_str(), NULL); //Create Models Folder
+			CreateDirectory(dir_name.c_str(), NULL); //Create Mesh Folder
 
 			App->scene_intro->folder_path = dir_name;
 			
