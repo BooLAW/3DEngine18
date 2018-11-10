@@ -12,6 +12,7 @@
 #include "ComponentTransform.h"
 #include "mmgr/mmgr.h"
 #include "Assimp/include/material.h"
+#include <iostream>
 
 
 MeshLoader::MeshLoader()
@@ -287,6 +288,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					aiMaterial* mat = scene->mMaterials[my_mesh->material_index];				
 					aiString texture_name;
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
+					texture_name = App->GetFileName(texture_name.C_Str());
 
 					//Create Materials Folder inside Library and FBX name folder inside Materials
 					std::string input_path(App->scene_intro->fbx_name);
@@ -410,7 +412,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	float3* vertices = (float3*)ai_mesh->mVertices;
 	float* tex_points = new float[ai_mesh->mNumVertices * 3];
 	//We store the number of vertices inside an array
-	uint header[5] = { (uint)ai_mesh->mNumVertices * 3, ai_mesh->mNumVertices ,num_mesh};
+	uint header[7] = { (uint)ai_mesh->mNumVertices * 3, ai_mesh->mNumVertices ,num_mesh};
 
 	if (ai_mesh->HasTextureCoords(0))
 	{
@@ -418,14 +420,33 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	}
 	else
 		header[3] = 0;
+
 	if (ai_mesh->HasFaces())
 	{
 		header[4] = ai_mesh->mNumFaces * 3;
 	}
 	else
 		header[4] = 0;
+
+	aiString texture_name;
+
+	if (scene->HasMaterials())
+	{
+		aiMaterial* mat = scene->mMaterials[ai_mesh->mMaterialIndex];
+		mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
+		texture_name = App->GetFileName(texture_name.C_Str());
+
+		header[5] = ai_mesh->mMaterialIndex;		
+		header[6] = sizeof(texture_name);
+	}
+	else
+	{
+		header[5] = -1;
+		header[6] = 0;
+	}		
+
 	uint bytes = sizeof(header);
-	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces;
+	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces + sizeof(texture_name);
 	char* sbuffer = new char[size];
 	char* cursor = sbuffer;
 
@@ -448,11 +469,10 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		cursor += bytes;
 	}
 
-
 	//Save Indices
 	if (ai_mesh->HasFaces())
 	{		
-		bytes = sizeof(int) * 3 * ai_mesh->mNumFaces;
+		bytes = sizeof(int) *3* ai_mesh->mNumFaces;
 		int* indices = new int[ai_mesh->mNumFaces * 3 ];
 		for (int i = 0; i < ai_mesh->mNumFaces; ++i)
 		{
@@ -467,7 +487,18 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 			}
 		}
 		memcpy(cursor, indices, bytes);
+		cursor += bytes;
 	}
+
+	//Save Material
+	if (scene->HasMaterials())
+	{
+		bytes = sizeof(texture_name);
+
+		memcpy(cursor, texture_name.C_Str(), bytes);
+		
+	}
+
 
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
@@ -500,7 +531,7 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	char* rcursor = rbuffer;
 
 	//Init Header
-	uint rheader[5];
+	uint rheader[7];
 	uint rbytes = sizeof(rheader);
 
 	//Read Header
@@ -537,6 +568,7 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	if (rheader[4] != 0) //Has Faces
 	{
 		ret->num_indices = rheader[4];
+
 		//Read Indices
 		rbytes = sizeof(int) * ret->num_indices;
 		int* indices = new int[ret->num_indices];
@@ -547,6 +579,18 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		ret->indices = new int[ret->num_indices];
 		memcpy(ret->indices, indices, rbytes);
 		rcursor += rbytes;
+	}
+
+	if (rheader[5] >= 0)
+	{
+		//Read Indices
+		rbytes = rheader[6];
+		char* mat_name = new char[rheader[6]];
+		memcpy(mat_name, rcursor, rbytes);
+
+		//Store it in to the mesh
+		ret->material_index = rheader[5];
+		ret->material_path = mat_name;
 	}
 
 	fclose(rfile);
