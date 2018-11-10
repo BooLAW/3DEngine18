@@ -291,6 +291,15 @@ std::string Application::GetTermination(const char * path)
 	return ret;
 }
 
+std::string Application::EraseTerination(const char * path)
+{
+	std::string ret;
+
+	std::string fn = path;
+	ret = fn.substr(0,fn.find_last_of("."));
+	return ret;
+}
+
 std::string Application::GetFileName(const char * path)
 {
 	std::string full_path_str(path);

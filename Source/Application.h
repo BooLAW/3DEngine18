@@ -69,6 +69,9 @@ public:
 	INT32 GetRandUID();
 	//File path string
 	std::string GetTermination(const char* path);
+
+	std::string EraseTerination(const char* path);
+
 	std::string GetFileName(const char* path);
 
 	//Returns the path of the folder containing the meshes ex: Library/Models/BakerHouse
@@ -81,6 +84,8 @@ public:
 	std::string GetSecondaryFolderNameFBX(const char* path);
 
 	std::string GetFolderNameLW(const char* path);
+
+
 	
 	void isVsyncActive();
 

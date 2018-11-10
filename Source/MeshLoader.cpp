@@ -11,6 +11,7 @@
 #include "Transform.h"
 #include "ComponentTransform.h"
 #include "mmgr/mmgr.h"
+#include "Assimp/include/material.h"
 
 
 MeshLoader::MeshLoader()
@@ -27,7 +28,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	bool ret = false;	
 	std::string termination = App->GetTermination(file_path.c_str());
 	std::size_t found_it = termination.find("lw");
-	if (found_it == 0)
+	if (found_it == 0) // if it's an .lw file
 	{
 		//Create the Game Object
 		GameObject* new_child = new GameObject();
@@ -49,6 +50,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 		if (new_scene != nullptr)
 		{
 			aiNode* root = new_scene->mRootNode;
+			
 			SaveMesh(new_scene, root); //Starts Recursive									   
 			InitMesh(new_scene, root, App->scene_intro->scene_root, file_path.c_str());
 
@@ -59,6 +61,7 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	}
 	return ret;
 }
+
 bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 {
 	std::string subsctract_begining = lw_path;
@@ -236,6 +239,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Indices--------------------------
 				if (mesh->HasFaces())
 				{
+					my_mesh->material_index = mesh->mMaterialIndex;
 					my_mesh->num_normal = my_mesh->num_vertices;
 					for (int i = 0; i < my_mesh->num_vertices/3; ++i)
 					{
@@ -249,6 +253,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					glGenBuffers(1, (GLuint*)&my_mesh->indices_id);
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_mesh->indices_id);
 					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * my_mesh->num_indices, my_mesh->indices, GL_STATIC_DRAW);
+
 					//reset buffer
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -260,8 +265,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				//Tex Coords-------------------
 				if (mesh->HasTextureCoords(0))
-				{
-					my_mesh->material_index = mesh->mMaterialIndex;
+				{										
 					my_mesh->num_tex_coords = my_mesh->num_vertices/3;
 
 					glGenBuffers(1, (GLuint*)&my_mesh->tex_coords_id);
@@ -274,6 +278,29 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				else
 				{
 					CONSOLE_LOG_WARNING("Mesh has no Texture Coords");
+				}				
+
+				//Load Materials
+				if (scene->HasMaterials())
+				{
+					//Get png Name from the scene based on the mesh material id;
+					aiMaterial* mat = scene->mMaterials[my_mesh->material_index];				
+					aiString texture_name;
+					mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
+
+					//Create Materials Folder inside Library and FBX name folder inside Materials
+					std::string input_path(App->scene_intro->fbx_name);
+					std::string mat_folder_path;
+					mat_folder_path.append("Library/Materials");
+					CreateDirectory(mat_folder_path.c_str(), NULL); //Creates Material Folder
+
+					mat_folder_path.append("/");
+					mat_folder_path.append(App->EraseTerination(input_path.c_str()));
+					
+					CreateDirectory(mat_folder_path.c_str(), NULL); //Creates BakerHouse Folder inside Materials folder
+					
+
+					std::string folder_to_check = App->scene_intro->folder_path;
 				}
 
 				//Set the Bounding Box for the DEBUG DRAW
@@ -315,7 +342,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//new_child->RecalculateBoundingBox(new_child);
 				//App->camera->AdaptCamera(new_child->GetBB(), new_child->comp_transform->transform.pos);
 			}
-			GO = parent;
+					
 		}
 		else
 		{
