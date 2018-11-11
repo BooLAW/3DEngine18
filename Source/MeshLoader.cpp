@@ -359,6 +359,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
 
 				new_child->PushComponent((Component*)new_comp_mesh);
+				
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				//Add child to parent
@@ -396,7 +397,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 		InitMesh(scene, node->mChildren[i], GO, path);
 	}
 	GO->comp_transform->UpdateTransformValues();
-
+	
 	return true;
 }
 
@@ -518,6 +519,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		}
 		memcpy(cursor, indices, bytes);
 		cursor += bytes;
+		delete[] indices;
 	}
 
 	//Save Material
@@ -532,6 +534,9 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
+
+	delete[] sbuffer;
+	delete[] tex_points;
 
 	return false;
 }
@@ -578,7 +583,7 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	//Store them in the mesh
 	ret->vertices = new float3[ret->num_vertices];
 	memcpy(ret->vertices, rvertices, rbytes);
-	rcursor += rbytes;
+	rcursor += rbytes;	
 
 	if (rheader[3] == 1) //Has Texture Coords
 	{
@@ -593,6 +598,8 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		ret->tex_coords = new float[ret->num_vertices];		
 		memcpy(ret->tex_coords, rtex_points, rbytes);
 		rcursor += rbytes;
+
+		delete[] rtex_points;
 	}
 
 	if (rheader[4] != 0) //Has Faces
@@ -608,6 +615,8 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		//Store them in the mesh
 		ret->indices = new int[ret->num_indices];
 		memcpy(ret->indices, indices, rbytes);
+		delete[] indices;
+
 		rcursor += rbytes;
 	}
 
@@ -621,10 +630,17 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		//Store it in to the mesh
 		ret->material_index = rheader[5];
 		ret->material_path = mat_name;
+		delete[] mat_name;
 	}
 
 	fclose(rfile);
+
+
+	delete[] rbuffer;	
+	delete[] rvertices;
+
 	return ret;
+
 }
 
 long MeshLoader::fsize(FILE *fp)

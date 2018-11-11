@@ -18,6 +18,7 @@ ComponentMaterial::ComponentMaterial()
 	uint size = sizeof(this);
 	char* data = new char[size];
 	memcpy(data, a_ptr, size);
+	
 }
 
 ComponentMaterial::ComponentMaterial(GameObject * owner)
