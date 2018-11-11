@@ -47,20 +47,25 @@ public:
 	void SaveScene(std::vector<GameObject*> go_list);
 	void LoadScene(const char* path);
 	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
-
+	//MousePicking
+	GameObject* GetClosestGO(std::vector<GameObject*> gameobjects, LineSegment line);
+	void ClickSelection(LineSegment mouse_ray);
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;	
 	std::vector<GameObject*> to_delete;
 	std::list<GameObject*> octree_objects;
+	
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
+	
 	Octree octree;
+	
 	std::string fbx_name;
 	std::string folder_path;
+	
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];
-
 
 	bool draw_octree = false;
 	bool has_meshes = false;

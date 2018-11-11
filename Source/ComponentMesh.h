@@ -5,7 +5,6 @@
 #include "Mesh.h"
 
 class GameObject;
-
 class ComponentMesh : public Component
 {
 public:
@@ -18,7 +17,8 @@ public:
 	void DrawInspectorInfo();
 	void CleanUp();
 	void UpdateBoundingBox(float4x4 global_matrix);
-
+	bool FirstPoint(LineSegment mouse_ray, float3& firstpoint, float& point_distance);
+	Triangle CreateTriangleFromIndices(int i);
 public:
 	Mesh* mesh;
 

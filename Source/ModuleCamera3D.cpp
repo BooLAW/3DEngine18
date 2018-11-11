@@ -159,7 +159,7 @@ update_status ModuleCamera3D::Update(float dt)
 	if (draw_frustum) 
 		editor_cam->DrawFrustum();
 	//Mouse Picking
-	bool mouse_picking_working = false;
+	bool mouse_picking_working = true;
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && CheckMouseInWindow(App->input->GetMouseX(), App->input->GetMouseY()) && mouse_picking_working)
 	{
 		CreateRayTest(App->input->GetMouseX(), App->input->GetMouseY());
@@ -246,8 +246,8 @@ void ModuleCamera3D::CreateRayTest(int x, int y)
 	//Create Ray or LineSegment??
 	LineSegment picking = editor_cam->frustum.UnProjectLineSegment(n_x, n_y);
 	//Check Collisions
-		//bool hit = my_ray.Intersects(game_object->aabb); // ray vs. AABB
-		//bool hit = ray_local_space.Intersects(tri, &distance, &hit_point); // ray vs. triangle
+	if(picking.Length()!=0)
+		App->scene_intro->ClickSelection(picking);
 }
 
 bool ModuleCamera3D::CheckMouseInWindow(int x, int y)

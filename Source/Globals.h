@@ -50,6 +50,8 @@ void console_log_info(const char file[], int line, const char* format, ...);
 #define RADTODEG 57.295779513082320876f
 #define HALF_PI  1.57079632679
 #define PI 3.14159265359
+#define VERYFAR 99999
+
 
 #define WINDOW_OFFSET_X 100
 #define WINDOW_OFFSET_Y 100

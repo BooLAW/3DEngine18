@@ -114,12 +114,27 @@ void ModuleScene::DrawGameObjects()
 		base_plane.color = White;
 		base_plane.Render();
 	}
-
-	//GameObjects
+	//Draw Static GameObjects
+	for (std::list<GameObject*>::iterator it = octree_objects.end(); it != octree_objects.end(); it++)
+	{
+		if ((*it)->HasMesh())
+		{
+			//Check In Frustum
+			if (App->camera->editor_cam->IsGameObjectInFrustum((*it)->GetBB(), (*it)->comp_transform->trans_matrix_g.TranslatePart()))
+				(*it)->Draw();
+			else
+				CONSOLE_LOG_INFO("DISCARDED %s", (*it)->GetName());
+		}
+		else if (!(*it)->IsRoot())
+			(*it)->Draw();
+	}
+	//Draw Dynamic GameObjects
 	for (int i = 0; i < go_list.size(); i++)
 	{
-		if (go_list[i]->HasMesh())
+		
+		if (!go_list[i]->IsStatic() &&go_list[i]->HasMesh())
 		{
+			//Check In Frustum
 			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
 				go_list[i]->Draw();
 			else
@@ -678,6 +693,74 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 		}
 	}
 	return data_go;
+}
+
+GameObject * ModuleScene::GetClosestGO(std::vector<GameObject*> gameobjects, LineSegment line)
+{
+	float3 closest_point;
+	float closest_distance = VERYFAR;
+	GameObject* closest_go = nullptr;
+	float distance;
+	
+	for (std::vector<GameObject*>::iterator it = gameobjects.begin(); it != gameobjects.end(); it++)
+	{
+		GameObject* go = (*it);
+
+		ComponentMesh* mesh = go->GetCMesh();
+
+		if (go->HasMesh())
+		{
+			float3 point = { 0,0,0 };
+
+			if (mesh->FirstPoint(line, point, distance))
+			{
+				if (distance < closest_distance)
+				{
+					closest_distance = distance;
+					closest_point = point;
+					closest_go = go;
+				}
+			}
+		}
+	}
+	if (closest_go == nullptr)
+	{
+		CONSOLE_LOG_WARNING("No GO returned");
+	}
+	else
+	{
+		CONSOLE_LOG_WARNING(" %s", closest_go->GetName());
+	}
+	return closest_go;
+}
+
+void ModuleScene::ClickSelection(LineSegment mouse_ray)
+{
+	std::vector<GameObject*> intersected_list;
+
+	for (std::vector<GameObject*>::iterator it = go_list.begin(); it != go_list.end(); it++)
+	{
+		GameObject* go = (*it);
+
+		if (!go->HasMesh())
+		{
+			continue;
+		}
+
+		bool collided = mouse_ray.Intersects(go->GetBB());
+
+		if (collided)
+		{
+			intersected_list.push_back(go);
+		}
+	}
+	
+
+	GameObject* closestGo = GetClosestGO(intersected_list, mouse_ray);
+	if (closestGo == nullptr)
+		return;
+	GetSelected()->SetSelected(false);
+	closestGo->SetSelected(true);
 }
 
 
