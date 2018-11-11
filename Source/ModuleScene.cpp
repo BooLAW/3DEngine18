@@ -759,7 +759,8 @@ void ModuleScene::ClickSelection(LineSegment mouse_ray)
 	GameObject* closestGo = GetClosestGO(intersected_list, mouse_ray);
 	if (closestGo == nullptr)
 		return;
-	GetSelected()->SetSelected(false);
+	if(GetSelected() != nullptr)
+		GetSelected()->SetSelected(false);
 	closestGo->SetSelected(true);
 }
 

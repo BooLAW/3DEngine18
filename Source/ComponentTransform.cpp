@@ -76,7 +76,7 @@ void ComponentTransform::DrawInspectorInfo()
 		if (!transform.rot.Equals(aux));
 		{
 			transform.SetRotation(aux);
-			//updated_transform = true;
+			updated_transform = true;
 		}
 		if (scale[0] != transform.scale.x || scale[1] != transform.scale.y || scale[2] != transform.scale.z)
 		{
