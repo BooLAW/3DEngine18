@@ -319,8 +319,10 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					aiString texture_name;
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 					aiColor3D my_color;
-					mat->Get(AI_MATKEY_COLOR_DIFFUSE,my_color);
+					mat->Get(AI_MATKEY_COLOR_DIFFUSE,my_color);					
 					texture_name = App->GetFileName(texture_name.C_Str());
+					
+
 
 					//Create Materials Folder inside Library and FBX name folder inside Materials
 					std::string input_path(App->scene_intro->fbx_name);
@@ -336,7 +338,9 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					//Loading the texture on the mesh from the assets folder
 					std::string tex_path("Assets/Textures/");
 					tex_path.append(texture_name.C_Str());
-					new_child->PushComponent((Component*)App->loading_manager->material_loader->LoadPNG(tex_path.c_str()));
+					ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
+					aux_cpm_mat->SetColor(my_color);
+					new_child->PushComponent((Component*)aux_cpm_mat);
 
 					//Storing the texture inside the Library
 					std::string lib_tex_path("Library/Textures/");
@@ -356,7 +360,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				ComponentMesh*  new_comp_mesh = new ComponentMesh();
 				new_comp_mesh->AddMesh(my_mesh);
 				new_comp_mesh->SetOwner(new_child);
-				new_comp_mesh->SetType(ComponentType::MESH);
+				new_comp_mesh->SetType(ComponentType::MESH);				
 				new_comp_mesh->Enable();
 				new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
 

@@ -6,9 +6,9 @@
 #include "Module.h"
 #include "Application.h"
 
-
 class GameObject;
 class Material;
+
 class ComponentMaterial : public Component
 {
 public:
@@ -16,7 +16,7 @@ public:
 	ComponentMaterial(GameObject* owner);
 	virtual ~ComponentMaterial();
 	void DrawInspectorInfo();
-
+	void SetColor(aiColor3D color);
 
 	void Enable();
 	void Disable();
@@ -26,6 +26,7 @@ public:
 public:
 	
 	Material* data = nullptr;
+	float comp_color[3];
 	std::string tex_path;
 };
 
