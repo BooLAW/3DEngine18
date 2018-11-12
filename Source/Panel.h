@@ -5,9 +5,6 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
 
-
-
-
 class Panel
 {
 public:

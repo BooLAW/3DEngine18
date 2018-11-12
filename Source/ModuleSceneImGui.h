@@ -11,6 +11,7 @@ class PanelConfiguration;
 class PanelApplication;
 class PanelScene;
 class PanelHierarchy;
+class PanelGame;
 class Panel;
 class ModuleSceneGui : public Module
 {
@@ -87,6 +88,7 @@ public:
 	PanelHierarchy* hierarchy = nullptr;
 	PanelInspector* inspector = nullptr;
 	PanelScene* scene = nullptr;
+	PanelGame* game = nullptr;
 	
 };
 #endif

@@ -12,6 +12,7 @@
 #include "PanelInspector.h"
 #include "ComponentMesh.h"
 #include "PanelScene.h"
+#include "PanelGame.h"
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
@@ -36,12 +37,14 @@ bool ModuleSceneGui::Init()
 	hierarchy = new PanelHierarchy();
 	inspector = new PanelInspector();
 	scene = new PanelScene();
+	game = new PanelGame();
 
 	panels.push_back(console);
 	panels.push_back(configuration);
 	panels.push_back(inspector);
 	panels.push_back(hierarchy);
 	panels.push_back(scene);
+	panels.push_back(game);
 	quit = false;
 	App->profiler.SaveInitData("UI");
 	return ret;
