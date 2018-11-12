@@ -93,14 +93,29 @@ void ComponentTransform::DrawInspectorInfo()
 		{
 			UpdateTransformValues();
 			if (owner->HasMesh())
+			{
 				owner->GetCMesh()->UpdateBoundingBox(trans_matrix_g);
+				
+			}
+			if (owner->HasChilds())
+				UpdateBBChilds(owner);
 			owner->first_update = false;
 		}
 		
 	}
 
 }
-
+void ComponentTransform::UpdateBBChilds(GameObject* parent)
+{
+	for (std::vector<GameObject*>::iterator it = parent->childs_list.begin(); it != parent->childs_list.end(); it++)
+	{
+		if((*it)->HasMesh())
+			(*it)->GetCMesh()->UpdateBoundingBox((*it)->comp_transform->trans_matrix_g);
+		//recursive call childs of childs
+		if ((*it)->HasChilds())
+			UpdateBBChilds((*it));
+	}
+}
 void ComponentTransform::SetLocalPos(const float3 & new_pos)
 {
 	ComponentMesh* mesh;
