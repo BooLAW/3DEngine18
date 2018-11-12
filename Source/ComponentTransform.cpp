@@ -55,6 +55,7 @@ void ComponentTransform::DrawInspectorInfo()
 	float pos[3] = { transform.pos.x,transform.pos.y,transform.pos.z };
 	float rot[3] = { transform.rot.ToEulerXYZ().x * RADTODEG, transform.rot.ToEulerXYZ().y * RADTODEG, transform.rot.ToEulerXYZ().z *RADTODEG };
 	float scale[3] = { transform.scale.x,transform.scale.y,transform.scale.z };
+	transform.rot_euler = (float3)rot;
 
 	if (ImGui::Button("Identity Reset"))
 		reset_transform = !reset_transform;
@@ -73,7 +74,7 @@ void ComponentTransform::DrawInspectorInfo()
 			updated_transform = true;
 		}
 		Quat aux = Quat::FromEulerXYZ(rot[0] * DEGTORAD, rot[1] * DEGTORAD, rot[2] * DEGTORAD);
-		if (!transform.rot.Equals(aux));
+		if (!transform.rot_euler.Equals(rot[0],rot[1],rot[2]))
 		{
 			transform.SetRotation(aux);
 			updated_transform = true;
