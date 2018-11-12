@@ -145,8 +145,6 @@ void ModuleScene::DrawGameObjects()
 			//Check In Frustum
 			if (App->camera->editor_cam->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
 				go_list[i]->Draw();
-			else
-				CONSOLE_LOG_INFO("DISCARDED %s", go_list[i]->GetName());
 		}
 		else if (!go_list[i]->IsRoot())
 			go_list[i]->Draw();

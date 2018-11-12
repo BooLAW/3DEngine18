@@ -51,7 +51,7 @@ public:
 	//MousePicking
 	void CreateRayTest(int x, int y);
 	bool CheckMouseInWindow(int x, int y);
-
+	void DrawRay();
 private:
 	float speed_base = 4.0f;
 	float wheel_speed_base = 4.0f;
@@ -65,7 +65,10 @@ public:
 	GameObject* editor_camera_gameobject = nullptr;
 	Camera* editor_cam = nullptr;
 	bool draw_frustum = false;
+	bool draw_mouse_ray = false;
 	std::vector<Camera*> cams_list;
+	//LineSegment to draw the debugging mouse_ray
+	LineSegment debug_mouse_ray; 
 
 };
 #endif

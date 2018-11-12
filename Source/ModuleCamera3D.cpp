@@ -9,7 +9,7 @@
 #include "ComponentCamera.h"
 #include "ModuleScene.h"
 #include "PanelScene.h"
-
+#include "DebugDraw.h"
 
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
@@ -142,6 +142,12 @@ void ModuleCamera3D::DrawModuleConfig()
 		}
 		else
 			App->audio->camera_tick_arr[7] = FALSEBOOL;
+		if (ImGui::Checkbox("Draw Ray", &draw_mouse_ray))
+		{
+			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[8]);
+		}
+		else
+			App->audio->camera_tick_arr[8] = FALSEBOOL;
 
 
 	}
@@ -158,6 +164,8 @@ update_status ModuleCamera3D::Update(float dt)
 		CameraMovement(dt);
 	if (draw_frustum) 
 		editor_cam->DrawFrustum();
+	if (draw_mouse_ray)
+		DrawRay();
 	//Mouse Picking
 	bool mouse_picking_working = true;
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && CheckMouseInWindow(App->input->GetMouseX(), App->input->GetMouseY()) && mouse_picking_working)
@@ -239,7 +247,8 @@ void ModuleCamera3D::CreateRayTest(int x, int y)
 	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y)*2) - 1;
 
 	//Create Ray or LineSegment??
-	LineSegment picking = editor_cam->frustum.UnProjectLineSegment(n_x, n_y);
+	LineSegment picking = GetCurrentCam()->frustum.UnProjectLineSegment(n_x, n_y);
+	debug_mouse_ray = picking;
 	//Check Collisions
 	if(picking.Length()!=0)
 		App->scene_intro->ClickSelection(picking);
@@ -251,6 +260,18 @@ bool ModuleCamera3D::CheckMouseInWindow(int x, int y)
 	ImVec2 size_w = App->imgui->scene->GetSize();
 	return (x > pos_w.x && y > pos_w.y && x < pos_w.x + size_w.x && y < pos_w.y + size_w.y);
 
+}
+
+void ModuleCamera3D::DrawRay()
+{
+	glBegin(GL_LINES);
+
+	glLineWidth(3.0f);
+
+	glVertex3fv((GLfloat*)&debug_mouse_ray.a);
+	glVertex3fv((GLfloat*)&debug_mouse_ray.b);
+
+	glEnd();
 }
 
 void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)
