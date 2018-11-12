@@ -66,11 +66,15 @@ void GameObject::Draw()
 		{
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, aux_mesh->mesh->tex_coords_id);
-			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+			glTexCoordPointer(3, GL_FLOAT, 0, NULL);			
 		}
 		//Bind Indices
 		if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
+		{
 			glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
+			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, aux_material->comp_color);
+		}
+			
 
 		glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
