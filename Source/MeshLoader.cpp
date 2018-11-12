@@ -318,8 +318,8 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					aiMaterial* mat = scene->mMaterials[my_mesh->material_index];				
 					aiString texture_name;
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
-					aiColor4D my_color;
-					aiGetMaterialColor(mat, AI_MATKEY_COLOR_DIFFUSE,&my_color);
+					aiColor3D my_color;
+					mat->Get(AI_MATKEY_COLOR_DIFFUSE,my_color);
 					texture_name = App->GetFileName(texture_name.C_Str());
 
 					//Create Materials Folder inside Library and FBX name folder inside Materials
