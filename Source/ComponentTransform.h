@@ -2,7 +2,7 @@
 #define __COMPONENT_TRANSFORM__
 #include "Component.h"
 #include "Transform.h"
-
+class GameObject;
 class ComponentTransform : public Component
 {
 public:
@@ -25,6 +25,7 @@ public:
 	float4x4 GetGlobalMatrix();
 	float4x4 GetLocalMatrix();
 	void CalculateGlobalMatrix();
+	void UpdateBBChilds(GameObject* parent);
 
 public:
 	Transform transform;

@@ -45,6 +45,7 @@ void ComponentMesh::UpdateBoundingBox(float4x4 global_matrix)
 	mesh->bounding_box.Enclose(mesh->vertices, mesh->num_vertices/3);
 	
 	mesh->bounding_box.TransformAsAABB(global_matrix);
+	
 
 }
 
