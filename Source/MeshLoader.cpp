@@ -318,6 +318,8 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					aiMaterial* mat = scene->mMaterials[my_mesh->material_index];				
 					aiString texture_name;
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
+					aiColor4D my_color;
+					aiGetMaterialColor(mat, AI_MATKEY_COLOR_DIFFUSE,&my_color);
 					texture_name = App->GetFileName(texture_name.C_Str());
 
 					//Create Materials Folder inside Library and FBX name folder inside Materials
@@ -548,11 +550,6 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 	final_file_name.append(App->scene_intro->folder_path.c_str());
 	final_file_name.append("/");
 	final_file_name.append(file_path);
-	if (num_mesh >= 1)
-	{
-		//final_file_name.append("_$");
-		//final_file_name.append(std::to_string(num_mesh));
-	}
 	final_file_name.append(".lw");
 	ret->file_path.append(final_file_name.c_str());
 	
@@ -630,7 +627,7 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		//Store it in to the mesh
 		ret->material_index = rheader[5];
 		ret->material_path = mat_name;
-		delete[] mat_name;
+		
 	}
 
 	fclose(rfile);
@@ -704,7 +701,7 @@ void MeshLoader::Absolute(LineSegment& line)
 	}
 	if (line.a.y < 0)
 	{
-		line.a.y = line.a.y * -1;
+		//line.a.y = line.a.y * -1;
 	}
 	if (line.a.z < 0)
 	{
@@ -774,8 +771,8 @@ bool MeshLoader::SaveMeshJson(const aiScene * scene, aiNode * node, Document * c
 		}
 
 		my_mesh.AddMember("all_vertex", vertices_values, allocator);
-		//Textures
 
+		//Textures
 		if (ai_mesh->HasTextureCoords(0))
 		{
 			my_mesh.AddMember("num_tex_coord", (uint)ai_mesh->mNumVertices, allocator);
