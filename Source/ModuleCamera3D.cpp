@@ -164,6 +164,7 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		CreateRayTest(App->input->GetMouseX(), App->input->GetMouseY());
 	}
+	
 	//Profiler
 	App->profiler.SaveRunTimeData("Camera");
 	return UPDATE_CONTINUE;
@@ -196,7 +197,6 @@ void ModuleCamera3D::Move(const float &speed)
 
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -=  speed;
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y +=  speed;
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_UP) {}
 	if(!newPos.IsZero())
 		editor_cam->frustum.Translate(newPos);
 
@@ -227,11 +227,6 @@ Camera * ModuleCamera3D::GetCurrentCam() const
 
 void ModuleCamera3D::StartEditorCamera()
 {
-	//editor_camera->SetParent(App->scene_intro->scene_root);
-	//ComponentCamera* c_camera = new ComponentCamera();
-	//c_camera->SetOwner(editor_camera);
-	//c_camera->Start();
-	//editor_camera->PushComponent(c_camera);
 	editor_cam = new Camera();
 	editor_cam->viewport_texture = new TextureMSAA();
 	editor_cam->viewport_texture->Create(1500, 1000, 2);
@@ -241,7 +236,7 @@ void ModuleCamera3D::CreateRayTest(int x, int y)
 {
 	//Serialize  x & y
 	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) *2) - 1;
-	float n_y = ((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y);
+	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y)*2) - 1;
 
 	//Create Ray or LineSegment??
 	LineSegment picking = editor_cam->frustum.UnProjectLineSegment(n_x, n_y);
@@ -269,7 +264,6 @@ void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)
 	
 	if(!newPos.IsZero())
 		editor_cam->frustum.Translate(newPos);
-	//aux->UdatePos();
 
 }
 
@@ -352,7 +346,6 @@ float ModuleCamera3D::GetSpeed() const
 }
 
 
-
 void ModuleCamera3D::LockCamera()
 {
 	locked = true; 
@@ -374,7 +367,6 @@ bool ModuleCamera3D::Save(Document & config_w, FileWriteStream & os)
 
 	Value test(kObjectType);
 
-
 	test.AddMember("SpeedBase", speed_base, allocator);
 	test.AddMember("MouseSensitivity", mouse_sensitivity, allocator);
 	test.AddMember("MouseWheelSpeed", wheel_speed_base, allocator);
@@ -387,6 +379,7 @@ bool ModuleCamera3D::Save(Document & config_w, FileWriteStream & os)
 bool ModuleCamera3D::Load(Document * config_r)
 {
 	Document ret;
+
 	ret.Parse(App->loadBuf);
 	ret.IsObject();
 	speed_base = ret["camera"]["SpeedBase"].GetFloat();
@@ -418,11 +411,6 @@ void ModuleCamera3D::AdaptCamera(AABB bounding_box,float3 transformpos)
 }
 void ModuleCamera3D::AdaptCamera(float3 transformpos)
 {
-
-	/*float3 newpos = transformpos;
-	newpos.y += 10;
-	newpos.z += 10;*/
-
 	editor_cam->frustum.pos.Set(transformpos.x, transformpos.y, transformpos.z);
 
 	LookAt(transformpos);

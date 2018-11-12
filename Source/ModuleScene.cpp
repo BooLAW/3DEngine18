@@ -99,6 +99,7 @@ update_status ModuleScene::Update(float dt)
 		octree.RefactorOctree();
 		octree.update_octree = false;
 	}
+	
 	DeleteGameObjectsInList();
 	return UPDATE_CONTINUE;
 }
@@ -115,23 +116,30 @@ void ModuleScene::DrawGameObjects()
 		base_plane.Render();
 	}
 	//Draw Static GameObjects
-	for (std::list<GameObject*>::iterator it = octree_objects.end(); it != octree_objects.end(); it++)
-	{
-		if ((*it)->HasMesh())
-		{
-			//Check In Frustum
-			if (App->camera->editor_cam->IsGameObjectInFrustum((*it)->GetBB(), (*it)->comp_transform->trans_matrix_g.TranslatePart()))
-				(*it)->Draw();
-			else
-				CONSOLE_LOG_INFO("DISCARDED %s", (*it)->GetName());
-		}
-		else if (!(*it)->IsRoot())
-			(*it)->Draw();
-	}
+	//for (std::list<GameObject*>::iterator it = octree_objects.end(); it != octree_objects.end(); it++)
+	//{
+	//	if ((*it)->HasMesh())
+	//	{
+	//		//Check In Frustum
+	//		if (App->camera->editor_cam->IsGameObjectInFrustum((*it)->GetBB(), (*it)->comp_transform->trans_matrix_g.TranslatePart()))
+	//			(*it)->Draw();
+	//		else
+	//			CONSOLE_LOG_INFO("DISCARDED %s", (*it)->GetName());
+	//	}
+	//	else if (!(*it)->IsRoot())
+	//		(*it)->Draw();
+	//}
 	//Draw Dynamic GameObjects
 	for (int i = 0; i < go_list.size(); i++)
 	{
-		
+		if (go_list[i]->first_update && go_list[i]->HasMesh())
+		{
+			go_list[i]->comp_transform->UpdateTransformValues();
+			if (go_list[i]->HasMesh())
+				go_list[i]->GetCMesh()->UpdateBoundingBox(go_list[i]->comp_transform->trans_matrix_g);
+			go_list[i]->first_update = false;
+
+		}
 		if (!go_list[i]->IsStatic() &&go_list[i]->HasMesh())
 		{
 			//Check In Frustum
@@ -361,6 +369,7 @@ void ModuleScene::DrawChilds(GameObject* parent)
 			{
 				ResetSelected();
 				parent->SetSelected(true);
+				
 				
 			}
 		

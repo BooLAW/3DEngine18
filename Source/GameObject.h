@@ -83,6 +83,7 @@ public:
 	bool selected = false;
 	bool root_go = false;
 	bool draw_normals = false;
+	bool first_update = true;
 
 	
 

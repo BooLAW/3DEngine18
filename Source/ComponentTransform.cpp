@@ -89,11 +89,12 @@ void ComponentTransform::DrawInspectorInfo()
 			ResetTransform();
 			updated_transform = true;
 		}
-		if (updated_transform)
+		if (updated_transform || owner->first_update)
 		{
 			UpdateTransformValues();
 			if (owner->HasMesh())
 				owner->GetCMesh()->UpdateBoundingBox(trans_matrix_g);
+			owner->first_update = false;
 		}
 		
 	}

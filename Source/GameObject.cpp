@@ -34,6 +34,7 @@ void GameObject::Draw()
 {
 	if (!active)
 		return;
+
 	//Enable Client
 	glEnableClientState(GL_VERTEX_ARRAY);
 	ComponentMesh* aux_mesh = (ComponentMesh*)GetComponent(MESH);
@@ -93,6 +94,7 @@ void GameObject::Draw()
 	{
 		DrawNormals();
 	}
+	
 
 }
 
