@@ -16,7 +16,6 @@ public:
 	ComponentMaterial(GameObject* owner);
 	virtual ~ComponentMaterial();
 	void DrawInspectorInfo();
-	void SetColor(aiColor3D color);
 
 	void Enable();
 	void Disable();

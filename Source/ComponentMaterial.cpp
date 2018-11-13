@@ -47,13 +47,6 @@ void ComponentMaterial::DrawInspectorInfo()
 {
 }
 
-void ComponentMaterial::SetColor(aiColor3D color)
-{	
-	comp_color[0] = color.r;
-	comp_color[1] = color.g;
-	comp_color[2] = color.b;	
-}
-
 void ComponentMaterial::Enable()
 {
 	SetActive(true);

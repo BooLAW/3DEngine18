@@ -322,8 +322,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					mat->Get(AI_MATKEY_COLOR_DIFFUSE,my_color);					
 					texture_name = App->GetFileName(texture_name.C_Str());
 					
-
-
 					//Create Materials Folder inside Library and FBX name folder inside Materials
 					std::string input_path(App->scene_intro->fbx_name);
 					std::string tex_folder_path;
@@ -335,12 +333,22 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					tex_folder_path.append(App->EraseTerination(input_path.c_str()));					
 					CreateDirectory(tex_folder_path.c_str(), NULL);
 					
-					//Loading the texture on the mesh from the assets folder
+					//Loading the texture on the mesh from the assets folder										
 					std::string tex_path("Assets/Textures/");
-					tex_path.append(texture_name.C_Str());
-					ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
-					aux_cpm_mat->SetColor(my_color);
-					new_child->PushComponent((Component*)aux_cpm_mat);
+					if (texture_name.length > 0)
+					{					
+						tex_path.append(texture_name.C_Str());
+						std::string termination = App->GetTermination(texture_name.C_Str());
+						ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
+						new_child->PushComponent((Component*)aux_cpm_mat);
+						my_mesh->color = { my_color[0],my_color[1],my_color[2] };
+					}
+					else
+					{
+						my_mesh->color = { my_color[0],my_color[1],my_color[2] };
+					}
+					
+					
 
 					//Storing the texture inside the Library
 					std::string lib_tex_path("Library/Textures/");
