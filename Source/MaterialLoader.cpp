@@ -48,7 +48,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 
 	if (success)
 	{
-		CONSOLE_LOG_INFO("Loading texture: %s",App->GetFileName(file_name).c_str());
+		CONSOLE_LOG_INFO("Loading texture: %s",App->loading_manager->GetFileName(file_name).c_str());
 		// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
@@ -104,7 +104,7 @@ ComponentMaterial* MaterialLoader::LoadPNG(const char* file_name)
 	{
 		textureID = 0;
 		//error = ilGetError();
-		CONSOLE_LOG_WARNING("%s not found", App->GetFileName(file_name).c_str());
+		CONSOLE_LOG_WARNING("%s not found", App->loading_manager->GetFileName(file_name).c_str());
 		//exit(-1);
 	}
 	//ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we

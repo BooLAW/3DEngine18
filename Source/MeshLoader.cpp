@@ -27,7 +27,7 @@ MeshLoader::~MeshLoader()
 bool MeshLoader::LoadMesh(const std::string &file_path)
 {
 	bool ret = false;	
-	std::string termination = App->GetTermination(file_path.c_str());
+	std::string termination = App->loading_manager->GetTermination(file_path.c_str());
 	std::size_t found_it = termination.find("lw");
 	if (found_it == 0) // if it's an .lw file
 	{
@@ -80,14 +80,14 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		substract_format = subsctract_begining.substr(0, cut2);
 		mesh_number = std::stoi(substract_format.c_str());
 	}
-	substract_file_format = App->GetFileName(lw_path.c_str());
+	substract_file_format = App->loading_manager->GetFileName(lw_path.c_str());
 
 	uint cut3 = substract_file_format.find_last_of('.');
 	final_file_name = substract_file_format.substr(0, cut3);
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
 
-	new_child->uid = App->GetRandUID();
+	new_child->uid = App->loading_manager->GetRandUID();
 
 	//new_child->SetName(my_mesh->file_path.c_str());
 	new_child->num_meshes = mesh_number;
@@ -156,7 +156,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 
 		//Creates BakerHouse Folder inside Materials folder
 		tex_folder_path.append("/");
-		tex_folder_path.append(App->EraseTerination(input_path.c_str()));
+		tex_folder_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
 		CreateDirectory(tex_folder_path.c_str(), NULL);
 
 		//Loading the texture on the mesh from the assets folder										
@@ -164,7 +164,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		if (texture_name.length > 0)
 		{
 			tex_path.append(texture_name.C_Str());
-			std::string termination = App->GetTermination(texture_name.C_Str());
+			std::string termination = App->loading_manager->GetTermination(texture_name.C_Str());
 			ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
 			new_child->PushComponent((Component*)aux_cpm_mat);
 			
@@ -172,7 +172,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 
 		//Storing the texture inside the Library
 		std::string lib_tex_path("Library/Textures/");
-		lib_tex_path.append(App->EraseTerination(input_path.c_str()));
+		lib_tex_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
 		lib_tex_path.append("/");
 		lib_tex_path.append(texture_name.C_Str());
 		CopyFile(tex_path.c_str(), lib_tex_path.c_str(), NULL);
@@ -206,7 +206,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 		if (node_name == "RootNode")//That's how assimp saves the rootnode
 		{
-			node_name = App->GetFileName(path);
+			node_name = App->loading_manager->GetFileName(path);
 			App->scene_intro->fbx_name = node_name;
 
 			for (std::vector<GameObject*>::iterator it = App->scene_intro->go_list.begin(); it != App->scene_intro->go_list.end(); it++)
@@ -241,7 +241,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 			GO->comp_transform->SetTransform(pos, rot, scale);
 		}
-		GO->uid = App->GetRandUID();
+		GO->uid = App->loading_manager->GetRandUID();
 		App->scene_intro->go_list.push_back(GO);
 	}
 	else
@@ -253,7 +253,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Create the Game Object
 				GameObject* new_child = new GameObject();
 				
-				new_child->uid = App->GetRandUID();
+				new_child->uid = App->loading_manager->GetRandUID();
 
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;
@@ -327,7 +327,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 					aiColor3D my_color;
 					mat->Get(AI_MATKEY_COLOR_DIFFUSE,my_color);					
-					texture_name = App->GetFileName(texture_name.C_Str());
+					texture_name = App->loading_manager->GetFileName(texture_name.C_Str());
 					
 					//Create Materials Folder inside Library and FBX name folder inside Materials
 					std::string input_path(App->scene_intro->fbx_name);
@@ -337,7 +337,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 					//Creates BakerHouse Folder inside Materials folder
 					tex_folder_path.append("/");
-					tex_folder_path.append(App->EraseTerination(input_path.c_str()));					
+					tex_folder_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
 					CreateDirectory(tex_folder_path.c_str(), NULL);
 					
 					//Loading the texture on the mesh from the assets folder										
@@ -345,7 +345,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					if (texture_name.length > 0)
 					{	
 						tex_path.append(texture_name.C_Str());
-						std::string termination = App->GetTermination(texture_name.C_Str());
+						std::string termination = App->loading_manager->GetTermination(texture_name.C_Str());
 						ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
 						new_child->PushComponent((Component*)aux_cpm_mat);
 						my_mesh->color = { my_color[0],my_color[1],my_color[2] };
@@ -359,7 +359,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 					//Storing the texture inside the Library
 					std::string lib_tex_path("Library/Textures/");
-					lib_tex_path.append(App->EraseTerination(input_path.c_str()));
+					lib_tex_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
 					lib_tex_path.append("/");
 					lib_tex_path.append(texture_name.C_Str());
 					CopyFile(tex_path.c_str(), lib_tex_path.c_str(),NULL);				
@@ -487,7 +487,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	{
 		aiMaterial* mat = scene->mMaterials[ai_mesh->mMaterialIndex];
 		mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
-		texture_name = App->GetFileName(texture_name.C_Str());
+		texture_name = App->loading_manager->GetFileName(texture_name.C_Str());
 		aiColor3D my_color;
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, my_color);
 		f_color = { my_color.r ,my_color.g,my_color.b };
@@ -755,7 +755,7 @@ bool MeshLoader::SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std
 	char readBuf[100000];
 
 	std::string file_name;
-	file_name.append(App->GetFileName(path.c_str()));
+	file_name.append(App->loading_manager->GetFileName(path.c_str()));
 	file_name.append(".lw");
 
 	FILE* fp = fopen(file_name.c_str(), "wb"); // non-Windows use "w"

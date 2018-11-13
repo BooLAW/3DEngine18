@@ -25,6 +25,7 @@ public:
 	const char* GetName();
 	void SetName(const char* _name);
 	virtual ~Component();
+
 public:
 	ComponentType type;
 	ComponentMaterial* comp_material;

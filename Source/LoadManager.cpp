@@ -19,7 +19,7 @@ LoadManager::~LoadManager()
 
 void LoadManager::Load(const char * path)
 {
-	if (App->GetTermination(path) == "fbx" || App->GetTermination(path) == "FBX")
+	if (GetTermination(path) == "fbx" || GetTermination(path) == "FBX")
 	{
 		CONSOLE_LOG_INFO("FBX dropped");
 		if (unique_fbx_path != path)
@@ -28,9 +28,9 @@ void LoadManager::Load(const char * path)
 			std::string main_dir_name;
 			std::string secondary_dir_name;
 
-			dir_name = App->GetFolderNameFBX(path);
-			secondary_dir_name = App->GetSecondaryFolderNameFBX(dir_name.c_str());
-			main_dir_name = App->GetMainFolderNameFBX(dir_name.c_str());
+			dir_name = GetFolderNameFBX(path);
+			secondary_dir_name = GetSecondaryFolderNameFBX(dir_name.c_str());
+			main_dir_name = GetMainFolderNameFBX(dir_name.c_str());
 			
 
 			CreateDirectory(main_dir_name.c_str(), NULL); //Create Library Folder
@@ -48,11 +48,11 @@ void LoadManager::Load(const char * path)
 		}
 		else
 		{
-			CONSOLE_LOG_WARNING("%s was already loaded", App->GetFileName(path).c_str());
+			CONSOLE_LOG_WARNING("%s was already loaded", GetFileName(path).c_str());
 		}
 		
 	}
-	else if (App->GetTermination(path) == "png" || App->GetTermination(path) == "PNG" || App->GetTermination(path) == "dds" || App->GetTermination(path) == "DDS" && App->scene_intro->has_meshes)
+	else if (GetTermination(path) == "png" || GetTermination(path) == "PNG" || GetTermination(path) == "dds" || GetTermination(path) == "DDS" && App->scene_intro->has_meshes)
 	{
 		CONSOLE_LOG_INFO("Texture Dropped");	
 		if (unique_material_path != path)
@@ -72,16 +72,16 @@ void LoadManager::Load(const char * path)
 			}
 				
 			unique_material_path = path;
-			tex_name_file = App->GetFileName(path).c_str();
+			tex_name_file = GetFileName(path).c_str();
 
 		}
 		else
 		{
-			CONSOLE_LOG_WARNING("Texture: %s was already loaded", App->GetFileName(path).c_str());
+			CONSOLE_LOG_WARNING("Texture: %s was already loaded", GetFileName(path).c_str());
 		}
 		
 	}
-	else if (App->GetTermination(path) == "json")
+	else if (GetTermination(path) == "json")
 	{
 
 		App->scene_intro->LoadScene(path);
@@ -96,7 +96,7 @@ void LoadManager::Load(const char * path)
 		//}
 
 	}
-	else if (App->GetTermination(path) == "lw")
+	else if (GetTermination(path) == "lw")
 	{
 
 		std::string sub_beg;
@@ -154,4 +154,105 @@ Resource::~Resource()
 void AssimpLog(const char * message, char * user)
 {
 	CONSOLE_LOG_INFO("%s", message);
+}
+INT32 LoadManager::GetRandUID()
+{
+	//Create Random UID for mesh Root
+	unsigned int max_int = UINT_MAX;
+	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
+	return random_int;
+}
+
+std::string LoadManager::GetTermination(const char * path)
+{
+	std::string ret;
+
+	std::string fn = path;
+	ret = fn.substr(fn.find_last_of(".") + 1);
+
+	return ret;
+}
+
+std::string LoadManager::EraseTerination(const char * path)
+{
+	std::string ret;
+
+	std::string fn = path;
+	ret = fn.substr(0, fn.find_last_of("."));
+	return ret;
+}
+
+std::string LoadManager::GetFileName(const char * path)
+{
+	std::string full_path_str(path);
+	std::string ret;
+
+	//DeleteEndBars(full_path_str);
+	std::size_t found_it = full_path_str.find('\\');
+	if (found_it != UINT_MAX)
+	{
+		uint cut = full_path_str.find_last_of('\\');
+		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
+	}
+	else if (full_path_str.find('//') >= 1)
+	{
+		uint cut = full_path_str.find_last_of('//');
+		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
+	}
+	found_it = full_path_str.find('/');
+	if (found_it != UINT_MAX)
+	{
+		uint cut = full_path_str.find_last_of('/');
+		ret = full_path_str.substr(cut + 1, full_path_str.length() - cut);
+	}
+	return ret;
+}
+
+std::string LoadManager::GetFolderNameFBX(const char * path)
+{
+	std::string dir_name;
+	std::string final_dir_name;
+	dir_name.append("Library/Models/");
+	dir_name.append(App->loading_manager->GetFileName(path));
+	final_dir_name = dir_name.substr(0, dir_name.length() - 4);
+	return final_dir_name;
+}
+
+std::string LoadManager::GetMainFolderNameFBX(const char * path)
+{
+	std::string input_path(path);
+	std::string dir_name;
+	std::string final_dir_name;
+
+	uint cut = input_path.find_first_of("/") + 1;
+
+
+	final_dir_name = input_path.substr(0, cut);
+	return final_dir_name;
+}
+
+std::string LoadManager::GetSecondaryFolderNameFBX(const char * path)
+{
+	std::string input_path(path);
+	std::string dir_name;
+	std::string final_dir_name;
+
+	uint cut = input_path.find_last_of("/");
+
+	final_dir_name = input_path.substr(0, cut);
+	return final_dir_name;
+}
+
+std::string LoadManager::GetFolderNameLW(const char * path)
+{
+	std::string input_path(path);
+	std::string dir_name;
+	std::string final_dir_name;
+	dir_name.append("Library/Models/");
+	uint cut = input_path.find("Models/") + 7;
+	uint cut2 = input_path.find_last_of("/");
+
+	final_dir_name = input_path.substr(cut, cut2 - cut);
+	dir_name.append(final_dir_name.c_str());
+	return dir_name;
 }

@@ -526,7 +526,7 @@ void ModuleScene::LoadScene(const char* path)
 				else if (go_name.find("//") == 1)
 				{
 					std::string final_go_name;
-					final_go_name = App->GetFileName(go_name.c_str());
+					final_go_name = App->loading_manager->GetFileName(go_name.c_str());
 					new_go->SetName(final_go_name.c_str());
 				}									
 				else
@@ -585,7 +585,7 @@ void ModuleScene::LoadScene(const char* path)
 						
 						//Set Folder Path
 						std::string dir_name;
-						dir_name = App->GetFolderNameLW(file_path.c_str());
+						dir_name = App->loading_manager->GetFolderNameLW(file_path.c_str());
 
 						App->scene_intro->folder_path = dir_name;
 
