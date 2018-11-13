@@ -159,10 +159,16 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		tex_folder_path.append(App->EraseTerination(input_path.c_str()));
 		CreateDirectory(tex_folder_path.c_str(), NULL);
 
-		//Loading the texture on the mesh from the assets folder
+		//Loading the texture on the mesh from the assets folder										
 		std::string tex_path("Assets/Textures/");
-		tex_path.append(texture_name.C_Str());
-		new_child->PushComponent((Component*)App->loading_manager->material_loader->LoadPNG(tex_path.c_str()));
+		if (texture_name.length > 0)
+		{
+			tex_path.append(texture_name.C_Str());
+			std::string termination = App->GetTermination(texture_name.C_Str());
+			ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
+			new_child->PushComponent((Component*)aux_cpm_mat);
+			
+		}
 
 		//Storing the texture inside the Library
 		std::string lib_tex_path("Library/Textures/");
@@ -178,6 +184,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 	new_comp_mesh->SetType(ComponentType::MESH);
 	new_comp_mesh->Enable();
 	new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
+
 
 	new_child->PushComponent((Component*)new_comp_mesh);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -336,7 +343,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					//Loading the texture on the mesh from the assets folder										
 					std::string tex_path("Assets/Textures/");
 					if (texture_name.length > 0)
-					{					
+					{	
 						tex_path.append(texture_name.C_Str());
 						std::string termination = App->GetTermination(texture_name.C_Str());
 						ComponentMaterial* aux_cpm_mat = App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
@@ -474,15 +481,20 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		header[4] = 0;
 
 	aiString texture_name;
-
+	float3 f_color;
+	
 	if (scene->HasMaterials())
 	{
 		aiMaterial* mat = scene->mMaterials[ai_mesh->mMaterialIndex];
 		mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 		texture_name = App->GetFileName(texture_name.C_Str());
+		aiColor3D my_color;
+		mat->Get(AI_MATKEY_COLOR_DIFFUSE, my_color);
+		f_color = { my_color.r ,my_color.g,my_color.b };
 
 		header[5] = ai_mesh->mMaterialIndex;		
 		header[6] = sizeof(texture_name);
+
 	}
 	else
 	{
@@ -490,8 +502,9 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		header[6] = 0;
 	}		
 
+
 	uint bytes = sizeof(header);
-	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces + sizeof(texture_name);
+	uint size = sizeof(header) + sizeof(float3)*ai_mesh->mNumVertices + sizeof(float)*(uint)ai_mesh->mNumVertices * 3 + sizeof(int) * 3 * ai_mesh->mNumFaces + sizeof(texture_name) + sizeof(f_color);
 	char* sbuffer = new char[size];
 	char* cursor = sbuffer;
 
@@ -542,6 +555,10 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		bytes = sizeof(texture_name);
 
 		memcpy(cursor, texture_name.C_Str(), bytes);
+		cursor += bytes;
+
+		bytes = sizeof(f_color);
+		memcpy(cursor, &f_color, bytes);
 		
 	}
 
@@ -631,7 +648,7 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 
 	if (rheader[5] >= 0)
 	{
-		//Read Indices
+		//Read Indices and tex path
 		rbytes = rheader[6];
 		char* mat_name = new char[rheader[6]];
 		memcpy(mat_name, rcursor, rbytes);
@@ -639,7 +656,16 @@ Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
 		//Store it in to the mesh
 		ret->material_index = rheader[5];
 		ret->material_path = mat_name;
-		
+
+		rcursor += rbytes;
+
+		//Read bin folder
+		rbytes = sizeof(float3);
+		float3* aux_color = new float3[rbytes];
+		memcpy(aux_color, rcursor, rbytes);
+
+		//Store it in the mesh
+		ret->color = { aux_color->x,aux_color->y,aux_color->z };
 	}
 
 	fclose(rfile);
