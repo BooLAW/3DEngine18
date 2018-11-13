@@ -71,8 +71,9 @@ void GameObject::Draw()
 		//Bind Indices
 		if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
 		{
-			glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, aux_material->comp_color);
+			glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);
+
 		}
 			
 
