@@ -180,16 +180,17 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->DebugDrawBB();
 		SetNormalAttributes();
 	}
-
-	if (App->camera->GetCurrentCam() != nullptr && App->camera->GetCurrentCam()->viewport_texture != nullptr)
+	//Bind editorCam
+	if (App->camera->GetEditorCam() != nullptr && App->camera->GetEditorCam()->viewport_texture != nullptr)
 	{
-		App->camera->editor_cam->viewport_texture->Bind();
-		App->camera->editor_cam->UpdateProjectionMatrix();
+		App->camera->GetEditorCam()->viewport_texture->Bind();
+		App->camera->GetEditorCam()->UpdateProjectionMatrix();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(App->camera->editor_cam->GetViewMatrix());
+		glLoadMatrixf(App->camera->GetEditorCam()->GetViewMatrix());
 	}
+
 	//GO
 	App->scene_intro->DrawGameObjects();
 	//IMGUI
@@ -215,22 +216,23 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	if (App->camera->GetCurrentCam() != nullptr)
+	if (App->camera->GetEditorCam() != nullptr)
 	{
-		App->camera->GetCurrentCam()->viewport_texture->Destroy();
-		App->camera->GetCurrentCam()->viewport_texture->Create(width, height, 2);
+		App->camera->GetEditorCam()->viewport_texture->Destroy();
+		App->camera->GetEditorCam()->viewport_texture->Create(width, height, 2);
 		float ratio = (float)width / (float)height;
-		App->camera->GetCurrentCam()->SetAspectRatio(ratio);
+		App->camera->GetEditorCam()->SetAspectRatio(ratio);
 
 		glViewport(0, 0, width, height);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
-		glLoadMatrixf(App->camera->GetCurrentCam()->GetProjMatrix());
+		glLoadMatrixf(App->camera->GetEditorCam()->GetProjMatrix());
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	}
+	
 	
 }
 

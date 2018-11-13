@@ -29,7 +29,6 @@ bool ComponentCamera::Start()
 
 bool ComponentCamera::Update()
 {
-	//owner->transform->SetGlobalPos(cam->GetFrustum().pos);
 	return false;
 }
 

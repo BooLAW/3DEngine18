@@ -15,10 +15,10 @@ Camera::Camera()
 	frustum.up = (float3::unitY);
 	SetFOV(80);
 	frustum.nearPlaneDistance = 0.5;//needs to be higher than 0.4
-	frustum.farPlaneDistance = 1000;
-
+	frustum.farPlaneDistance = 100;
 	frustum.type = FrustumType::PerspectiveFrustum;
 
+	aspect_ratio = 1.0;
 	//frustum.SetWorldMatrix(float3x4::identity);
 
 

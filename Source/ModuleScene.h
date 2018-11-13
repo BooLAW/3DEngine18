@@ -28,7 +28,7 @@ public:
 	void DeleteGameObject(GameObject* go_to_delete);
 	void DeleteGameObjectsInList();
 	bool HasObjects();
-
+	GameObject* CreateMainCamera();
 	//Octree
 	void AddToOctree(GameObject* go);
 	void RemoveFromOctree(GameObject * go);
