@@ -163,7 +163,7 @@ update_status ModuleCamera3D::Update(float dt)
 	if (!locked)
 		CameraMovement(dt);
 	if (draw_frustum) 
-		editor_cam->DrawFrustum();
+		GetCurrentCam()->DrawFrustum();
 	if (draw_mouse_ray)
 		DrawRay();
 	//Mouse Picking
@@ -218,6 +218,12 @@ void ModuleCamera3D::MoveCam(const float3 &pos)
 	
 }
 
+void ModuleCamera3D::SetCurrentCam(GameObject * cam)
+{
+	if(cam!= nullptr)
+		current_game_camera = cam;
+}
+
 bool ModuleCamera3D::MouseOverScene(PanelScene* Scene)
 {
 	bool ret = false;
@@ -227,6 +233,21 @@ bool ModuleCamera3D::MouseOverScene(PanelScene* Scene)
 
 Camera * ModuleCamera3D::GetCurrentCam() const
 {	
+	Camera* ret = nullptr;
+	if (current_game_camera == nullptr)
+	{
+		CONSOLE_LOG_WARNING("No current Camera for Game");
+	}
+	else
+	{
+		if (current_game_camera->HasCam())
+			ret = current_game_camera->GetCamera();
+	}
+	return ret;
+}
+
+Camera * ModuleCamera3D::GetEditorCam() const
+{
 	if (editor_cam != nullptr)
 		return editor_cam;
 	else
@@ -239,7 +260,13 @@ void ModuleCamera3D::StartEditorCamera()
 	editor_cam->viewport_texture = new TextureMSAA();
 	editor_cam->viewport_texture->Create(1500, 1000, 2);
 }
-
+void ModuleCamera3D::StartNewCamera()
+{
+	Camera* aux = current_game_camera->GetCamera();
+	aux = new Camera();
+	current_game_camera->GetCamera()->viewport_texture = new TextureMSAA();
+	current_game_camera->GetCamera()->viewport_texture->Create(1500, 1000, 2);
+}
 void ModuleCamera3D::CreateRayTest(int x, int y)
 {
 	//Serialize  x & y

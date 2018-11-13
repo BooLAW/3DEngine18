@@ -71,7 +71,10 @@ bool ModuleScene::Start()
 	go_list.push_back(new_cam);
 	scene_root->AddChild(new_cam);
 	//new_cam->SetParent(scene_root);
-	//App->camera->cams_list.push_back(new_cam)
+	if (new_cam->HasCam())
+		App->camera->cams_list.push_back(new_cam);
+	App->camera->SetCurrentCam(new_cam);
+	App->camera->StartNewCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	
 	//Load Warrior
@@ -265,6 +268,7 @@ GameObject* ModuleScene::CreateMainCamera()
 	main_camera_go->SetName("Main Camera");
 	ComponentCamera* cam_comp = new ComponentCamera();
 	main_camera_go->PushComponent(cam_comp);
+	
 	return main_camera_go;
 }
 

@@ -45,9 +45,12 @@ public:
 	void AdaptCamera(AABB bounding_box,float3 transformpos);
 	void AdaptCamera(float3 transformpos);
 	void MoveCam(const float3 &speed);
+	void SetCurrentCam(GameObject* cam);
 	bool MouseOverScene(PanelScene* Scene);
 	Camera* GetCurrentCam()const;
+	Camera* GetEditorCam()const;
 	void StartEditorCamera();
+	void StartNewCamera();
 	//MousePicking
 	void CreateRayTest(int x, int y);
 	bool CheckMouseInWindow(int x, int y);
@@ -61,12 +64,13 @@ private:
 
 public:
 	//active camera when playing game
+	GameObject* current_game_camera = nullptr;
 	//camera of the scene in the editor
-	GameObject* editor_camera_gameobject = nullptr;
 	Camera* editor_cam = nullptr;
 	bool draw_frustum = false;
 	bool draw_mouse_ray = false;
-	std::vector<Camera*> cams_list;
+	std::vector<GameObject*> cams_list;
+
 	//LineSegment to draw the debugging mouse_ray
 	LineSegment debug_mouse_ray; 
 

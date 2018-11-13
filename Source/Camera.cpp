@@ -18,6 +18,7 @@ Camera::Camera()
 	frustum.farPlaneDistance = 100;
 	frustum.type = FrustumType::PerspectiveFrustum;
 
+	aspect_ratio = 1.0;
 	//frustum.SetWorldMatrix(float3x4::identity);
 
 

@@ -135,6 +135,7 @@ void PanelInspector::Draw()
 					{
 						Camera* cam = selected_go->GetCamera();
 						//AR
+						ImGui::Checkbox("Show Frustum", &cam->draw_frustum);
 						ImGui::Text("Aspect Ratio:");
 						ImGui::SameLine();
 						ImGui::Text("  %f", cam->GetAspectRatio());
