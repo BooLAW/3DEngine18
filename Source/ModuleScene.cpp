@@ -66,7 +66,14 @@ bool ModuleScene::Start()
 	draw_octree = false;
 
 	App->camera->StartEditorCamera();
+
+	GameObject* new_cam = CreateMainCamera();
+	go_list.push_back(new_cam);
+	scene_root->AddChild(new_cam);
+	//new_cam->SetParent(scene_root);
+	//App->camera->cams_list.push_back(new_cam)
 	//go_list.push_back(App->camera->editor_camera);
+	
 	//Load Warrior
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
@@ -250,6 +257,15 @@ void ModuleScene::DeleteGameObjectsInList()
 bool ModuleScene::HasObjects()
 {
 	return (go_list.size() > 1);
+}
+
+GameObject* ModuleScene::CreateMainCamera()
+{
+	GameObject* main_camera_go = new GameObject();
+	main_camera_go->SetName("Main Camera");
+	ComponentCamera* cam_comp = new ComponentCamera();
+	main_camera_go->PushComponent(cam_comp);
+	return main_camera_go;
 }
 
 void ModuleScene::AddToOctree(GameObject * go)
