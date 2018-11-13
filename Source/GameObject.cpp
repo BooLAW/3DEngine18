@@ -71,7 +71,7 @@ void GameObject::Draw()
 		//Bind Indices
 		if (aux_material != nullptr && App->renderer3D->attributes.texture == true)
 		{						
-			glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);			
+			glBindTexture(GL_TEXTURE_2D, (GLuint)aux_material->data->textures_id);								
 		}
 		glColor3f(aux_mesh->mesh->color.x, aux_mesh->mesh->color.y, aux_mesh->mesh->color.z);
 		glDrawElements(GL_TRIANGLES, aux_mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
@@ -345,9 +345,10 @@ void GameObject::SetUID(UINT32 id)
 
 Camera * GameObject::GetCamera()
 {
-	/*ComponentCamera* aux = (ComponentCamera*)App->camera->editor_camera->GetComponent(ComponentType::CAMERA);
+	ComponentCamera* aux = (ComponentCamera*)this->GetComponent(ComponentType::CAMERA);
 	if (aux != nullptr)
-		return aux->cam;*/
+		return aux->cam;
+	
 	return nullptr;
 }
 

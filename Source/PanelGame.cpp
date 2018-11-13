@@ -30,18 +30,19 @@ void PanelGame::Draw()
 		pos = ImGui::GetWindowPos();
 	
 		ImVec2 size = ImGui::GetContentRegionAvail();
-		if (App->camera->editor_cam->SceneMSAA() != nullptr)
+
+		if (App->camera->GetCurrentCam()->SceneMSAA() != nullptr)
 		{
-			ImGui::Image((void*)App->camera->editor_cam->SceneMSAA()->GetTextureID(), size, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((void*)App->camera->GetCurrentCam()->SceneMSAA()->GetTextureID(), size, ImVec2(0, 1), ImVec2(1, 0));
 		}
 		isOver = ImGui::IsMouseHoveringWindow();
 	}
 	ImGui::EndDock();
 
-	if (App->camera->editor_cam->SceneMSAA() != nullptr)
+	if (App->camera->GetCurrentCam()->SceneMSAA() != nullptr)
 	{
-		App->camera->editor_cam->SceneMSAA()->Render();
-		App->camera->editor_cam->SceneMSAA()->Unbind();
+		App->camera->GetCurrentCam()->SceneMSAA()->Render();
+		App->camera->GetCurrentCam()->SceneMSAA()->Unbind();
 	}
 }
 
