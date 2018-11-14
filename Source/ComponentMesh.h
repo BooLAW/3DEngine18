@@ -10,7 +10,7 @@ class ComponentMesh : public Component
 public:
 	ComponentMesh();
 	ComponentMesh(GameObject* new_owner);
-	virtual ~ComponentMesh();
+	~ComponentMesh();
 
 	void AddMesh(Mesh* new_mesh);
 	bool Update();

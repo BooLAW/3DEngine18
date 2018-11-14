@@ -28,6 +28,10 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
+	for (int i = 0; components_list.size() > i; i++)
+	{
+		delete components_list[i];
+	}
 }
 
 void GameObject::Draw()
