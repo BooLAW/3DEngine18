@@ -163,6 +163,9 @@ void ModuleScene::DrawGameObjects()
 	octree.DrawOctree(draw_octree);
 	if (App->camera->GetCurrentCam()->draw_frustum)
 		App->camera->GetCurrentCam()->DrawFrustum();
+	if(App->camera->draw_mouse_ray)
+		App->camera->DrawRay();
+
 	
 }
 
