@@ -153,7 +153,7 @@ void ModuleScene::DrawGameObjects()
 		if (!go_list[i]->IsStatic() &&go_list[i]->HasMesh())
 		{
 			//Check In Frustum
-			if (App->camera->GetCurrentCam()->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
+			//if (App->camera->GetCurrentCam()->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
 				go_list[i]->Draw();
 		}
 		else if (!go_list[i]->IsRoot())
