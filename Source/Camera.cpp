@@ -31,9 +31,6 @@ Camera::~Camera()
 {
 }
 
-
-
-
 void Camera::SetFront(const float3 & front)
 {
 	frustum.pos = front; 
@@ -170,7 +167,7 @@ void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoti
 
 void Camera::LookAt(const float3 & at)
 {
-	Frustum* editor_frustum = &App->camera->editor_cam->frustum;
+	Frustum* editor_frustum = &this->frustum;
 	float3 direction = at - editor_frustum->pos;
 
 	float3x3 matrix = float3x3::LookAt(editor_frustum->front, direction.Normalized(), editor_frustum->up, float3::unitY);
@@ -207,7 +204,7 @@ void Camera::HandleMouse(const float dt)
 	float dx = -App->input->GetMouseXMotion() * App->camera->GetMouseSensitivity() * dt ;
 	float dy = -App->input->GetMouseYMotion() * App->camera->GetMouseSensitivity() * dt ;
 
-	Frustum* editor_frustum = &App->camera->editor_cam->frustum;
+	Frustum* editor_frustum = &this->frustum;
 	if (dx != 0)
 	{
 		Quat X_rot = Quat::RotateY(dx);

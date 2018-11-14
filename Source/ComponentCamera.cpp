@@ -29,6 +29,8 @@ bool ComponentCamera::Start()
 
 bool ComponentCamera::Update()
 {
+	if (cam->draw_frustum)
+		cam->DrawFrustum();
 	return false;
 }
 
