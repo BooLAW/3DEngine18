@@ -88,7 +88,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
 
-	new_child->uid = App->loading_manager->GetRandUID();
+	new_child->uid = App->loading_manager->CreateRandUID();
 
 	//new_child->SetName(my_mesh->file_path.c_str());
 	new_child->num_meshes = mesh_number;
@@ -243,7 +243,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 			GO->comp_transform->SetTransform(pos, rot, scale);
 		}
-		GO->uid = App->loading_manager->GetRandUID();
+		GO->uid = App->loading_manager->CreateRandUID();
 		App->scene_intro->go_list.push_back(GO);
 	}
 	else
@@ -255,7 +255,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Create the Game Object
 				GameObject* new_child = new GameObject();
 				
-				new_child->uid = App->loading_manager->GetRandUID();
+				new_child->uid = App->loading_manager->CreateRandUID();
 
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;

@@ -42,6 +42,7 @@ void LoadManager::Load(const char * path)
 			
 			
 			App->input->file_droped = true;
+
 			mesh_loader->LoadMesh(path);
 
 			App->scene_intro->has_meshes = true;
@@ -112,8 +113,15 @@ void LoadManager::Load(const char * path)
 		new_path.append(sub_beg.c_str());
 
 		App->scene_intro->folder_path = new_path;
+		
 		App->loading_manager->mesh_loader->LoadMesh(path);
 	}
+}
+
+Resource * LoadManager::CreateNewResource(resourceType type, INT32 force_uid)
+{
+
+	return nullptr;
 }
 
 bool LoadManager::Start()
@@ -156,7 +164,21 @@ void AssimpLog(const char * message, char * user)
 {
 	CONSOLE_LOG_INFO("%s", message);
 }
-INT32 LoadManager::GetRandUID()
+INT32 LoadManager::ImportFile(const char * new_file_path, bool force)
+{
+	std::string termination = GetTermination(new_file_path).c_str();
+	if (termination == "lw")
+	{
+		resourceType type;
+		type = RESOURCE_MESH;
+		Resource* res = CreateNewResource(type,CreateRandUID());
+	}
+	
+
+	
+	return INT32();
+}
+INT32 LoadManager::CreateRandUID()
 {
 	//Create Random UID for mesh Root
 	unsigned int max_int = UINT_MAX;

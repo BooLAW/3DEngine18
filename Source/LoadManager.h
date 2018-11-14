@@ -4,13 +4,14 @@
 #include "MeshLoader.h"
 #include "MaterialLoader.h"
 #include "PanelConsole.h"
+#include <map>
 
 
 
 enum resourceType
 {
 	RESOURCE_MESH,
-	RESORCE_MATERIAL,
+	RESOURCE_MATERIAL,
 	RESOURCE_NULL
 };
 class Resource
@@ -34,20 +35,30 @@ public:
 	 ~LoadManager();
 
 	void Load(const char* path);
+
+	//UIDs methods
+	INT32 Find(const char* path);
+	INT32 ImportFile(const char* new_file_path, bool force = false);
+	INT32 CreateRandUID();
+
+	//Resources
+	const Resource* Get(INT32 uid) const;
+	Resource* Get(INT32 uid);
+	Resource* CreateNewResource(resourceType type, INT32 force_uid = 0);
+
+
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+
 public:
-	std::list<Resource> resources;
+	std::map<UINT32, Resource*> resources;
 	MeshLoader* mesh_loader;
 	MaterialLoader* material_loader;
 
 	std::string unique_material_path;
 	std::string unique_fbx_path;
 	std::string unique_scene_path;
-
-	//RandUINT
-	INT32 GetRandUID();
 
 	//File path string
 	std::string GetTermination(const char* path);

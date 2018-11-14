@@ -602,7 +602,7 @@ void ModuleScene::LoadScene(const char* path)
 						dir_name = App->loading_manager->GetFolderNameLW(file_path.c_str());
 
 						App->scene_intro->folder_path = dir_name;
-
+						App->loading_manager->ImportFile(file_path.c_str());
 						App->loading_manager->mesh_loader->InitMesh(file_path, new_go);
 						if(new_go->HasMesh())
 							App->camera->AdaptCamera(new_go->GetBB(), new_go->comp_transform->transform.pos);
