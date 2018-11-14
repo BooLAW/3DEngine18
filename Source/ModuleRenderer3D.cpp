@@ -178,8 +178,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	{
 		SetDebugAttributes();
 		App->DebugDrawBB();
+
 		SetNormalAttributes();
 	}
+	
+	
+	
 	//Bind editorCam
 	if (App->camera->GetEditorCam() != nullptr && App->camera->GetEditorCam()->viewport_texture != nullptr)
 	{

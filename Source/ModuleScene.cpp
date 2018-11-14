@@ -115,7 +115,6 @@ update_status ModuleScene::Update(float dt)
 }
 void ModuleScene::DrawGameObjects()
 {
-	go_list;
 	//Base Plane
 	if (App->renderer3D->show_plane == true)
 	{
@@ -153,7 +152,7 @@ void ModuleScene::DrawGameObjects()
 		if (!go_list[i]->IsStatic() &&go_list[i]->HasMesh())
 		{
 			//Check In Frustum
-			//if (App->camera->GetCurrentCam()->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
+			if (App->camera->GetCurrentCam()->IsGameObjectInFrustum(go_list[i]->GetBB(),go_list[i]->comp_transform->trans_matrix_g.TranslatePart()))
 				go_list[i]->Draw();
 		}
 		else if (!go_list[i]->IsRoot())
@@ -162,7 +161,8 @@ void ModuleScene::DrawGameObjects()
 	}
 	//Octree
 	octree.DrawOctree(draw_octree);
-	
+	if (App->camera->GetCurrentCam()->draw_frustum)
+		App->camera->GetCurrentCam()->DrawFrustum();
 	
 }
 
@@ -268,6 +268,7 @@ GameObject* ModuleScene::CreateMainCamera()
 	main_camera_go->SetName("Main Camera");
 	ComponentCamera* cam_comp = new ComponentCamera();
 	cam_comp->cam->SetFarPlane(1000);
+	cam_comp->SetOwner(main_camera_go);
 	main_camera_go->PushComponent(cam_comp);
 	
 	return main_camera_go;

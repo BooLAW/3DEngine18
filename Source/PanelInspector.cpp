@@ -146,8 +146,9 @@ void PanelInspector::Draw()
 						ImGui::Spacing();
 						//Frustum Pos
 						ImGui::Text("Position: ");
-						ImGui::DragFloat3(" Position", (float*)&cam->frustum.pos);
-						//ImGui::DragFloat3(" Rotation", (float*)&cam->frustum);
+						ImGui::Text(" X: %d", &cam->frustum.pos.x);
+						ImGui::Text(" Y: %d", cam->frustum.pos.y);
+						ImGui::Text(" Z: %d", cam->frustum.pos.z);
 
 						/*ImGui::DragFloat(" Y", &cam->frustum.pos.y);
 						ImGui::DragFloat(" Z ", &cam->frustum.pos.z);*/
