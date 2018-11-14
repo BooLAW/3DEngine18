@@ -72,6 +72,7 @@ public:
 	AABB bounding_box;
 	bool update_bb;
 
+	//id
 	uint id;
 
 	//Faces

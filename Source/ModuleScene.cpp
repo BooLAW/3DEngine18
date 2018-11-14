@@ -33,7 +33,10 @@ ModuleScene::ModuleScene( bool start_enabled) : Module( start_enabled)
 }
 
 ModuleScene::~ModuleScene()
-{}
+{
+
+
+}
 
 // Load assets
 bool ModuleScene::Start()
@@ -98,6 +101,16 @@ bool ModuleScene::Start()
 bool ModuleScene::CleanUp()
 {
 	CONSOLE_LOG_INFO("Unloading Intro scene");
+	for (int i = 0; go_list.size() > i; i++)
+	{
+
+		delete go_list[i];
+	}
+	ClearScene();
+	for (std::list<GameObject*>::iterator item = octree_objects.begin(); item != octree_objects.end(); item++)
+	{
+		delete (*item);
+	}
 	return true;
 }
 
@@ -201,7 +214,6 @@ GameObject * ModuleScene::CreateNewGameObject()
 	tmp_GO->SetParent(scene_root);
 	go_list.push_back(tmp_GO);
 	tmp_GO->comp_transform->UpdateTransformValues();
-
 
 	return tmp_GO;
 }

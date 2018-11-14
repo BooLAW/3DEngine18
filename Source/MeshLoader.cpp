@@ -32,7 +32,8 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 	if (found_it == 0) // if it's an .lw file
 	{
 		//Create the Game Object
-		GameObject* new_child = new GameObject();
+		GameObject* new_child;
+		new_child = new GameObject();
 		InitMesh(file_path, new_child);
 		//Transform
 
@@ -196,7 +197,8 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 }
 bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent, const char* path)
 {
-	GameObject* GO = new GameObject();
+	GameObject* GO;
+	GO = new GameObject();
 
 	if (node->mNumMeshes < 1)
 	{
@@ -404,6 +406,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				App->scene_intro->go_list.push_back(new_child);
 				//new_child->RecalculateBoundingBox(new_child);
 				App->camera->AdaptCamera(new_child->GetBB(), new_child->comp_transform->transform.pos);
+				
 			}
 					
 		}
@@ -418,7 +421,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 		InitMesh(scene, node->mChildren[i], GO, path);
 	}
 	GO->comp_transform->UpdateTransformValues();
-	
 	return true;
 }
 

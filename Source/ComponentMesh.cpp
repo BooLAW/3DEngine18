@@ -36,6 +36,7 @@ void ComponentMesh::DrawInspectorInfo()
 
 void ComponentMesh::CleanUp()
 {
+	delete mesh;
 }
 
 void ComponentMesh::UpdateBoundingBox(float4x4 global_matrix)

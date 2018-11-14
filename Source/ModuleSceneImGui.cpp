@@ -54,6 +54,7 @@ bool ModuleSceneGui::Init()
 bool ModuleSceneGui::CleanUp()
 {
 	CONSOLE_LOG_INFO("Unloading gui scene");
+
 	ImGui_ImplSdl_Shutdown();
 
 	return true;

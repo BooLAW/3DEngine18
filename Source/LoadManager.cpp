@@ -15,6 +15,7 @@ LoadManager::LoadManager()
 
 LoadManager::~LoadManager()
 {
+	
 }
 
 void LoadManager::Load(const char * path)
