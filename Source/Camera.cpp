@@ -154,10 +154,7 @@ Frustum Camera::GetFrustum()
 
 void Camera::UpdatePosition(float3 newpos)
 {
-	//TODO
-	//Position += newpos;
-	frustum.Translate(newpos);
-	//CalculateViewMatrix();
+	
 }
 
 void Camera::Look(const float3 & Position, const float3 & Reference, bool Pivoting)

@@ -386,6 +386,18 @@ ComponentMesh * GameObject::GetCMesh()
 	}
 }
 
+ComponentCamera * GameObject::GetCCamera()
+{
+	if (this->IsActive())
+	{
+		ComponentCamera* cam_tmp = (ComponentCamera*)GetComponent(ComponentType::CAMERA);
+		if (cam_tmp != nullptr)
+			return cam_tmp;
+		else
+			return nullptr;
+	}
+}
+
 Material * GameObject::GetMaterial()
 {
 	ComponentMaterial* mat_tmp = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);

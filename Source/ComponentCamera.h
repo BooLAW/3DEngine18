@@ -12,9 +12,10 @@ public:
 	bool Update()override;
 	virtual ~ComponentCamera();
 	Camera* GetCamera();
-	void UpdatePos();
+	void UpdateTransform();
 public:
 	Camera * cam;
+	bool game_camera;
 
 };
 #endif

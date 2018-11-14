@@ -146,25 +146,27 @@ void PanelInspector::Draw()
 						ImGui::Spacing();
 						//Frustum Pos
 						ImGui::Text("Position: ");
-						ImGui::Text(" X    %f ", cam->frustum.pos.x);
-						ImGui::Text(" Y    %f ", cam->frustum.pos.y);
-						ImGui::Text(" Z    %f ", cam->frustum.pos.z);
+						ImGui::DragFloat3(" Position", (float*)&cam->frustum.pos);
+						//ImGui::DragFloat3(" Rotation", (float*)&cam->frustum);
+
+						/*ImGui::DragFloat(" Y", &cam->frustum.pos.y);
+						ImGui::DragFloat(" Z ", &cam->frustum.pos.z);*/
 
 						ImGui::Spacing();
 						//Far Plane
-						ImGui::Text("Far Plane: ");
-						ImGui::SameLine();
-						ImGui::Text(" %f", cam->GetFarPlane());
+						float far_aux = cam->GetFarPlane();
+						if (ImGui::DragFloat("Far Plane", &far_aux))
+							cam->SetFarPlane(far_aux);
 						ImGui::Spacing();
 						//Near Plane
-						ImGui::Text("Near Plane: ");
-						ImGui::SameLine();
-						ImGui::Text(" %f", cam->GetNearPlane());
+						float near_aux = cam->GetNearPlane();
+						if (ImGui::DragFloat("Near Plane", &near_aux))
+							cam->SetNearPlane(near_aux);
 						ImGui::Spacing();
 						//FOV
-						ImGui::Text("FOV: ");
-						ImGui::SameLine();
-						ImGui::Text(" %f", cam->GetVerticalFOV());
+						float fov_aux = cam->GetVerticalFOV();
+						if (ImGui::DragFloat("FOV", &fov_aux))
+							cam->SetFOV(fov_aux);
 						ImGui::Spacing();
 
 

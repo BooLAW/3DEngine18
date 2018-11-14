@@ -1,6 +1,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
 #include "Globals.h"
 #include "Camera.h"
 
@@ -99,6 +100,8 @@ void ComponentTransform::DrawInspectorInfo()
 			}
 			if (owner->HasChilds())
 				UpdateBBChilds(owner);
+			if (owner->HasCam())
+				owner->GetCCamera()->Update();
 			owner->first_update = false;
 		}
 		
