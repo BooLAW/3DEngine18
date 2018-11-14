@@ -50,7 +50,7 @@ void ModuleCamera3D::DrawModuleConfig()
 	{
 		Camera* aux_cam = App->camera->editor_cam;
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
-		float3 aux_pos = aux_cam->frustum	.pos;
+		float3 aux_pos = aux_cam->frustum.pos;
 		if (ImGui::SliderFloat3("Position", (float*)&aux_pos, -100.0f, 100.0f))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
@@ -85,7 +85,7 @@ void ModuleCamera3D::DrawModuleConfig()
 		ImGui::Spacing();
 
 		float  fp = aux_cam->GetFarPlane();
-		if (ImGui::SliderFloat("Far Plane", &fp, 50.0f, 1000.f))
+		if (ImGui::SliderFloat("Far Plane", &fp, 50.0f, 500.f))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[9]);
 			aux_cam->SetFarPlane(fp);
@@ -108,7 +108,7 @@ void ModuleCamera3D::DrawModuleConfig()
 
 			aux_cam->SetFOV(80);
 			aux_cam->SetNearPlane(0.5);
-			aux_cam->SetFarPlane(1000);
+			aux_cam->SetFarPlane(500);
 
 		}
 		else
@@ -155,9 +155,7 @@ update_status ModuleCamera3D::Update(float dt)
 	//Profiler
 	App->profiler.StartTimer("Camera");
 	if (!locked)
-		CameraMovement(dt);
-	if (draw_frustum) 
-		GetCurrentCam()->DrawFrustum();
+		CameraMovement(dt);	
 	if (draw_mouse_ray)
 		DrawRay();
 	//Mouse Picking
@@ -377,8 +375,8 @@ void ModuleCamera3D::CameraMovement(float dt)
 		else
 			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
 	}
-
-
+	
+	
 
 }
 

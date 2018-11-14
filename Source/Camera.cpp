@@ -13,15 +13,14 @@ Camera::Camera()
 	frustum.pos = (float3::zero);
 	frustum.front = (float3::unitZ);
 	frustum.up = (float3::unitY);
+	frustum.horizontalFov = 90;
 	SetFOV(80);
 	frustum.nearPlaneDistance = 0.5;//needs to be higher than 0.4
 	frustum.farPlaneDistance = 100;
 	frustum.type = FrustumType::PerspectiveFrustum;
 
-	aspect_ratio = 1.0;
-	//frustum.SetWorldMatrix(float3x4::identity);
-
-
+	SetAspectRatio(1.77);
+	frustum.SetWorldMatrix(float3x4::identity);
 
 	CreateNewFrustum();
 	
@@ -232,6 +231,9 @@ void Camera::CreateNewFrustum()
 void Camera::DrawFrustum()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glLineWidth(5.0f);
+	glDisable(GL_CULL_FACE);
+	glColor3f(255, 0, 255);
 
 	glBegin(GL_LINES);
 
@@ -281,5 +283,10 @@ void Camera::DrawFrustum()
 	glVertex3fv((GLfloat*)&frustum_vertices[1]);
 
 	glEnd();
+	glLineWidth(1.0f);
+	//glColor3f(255, 255, 255);
+	glEnable(GL_CULL_FACE);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 }

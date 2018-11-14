@@ -102,6 +102,7 @@ void ComponentTransform::DrawInspectorInfo()
 				UpdateBBChilds(owner);
 			if (owner->HasCam())
 				owner->GetCCamera()->Update();
+
 			owner->first_update = false;
 		}
 		
