@@ -112,6 +112,15 @@ float Camera::GetAspectRatio() const
 	 return (float*)matrix.v;
 }
 
+ float4x4  Camera::GetViewMatrix4x4()const
+ {
+	 static float4x4 matrix;
+	 matrix = frustum.ViewMatrix();
+	 matrix.Transpose();
+
+	 return matrix;
+ }
+
  float * Camera::GetProjMatrix() const
  {
 	 static float4x4 matrix;
@@ -119,6 +128,15 @@ float Camera::GetAspectRatio() const
 	 matrix.Transpose();
 
 	 return (float*)matrix.v;
+ }
+
+ float4x4 Camera::GetProjMatrix4x4() const
+ {
+	 static float4x4 matrix;
+	 matrix = frustum.ProjectionMatrix();
+	 matrix.Transpose();
+
+	 return matrix;
  }
 
  void Camera::UpdateProjectionMatrix()

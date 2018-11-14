@@ -4,6 +4,7 @@
 #include "ImGui/imgui.h"
 #include "imgui_impl_sdl.h"
 #include "ImGui/imgui_dock.h"
+#include "ImGui/ImGuizmo.h"
 #include "PCG/pcg_basic.h"
 
 #include "PanelConsole.h"
@@ -13,6 +14,9 @@
 #include "ComponentMesh.h"
 #include "PanelScene.h"
 #include "PanelGame.h"
+#include "Camera.h"
+#include "ModuleCamera3D.h"
+#include "ComponentTransform.h"
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
@@ -47,6 +51,8 @@ bool ModuleSceneGui::Init()
 	panels.push_back(game);
 	quit = false;
 	App->profiler.SaveInitData("UI");
+
+	guizmo_status = TRANSLATE;
 	return ret;
 }
 
@@ -66,6 +72,7 @@ update_status ModuleSceneGui::PreUpdate(float dt)
 		return UPDATE_STOP;
 
 	ImGui_ImplSdl_NewFrame(App->window->window);
+	ImGuizmo::BeginFrame();
 
 	return UPDATE_CONTINUE;
 }
@@ -109,8 +116,33 @@ void ModuleSceneGui::DrawImGui() {
 		ImGui::EndDockspace();
 	}
 	ImGui::End();
-
+	
 	ImGui::Render();
+}
+
+void ModuleSceneGui::DrawImGuizmo()
+{
+	if (App->scene_intro->GetSelected() != nullptr)
+	{
+		GameObject* go_selected = App->scene_intro->GetSelected();
+		ImVec2 pos = App->imgui->scene->GetPos();
+		ImVec2 size = App->imgui->scene->GetSize();
+		ImGuizmo::SetRect(pos.x, pos.y, size.x, size.y);
+
+		ComponentTransform* trans = (ComponentTransform*)go_selected->GetComponent(TRANSFORM);
+
+		float4x4 vmat = App->camera->GetEditorCam()->GetViewMatrix4x4();
+
+		float4x4 global = trans->trans_matrix_g;
+
+		global.Transpose();
+
+		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_status, ImGuizmo::LOCAL, (float*)&global);
+
+		global.Transpose();
+
+		trans->trans_matrix_g = global;
+	}
 }
 
 bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)

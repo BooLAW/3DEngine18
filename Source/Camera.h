@@ -31,7 +31,11 @@ public:
 	float GetAspectRatio()const;
 
 	float* GetViewMatrix()const;
+	float4x4 GetViewMatrix4x4()const;
+
 	float* GetProjMatrix()const;
+	float4x4 GetProjMatrix4x4()const;
+
 	void UpdateProjectionMatrix();
 
 	//void CalculateViewMatrix();

@@ -262,6 +262,7 @@ void ModuleCamera3D::CreateRayTest(int x, int y)
 	//Serialize  x & y
 	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) ) ;
 	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y));
+	
 	n_x -= 0.5;
 	n_x *= 2;
 
