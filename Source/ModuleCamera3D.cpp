@@ -260,12 +260,21 @@ void ModuleCamera3D::StartNewCamera()
 void ModuleCamera3D::CreateRayTest(int x, int y)
 {
 	//Serialize  x & y
-	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) *2) - 1;
-	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y)*2) - 1;
+	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) ) ;
+	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y));
+	n_x -= 0.5;
+	n_x *= 2;
+
+	n_y -= 0.5;
+	n_y *= -2;
 
 	//Create Ray or LineSegment??
-	LineSegment picking = GetEditorCam()->frustum.UnProjectLineSegment(n_x, n_y);
-	debug_mouse_ray = picking;
+	LineSegment picking;
+	if (n_x > -1 && n_x < 1 && n_y > -1 && n_y < 1)
+	{
+		picking = GetEditorCam()->frustum.UnProjectLineSegment(n_x, n_y);
+		debug_mouse_ray = picking;
+	}
 	//Check Collisions
 	if(picking.Length()!=0)
 		App->scene_intro->ClickSelection(picking);

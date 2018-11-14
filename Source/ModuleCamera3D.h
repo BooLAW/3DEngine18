@@ -68,7 +68,7 @@ public:
 	//camera of the scene in the editor
 	Camera* editor_cam = nullptr;
 	bool draw_frustum = false;
-	bool draw_mouse_ray = false;
+	bool draw_mouse_ray = true;
 	std::vector<GameObject*> cams_list;
 
 	//LineSegment to draw the debugging mouse_ray
