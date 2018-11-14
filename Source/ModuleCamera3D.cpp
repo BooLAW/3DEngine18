@@ -156,8 +156,6 @@ update_status ModuleCamera3D::Update(float dt)
 	App->profiler.StartTimer("Camera");
 	if (!locked)
 		CameraMovement(dt);	
-	if (draw_mouse_ray)
-		DrawRay();
 	//Mouse Picking
 	bool mouse_picking_working = true;
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && CheckMouseInWindow(App->input->GetMouseX(), App->input->GetMouseY()) && mouse_picking_working)
@@ -262,12 +260,22 @@ void ModuleCamera3D::StartNewCamera()
 void ModuleCamera3D::CreateRayTest(int x, int y)
 {
 	//Serialize  x & y
-	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) *2) - 1;
-	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y)*2) - 1;
+	float n_x = (((x - App->imgui->scene->GetPos().x) / App->imgui->scene->GetSize().x) ) ;
+	float n_y = (((y - App->imgui->scene->GetPos().y) / App->imgui->scene->GetSize().y));
+	
+	n_x -= 0.5;
+	n_x *= 2;
+
+	n_y -= 0.5;
+	n_y *= -2;
 
 	//Create Ray or LineSegment??
-	LineSegment picking = GetEditorCam()->frustum.UnProjectLineSegment(n_x, n_y);
-	debug_mouse_ray = picking;
+	LineSegment picking;
+	if (n_x > -1 && n_x < 1 && n_y > -1 && n_y < 1)
+	{
+		picking = GetEditorCam()->frustum.UnProjectLineSegment(n_x, n_y);
+		debug_mouse_ray = picking;
+	}
 	//Check Collisions
 	if(picking.Length()!=0)
 		App->scene_intro->ClickSelection(picking);
@@ -285,12 +293,20 @@ void ModuleCamera3D::DrawRay()
 {
 	glBegin(GL_LINES);
 
-	glLineWidth(3.0f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glLineWidth(10.0f);
+	glDisable(GL_CULL_FACE);
+	glColor3f(255, 0, 255);
 
 	glVertex3fv((GLfloat*)&debug_mouse_ray.a);
 	glVertex3fv((GLfloat*)&debug_mouse_ray.b);
 
 	glEnd();
+	glLineWidth(1.0f);
+	glColor3f(255, 255, 255);
+	glEnable(GL_CULL_FACE);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)

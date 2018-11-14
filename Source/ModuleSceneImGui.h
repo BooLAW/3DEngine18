@@ -13,6 +13,12 @@ class PanelScene;
 class PanelHierarchy;
 class PanelGame;
 class Panel;
+enum GuizmoState {
+	TRANSLATE,
+	ROTATE,
+	SCALE,
+	NONE
+};
 class ModuleSceneGui : public Module
 {
 public:
@@ -36,6 +42,7 @@ public:
 	void ManageInput(SDL_Event* e)const;
 	void Log(const std::string text,int type);
 	void DrawImGui();
+	void DrawImGuizmo();
 	void BlitPanels();
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
@@ -78,10 +85,9 @@ public:
 	float3 pos_aux;
 	float3 min_pos_aux;
 	float3 max_pos_aux;
-public:
+	//Panels
 	std::vector<Panel*> panels;
 
-public:
 	PanelConsole * console = nullptr;
 	PanelConfiguration* configuration = nullptr;
 	PanelApplication* application = nullptr;
@@ -89,6 +95,7 @@ public:
 	PanelInspector* inspector = nullptr;
 	PanelScene* scene = nullptr;
 	PanelGame* game = nullptr;
-	
+	//Guizmo
+	GuizmoState guizmo_status = NONE;
 };
 #endif
