@@ -142,20 +142,24 @@ void ModuleSceneGui::DrawImGuizmo()
 
 		global.Transpose();
 
-		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_operation, ImGuizmo::LOCAL, (float*)&global);
+		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_operation, (ImGuizmo::MODE)guizmo_mode, (float*)&global);
 		
 		global.Transpose();
-
+		
 		trans->trans_matrix_g = global;
+		
 		if (go_selected->HasMesh())
 		{
 			go_selected->GetCMesh()->UpdateBoundingBox(global);
-
 		}
 		if (go_selected->HasChilds())
+		{
 			trans->UpdateBBChilds(go_selected);
+		}
 		if (go_selected->HasCam())
 			go_selected->GetCCamera()->Update();
+	
+		
 	}
 }
 

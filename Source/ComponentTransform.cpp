@@ -21,6 +21,7 @@ ComponentTransform::ComponentTransform(GameObject * owner)
 
 	trans_matrix_g = float4x4::identity;
 	updated_transform = true;
+	updated_outside = false;
 	type = ComponentType::TRANSFORM;
 
 }
@@ -102,6 +103,11 @@ void ComponentTransform::DrawInspectorInfo()
 			ResetTransform();
 			updated_transform = true;
 		}
+		if (updated_outside)
+		{
+			UpdateTransformValues();
+			updated_outside = false;
+		}
 		if (updated_transform || owner->first_update)
 		{
 			UpdateTransformValues();
@@ -117,6 +123,7 @@ void ComponentTransform::DrawInspectorInfo()
 
 			owner->first_update = false;
 		}
+		
 		
 	}
 

@@ -34,6 +34,7 @@ public:
 	float4x4 trans_matrix_g;	
 
 	bool updated_transform;
+	bool updated_outside;
 };
 
 #endif
