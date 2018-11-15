@@ -13,6 +13,7 @@
 #include "PanelInspector.h"
 #include "ComponentMesh.h"
 #include "PanelScene.h"
+#include "PanelToolButtons.h"
 #include "PanelGame.h"
 #include "Camera.h"
 #include "ModuleCamera3D.h"
@@ -44,6 +45,7 @@ bool ModuleSceneGui::Init()
 	inspector = new PanelInspector();
 	scene = new PanelScene();
 	game = new PanelGame();
+	tool_buttons = new PanelToolButtons();
 
 	panels.push_back(console);
 	panels.push_back(configuration);
@@ -51,6 +53,7 @@ bool ModuleSceneGui::Init()
 	panels.push_back(hierarchy);
 	panels.push_back(scene);
 	panels.push_back(game);
+	panels.push_back(tool_buttons);
 	quit = false;
 	App->profiler.SaveInitData("UI");
 

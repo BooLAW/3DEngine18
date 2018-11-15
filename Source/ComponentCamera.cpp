@@ -28,10 +28,6 @@ bool ComponentCamera::Start()
 
 bool ComponentCamera::Update()
 {
-	/*if (cam->draw_frustum)
-	{
-		cam->DrawFrustum();
-	}*/
 	if (game_camera)
 		UpdateTransform();
 	
