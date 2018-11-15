@@ -645,6 +645,7 @@
     <ClInclude Include="ImGui\ImGuizmo.h">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTimeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -878,6 +879,7 @@
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\KDTree.inl">

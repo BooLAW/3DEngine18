@@ -33,6 +33,9 @@ void PanelScene::Draw()
 		if (App->camera->GetEditorCam()->SceneMSAA() != nullptr)
 		{
 			ImGui::Image((void*)App->camera->GetEditorCam()->SceneMSAA()->GetTextureID() ,size, ImVec2(0, 1), ImVec2(1, 0));
+			App->camera->GetEditorCam()->SceneMSAA()->Render();
+			App->camera->GetEditorCam()->SceneMSAA()->Unbind();
+
 		}
 		isOver = ImGui::IsMouseHoveringWindow();
 		App->imgui->DrawImGuizmo();
@@ -41,9 +44,7 @@ void PanelScene::Draw()
 
 	if (App->camera->GetEditorCam()->SceneMSAA() != nullptr)
 	{
-		App->camera->GetEditorCam()->SceneMSAA()->Render();
-		App->camera->GetEditorCam()->SceneMSAA()->Unbind();
-	}
+		}
 
 
 }

@@ -143,16 +143,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	glLoadIdentity();
 
-	/*glMatrixMode(GL_MODELVIEW); 
-	glLoadMatrixf(App->camera->GetCurrentCam()->GetViewMatrix());
-
-	glMatrixMode(GL_PROJECTION);
-	Frustum frustum = App->camera->GetCurrentCam()->GetFrustum();
-	ProjectionMatrix = frustum.ProjectionMatrix();*/
-
-	//glLoadMatrixf(&ProjectionMatrix[0][0]);
-	// light 0 on cam pos
-
 	lights[0].SetPos(0, 0, 0);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
@@ -182,25 +172,41 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		SetNormalAttributes();
 	}
 	
-	
-	
 	//Bind editorCam
 	if (App->camera->GetEditorCam() != nullptr && App->camera->GetEditorCam()->viewport_texture != nullptr)
 	{
+
 		App->camera->GetEditorCam()->viewport_texture->Bind();
 		App->camera->GetEditorCam()->UpdateProjectionMatrix();
+	
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(App->camera->GetEditorCam()->GetViewMatrix());
+		//GO
+		App->scene_intro->DrawGameObjects();
+		
 	}
+	//Bind editorCam
+	if (App->camera->GetCurrentCam() != nullptr && App->camera->GetCurrentCam()->viewport_texture != nullptr)
+	{
 
-	//GO
-	App->scene_intro->DrawGameObjects();
+		App->camera->GetCurrentCam()->viewport_texture->Bind();
+		App->camera->GetCurrentCam()->UpdateProjectionMatrix();
+
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(App->camera->GetCurrentCam()->GetViewMatrix());
+		//GO
+		App->scene_intro->DrawGameObjects();
+	}
 	//IMGUI
-
 	App->imgui->DrawImGui();
 	SetSceneLights();
+	
 
 	SDL_GL_SwapWindow(App->window->window);
 

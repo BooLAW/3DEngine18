@@ -147,7 +147,7 @@ void ModuleSceneGui::DrawImGuizmo()
 		global.Transpose();
 		
 		trans->trans_matrix_g = global;
-		
+		//need to update the whole Component transform, not just the matrix
 		if (go_selected->HasMesh())
 		{
 			go_selected->GetCMesh()->UpdateBoundingBox(global);

@@ -34,6 +34,9 @@ void PanelGame::Draw()
 		if (App->camera->GetCurrentCam()->SceneMSAA() != nullptr)
 		{
 			ImGui::Image((void*)App->camera->GetCurrentCam()->SceneMSAA()->GetTextureID(), size, ImVec2(0, 1), ImVec2(1, 0));
+			App->camera->GetCurrentCam()->SceneMSAA()->Render();
+			App->camera->GetCurrentCam()->SceneMSAA()->Unbind();
+
 		}
 		isOver = ImGui::IsMouseHoveringWindow();
 	}
@@ -41,9 +44,7 @@ void PanelGame::Draw()
 
 	if (App->camera->GetCurrentCam()->SceneMSAA() != nullptr)
 	{
-		App->camera->GetCurrentCam()->SceneMSAA()->Render();
-		App->camera->GetCurrentCam()->SceneMSAA()->Unbind();
-	}
+		}
 }
 
 bool PanelGame::MouseOver() const
