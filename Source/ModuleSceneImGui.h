@@ -13,11 +13,17 @@ class PanelScene;
 class PanelHierarchy;
 class PanelGame;
 class Panel;
-enum GuizmoState {
+enum OPERATION
+{
 	TRANSLATE,
 	ROTATE,
-	SCALE,
-	NONE
+	SCALE
+};
+
+enum MODE
+{
+	LOCAL,
+	WORLD
 };
 class ModuleSceneGui : public Module
 {
@@ -96,6 +102,7 @@ public:
 	PanelScene* scene = nullptr;
 	PanelGame* game = nullptr;
 	//Guizmo
-	GuizmoState guizmo_status = NONE;
+	OPERATION guizmo_operation;
+	MODE guizmo_mode;
 };
 #endif

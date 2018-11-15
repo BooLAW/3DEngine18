@@ -35,6 +35,7 @@ void PanelScene::Draw()
 			ImGui::Image((void*)App->camera->GetEditorCam()->SceneMSAA()->GetTextureID() ,size, ImVec2(0, 1), ImVec2(1, 0));
 		}
 		isOver = ImGui::IsMouseHoveringWindow();
+		App->imgui->DrawImGuizmo();
 	}
 	ImGui::EndDock();
 

@@ -17,6 +17,8 @@
 #include "Camera.h"
 #include "ModuleCamera3D.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
+#include "Camera.h"
 
 ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 {
@@ -52,7 +54,7 @@ bool ModuleSceneGui::Init()
 	quit = false;
 	App->profiler.SaveInitData("UI");
 
-	guizmo_status = TRANSLATE;
+	guizmo_operation = TRANSLATE;
 	return ret;
 }
 
@@ -137,11 +139,20 @@ void ModuleSceneGui::DrawImGuizmo()
 
 		global.Transpose();
 
-		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_status, ImGuizmo::LOCAL, (float*)&global);
-
+		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_operation, ImGuizmo::LOCAL, (float*)&global);
+		
 		global.Transpose();
 
 		trans->trans_matrix_g = global;
+		if (go_selected->HasMesh())
+		{
+			go_selected->GetCMesh()->UpdateBoundingBox(global);
+
+		}
+		if (go_selected->HasChilds())
+			trans->UpdateBBChilds(go_selected);
+		if (go_selected->HasCam())
+			go_selected->GetCCamera()->Update();
 	}
 }
 

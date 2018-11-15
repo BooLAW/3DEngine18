@@ -2,8 +2,10 @@
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ModuleSceneImGui.h"
 #include "Globals.h"
 #include "Camera.h"
+#include "Application.h"
 
 ComponentTransform::ComponentTransform(GameObject * owner)
 {
@@ -61,9 +63,19 @@ void ComponentTransform::DrawInspectorInfo()
 	if (ImGui::Button("Identity Reset"))
 		reset_transform = !reset_transform;
 
-	ImGui::DragFloat3("Position##transform", pos, 0.1f, -INFINITY, INFINITY);
-	ImGui::DragFloat3("Rotation##transform", rot, 0.1f, -360, 360);
-	ImGui::DragFloat3("Scale##transform", scale, 0.1f, 1, INFINITY);
+	if (ImGui::DragFloat3("Position##transform", pos, 0.1f, -INFINITY, INFINITY))
+	{
+		App->imgui->guizmo_operation = TRANSLATE;
+	}
+	if (ImGui::DragFloat3("Rotation##transform", rot, 0.1f, -360, 360))
+	{
+		App->imgui->guizmo_operation = ROTATE;
+	}
+	if (ImGui::DragFloat3("Scale##transform", scale, 0.1f, 1, INFINITY))
+	{
+		App->imgui->guizmo_operation = SCALE;
+	}
+
 	
 	//Update Transform
 	updated_transform = false;
