@@ -10,6 +10,7 @@
 #include "ModuleScene.h"
 #include "PanelScene.h"
 #include "DebugDraw.h"
+#include "ImGui/ImGuizmo.h"
 
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
@@ -158,7 +159,7 @@ update_status ModuleCamera3D::Update(float dt)
 		CameraMovement(dt);	
 	//Mouse Picking
 	bool mouse_picking_working = true;
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && CheckMouseInWindow(App->input->GetMouseX(), App->input->GetMouseY()) && mouse_picking_working)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && CheckMouseInWindow(App->input->GetMouseX(), App->input->GetMouseY()) && mouse_picking_working && !ImGuizmo::IsOver())
 	{
 		CreateRayTest(App->input->GetMouseX(), App->input->GetMouseY());
 	}

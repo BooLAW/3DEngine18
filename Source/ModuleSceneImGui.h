@@ -12,6 +12,7 @@ class PanelApplication;
 class PanelScene;
 class PanelHierarchy;
 class PanelGame;
+class PanelToolButtons;
 class Panel;
 enum OPERATION
 {
@@ -101,6 +102,7 @@ public:
 	PanelInspector* inspector = nullptr;
 	PanelScene* scene = nullptr;
 	PanelGame* game = nullptr;
+	PanelToolButtons* tool_buttons = nullptr;
 	//Guizmo
 	OPERATION guizmo_operation;
 	MODE guizmo_mode;

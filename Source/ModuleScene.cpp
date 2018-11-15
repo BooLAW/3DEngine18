@@ -24,7 +24,7 @@
 #include "Primitive.h"
 #include "TextureMSAA.h"
 
-
+#include "ImGui/ImGuizmo.h"
 
 #define RADIUS 44
 
@@ -398,7 +398,7 @@ void ModuleScene::DrawChilds(GameObject* parent)
 	bool opened = ImGui::TreeNodeEx(parent->GetName(),flags);
 	
 	// Set Selected on click
-	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
+	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1) )
 	{
 			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())
 			{
