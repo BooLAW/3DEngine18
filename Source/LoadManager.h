@@ -20,6 +20,7 @@ public:
 	Resource(const char* name, resourceType type, INT32 uid);
 	~Resource();
 	std::string GetName();
+	resourceType GetType();
 	//virtual void Init();
 
 	INT32 id;
@@ -36,6 +37,7 @@ public:
 
 	void Load(const char* path);
 
+	void LoadAssetsFolder();
 	//UIDs methods
 	UINT32 Find(const char* path);
 	UINT32 ImportFile(const char* new_file_path, bool force = false);

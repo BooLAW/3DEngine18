@@ -97,6 +97,9 @@
     <Filter Include="Sources\Files">
       <UniqueIdentifier>{b3c156cc-fa22-41c1-bba9-4bdc57a74597}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\External Tools\Dirent">
+      <UniqueIdentifier>{8f1c7c98-47e2-47c8-8399-55b59c5bdf17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -646,6 +649,9 @@
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTimeManager.h" />
+    <ClInclude Include="dirent.h">
+      <Filter>Sources\External Tools\Dirent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
