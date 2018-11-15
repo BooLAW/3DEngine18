@@ -2,8 +2,7 @@
 #define __MODULE_TIME_MANAGER_H__
 
 #include "Module.h"
-#include "Globals.h"
-
+#include "Timer.h"
 class ModuleTimeManager : public Module
 {
 public:
@@ -18,7 +17,7 @@ public:
 	update_status Update(float dt) override;
 
 public:
-	/*Timer real_timer;
+	Timer real_timer;
 	Timer game_timer;
 
 	uint num_frames;
@@ -28,6 +27,6 @@ public:
 
 	float ingame_time;
 
-	float time_scale;*/
+	float time_scale;
 };
 #endif

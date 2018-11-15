@@ -173,56 +173,58 @@ void ModuleSceneGui::DrawTools(uint flags)
 	
 	bool active = true;
 	ImGui::Begin("Tool Buttons", &active, flags);
-	//TRANSLATE-------------------------
-	bool change_color = false;
-
-	if (guizmo_operation == TRANSLATE)
+	//Guizmo
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
-		change_color = true;
-	}
+		//TRANSLATE-------------------------
+		bool change_color = false;
 
-	ImGui::SetCursorPos(ImVec2(10,18));
-	
-	if (ImGui::Button("TRANS"))
-		guizmo_operation = TRANSLATE;
+		if (guizmo_operation == TRANSLATE)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_color = true;
+		}
 
-	if (change_color == true)
-	{
-		ImGui::PopStyleColor(1);
-		change_color = false;
-	}
+		ImGui::SetCursorPos(ImVec2(10, 18));
+
+		if (ImGui::Button("TRANS"))
+			guizmo_operation = TRANSLATE;
+
+		if (change_color == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_color = false;
+		}
 		ImGui::SameLine();
-	
-	
-	//ROTATE--------------------------------
-	if (guizmo_operation == ROTATE)
-	{
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
-		change_color = true;
-	}
-	
 
-	ImGui::SetCursorPos(ImVec2(60, 18));
-		
-	if (ImGui::Button("ROTATE"))
+
+		//ROTATE--------------------------------
+		if (guizmo_operation == ROTATE)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_color = true;
+		}
+
+
+		ImGui::SetCursorPos(ImVec2(60, 18));
+
+		if (ImGui::Button("ROTATE"))
 			guizmo_operation = ROTATE;
 
-	if (change_color == true)
-	{
-		ImGui::PopStyleColor(1);
-		change_color = false;
+		if (change_color == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_color = false;
 
-	}
+		}
 		ImGui::SameLine();
-	//SCALE-------------------------------
-	if (guizmo_operation == SCALE)
-	{
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
-		change_color = true;
+		//SCALE-------------------------------
+		if (guizmo_operation == SCALE)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_color = true;
 
-	}
-	
+		}
+
 
 		ImGui::SetCursorPos(ImVec2(115, 18));
 		if (ImGui::Button("SCALE"))
@@ -236,13 +238,13 @@ void ModuleSceneGui::DrawTools(uint flags)
 		}
 		ImGui::SameLine();
 		bool change_mode_color = false;
-	//LOCAL-----------------------------------
+		//LOCAL-----------------------------------
 		if (guizmo_mode == LOCAL)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
 			change_mode_color = true;
 		}
-	
+
 
 		ImGui::SetCursorPos(ImVec2(250, 18));
 		if (ImGui::Button("LOCAL"))
@@ -253,13 +255,13 @@ void ModuleSceneGui::DrawTools(uint flags)
 			change_mode_color = false;
 		}
 		ImGui::SameLine();
-	//WORLD----------------------------------
+		//WORLD----------------------------------
 		if (guizmo_mode == WORLD)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
 			change_mode_color = true;
 		}
-		 
+
 
 		ImGui::SetCursorPos(ImVec2(300, 18));
 		if (ImGui::Button("WORLD"))
@@ -270,6 +272,71 @@ void ModuleSceneGui::DrawTools(uint flags)
 			change_mode_color = false;
 
 		}
+	}
+	//Play & Pause
+	{
+		bool change_state = false;
+		//PLAY
+		if (App->state == playing)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_state = true;
+		}
+
+		ImGui::SetCursorPos(ImVec2(600, 18));
+		if (ImGui::Button("PLAY"))
+		{
+			App->state = playing;
+		}
+	
+		if (change_state == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_state = false;
+		}
+		//PAUSE
+		if (App->state == paused)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_state = true;
+		}
+		ImGui::SetCursorPos(ImVec2(650, 18));
+
+		if (ImGui::Button("PAUSE"))
+		{
+			App->state = paused;
+
+		}
+		if (change_state == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_state = false;
+		}
+		//STOP
+		if (App->state == stopped)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_state = true;
+		}
+		ImGui::SetCursorPos(ImVec2(720, 18));
+
+		if (ImGui::Button("STOP"))
+		{
+			App->state = stopped;
+		}
+		if (change_state == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_state = false;
+		}
+		ImGui::SameLine();
+		ImGui::Text("Time: %d", App->time_manager->game_time);
+		ImGui::SameLine();
+		//ImGui::Set
+		ImGui::DragFloat("Time Scale", &App->time_manager->time_scale,0.1,0.1,1.0);
+	}
+	
+
 	
 	ImGui::End();
 }

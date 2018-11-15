@@ -11,11 +11,16 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleSceneImGui.h"
+#include "ModuleTimeManager.h"
 #include "ModuleAudio.h"
 #include "LoadManager.h"
 #include "Profiler.h"
 
-
+enum EngineState {
+	playing,
+	paused,
+	stopped
+};
 
 class Application
 {
@@ -28,6 +33,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleSceneGui* imgui;
 	ModuleAudio* audio;
+	ModuleTimeManager* time_manager;
 	LoadManager* loading_manager;
 
 	char readBuf[10000];
@@ -67,7 +73,7 @@ public:
 	bool Load();
 
 	void isVsyncActive();
-
+	EngineState state;
 private:
 
 	void AddModule(Module* mod);
