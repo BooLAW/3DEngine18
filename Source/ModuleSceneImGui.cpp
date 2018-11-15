@@ -13,7 +13,6 @@
 #include "PanelInspector.h"
 #include "ComponentMesh.h"
 #include "PanelScene.h"
-#include "PanelToolButtons.h"
 #include "PanelGame.h"
 #include "Camera.h"
 #include "ModuleCamera3D.h"
@@ -45,7 +44,6 @@ bool ModuleSceneGui::Init()
 	inspector = new PanelInspector();
 	scene = new PanelScene();
 	game = new PanelGame();
-	tool_buttons = new PanelToolButtons();
 
 	panels.push_back(console);
 	panels.push_back(configuration);
@@ -53,11 +51,11 @@ bool ModuleSceneGui::Init()
 	panels.push_back(hierarchy);
 	panels.push_back(scene);
 	panels.push_back(game);
-	panels.push_back(tool_buttons);
 	quit = false;
 	App->profiler.SaveInitData("UI");
 
 	guizmo_operation = TRANSLATE;
+	guizmo_mode = LOCAL;
 	return ret;
 }
 
@@ -87,7 +85,6 @@ update_status ModuleSceneGui::Update(float dt)
 	App->profiler.StartTimer("UI");
 	//RICARD: For a cleaner code, we decided to have a switch with the CreateMainMenu.
 	CreateMainMenu();
-	
 	//ImGui::ShowMetricsWindow();
 	//ImGui::ShowTestWindow();
 	App->profiler.SaveRunTimeData("UI");
@@ -105,13 +102,16 @@ void ModuleSceneGui::DrawImGui() {
 	flags |= ImGuiWindowFlags_NoMove;
 	flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 	flags |= ImGuiWindowFlags_NoResize;
+	flags |= ImGuiWindowFlags_NoScrollbar;
 
-	float h_offset = 6.0f;
+
+	float h_offset = 50.0f;
 	float w_offset = 0.0f;
 
+
+	DrawTools(flags);
 	ImGui::SetNextWindowPos(ImVec2(w_offset, h_offset));
 	ImGui::SetNextWindowSize(ImVec2(App->window->width - w_offset, App->window->height - h_offset));
-
 	if (ImGui::Begin("Dock", 0, flags))
 	{
 		ImGui::BeginDockspace();
@@ -157,6 +157,117 @@ void ModuleSceneGui::DrawImGuizmo()
 		if (go_selected->HasCam())
 			go_selected->GetCCamera()->Update();
 	}
+}
+
+void ModuleSceneGui::DrawTools(uint flags)
+{
+	flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
+		| ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+
+	ImGui::SetNextWindowPos(ImVec2(0, 6));
+	ImGui::SetNextWindowSize(ImVec2(App->window->width, 45));
+	
+	bool active = true;
+	ImGui::Begin("Tool Buttons", &active, flags);
+	//TRANSLATE-------------------------
+	bool change_color = false;
+
+	if (guizmo_operation == TRANSLATE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+		change_color = true;
+	}
+
+	ImGui::SetCursorPos(ImVec2(10,18));
+	
+	if (ImGui::Button("TRANS"))
+		guizmo_operation = TRANSLATE;
+
+	if (change_color == true)
+	{
+		ImGui::PopStyleColor(1);
+		change_color = false;
+	}
+		ImGui::SameLine();
+	
+	
+	//ROTATE--------------------------------
+	if (guizmo_operation == ROTATE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+		change_color = true;
+	}
+	
+
+	ImGui::SetCursorPos(ImVec2(60, 18));
+		
+	if (ImGui::Button("ROTATE"))
+			guizmo_operation = ROTATE;
+
+	if (change_color == true)
+	{
+		ImGui::PopStyleColor(1);
+		change_color = false;
+
+	}
+		ImGui::SameLine();
+	//SCALE-------------------------------
+	if (guizmo_operation == SCALE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+		change_color = true;
+
+	}
+	
+
+		ImGui::SetCursorPos(ImVec2(115, 18));
+		if (ImGui::Button("SCALE"))
+			guizmo_operation = SCALE;
+
+		if (change_color == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_color = false;
+
+		}
+		ImGui::SameLine();
+		bool change_mode_color = false;
+	//LOCAL-----------------------------------
+		if (guizmo_mode == LOCAL)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_mode_color = true;
+		}
+	
+
+		ImGui::SetCursorPos(ImVec2(250, 18));
+		if (ImGui::Button("LOCAL"))
+			guizmo_mode = LOCAL;
+		if (change_mode_color == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_mode_color = false;
+		}
+		ImGui::SameLine();
+	//WORLD----------------------------------
+		if (guizmo_mode == WORLD)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
+			change_mode_color = true;
+		}
+		 
+
+		ImGui::SetCursorPos(ImVec2(300, 18));
+		if (ImGui::Button("WORLD"))
+			guizmo_mode = WORLD;
+		if (change_mode_color == true)
+		{
+			ImGui::PopStyleColor(1);
+			change_mode_color = false;
+
+		}
+	
+	ImGui::End();
 }
 
 bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)

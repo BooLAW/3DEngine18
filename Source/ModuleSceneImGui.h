@@ -12,7 +12,6 @@ class PanelApplication;
 class PanelScene;
 class PanelHierarchy;
 class PanelGame;
-class PanelToolButtons;
 class Panel;
 enum OPERATION
 {
@@ -50,6 +49,7 @@ public:
 	void Log(const std::string text,int type);
 	void DrawImGui();
 	void DrawImGuizmo();
+	void DrawTools(uint flags);
 	void BlitPanels();
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
@@ -102,7 +102,6 @@ public:
 	PanelInspector* inspector = nullptr;
 	PanelScene* scene = nullptr;
 	PanelGame* game = nullptr;
-	PanelToolButtons* tool_buttons = nullptr;
 	//Guizmo
 	OPERATION guizmo_operation;
 	MODE guizmo_mode;

@@ -645,9 +645,6 @@
     <ClInclude Include="ImGui\ImGuizmo.h">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="PanelToolButtons.h">
-      <Filter>Sources\Panels</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -880,9 +877,6 @@
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="PanelToolButtons.cpp">
-      <Filter>Sources\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
