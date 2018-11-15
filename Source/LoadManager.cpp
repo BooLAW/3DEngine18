@@ -6,6 +6,12 @@
 #include "Profiler.h"
 #include "ComponentMaterial.h"
 
+#include <direct.h>
+#define GetCurrentDir _getcwd
+
+#include "dirent.h"
+#include <sys/types.h>
+
 
 LoadManager::LoadManager()
 {
@@ -120,12 +126,42 @@ void LoadManager::Load(const char * path)
 	}
 }
 
+void LoadManager::LoadAssetsFolder()
+{	
+	CONSOLE_LOG_INFO("---COPY ASSETS FOLDER INTO LIBRARY ---");
+	DIR *dir;
+	struct dirent *ent;
+
+	char working_dir_path[FILENAME_MAX];
+	GetCurrentDir(working_dir_path, sizeof(working_dir_path));
+
+
+
+	if ((dir = opendir(working_dir_path)) != NULL)
+	{
+		/* print all the files and directories within directory */
+		while ((ent = readdir(dir)) != NULL) 
+		{
+			std::string full_path_str(ent->d_name);
+			uint found_it = full_path_str.find_first_of(".");
+			if (found_it == MAXUINT)
+			{
+				CONSOLE_LOG_INFO("%s\n", ent->d_name);
+			}
+			CONSOLE_LOG_INFO("%s\n", ent->d_name);
+		}
+		closedir(dir);
+	}
+
+}
+
 bool LoadManager::Start()
 {
 	CONSOLE_LOG_INFO("---LOAD MANAGER START ---");
 	App->profiler.SaveInitData("LoadManager");
 	struct aiLogStream stream;
 
+	LoadAssetsFolder();
 	
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	material_loader->Start();
@@ -162,6 +198,11 @@ std::string Resource::GetName()
 	return this->name;
 }
 
+resourceType Resource::GetType()
+{
+	return this->type;
+}
+
 void AssimpLog(const char * message, char * user)
 {
 	CONSOLE_LOG_INFO("%s", message);
@@ -181,7 +222,6 @@ UINT32 LoadManager::Find(const char * path)
 UINT32 LoadManager::ImportFile(const char* new_file_path, bool force)
 {
 	std::string termination = GetTermination(new_file_path).c_str();
-	 
 	if (termination == "lw")
 	{
 		resourceType type;
@@ -190,14 +230,10 @@ UINT32 LoadManager::ImportFile(const char* new_file_path, bool force)
 		
 		Resource res = Resource(new_file_path, type,res_uid);
 		
-		resources.insert(std::pair<UINT32, Resource*>(res_uid, &res));
-		
+		resources.insert(std::pair<UINT32, Resource*>(res_uid, &res));		
 		return res_uid;
 	}
-
-	return NULL;
-	
-	
+	return NULL;	
 }
 UINT32 LoadManager::CreateRandUID()
 {
