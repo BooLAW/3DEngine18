@@ -43,6 +43,8 @@ void LoadManager::Load(const char * path)
 			
 			App->input->file_droped = true;
 
+			//ImportFile(path);
+
 			mesh_loader->LoadMesh(path);
 
 			App->scene_intro->has_meshes = true;
@@ -87,6 +89,7 @@ void LoadManager::Load(const char * path)
 	{
 		if (unique_scene_path != path)
 		{			
+			
 			App->scene_intro->LoadScene(path);
 			unique_scene_path = path;
 
@@ -117,12 +120,6 @@ void LoadManager::Load(const char * path)
 	}
 }
 
-Resource * LoadManager::CreateNewResource(resourceType type, INT32 force_uid)
-{
-
-	return nullptr;
-}
-
 bool LoadManager::Start()
 {
 	CONSOLE_LOG_INFO("---LOAD MANAGER START ---");
@@ -148,39 +145,78 @@ bool LoadManager::CleanUp()
 	return false;
 }
 
-Resource::Resource(const char * name, resourceType type)
+Resource::Resource(const char * name, resourceType type, INT32 uid)
 {
 	this->type = type;
-	this->name = name;
-
+	this->name.append(name);
+	this->id = uid;
 }
 
 Resource::~Resource()
 {
 }
 
+std::string Resource::GetName()
+{
+
+	return this->name;
+}
+
 void AssimpLog(const char * message, char * user)
 {
 	CONSOLE_LOG_INFO("%s", message);
 }
-INT32 LoadManager::ImportFile(const char * new_file_path, bool force)
+UINT32 LoadManager::Find(const char * path)
+{
+	for (std::map<UINT32, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		const char* name = it->second->GetName().c_str();		
+		if (strcmp(name, path))
+		{
+			return it->first;
+		}		
+	}
+	return NULL;
+}
+UINT32 LoadManager::ImportFile(const char* new_file_path, bool force)
 {
 	std::string termination = GetTermination(new_file_path).c_str();
+	 
 	if (termination == "lw")
 	{
 		resourceType type;
 		type = RESOURCE_MESH;
-		Resource* res = CreateNewResource(type,CreateRandUID());
+		UINT32 res_uid = CreateRandUID();
+		
+		Resource res = Resource(new_file_path, type,res_uid);
+		
+		resources.insert(std::pair<UINT32, Resource*>(res_uid, &res));
+		
+		return res_uid;
 	}
+
+	return NULL;
 	
-	return INT32();
+	
 }
-INT32 LoadManager::CreateRandUID()
+UINT32 LoadManager::CreateRandUID()
 {
 	//Create Random UID for mesh Root
 	unsigned int max_int = UINT_MAX;
 	UINT32 random_int = pcg32_boundedrand_r(&App->imgui->rng, max_int) + 1000000000;
 	return random_int;
+}
+
+Resource * LoadManager::Get(UINT32 uid)
+{	
+	for (std::map<UINT32, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->first == uid)
+		{
+			return it->second;
+		}
+	}
+	return nullptr;
 }
 
 std::string LoadManager::GetTermination(const char * path)

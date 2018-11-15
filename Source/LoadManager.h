@@ -17,12 +17,12 @@ enum resourceType
 class Resource
 {
 public:
-	Resource(const char* name, resourceType type);
+	Resource(const char* name, resourceType type, INT32 uid);
 	~Resource();
-
+	std::string GetName();
 	//virtual void Init();
 
-	int id;
+	INT32 id;
 
 private:
 	std::string name;
@@ -37,14 +37,13 @@ public:
 	void Load(const char* path);
 
 	//UIDs methods
-	INT32 Find(const char* path);
-	INT32 ImportFile(const char* new_file_path, bool force = false);
-	INT32 CreateRandUID();
+	UINT32 Find(const char* path);
+	UINT32 ImportFile(const char* new_file_path, bool force = false);
+	UINT32 CreateRandUID();
 
 	//Resources
-	const Resource* Get(INT32 uid) const;
-	Resource* Get(INT32 uid);
-	Resource* CreateNewResource(resourceType type, INT32 force_uid = 0);
+	Resource* Get(UINT32 uid);
+	
 
 
 	bool Start();
