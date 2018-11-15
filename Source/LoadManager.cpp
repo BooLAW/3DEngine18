@@ -85,17 +85,16 @@ void LoadManager::Load(const char * path)
 	}
 	else if (GetTermination(path) == "json")
 	{
-
-		App->scene_intro->LoadScene(path);
 		if (unique_scene_path != path)
 		{			
+			App->scene_intro->LoadScene(path);
 			unique_scene_path = path;
 
 		}
-		//else
-		//{
-		//	CONSOLE_LOG_WARNING("Scene: %s was already loaded", App->GetFileName(path).c_str());
-		//}
+		else
+		{
+			CONSOLE_LOG_WARNING("Scene: %s was already loaded", path);
+		}
 
 	}
 	else if (GetTermination(path) == "lw")
@@ -173,8 +172,6 @@ INT32 LoadManager::ImportFile(const char * new_file_path, bool force)
 		type = RESOURCE_MESH;
 		Resource* res = CreateNewResource(type,CreateRandUID());
 	}
-	
-
 	
 	return INT32();
 }
