@@ -22,9 +22,11 @@ public:
 	void ResetTransform();
 
 	void CalculateLocalMatrix();
+	void SetLocalMatrix(const float4x4 new_local);
 	float4x4 GetGlobalMatrix();
 	float4x4 GetLocalMatrix();
 	void CalculateGlobalMatrix();
+	void SetGlobalMatrix(const float4x4 new_global);
 	void UpdateBBChilds(GameObject* parent);
 
 public:

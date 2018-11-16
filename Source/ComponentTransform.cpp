@@ -38,7 +38,7 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::UpdateTransformValues()
 {
-	trans_matrix_g = float4x4::identity;
+	//trans_matrix_g = float4x4::identity;
 	trans_matrix_l = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
 
 	if(owner->GetParent() == nullptr)//IS ROOT
@@ -215,6 +215,17 @@ void ComponentTransform::CalculateLocalMatrix()
 	CalculateGlobalMatrix();
 }
 
+void ComponentTransform::SetLocalMatrix(const float4x4 new_local)
+{
+	trans_matrix_l = new_local;
+
+	float3 pos; Quat rot; float3 scale;
+	new_local.Decompose(pos, rot, scale);
+	
+	SetTransform(pos, rot, scale);
+
+}
+
 float4x4 ComponentTransform::GetGlobalMatrix()
 {
 	return trans_matrix_g;
@@ -246,4 +257,24 @@ void ComponentTransform::CalculateGlobalMatrix()
 		owner->RecursiveUpdateTransformChilds();
 	
 	updated_transform = true;
+}
+
+void ComponentTransform::SetGlobalMatrix(const float4x4 new_global)
+{
+	trans_matrix_g = new_global;
+
+	if (GetOwner()->GetParent() != nullptr)
+	{
+		float4x4 local = GetOwner()->GetParent()->comp_transform->trans_matrix_g.Inverted() * trans_matrix_g;
+
+		SetLocalMatrix(local);
+	}
+	if (GetOwner()->HasChilds())
+	{
+		//PAU TODO
+		for (std::vector<GameObject*>::iterator it = GetOwner()->childs_list.begin(); it != GetOwner()->childs_list.end(); it++)
+		{
+			(*it)->comp_transform->SetGlobalMatrix(trans_matrix_g);
+		}
+	}
 }

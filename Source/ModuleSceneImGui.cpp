@@ -127,7 +127,7 @@ void ModuleSceneGui::DrawImGui() {
 
 void ModuleSceneGui::DrawImGuizmo()
 {
-	if (App->scene_intro->GetSelected() != nullptr)
+	if (App->scene_intro->GetSelected() != nullptr )
 	{
 		GameObject* go_selected = App->scene_intro->GetSelected();
 		ImVec2 pos = App->imgui->scene->GetPos();
@@ -142,23 +142,29 @@ void ModuleSceneGui::DrawImGuizmo()
 
 		global.Transpose();
 
-		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_operation, (ImGuizmo::MODE)guizmo_mode, (float*)&global);
+		ImGuizmo::Manipulate(&vmat[0][0], App->camera->GetEditorCam()->GetProjMatrix(), (ImGuizmo::OPERATION)guizmo_operation, (ImGuizmo::MODE::LOCAL), (float*)&global);
 		
 		global.Transpose();
 		
-		trans->trans_matrix_g = global;
-		//need to update the whole Component transform, not just the matrix
-		if (go_selected->HasMesh())
+		if (!App->scene_intro->GetSelected()->IsStatic())
 		{
+			trans->trans_matrix_g = global;
+			trans->SetGlobalMatrix(global);
+			//update childs
+
+			if (go_selected->HasMesh())
+			{
 			go_selected->GetCMesh()->UpdateBoundingBox(global);
-		}
-		if (go_selected->HasChilds())
-		{
+			}
+			if (go_selected->HasChilds())
+			{
 			trans->UpdateBBChilds(go_selected);
-		}
-		if (go_selected->HasCam())
+			}
+			if (go_selected->HasCam())
 			go_selected->GetCCamera()->Update();
-	
+			
+
+		}
 		
 	}
 }
