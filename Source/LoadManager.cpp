@@ -129,30 +129,73 @@ void LoadManager::Load(const char * path)
 void LoadManager::LoadAssetsFolder()
 {	
 	CONSOLE_LOG_INFO("---COPY ASSETS FOLDER INTO LIBRARY ---");
+
+	//Init empty buffer
+	char working_dir_path[FILENAME_MAX];
+
+	//Get working folder from visual
+	GetCurrentDir(working_dir_path, sizeof(working_dir_path));
+
+	//Adding it to an std::string
+	std::string working_dir(working_dir_path);
+
+	//Check it's folders and put them in a list.
+	CheckFiles(working_dir_path);
+
+
+	for (std::vector<std::string>::iterator it = all_files_paths.begin(); it != all_files_paths.end(); it++)
+	{
+		std::string library("Library");
+		std::size_t found_it = (*it).find(library);
+		if (found_it != std::string::npos)
+		{
+			llibrary_paths.push_back(*it);
+		}
+		else
+		{
+			assets_paths.push_back(*it);
+		}		
+	}
+
+
+}
+
+void LoadManager::CheckFiles(std::string folder_path)
+{
 	DIR *dir;
 	struct dirent *ent;
 
-	char working_dir_path[FILENAME_MAX];
-	GetCurrentDir(working_dir_path, sizeof(working_dir_path));
-
-
-
-	if ((dir = opendir(working_dir_path)) != NULL)
+	if ((dir = opendir(folder_path.c_str())) != NULL)
 	{
-		/* print all the files and directories within directory */
-		while ((ent = readdir(dir)) != NULL) 
+		while ((ent = readdir(dir)) != NULL)
 		{
-			std::string full_path_str(ent->d_name);
-			uint found_it = full_path_str.find_first_of(".");
-			if (found_it == MAXUINT)
+			std::string path(folder_path);
+			path.append("\\");
+			path.append(ent->d_name);
+
+			GetTermination(path.c_str());
+
+			//Get all the files with this format
+			if (GetTermination(path.c_str()) == "fbx" ||
+				GetTermination(path.c_str()) == "FBX" ||
+				GetTermination(path.c_str()) == "png" ||
+				GetTermination(path.c_str()) == "dds" ||
+				GetTermination(path.c_str()) == "mtl" ||
+				GetTermination(path.c_str()) == "tga" ||
+				GetTermination(path.c_str()) == "ogg")
 			{
-				CONSOLE_LOG_INFO("%s\n", ent->d_name);
+				all_files_paths.push_back(path);
 			}
-			CONSOLE_LOG_INFO("%s\n", ent->d_name);
+
+			//Get Folder
+			uint found_it2 = path.find_first_of(".");
+			if (found_it2 == MAXUINT)
+			{
+				CheckFiles(path);
+			}
 		}
 		closedir(dir);
 	}
-
 }
 
 bool LoadManager::Start()
