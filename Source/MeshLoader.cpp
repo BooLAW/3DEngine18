@@ -24,7 +24,7 @@ MeshLoader::~MeshLoader()
 {
 }
 
-bool MeshLoader::LoadMesh(const std::string &file_path)
+bool MeshLoader::LoadMesh(const std::string &file_path, bool create_go)
 {
 	bool ret = false;	
 	std::string termination = App->loading_manager->GetTermination(file_path.c_str());
@@ -53,9 +53,13 @@ bool MeshLoader::LoadMesh(const std::string &file_path)
 		{
 			aiNode* root = new_scene->mRootNode;
 			
-			SaveMesh(new_scene, root); //Starts Recursive									   
-			InitMesh(new_scene, root, App->scene_intro->scene_root, file_path.c_str());
 
+			SaveMesh(new_scene, root); //Starts Recursive									   
+			if (create_go == true)
+			{
+				InitMesh(new_scene, root, App->scene_intro->scene_root, file_path.c_str());
+			}
+		
 			aiReleaseImport(new_scene);
 		}
 		else
@@ -450,7 +454,17 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 {
 	std::string final_file_name;
 	final_file_name.append(App->scene_intro->folder_path.c_str());
-	final_file_name.append("/");
+	std::string str("/");
+	std::size_t found_it = final_file_name.find(str);
+	if (found_it != std::string::npos)
+	{
+		final_file_name.append("/");
+	}
+	else
+	{
+		final_file_name.append("\\");
+	}
+
 	final_file_name.append(node->mName.C_Str());	
 	if (num_mesh >= 1)
 	{

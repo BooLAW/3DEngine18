@@ -84,8 +84,8 @@ bool ModuleScene::Start()
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
 	////Load Baker HOuse
-	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
+	//App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
 	////Load Street
 	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
@@ -93,6 +93,15 @@ bool ModuleScene::Start()
 
 	//Loading Scene
 	//App->loading_manager->Load("\\Assets\\Scenes\\scene1.json");
+
+	for (int i = 0; App->loading_manager->load_paths.size() > i; i++)
+	{
+		App->loading_manager->CreateFolders(App->loading_manager->load_paths[i].c_str());
+		App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(),false);
+	}
+	
+
+
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
@@ -607,6 +616,7 @@ void ModuleScene::LoadScene(const char* path)
 						App->scene_intro->folder_path = dir_name;
 						App->loading_manager->ImportFile(file_path.c_str());
 						App->loading_manager->mesh_loader->InitMesh(file_path, new_go);
+
 						if(new_go->HasMesh())
 							App->camera->AdaptCamera(new_go->GetBB(), new_go->comp_transform->transform.pos);
 						else

@@ -31,21 +31,7 @@ void LoadManager::Load(const char * path)
 		CONSOLE_LOG_INFO("FBX dropped");
 		if (unique_fbx_path != path)
 		{
-			std::string dir_name;
-			std::string main_dir_name;
-			std::string secondary_dir_name;
-
-			dir_name = GetFolderNameFBX(path);
-			secondary_dir_name = GetSecondaryFolderNameFBX(dir_name.c_str());
-			main_dir_name = GetMainFolderNameFBX(dir_name.c_str());
-			
-
-			CreateDirectory(main_dir_name.c_str(), NULL); //Create Library Folder
-			CreateDirectory(secondary_dir_name.c_str(), NULL); //Create Models Folder
-			CreateDirectory(dir_name.c_str(), NULL); //Create Mesh Folder
-
-			App->scene_intro->folder_path = dir_name;
-			
+			CreateFolders(path);
 			
 			App->input->file_droped = true;
 
@@ -157,7 +143,17 @@ void LoadManager::LoadAssetsFolder()
 		}		
 	}
 
+	//Comparing both folders
+	for (std::vector<std::string>::iterator it = assets_paths.begin(); it != assets_paths.end(); it++)
+	{
+		if (GetTermination((*it).c_str()) == "fbx")
+		{
+			
+			load_paths.push_back((*it));
 
+		}
+	}
+	
 }
 
 void LoadManager::CheckFiles(std::string folder_path)
@@ -390,4 +386,21 @@ std::string LoadManager::GetFolderNameLW(const char * path)
 	final_dir_name = input_path.substr(cut, cut2 - cut);
 	dir_name.append(final_dir_name.c_str());
 	return dir_name;
+}
+
+void LoadManager::CreateFolders(const char * path)
+{
+	std::string dir_name;
+	std::string main_dir_name;
+	std::string secondary_dir_name;
+
+	dir_name = App->loading_manager->GetFolderNameFBX(path);
+	secondary_dir_name = App->loading_manager->GetSecondaryFolderNameFBX(dir_name.c_str());
+	main_dir_name = App->loading_manager->GetMainFolderNameFBX(dir_name.c_str());
+
+	CreateDirectory(main_dir_name.c_str(), NULL); //Create Library Folder
+	CreateDirectory(secondary_dir_name.c_str(), NULL); //Create SubFolders inside Library
+	CreateDirectory(dir_name.c_str(), NULL); //Create Folder with then name of the mesh
+
+	App->scene_intro->folder_path = dir_name;
 }

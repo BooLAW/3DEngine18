@@ -67,6 +67,10 @@ public:
 
 	std::string GetFolderNameLW(const char* path);
 
+	//Create all the directories needed
+	void CreateFolders(const char* path);
+
+
 
 	bool Start();
 	update_status Update(float dt);
@@ -76,7 +80,10 @@ public:
 	std::vector<std::string> all_files_paths;
 	std::vector<std::string> llibrary_paths;
 	std::vector<std::string> assets_paths;
+	std::vector<std::string> load_paths;
+
 	std::map<UINT32, Resource*> resources;
+
 	MeshLoader* mesh_loader;
 	MaterialLoader* material_loader;
 

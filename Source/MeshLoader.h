@@ -20,7 +20,7 @@ class MeshLoader
 public:
 	MeshLoader();
 	virtual ~MeshLoader();
-	bool LoadMesh(const std::string& file_name);	
+	bool LoadMesh(const std::string& file_name, bool create_go = true);	
 	bool SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std::string &path);	
 	bool SaveMeshBinary(const aiScene* scene, const aiNode* node,int num_mesh);
 	Mesh* LoadMeshBinary(const char* file_path, int num_mesh);
