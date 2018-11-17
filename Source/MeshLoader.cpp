@@ -463,6 +463,11 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	final_file_name.append(".lw");
 
 	FILE* wfile = fopen(final_file_name.c_str(), "wb");
+	if (wfile == NULL)
+	{
+		return false;
+	}
+
 
 	aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[num_mesh]];
 
@@ -501,7 +506,6 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		header[6] = sizeof(texture_name);
 		
 		App->loading_manager->ImportTextures(texture_name.C_Str(),path);
-
 	}
 	else
 	{
@@ -572,6 +576,8 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 	fwrite(sbuffer, sizeof(char), size, wfile);
 	fclose(wfile);
+
+	App->loading_manager->ImportFile(final_file_name.c_str());
 
 	delete[] sbuffer;
 	delete[] tex_points;

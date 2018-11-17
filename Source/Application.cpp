@@ -113,7 +113,7 @@ update_status Application::Update()
 	{
 		Save();
 		//App->scene_intro->SaveScene(App->scene_intro->go_list);
-		//App->scene_intro->LoadScene();
+		//App->scene_intro->LoadScene(".\\Assets\\Scenes\\scene1.json");
 	}
 	FinishUpdate();
 	return ret;

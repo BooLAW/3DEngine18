@@ -80,6 +80,16 @@ bool ModuleScene::Start()
 	App->camera->StartNewCamera();
 	//go_list.push_back(App->camera->editor_camera);
 	
+	for (int i = 0; App->loading_manager->load_paths.size() > i; i++)
+	{
+		if (App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "fbx" ||
+			App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "FBX")
+		{
+			App->loading_manager->CreateFolders(App->loading_manager->load_paths[i].c_str());
+			App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(), false);
+		}
+	}
+
 	//Load Warrior
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
@@ -90,22 +100,9 @@ bool ModuleScene::Start()
 	////Load Street
 	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
 	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
-
-	//Loading Scene
-	//App->loading_manager->Load("\\Assets\\Scenes\\scene1.json");
-
-	for (int i = 0; App->loading_manager->load_paths.size() > i; i++)
-	{
-		if (App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "fbx" ||
-			App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "FBX")
-		{
-			App->loading_manager->CreateFolders(App->loading_manager->load_paths[i].c_str());
-			App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(), false);
-		}
-
-		
-	}
 	
+	//Loading Scene
+	App->loading_manager->Load(".\\Assets\\Scenes\\scene1.json");
 
 
 	App->profiler.SaveRunTimeData("Scene");
@@ -416,9 +413,7 @@ void ModuleScene::DrawChilds(GameObject* parent)
 			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())
 			{
 				ResetSelected();
-				parent->SetSelected(true);
-				
-				
+				parent->SetSelected(true);							
 			}
 		
 	}

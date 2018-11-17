@@ -35,8 +35,6 @@ void LoadManager::Load(const char * path)
 			
 			App->input->file_droped = true;
 
-			//ImportFile(path);
-
 			mesh_loader->LoadMesh(path);
 
 			App->scene_intro->has_meshes = true;
@@ -126,7 +124,7 @@ void LoadManager::LoadAssetsFolder()
 	std::string working_dir(working_dir_path);
 
 	//Check it's folders and put them in a list.
-	CheckFiles(working_dir_path);
+	StoreFilesPath(working_dir_path);
 
 
 	for (std::vector<std::string>::iterator it = all_files_paths.begin(); it != all_files_paths.end(); it++)
@@ -140,6 +138,7 @@ void LoadManager::LoadAssetsFolder()
 		else
 		{
 			assets_paths.push_back(*it);
+			
 		}		
 	}
 
@@ -152,10 +151,10 @@ void LoadManager::LoadAssetsFolder()
 			load_paths.push_back((*it));
 		}
 	}
-	
+
 }
 
-void LoadManager::CheckFiles(std::string folder_path)
+void LoadManager::StoreFilesPath(std::string folder_path)
 {
 	DIR *dir;
 	struct dirent *ent;
@@ -186,7 +185,7 @@ void LoadManager::CheckFiles(std::string folder_path)
 			uint found_it2 = path.find_first_of(".");
 			if (found_it2 == MAXUINT)
 			{
-				CheckFiles(path);
+				StoreFilesPath(path);
 			}
 		}
 		closedir(dir);
@@ -201,6 +200,8 @@ bool LoadManager::Start()
 
 	LoadAssetsFolder();
 	
+	resources;
+
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	material_loader->Start();
 	stream.callback = AssimpLog;
@@ -268,7 +269,9 @@ UINT32 LoadManager::ImportFile(const char* new_file_path, bool force)
 		
 		Resource res = Resource(new_file_path, type,res_uid);
 		
-		resources.insert(std::pair<UINT32, Resource*>(res_uid, &res));		
+		resources.insert(std::pair<UINT32, Resource*>(res_uid, &res));	
+
+		resources; 
 		return res_uid;
 	}
 	return NULL;	
@@ -347,10 +350,11 @@ std::string LoadManager::GetFolderNameFBX(const char * path)
 	//Loding From Assets Folder
 	std::size_t found_it = input_path.find("Assets");
 	if (found_it != UINT_MAX)
-	{
+	{		
 		dir_name.append("Library/Models/");
 		dir_name.append(App->loading_manager->GetFileName(path));
 		final_dir_name = dir_name.substr(0, dir_name.length() - 4);
+
 	}
 	else//Loading From Library Models folder (scene1.json)
 	{
@@ -364,7 +368,7 @@ std::string LoadManager::GetFolderNameFBX(const char * path)
 		final_dir_name = dir_name;
 	}
 
-	
+
 
 	return final_dir_name;
 }
