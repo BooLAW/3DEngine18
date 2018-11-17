@@ -514,44 +514,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 		header[5] = ai_mesh->mMaterialIndex;		
 		header[6] = sizeof(texture_name);
 		
-		//Check if it has textures to load from the assets/textures folder
-		bool found_it = false;
-		if (texture_name.length > 0)
-		{
-			for (int i = 0; App->loading_manager->assets_paths.size() > i; i++)
-			{
-				if (App->loading_manager->GetFileName(App->loading_manager->assets_paths[i].c_str()) == texture_name.C_Str())
-				{
-					found_it = true;
-				}
-
-			}
-		}
-
-		if (found_it)
-		{
-		//Create Materials Folder inside Library and FBX name folder inside Materials
-		std::string input_path = App->loading_manager->GetFileName(path);
-		std::string tex_folder_path;
-		tex_folder_path.append("Library/Textures");
-		CreateDirectory(tex_folder_path.c_str(), NULL);
-
-		//Creates BakerHouse Folder inside Materials folder
-		tex_folder_path.append("/");
-		tex_folder_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
-		CreateDirectory(tex_folder_path.c_str(), NULL);
-
-		std::string tex_path("Assets/Textures/");				
-		tex_path.append(texture_name.C_Str());
-		
-		//Storing the texture inside the Library
-		std::string lib_tex_path("Library/Textures/");
-		lib_tex_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
-		lib_tex_path.append("/");
-		lib_tex_path.append(texture_name.C_Str());
-		CopyFile(tex_path.c_str(), lib_tex_path.c_str(), NULL);
-		
-		}
+		App->loading_manager->ImportTextures(texture_name.C_Str(),path);
 
 	}
 	else
