@@ -67,7 +67,7 @@ public:
 
 	std::string GetFolderNameLW(const char* path);
 
-	//Create all the directories needed
+	//Create the directories needed checking the paths
 	void CreateFolders(const char* path);
 
 

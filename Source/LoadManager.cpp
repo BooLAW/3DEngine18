@@ -146,7 +146,8 @@ void LoadManager::LoadAssetsFolder()
 	//Comparing both folders
 	for (std::vector<std::string>::iterator it = assets_paths.begin(); it != assets_paths.end(); it++)
 	{
-		if (GetTermination((*it).c_str()) == "fbx")
+		if (GetTermination((*it).c_str()) == "fbx"||
+			GetTermination((*it).c_str()) == "FBX" )
 		{
 			
 			load_paths.push_back((*it));

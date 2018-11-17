@@ -84,8 +84,8 @@ bool ModuleScene::Start()
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
 	////Load Baker HOuse
-	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
+	//App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
 	////Load Street
 	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
@@ -96,8 +96,14 @@ bool ModuleScene::Start()
 
 	for (int i = 0; App->loading_manager->load_paths.size() > i; i++)
 	{
-		App->loading_manager->CreateFolders(App->loading_manager->load_paths[i].c_str());
-		App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(),false);
+		if (App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "fbx" ||
+			App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "FBX")
+		{
+			App->loading_manager->CreateFolders(App->loading_manager->load_paths[i].c_str());
+			App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(), false);
+		}
+
+		
 	}
 	
 
@@ -236,8 +242,7 @@ void ModuleScene::ClearScene()
 	{
 		scene_root->ClearRelations();
 		scene_root->childs_list.clear();
-		go_list.clear();
-		//TODO: Josep comented this to test scene.json. The scene does not work if the cleanup deletes the root node.
+		go_list.clear();		
 		go_list.push_back(scene_root);
 	}
 		
@@ -332,9 +337,8 @@ void ModuleScene::DrawHierarchy()
 
 		for (std::vector<GameObject*>::iterator it = root_childs.begin(); it != root_childs.end(); it++)
 		{
-				DrawChilds((*it));					
+			DrawChilds((*it));					
 		}
-
 	}
 }
 
