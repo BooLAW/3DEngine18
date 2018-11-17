@@ -291,6 +291,7 @@ void ModuleSceneGui::DrawTools(uint flags)
 		ImGui::SetCursorPos(ImVec2(600, 18));
 		if (ImGui::Button("PLAY"))
 		{
+			App->time_manager->Play();
 			App->state = playing;
 		}
 	
@@ -309,7 +310,9 @@ void ModuleSceneGui::DrawTools(uint flags)
 
 		if (ImGui::Button("PAUSE"))
 		{
+			App->time_manager->Pause();
 			App->state = paused;
+			
 
 		}
 		if (change_state == true)
@@ -327,7 +330,9 @@ void ModuleSceneGui::DrawTools(uint flags)
 
 		if (ImGui::Button("STOP"))
 		{
+			App->time_manager->Stop();
 			App->state = stopped;
+		
 		}
 		if (change_state == true)
 		{
@@ -338,7 +343,10 @@ void ModuleSceneGui::DrawTools(uint flags)
 		ImGui::Text("Time: %d", App->time_manager->game_time);
 		ImGui::SameLine();
 		//ImGui::Set
-		ImGui::DragFloat("Time Scale", &App->time_manager->time_scale,0.1,0.1,1.0);
+		ImGui::Text("  Time step");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(50);
+		ImGui::DragFloat("s", &App->time_manager->time_scale,0.1,0.1,1.0);
 	}
 	
 

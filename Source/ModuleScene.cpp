@@ -777,14 +777,6 @@ GameObject * ModuleScene::GetClosestGO(std::vector<GameObject*> gameobjects, Lin
 			}
 		}
 	}
-	if (closest_go == nullptr)
-	{
-		CONSOLE_LOG_WARNING("No GO returned");
-	}
-	else
-	{
-		CONSOLE_LOG_WARNING(" %s", closest_go->GetName());
-	}
 	return closest_go;
 }
 
