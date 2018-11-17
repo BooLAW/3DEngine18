@@ -146,11 +146,10 @@ void LoadManager::LoadAssetsFolder()
 	//Comparing both folders
 	for (std::vector<std::string>::iterator it = assets_paths.begin(); it != assets_paths.end(); it++)
 	{
-		if (GetTermination((*it).c_str()) == "fbx")
-		{
-			
+		if (GetTermination((*it).c_str()) == "fbx"||
+			GetTermination((*it).c_str()) == "FBX" )
+		{			
 			load_paths.push_back((*it));
-
 		}
 	}
 	
@@ -403,4 +402,47 @@ void LoadManager::CreateFolders(const char * path)
 	CreateDirectory(dir_name.c_str(), NULL); //Create Folder with then name of the mesh
 
 	App->scene_intro->folder_path = dir_name;
+}
+
+void LoadManager::ImportTextures(const char * path,const char* full_path)
+{
+	//Check if it has textures to load from the assets/textures folder
+	bool found_it = false;
+	std::string texture_name(path);
+	if (texture_name.size() > 0)
+	{
+		for (int i = 0; App->loading_manager->assets_paths.size() > i; i++)
+		{
+			if (App->loading_manager->GetFileName(App->loading_manager->assets_paths[i].c_str()) == texture_name.c_str())
+			{
+				found_it = true;
+			}
+
+		}
+	}
+
+	if (found_it)
+	{
+		//Create Materials Folder inside Library and FBX name folder inside Materials
+		std::string input_path = App->loading_manager->GetFileName(full_path);
+		std::string tex_folder_path;
+		tex_folder_path.append("Library/Textures");
+		CreateDirectory(tex_folder_path.c_str(), NULL);
+
+		//Creates BakerHouse Folder inside Materials folder
+		tex_folder_path.append("/");
+		tex_folder_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
+		CreateDirectory(tex_folder_path.c_str(), NULL);
+
+		std::string tex_path("Assets/Textures/");
+		tex_path.append(texture_name.c_str());
+
+		//Storing the texture inside the Library
+		std::string lib_tex_path("Library/Textures/");
+		lib_tex_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
+		lib_tex_path.append("/");
+		lib_tex_path.append(texture_name.c_str());
+		CopyFile(tex_path.c_str(), lib_tex_path.c_str(), NULL);
+
+	}
 }

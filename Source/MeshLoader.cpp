@@ -29,6 +29,9 @@ bool MeshLoader::LoadMesh(const std::string &file_path, bool create_go)
 	bool ret = false;	
 	std::string termination = App->loading_manager->GetTermination(file_path.c_str());
 	std::size_t found_it = termination.find("lw");
+
+	App->loading_manager->GetFileName(file_path.c_str());
+
 	if (found_it == 0) // if it's an .lw file
 	{
 		//Create the Game Object
@@ -53,8 +56,8 @@ bool MeshLoader::LoadMesh(const std::string &file_path, bool create_go)
 		{
 			aiNode* root = new_scene->mRootNode;
 			
-
-			SaveMesh(new_scene, root); //Starts Recursive									   
+			
+			SaveMesh(new_scene, root,file_path.c_str()); //Starts Recursive		
 			if (create_go == true)
 			{
 				InitMesh(new_scene, root, App->scene_intro->scene_root, file_path.c_str());
@@ -159,7 +162,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		tex_folder_path.append("Library/Textures");
 		CreateDirectory(tex_folder_path.c_str(), NULL);
 
-		//Creates BakerHouse Folder inside Materials folder
+		//Creates BakerHouse Folder inside Texture folder
 		tex_folder_path.append("/");
 		tex_folder_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
 		CreateDirectory(tex_folder_path.c_str(), NULL);
@@ -428,7 +431,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 	return true;
 }
 
-bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
+bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node, const char* path)
 {
 	if (scene != nullptr && node->mNumMeshes > 0)
 	{
@@ -436,7 +439,7 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 		{
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				SaveMeshBinary(scene, node, i);
+				SaveMeshBinary(scene, node, i,path);
 
 			}
 		}
@@ -444,13 +447,13 @@ bool MeshLoader::SaveMesh(const aiScene * scene, aiNode * node)
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		SaveMesh(scene, node->mChildren[i]);
+		SaveMesh(scene, node->mChildren[i], path);
 	}
 
 	return false;
 }
 
-bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh)
+bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int num_mesh, const char* path)
 {
 	std::string final_file_name;
 	final_file_name.append(App->scene_intro->folder_path.c_str());
@@ -510,6 +513,8 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 		header[5] = ai_mesh->mMaterialIndex;		
 		header[6] = sizeof(texture_name);
+		
+		App->loading_manager->ImportTextures(texture_name.C_Str(),path);
 
 	}
 	else

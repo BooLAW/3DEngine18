@@ -67,9 +67,11 @@ public:
 
 	std::string GetFolderNameLW(const char* path);
 
-	//Create all the directories needed
+	//Create the directories needed checking the paths
 	void CreateFolders(const char* path);
 
+	//Import Textures
+	void ImportTextures(const char* path, const char* full_path);
 
 
 	bool Start();
