@@ -631,10 +631,13 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MATERIAL") == 0)
 					{
-						//TODO JOSEP
 						aux_comp = new Component(MATERIAL);
 						std::string file_path;
 						
+					}
+					else if (strcmp(m_cmp_itr->name.GetString(), "CAMERA") == 0)
+					{
+
 					}
 				}
 			}
@@ -740,11 +743,22 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				ComponentMesh* com_mesh_aux = (ComponentMesh*)go->components_list[i];
 				Mesh* mesh_aux = com_mesh_aux->mesh;
 				Value mesh_name(mesh_aux->file_path.c_str(), allocator);
-				//obj_comp_mesh.AddMember("file_path", mesh_name,allocator);
 				
 				//Adding data to the component
 				arr_comp.AddMember("MESH", mesh_name, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
+			}
+			case CAMERA:
+			{
+				//Value obj_comp_camera(kObjectType);
+				//ComponentCamera* com_camera_aux = (ComponentCamera*)go->components_list[i];
+				//Camera* camera_aux = com_camera_aux->cam;
+				////Value mesh_name(camera_aux->draw_frustum, allocator);
+				//obj_comp_camera.AddMember("darw_fustrum", camera_aux->draw_frustum, allocator);
+				//obj_comp_camera.AddMember("aspect_ratio", camera_aux->GetAspectRatio, allocator);
+				//obj_comp_camera.AddMember("game_camera", com_camera_aux->game_camera, allocator);
+
 				break;
 			}
 			default:

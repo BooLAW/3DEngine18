@@ -351,9 +351,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					{
 						my_mesh->color = { my_color[0],my_color[1],my_color[2] };
 					}
-					
-					
-
+									
 					//Storing the texture inside the Library
 					std::string lib_tex_path("Library/Textures/");
 					lib_tex_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
