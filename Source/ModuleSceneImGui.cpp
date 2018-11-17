@@ -340,7 +340,9 @@ void ModuleSceneGui::DrawTools(uint flags)
 			change_state = false;
 		}
 		ImGui::SameLine();
-		ImGui::Text("Time: %d", App->time_manager->game_time);
+		int non_decimal_part = App->time_manager->game_time / 1000;
+		int decimal_part = App->time_manager->game_time - (1000 * non_decimal_part);
+		ImGui::Text("Game Time: %d.%d", non_decimal_part, decimal_part);
 		ImGui::SameLine();
 		//ImGui::Set
 		ImGui::Text("  Time step");
