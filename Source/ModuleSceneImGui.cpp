@@ -148,7 +148,7 @@ void ModuleSceneGui::DrawImGuizmo()
 		
 		if (!App->scene_intro->GetSelected()->IsStatic() && !global.Equals(trans->trans_matrix_g))
 		{
-			trans->SetGlobalMatrix(global);
+			trans->UpdateTransformFromGuizmo(global);
 			//update childs
 			
 			if (go_selected->HasMesh())

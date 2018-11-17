@@ -28,6 +28,8 @@ public:
 	void CalculateGlobalMatrix();
 	void SetGlobalMatrix(const float4x4 new_global);
 	void UpdateBBChilds(GameObject* parent);
+	void UpdateTransformFromGuizmo(const float4x4 new_global);
+
 
 public:
 	Transform transform;
