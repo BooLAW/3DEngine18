@@ -38,7 +38,7 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::UpdateTransformValues()
 {
-	//trans_matrix_g = float4x4::identity;
+	trans_matrix_g = float4x4::identity;
 	trans_matrix_l = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
 
 	if(owner->GetParent() == nullptr)//IS ROOT
@@ -239,7 +239,6 @@ float4x4 ComponentTransform::GetLocalMatrix()
 void ComponentTransform::CalculateGlobalMatrix()
 {
 	//reset
-	trans_matrix_g = float4x4::identity;
 	GameObject* parent = owner->parent;
 	//calculate me
 	if (parent!=nullptr)
@@ -271,10 +270,9 @@ void ComponentTransform::SetGlobalMatrix(const float4x4 new_global)
 	}
 	if (GetOwner()->HasChilds())
 	{
-		//PAU TODO
 		for (std::vector<GameObject*>::iterator it = GetOwner()->childs_list.begin(); it != GetOwner()->childs_list.end(); it++)
 		{
-			(*it)->comp_transform->SetGlobalMatrix(trans_matrix_g);
+			(*it)->comp_transform->CalculateGlobalMatrix();
 		}
 	}
 }

@@ -146,22 +146,21 @@ void ModuleSceneGui::DrawImGuizmo()
 		
 		global.Transpose();
 		
-		if (!App->scene_intro->GetSelected()->IsStatic())
+		if (!App->scene_intro->GetSelected()->IsStatic() && !global.Equals(trans->trans_matrix_g))
 		{
-			trans->trans_matrix_g = global;
 			trans->SetGlobalMatrix(global);
 			//update childs
-
+			
 			if (go_selected->HasMesh())
 			{
-			go_selected->GetCMesh()->UpdateBoundingBox(global);
+				go_selected->GetCMesh()->UpdateBoundingBox(trans->trans_matrix_g);
 			}
 			if (go_selected->HasChilds())
 			{
-			trans->UpdateBBChilds(go_selected);
+				trans->UpdateBBChilds(go_selected);
 			}
 			if (go_selected->HasCam())
-			go_selected->GetCCamera()->Update();
+				go_selected->GetCCamera()->Update();
 			
 
 		}
