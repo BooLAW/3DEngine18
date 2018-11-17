@@ -340,11 +340,32 @@ std::string LoadManager::GetFileName(const char * path)
 
 std::string LoadManager::GetFolderNameFBX(const char * path)
 {
+	std::string input_path(path);
 	std::string dir_name;
 	std::string final_dir_name;
-	dir_name.append("Library/Models/");
-	dir_name.append(App->loading_manager->GetFileName(path));
-	final_dir_name = dir_name.substr(0, dir_name.length() - 4);
+
+	//Loding From Assets Folder
+	std::size_t found_it = input_path.find("Assets");
+	if (found_it != UINT_MAX)
+	{
+		dir_name.append("Library/Models/");
+		dir_name.append(App->loading_manager->GetFileName(path));
+		final_dir_name = dir_name.substr(0, dir_name.length() - 4);
+	}
+	else//Loading From Library Models folder (scene1.json)
+	{
+		dir_name.append("Library/Textures/");
+
+		uint cut1 = input_path.find("Models/") + 7;
+		uint cut2 = input_path.find_last_of("/");
+
+		dir_name.append(input_path.substr(cut1, cut2 - cut1));
+
+		final_dir_name = dir_name;
+	}
+
+	
+
 	return final_dir_name;
 }
 
@@ -417,7 +438,6 @@ void LoadManager::ImportTextures(const char * path,const char* full_path)
 			{
 				found_it = true;
 			}
-
 		}
 	}
 
