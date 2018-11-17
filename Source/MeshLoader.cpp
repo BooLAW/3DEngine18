@@ -156,16 +156,9 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 		//Get png Name from the scene based on the mesh material id;
 		aiString texture_name(my_mesh->material_path);
 			
-		//Create Materials Folder inside Library and FBX name folder inside Materials
-		std::string input_path(App->scene_intro->fbx_name);
-		std::string tex_folder_path;
-		tex_folder_path.append("Library/Textures");
-		CreateDirectory(tex_folder_path.c_str(), NULL);
 
-		//Creates BakerHouse Folder inside Texture folder
-		tex_folder_path.append("/");
-		tex_folder_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
-		CreateDirectory(tex_folder_path.c_str(), NULL);
+		
+
 
 		//Loading the texture on the mesh from the assets folder										
 		std::string tex_path("Assets/Textures/");
@@ -177,13 +170,8 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 			new_child->PushComponent((Component*)aux_cpm_mat);
 			
 		}
-
-		//Storing the texture inside the Library
-		std::string lib_tex_path("Library/Textures/");
-		lib_tex_path.append(App->loading_manager->EraseTerination(input_path.c_str()));
-		lib_tex_path.append("/");
-		lib_tex_path.append(texture_name.C_Str());
-		CopyFile(tex_path.c_str(), lib_tex_path.c_str(), NULL);
+		std::string importing_path = App->loading_manager->GetFolderNameFBX(my_mesh->file_path.c_str());
+		App->loading_manager->ImportTextures(my_mesh->material_path, importing_path.c_str());
 	}
 
 	ComponentMesh*  new_comp_mesh = new ComponentMesh();

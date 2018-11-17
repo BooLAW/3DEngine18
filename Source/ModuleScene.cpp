@@ -481,11 +481,13 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 				static int child_i = 0;
 				if ((*it)->IsRoot())
 				{					
-					std::string go_name;
-					go_name.append("GameObject_");
-					go_name.append(std::to_string(parent_i));
-					Value v_go_name(go_name.c_str(), allocator);
-					scene.AddMember(v_go_name, SaveGO((*it), allocator), allocator);
+					
+					//std::string go_name;
+					//go_name.append("GameObject_");
+					//go_name.append(std::to_string(parent_i));
+					//Value v_go_name(go_name.c_str(), allocator);
+					//scene.AddMember(v_go_name, SaveGO((*it), allocator), allocator);
+
 				}
 				if ((*it)->GetChild(i)->childs_list.size() > 0)
 				{
