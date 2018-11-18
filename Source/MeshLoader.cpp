@@ -93,9 +93,9 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 	uint cut3 = substract_file_format.find_last_of('.');
 	final_file_name = substract_file_format.substr(0, cut3);
 
-	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str(), mesh_number);
+	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str());
 
-	new_child->uid = App->loading_manager->CreateRandUID();
+	new_child->uid = App->loading_manager->GenerateNewUID();
 
 	//new_child->SetName(my_mesh->file_path.c_str());
 	new_child->num_meshes = mesh_number;
@@ -238,7 +238,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 			GO->comp_transform->SetTransform(pos, rot, scale);
 		}
-		GO->uid = App->loading_manager->CreateRandUID();
+		GO->uid = App->loading_manager->GenerateNewUID();
 		App->scene_intro->go_list.push_back(GO);
 	}
 	else
@@ -250,7 +250,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Create the Game Object
 				GameObject* new_child = new GameObject();
 				
-				new_child->uid = App->loading_manager->CreateRandUID();
+				new_child->uid = App->loading_manager->GenerateNewUID();
 
 				new_child->SetName(node->mName.C_Str());
 				new_child->num_meshes = node->mNumMeshes;
@@ -259,8 +259,13 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//MESH
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				
-				Mesh* my_mesh = LoadMeshBinary(node->mName.C_Str(), i);
-				
+				//Get Component Mesh from the resources
+				UINT32 mesh_uid = App->loading_manager->Find(node->mName.C_Str());
+				Resource* res = App->loading_manager->resources[mesh_uid];
+				ComponentMesh* mesh_res = (ComponentMesh*)res->GetComponent();
+				Mesh* my_mesh = mesh_res->mesh;
+
+
 				//Vertices----------------------
 				glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
@@ -367,7 +372,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				my_mesh->bounding_box = bb;
 				my_mesh->show_bb = false;*/
 
-				ComponentMesh*  new_comp_mesh = new ComponentMesh();
+				ComponentMesh*  new_comp_mesh = mesh_res;
 				new_comp_mesh->AddMesh(my_mesh);
 				new_comp_mesh->SetOwner(new_child);
 				new_comp_mesh->SetType(ComponentType::MESH);				
@@ -473,6 +478,7 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 
 	float3* vertices = (float3*)ai_mesh->mVertices;
 	float* tex_points = new float[ai_mesh->mNumVertices * 3];
+
 	//We store the number of vertices inside an array
 	uint header[7] = { (uint)ai_mesh->mNumVertices * 3, ai_mesh->mNumVertices ,num_mesh};
 
@@ -585,14 +591,21 @@ bool MeshLoader::SaveMeshBinary(const aiScene * scene, const aiNode * node, int 
 	return false;
 }
 
-Mesh * MeshLoader::LoadMeshBinary(const char* file_path, int num_mesh)
+Mesh * MeshLoader::LoadMeshBinary(const char* file_path)
 {
 	Mesh* ret = new Mesh();
 	std::string final_file_name;
+	std::string input_path(file_path);
+
 	final_file_name.append(App->scene_intro->folder_path.c_str());
 	final_file_name.append("/");
 	final_file_name.append(file_path);
-	final_file_name.append(".lw");
+	//Scene does not load the format hence the if
+	if (App->loading_manager->GetTermination(file_path) != "lw")
+	{
+		final_file_name.append(".lw");
+	}
+
 	ret->file_path.append(final_file_name.c_str());
 	
 	//creates a file

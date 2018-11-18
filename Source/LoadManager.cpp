@@ -38,7 +38,7 @@ void LoadManager::Load(const char * path)
 			mesh_loader->LoadMesh(path);
 
 			App->scene_intro->has_meshes = true;
-			unique_fbx_path = path;
+			//unique_fbx_path = path;
 		}
 		else
 		{
@@ -218,11 +218,37 @@ bool LoadManager::CleanUp()
 	return false;
 }
 
-Resource::Resource(const char * name, resourceType type, INT32 uid)
+Resource::Resource(const char* path, resourceType type, INT32 uid)
 {
-	this->type = type;
-	this->name.append(name);
+	switch (type)
+	{
+		case RESOURCE_MESH:
+		{
+			this->type = type;
+			this->comp = (Component*) new ComponentMesh();
+			ComponentMesh* aux_mesh = (ComponentMesh*)comp;
+			aux_mesh->mesh = App->loading_manager->mesh_loader->LoadMeshBinary(App->loading_manager->GetFileName(path).c_str());
+			break;
+		}
+	}
+	this->path = path;
 	this->id = uid;
+}
+
+Resource * Resource::CreateNewResource(const char* path, resourceType type)
+{
+	Resource* ret = nullptr;
+	INT32 uid = App->loading_manager->GenerateNewUID();
+	switch (type) {
+	case RESOURCE_MESH:
+		{
+			ret = new Resource(path, type, uid);	
+			break; 
+		}
+	}
+	if (ret != nullptr)
+		App->loading_manager->resources[uid] = ret;
+	return ret;
 }
 
 Resource::~Resource()
@@ -231,8 +257,13 @@ Resource::~Resource()
 
 std::string Resource::GetName()
 {
+	return this->path;
+}
 
-	return this->name;
+Component * Resource::GetComponent()
+{
+
+	return this->comp;
 }
 
 resourceType Resource::GetType()
@@ -246,12 +277,15 @@ void AssimpLog(const char * message, char * user)
 }
 UINT32 LoadManager::Find(const char * path)
 {
+	UINT32 ret;
 	for (std::map<UINT32, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		const char* name = it->second->GetName().c_str();		
-		if (strcmp(name, path))
+		std::string name = it->second->GetName().c_str();	
+		std::string compare = App->loading_manager->EraseTerination(App->loading_manager->GetFileName(name.c_str()).c_str());
+		bool comp = strcmp(compare.c_str(), path);
+		if (comp == false)
 		{
-			return it->first;
+			return ret = it->first;// it->first;
 		}		
 	}
 	return NULL;
@@ -263,18 +297,17 @@ UINT32 LoadManager::ImportFile(const char* new_file_path, bool force)
 	{
 		resourceType type;
 		type = RESOURCE_MESH;
-		UINT32 res_uid = CreateRandUID();
-		
-		Resource res = Resource(new_file_path, type,res_uid);
-		
-		resources.insert(std::pair<UINT32, Resource*>(res_uid, &res));	
 
-		resources; 
-		return res_uid;
+		Resource* res = new Resource(new_file_path, type, GenerateNewUID());
+		
+		resources.insert(std::pair<UINT32, Resource*>(res->id, res));	
+
+
+		return res->id;
 	}
 	return NULL;	
 }
-UINT32 LoadManager::CreateRandUID()
+UINT32 LoadManager::GenerateNewUID()
 {
 	//Create Random UID for mesh Root
 	unsigned int max_int = UINT_MAX;

@@ -89,7 +89,7 @@ bool ModuleScene::Start()
 			App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(), false);
 		}
 	}
-
+	App->loading_manager->resources;
 	//Load Warrior
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 

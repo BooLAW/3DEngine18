@@ -23,7 +23,7 @@ public:
 	bool LoadMesh(const std::string& file_name, bool create_go = true);	
 	bool SaveSceneMeshesLW(const aiScene* scene, aiNode* node, const std::string &path);	
 	bool SaveMeshBinary(const aiScene* scene, const aiNode* node,int num_mesh, const char* path);
-	Mesh* LoadMeshBinary(const char* file_path, int num_mesh);
+	Mesh* LoadMeshBinary(const char* file_path);
 	bool SaveMesh(const aiScene* scene, aiNode* node, const char* path);
 	bool SaveMeshJson(const aiScene* scene, aiNode* node, Document* config);
 	Mesh* LoadSceneMeshJson(std::string file_name,const aiNode* node);
