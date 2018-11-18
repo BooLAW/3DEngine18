@@ -6,8 +6,6 @@
 #include "PanelConsole.h"
 #include <map>
 
-
-
 enum resourceType
 {
 	RESOURCE_MESH,
@@ -38,7 +36,7 @@ public:
 	void Load(const char* path);
 
 	void LoadAssetsFolder();
-	void CheckFiles(std::string folder_path);
+	void StoreFilesPath(std::string folder_path);
 
 	//UIDs methods
 	UINT32 Find(const char* path);

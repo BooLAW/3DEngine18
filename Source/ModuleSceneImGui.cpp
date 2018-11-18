@@ -496,6 +496,7 @@ void ModuleSceneGui::CreateMainMenu()
 				
 				if (ImGui::MenuItem("Load")) 
 				{ 
+					App->scene_intro->LoadScene(".\\Assets\\Scenes\\scene1.json");
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[2]);
 					want_to_load = true; 
 				}
