@@ -155,11 +155,7 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 	{
 		//Get png Name from the scene based on the mesh material id;
 		aiString texture_name(my_mesh->material_path);
-			
-
 		
-
-
 		//Loading the texture on the mesh from the assets folder										
 		std::string tex_path("Assets/Textures/");
 		if (texture_name.length > 0)
@@ -277,7 +273,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				//Indices--------------------------
-				if (mesh->HasFaces())
+				if (my_mesh->num_vertices != 0) //Has Faces()
 				{
 					my_mesh->material_index = mesh->mMaterialIndex;
 					my_mesh->num_normal = my_mesh->num_vertices;
@@ -304,7 +300,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					CONSOLE_LOG_WARNING("Mesh has no Faces");
 
 				//Tex Coords-------------------
-				if (mesh->HasTextureCoords(0))
+				if (my_mesh->has_tex_coord == true) //Has Text Coords
 				{										
 					my_mesh->num_tex_coords = my_mesh->num_vertices/3;
 
@@ -321,7 +317,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				}				
 
 				//Load Materials
-				if (scene->HasMaterials())
+				if (my_mesh->material_index >= 0)
 				{
 					//Get png Name from the scene based on the mesh material id;
 					aiMaterial* mat = scene->mMaterials[my_mesh->material_index];				
@@ -364,13 +360,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					lib_tex_path.append(texture_name.C_Str());
 					CopyFile(tex_path.c_str(), lib_tex_path.c_str(),NULL);				
 				}
-
-				//Set the Bounding Box for the DEBUG DRAW
-				/*/AABB bb;
-				bb.SetNegativeInfinity();
-				bb.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-				my_mesh->bounding_box = bb;
-				my_mesh->show_bb = false;*/
 
 				ComponentMesh*  new_comp_mesh = mesh_res;
 				new_comp_mesh->AddMesh(my_mesh);
