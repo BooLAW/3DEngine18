@@ -46,7 +46,7 @@ bool ModuleCamera3D::CleanUp()
 
 void ModuleCamera3D::DrawModuleConfig()
 {
-	//MODULE CAMERA ONLY DRAWS EDITOR CAMERA INFO, NOT CURRENT CAMERA INFO
+	//Drawing camera editor with ImGui
 	if (ImGui::CollapsingHeader("Camera"))
 	{
 		Camera* aux_cam = App->camera->editor_cam;
@@ -185,17 +185,18 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const float &speed)
 {
+	//Camera Movement inputs
 	float3 newPos(0, 0, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += editor_cam->frustum.front * speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= editor_cam->frustum.front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += editor_cam->frustum.front * speed; //Forward
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= editor_cam->frustum.front * speed; //Backwards
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->frustum.WorldRight() * speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->frustum.WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->frustum.WorldRight() * speed; //Left
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->frustum.WorldRight() * speed; //Right
 
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -=  speed;
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y +=  speed;
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -=  speed; //Down
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y +=  speed; //Up
 	if(!newPos.IsZero())
 		editor_cam->frustum.Translate(newPos);
 
@@ -363,10 +364,10 @@ void ModuleCamera3D::CameraMovement(float dt)
 	float speed = speed_base * dt;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 2.0f * dt * speed_base;
-	//WASD MOVEMENT
+	//wasd movement
 
-	// MOUSE MOTION ----------------
-	// ROTATION
+	// Mouse Motion----------------
+	// Rotation
 	if (App->imgui->scene->MouseOver() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		HandleMouse(dt);
@@ -374,7 +375,8 @@ void ModuleCamera3D::CameraMovement(float dt)
 	}
 	if (App->imgui->scene->MouseOver() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT))
 		Orbit(dt);
-	//MOUSE WHEEL
+
+	//Mouse wheel
 	int wheel = App->input->GetMouseZ();
 	float wheel_speed = wheel_speed_base * dt * 100;
 	if (App->imgui->scene->MouseOver() && App->input->GetMouseZ() != 0)

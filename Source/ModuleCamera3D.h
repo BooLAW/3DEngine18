@@ -22,6 +22,7 @@ public:
 
 	void CameraMovement(float dt);
 
+	//Camera orders
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);
 	void Move(const float &speed);
@@ -42,6 +43,8 @@ public:
 
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
+
+	//Creation Camera Methods
 	void AdaptCamera(AABB bounding_box,float3 transformpos);
 	void AdaptCamera(float3 transformpos);
 	void MoveCam(const float3 &speed);
@@ -51,6 +54,7 @@ public:
 	Camera* GetEditorCam()const;
 	void StartEditorCamera();
 	void StartNewCamera();
+
 	//MousePicking
 	void CreateRayTest(int x, int y);
 	bool CheckMouseInWindow(int x, int y);
@@ -63,9 +67,10 @@ private:
 
 
 public:
-	//active camera when playing game
+	//Game Camera
 	GameObject* current_game_camera = nullptr;
-	//camera of the scene in the editor
+
+	//Editor Camera
 	Camera* editor_cam = nullptr;
 	bool draw_frustum = false;
 	bool draw_mouse_ray = true;
