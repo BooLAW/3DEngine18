@@ -224,9 +224,13 @@ Resource::Resource(const char* path, resourceType type, INT32 uid)
 	{
 		case RESOURCE_MESH:
 		{
+			Component* aux_comp = new Component();
+			
+			
 			this->type = type;
 			this->comp = (Component*) new ComponentMesh();
 			ComponentMesh* aux_mesh = (ComponentMesh*)comp;
+			
 			aux_mesh->mesh = App->loading_manager->mesh_loader->LoadMeshBinary(App->loading_manager->GetFileName(path).c_str());
 			break;
 		}
