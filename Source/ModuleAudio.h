@@ -62,5 +62,4 @@ public:
 	int music_volume = 128;
 
 };
-
-#endif // __ModuleAudio_H__
+#endif

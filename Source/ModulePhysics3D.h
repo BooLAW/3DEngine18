@@ -1,7 +1,6 @@
 #ifndef __MODULE_PHYSICS_3D__
 #define __MODULE_PHYSICS_3D__
 
-
 #include "Module.h"
 #include "Globals.h"
 
@@ -14,9 +13,11 @@ public:
 	bool Init();
 	bool Start();
 	void DrawModuleConfig()override;
+
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
+
 	bool CleanUp();
 
 	void CreateSphere(float3 position, int radius);
@@ -24,15 +25,11 @@ public:
 	std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	
-	private:
-
+private:
 	bool debug;
-
 	
 	std::vector<AABB> cube_list;
 	std::vector<Sphere> spheres_list;
-
 };
-
 #endif
 

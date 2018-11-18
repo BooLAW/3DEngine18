@@ -20,11 +20,9 @@ ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module( start_enabled)
 	
 }
 
-// Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
-// Called before render is available
 bool ModuleRenderer3D::Init()
 {	
 	CONSOLE_LOG_INFO("Creating 3D Renderer context");
@@ -40,6 +38,7 @@ bool ModuleRenderer3D::Init()
 	}
 	//Init GLEW
 	glewInit();
+
 	//Info LOG
 	CONSOLE_LOG_INFO("Using Glew %s", glewGetString(GLEW_VERSION));
 	CONSOLE_LOG_INFO("Vendor: %s", glGetString(GL_VENDOR));
@@ -48,9 +47,6 @@ bool ModuleRenderer3D::Init()
 	CONSOLE_LOG_INFO("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	if(ret == true)
 	{
-		//Reset Projection Matrix
-		/*glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();*/
 		//Check for error
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
@@ -58,10 +54,6 @@ bool ModuleRenderer3D::Init()
 			CONSOLE_LOG_ERROR("Error initializing OpenGL! %s\n",gluErrorString(error));
 			ret = false;
 		}
-
-		//Reset Modelview Matrix
-		/*glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();*/
 
 		//Check for error
 		error = glGetError();
@@ -90,6 +82,7 @@ bool ModuleRenderer3D::Init()
 		
 	}
 	SDL_GL_SetSwapInterval(0);
+
 	// Projection matrix for
 	App->profiler.SaveInitData("Render");
 	return ret;
@@ -130,9 +123,10 @@ void ModuleRenderer3D::DrawModuleConfig()
 
 }
 
-// PreUpdate: clear buffer
+
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	// PreUpdate: clear buffer
 	App->profiler.StartTimer("Render");
 	App->isVsyncActive();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -153,9 +147,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-// PostUpdate present buffer to screen
+
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	// PostUpdate present buffer to screen
 	//Wireframe Mode
 	if (attributes.wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -172,7 +167,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		SetNormalAttributes();
 	}
 	
-	//Bind editorCam
+	//Bind Editor Cam
 	if (App->camera->GetEditorCam() != nullptr && App->camera->GetEditorCam()->viewport_texture != nullptr)
 	{
 
@@ -184,11 +179,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		glLoadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(App->camera->GetEditorCam()->GetViewMatrix());
-		//GO
+
+		//Game Objects
 		App->scene_intro->DrawGameObjects();
 		
 	}
-	//Bind editorCam
+
+	//Bind Game Cam
 	if (App->camera->GetCurrentCam() != nullptr && App->camera->GetCurrentCam()->viewport_texture != nullptr)
 	{
 
@@ -200,10 +197,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		glLoadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(App->camera->GetCurrentCam()->GetViewMatrix());
-		//GO
+
+		//Gambe Objects
 		App->scene_intro->DrawGameObjects();
 	}
-	//IMGUI
+
+	//ImGui
 	App->imgui->DrawImGui();
 	SetSceneLights();
 	
@@ -213,7 +212,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
 	CONSOLE_LOG_INFO("Destroying 3D Renderer");
@@ -222,7 +220,6 @@ bool ModuleRenderer3D::CleanUp()
 
 	return true;
 }
-
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
@@ -362,7 +359,7 @@ void ModuleRenderer3D::CPUCapabilities()
 
 void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 {
-	//wireframe
+	//Wireframe
 	if (attributes.wireframe)
 	{
 		if (activate_sound)
@@ -387,7 +384,7 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 	}
 		
 
-	//color_material
+	//Color Material
 	if (attributes.color_material)
 	{
 		if (activate_sound)
@@ -407,7 +404,7 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 		glDisable(GL_COLOR_MATERIAL);
 	}
 		
-	//depth test
+	//Depth Test
 	if (attributes.depth_test)
 	{
 		if (activate_sound)
@@ -426,7 +423,8 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 		App->audio->renderer_tick_arr[5] = FALSEBOOL;
 		glDisable(GL_DEPTH_TEST);
 	}
-	//lighting
+
+	//Lighting
 	if (attributes.lighting)
 	{
 		if (activate_sound)
@@ -446,7 +444,7 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 		glDisable(GL_LIGHTING);
 	}
 		
-	//cull test
+	//Cull Test
 	if (attributes.cull_face)
 	{
 		if (activate_sound)
@@ -466,7 +464,7 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 		glDisable(GL_CULL_FACE);
 	}
 	
-	//texture
+	//Texture
 	if (attributes.texture)
 	{
 		if (activate_sound)
@@ -485,7 +483,8 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 		App->audio->renderer_tick_arr[11] = FALSEBOOL;
 		glDisable(GL_TEXTURE_2D);
 	}
-	//debug draw
+
+	//Debug Draw
 	if (activate_sound)
 	{
 		if (attributes.debug_draw_atribute)
@@ -500,10 +499,6 @@ void ModuleRenderer3D::UpdateAttributes(bool activate_sound)
 		App->audio->renderer_tick_arr[14] = FALSEBOOL;
 		App->audio->renderer_tick_arr[13] = FALSEBOOL;
 	}
-	
-
-		
-
 }
 
 void ModuleRenderer3D::SetDebugAttributes()
@@ -546,6 +541,7 @@ bool ModuleRenderer3D::Save(Document& testconfig_w, FileWriteStream& os)
 bool ModuleRenderer3D::Load(Document* testconfig_r)
 {
 	Document ret;
+
 	ret.Parse(App->loadBuf);
 	ret.IsObject();
 	attributes.wireframe = ret["renderer"]["Wireframe"].GetBool();
