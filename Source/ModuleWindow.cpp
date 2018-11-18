@@ -114,8 +114,7 @@ void ModuleWindow::DrawModuleConfig()
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[0]);
 
 		ImGui::Text("Size configuration:");
-		if (size_modified == true)
-			Resize(width, height);
+		
 		if (ImGui::DragInt("Width", &width, 1, 1, 10000))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[1]);
@@ -166,6 +165,8 @@ void ModuleWindow::DrawModuleConfig()
 	}
 	else
 		App->audio->window_tick_arr[0] = FALSEBOOL;
+	if (size_modified == true)
+		Resize(width, height);
 }
 
 bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)

@@ -117,7 +117,12 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_WINDOWEVENT:
 			{
 				if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+				{
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+					App->window->size_modified = true;
+					App->window->width = e.window.data1;
+					App->window->height = e.window.data2;
+				}
 			}
 			break;
 		}
@@ -125,7 +130,6 @@ update_status ModuleInput::PreUpdate(float dt)
 	App->profiler.SaveRunTimeData("Input");
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
-
 	return UPDATE_CONTINUE;
 }
 
