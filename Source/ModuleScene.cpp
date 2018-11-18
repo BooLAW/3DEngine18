@@ -360,7 +360,7 @@ void ModuleScene::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Scene"))
 	{
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->input_tick_arr[0]);
+		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->input_tick_arr[1]);
 		ImGui::Text("Octree");
 		ImGui::Separator();
 		ImGui::Spacing();
@@ -402,7 +402,7 @@ void ModuleScene::DrawModuleConfig()
 				ImGui::Text("Select a GameObject to show its info");			
 	}
 	else
-		App->audio->input_tick_arr[0] = FALSEBOOL;
+		App->audio->input_tick_arr[1] = FALSEBOOL;
 
 }
 
