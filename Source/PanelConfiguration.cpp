@@ -124,7 +124,7 @@ void PanelConfiguration::Application()
 
 		static char tmp_string3[4096];
 		final_mem = stats.peakActualMemory;
-		final_mem = final_mem / 204800;
+		final_mem = final_mem / 102400;
 
 		if (mem_log[IM_ARRAYSIZE(mem_log)] != final_mem)
 		{			
@@ -145,7 +145,7 @@ void PanelConfiguration::Application()
 		}
 		sprintf_s(tmp_string3, 4096, "Memory: %f", (float)final_mem);
 
-		ImGui::PlotHistogram("##memoryalloc", mem_log, IM_ARRAYSIZE(mem_log), 0, tmp_string3, 0.0f, 16000.0f, ImVec2(310, 100));
+		ImGui::PlotHistogram("##memoryalloc", mem_log, IM_ARRAYSIZE(mem_log), 0, tmp_string3, 0.0f, 8000.0f, ImVec2(310, 100));
 		last_mem = stats.peakActualMemory;
 		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
 		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
