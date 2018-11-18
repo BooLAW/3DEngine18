@@ -679,6 +679,13 @@ void ModuleSceneGui::CreateMainMenu()
 						}
 						else
 							App->audio->menu_tick_arr[26] = FALSEBOOL;
+						if (ImGui::MenuItem("ImGuizmo Code"))
+						{
+							App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[34]);
+							App->OpenWebPage("https://github.com/CedricGuillemet/ImGuizmo");
+						}
+						else
+							App->audio->menu_tick_arr[34] = FALSEBOOL;
 						ImGui::EndMenu();
 					}
 					else
