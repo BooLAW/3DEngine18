@@ -1,4 +1,3 @@
-
 #ifndef __MODULE_RENDERER_3D__
 #define __MODULE_RENDERER_3D__
 
@@ -33,7 +32,8 @@ public:
 	void SetSceneLights();
 	void CPUCapabilities();
 	void UpdateAttributes(bool activate_sound = true);
-	//DEBUG OPTIONS
+
+	//Debug Options
 	void SetDebugAttributes();
 	void SetNormalAttributes();
 	bool Save(Document& config_w, FileWriteStream& os);
@@ -42,10 +42,14 @@ public:
 public:
 
 	Light lights[MAX_LIGHTS];
+
 	SDL_GLContext context;
+
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
 	RenderAttributes attributes;
+
 	//RENDERING FLAGS
 	bool show_plane = true;
 	bool debug_draw = false;

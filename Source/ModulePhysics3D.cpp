@@ -9,30 +9,21 @@ ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 
 }
 
-// Destructor
 ModulePhysics3D::~ModulePhysics3D()
 {
 
 }
 
-// Render not available yet----------------------------------
 bool ModulePhysics3D::Init()
 {
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
-
 	return ret;
 }
 
-// ---------------------------------------------------------
 bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
-
-
-
-	
-
 	return true;
 }
 
@@ -40,33 +31,24 @@ void ModulePhysics3D::DrawModuleConfig()
 {
 }
 
-// ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
-{
-	
-
+{	
 	return UPDATE_CONTINUE;
 }
 
-// ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
-
 	return UPDATE_CONTINUE;
 }
 
-// ---------------------------------------------------------
 update_status ModulePhysics3D::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModulePhysics3D::CleanUp()
 {
 	CONSOLE_LOG_INFO("Destroying 3D Physics simulation");
-
-	
 
 	return true;
 }
