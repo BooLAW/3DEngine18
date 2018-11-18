@@ -54,3 +54,4 @@ Engine Features
 
 --> [OpenGL](https://www.opengl.org/documentation/): For the render of 3D models and textures.
 
+--> [Dirent](https://github.com/tronkko/dirent): For iterating thought the files of the working directory.
