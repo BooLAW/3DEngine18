@@ -14,12 +14,10 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
-
 	App->profiler.StartTimer("Audio");
 	CONSOLE_LOG_INFO("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(SDL_WINDOW_SHOWN);
-	
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
@@ -56,10 +54,6 @@ bool ModuleAudio::Init()
 		input_tick_arr.push_back(TRUEBOOL);
 		menu_tick_arr.push_back(TRUEBOOL);
 	}
-
-
-
-	
 
 	App->profiler.SaveInitData("Audio");
 
@@ -115,57 +109,6 @@ void ModuleAudio::DrawModuleConfig()
 	}
 	else
 		App->audio->audio_tick_arr[0] = FALSEBOOL;
-}
-
-// Play a music file
-bool ModuleAudio::PlayMusic(const char* path, float fade_time)
-{
-	bool ret = true;
-	
-	if(music != NULL)
-	{
-		if(fade_time > 0.0f)
-		{
-			Mix_FadeOutMusic((int) (fade_time * 1000.0f));
-		}
-		else
-		{
-			Mix_HaltMusic();
-		}
-
-		// this call blocks until fade out is done
-		Mix_FreeMusic(music);
-	}
-	
-	music = Mix_LoadMUS(path);
-
-	if(music == NULL)
-	{
-		CONSOLE_LOG_ERROR("Cannot load music %s. Mix_GetError(): %s\n",path, Mix_GetError());
-		ret = false;
-	}
-	else
-	{
-		if(fade_time > 0.0f)
-		{
-			if(Mix_FadeInMusic(music, -1, (int) (fade_time * 1000.0f)) < 0)
-			{
-				CONSOLE_LOG_ERROR("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
-				ret = false;
-			}
-		}
-		else
-		{
-			if(Mix_PlayMusic(music, -1) < 0)
-			{
-				CONSOLE_LOG_ERROR("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
-				ret = false;
-			}
-		}
-	}
-
-	CONSOLE_LOG_INFO("Successfully playing %s",path);
-	return ret;
 }
 
 bool ModuleAudio::PlayFx(unsigned int id, BoolList* tick_array, uint volume, int repeat)

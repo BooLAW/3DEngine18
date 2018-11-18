@@ -48,6 +48,7 @@ bool ModuleScene::Start()
 	//-----------------------------
 	srand(time(NULL));
 
+	//Creating Root Game object
 	scene_root = new GameObject();
 	scene_root->SetName("ROOT");
 	scene_root->SetRootGoFlag(true);
@@ -60,26 +61,27 @@ bool ModuleScene::Start()
 	scene_root->SetUID(1355249013);
 	scene_root->SetParentUID(NULL);
 	scene_root->parent = NULL;
-	
-	
+		
 	go_list.push_back(scene_root);
 
+	//Create octree
 	octree.Create(float3::zero, float3::zero);
 	octree.update_octree = true;
 	draw_octree = false;
 
+	//Creating Editor Camera
 	App->camera->StartEditorCamera();
 
+	//Creating Game Camera
 	GameObject* new_cam = CreateMainCamera();
 	go_list.push_back(new_cam);
 	scene_root->AddChild(new_cam);
-	//new_cam->SetParent(scene_root);
 	if (new_cam->HasCam())
 		App->camera->cams_list.push_back(new_cam);
 	App->camera->SetCurrentCam(new_cam);
 	App->camera->StartNewCamera();
-	//go_list.push_back(App->camera->editor_camera);
-	
+
+	//Create Library folder
 	for (int i = 0; App->loading_manager->load_paths.size() > i; i++)
 	{
 		if (App->loading_manager->GetTermination(App->loading_manager->load_paths[i].c_str()) == "fbx" ||
@@ -89,22 +91,12 @@ bool ModuleScene::Start()
 			App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(), false);
 		}
 	}
-	App->loading_manager->resources;
-	//Load Warrior
-	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
-	////Load Baker HOuse
-	//App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
-	////Load Street
+	//Load Street
 	/*App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";*/
 	
-	//Loading Scene
-	//App->loading_manager->Load(".\\Assets\\Scenes\\scene1.json");
-
-
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
 }
@@ -146,7 +138,6 @@ void ModuleScene::DrawGameObjects()
 		base_plane.color = White;
 		base_plane.Render();
 	}
-	//TODO PAU
 
 	//Draw Static GameObjects
 	for (std::list<GameObject*>::iterator it = octree_objects.end(); it != octree_objects.end(); it++)
@@ -346,8 +337,7 @@ void ModuleScene::DrawHierarchy()
 			{
 				root_childs = (*it)->childs_list;
 			}
-		}
-		//std::vector<GameObject*> root_childs = scene_root->childs_list;
+		}		
 
 		for (std::vector<GameObject*>::iterator it = root_childs.begin(); it != root_childs.end(); it++)
 		{

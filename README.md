@@ -4,6 +4,31 @@ It's a 3D engine made for degree of Videogames Programming and Design in the sub
 
 Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 
+Engine Features
+
+Josep Pi Serra
+- Created our own file format
+- Serialization of:
+	- Game Objects and Components
+	- Scene
+- Resource Manager:
+	- Library is loaded each time the engine starts if there is none.
+	- Storing all the meshes in resources
+	
+Innovation
+- Sound 
+
+Pau Bonet Vall Llebrera
+- Mouse Picking
+- Space Partitioning (Octree)
+- Camera
+- Engine Structure
+- Time Management
+
+Innovation
+- Profiler
+
+
 ## Libraries Used
 
 

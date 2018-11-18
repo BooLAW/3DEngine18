@@ -11,13 +11,11 @@ ModuleInput::ModuleInput( bool start_enabled) : Module( start_enabled)
 	memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
 }
 
-// Destructor
 ModuleInput::~ModuleInput()
 {
 	delete[] keyboard;
 }
 
-// Called before render is available
 bool ModuleInput::Init()
 {
 	CONSOLE_LOG_INFO("Init SDL input event system");
@@ -34,7 +32,6 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-// Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
 	App->profiler.StartTimer("Input");

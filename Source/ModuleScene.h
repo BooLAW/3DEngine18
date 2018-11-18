@@ -22,6 +22,8 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int RandInt(int min, int max);
 	float RandFloat(float min, float max);
+
+	//Game Object Methods
 	GameObject* CreateNewGameObject();
 	void DrawGameObjects();
 	void ClearScene();
@@ -36,7 +38,7 @@ public:
 	void RemoveFromOctree(GameObject * go);
 	void CollectOctreeIntersections(std::list<Mesh*>& item_elements,AABB* bounding_box);
 
-	//UI
+	//ImGui
 	void DrawHierarchy();
 	void DrawModuleConfig()override;
 	void DrawChilds(GameObject* parent);
@@ -55,7 +57,7 @@ public:
 	void ClickSelection(LineSegment mouse_ray);
 
 public:
-	//Scene GameObjects(Now only meshes)
+	//Scene GameObjects
 	std::vector<GameObject*> go_list;	
 	std::vector<GameObject*> to_delete;
 	std::list<GameObject*> octree_objects;
