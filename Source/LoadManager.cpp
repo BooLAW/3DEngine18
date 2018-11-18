@@ -9,7 +9,7 @@
 #include <direct.h>
 #define GetCurrentDir _getcwd
 
-#include "dirent.h"
+#include "Dirent/dirent.h"
 #include <sys/types.h>
 
 
