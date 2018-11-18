@@ -6,7 +6,7 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 
 Engine Features
 
-Josep Pi Serra
+# Josep Pi Serra
 - Created our own file format
 - Serialization of:
 	- Game Objects and Components
@@ -15,18 +15,22 @@ Josep Pi Serra
 	- Library is loaded each time the engine starts if there is none.
 	- Storing all the meshes in resources
 	
-Innovation
+## Innovation
 - Sound 
 
-Pau Bonet Vall Llebrera
+# Pau Bonet Vall Llebrera
 - Mouse Picking
-- Space Partitioning (Octree)
-- Camera
+	- ImGuizmo
+- Space Partitioning (with Octree)
+- Camera 
 - Engine Structure
+	- Components & Childs Structure
+	- Deleting & Clearing GameObjects
 - Time Management
+	- Clocks
+	- Game Panel
 
-Innovation
-- Profiler
+## Innovation
 
 
 ## Libraries Used
@@ -50,12 +54,3 @@ Innovation
 
 --> [OpenGL](https://www.opengl.org/documentation/): For the render of 3D models and textures.
 
-## Innovation
-
--> Profiler: Basic Profiler that gives the ms expend in the update and the init of each core module.
-
--> Audio: There are FX on when opening Collapsing Headers,Menu Items,...
-
--> Scene Panel: The Scene Panel is a Multisample anti-aliasing texture, generated from opengl.
-
--> Docking: Using ImguiDocking testing branch(not sure if its innovation)
