@@ -30,7 +30,19 @@ Engine Features
 	- Clocks
 	- Game Panel
 
-## Innovation
+# Controls
+Editor Camera Controls
+- W = Forward
+- A = Left
+- S = Backwards
+- D = Right
+- Q = Down
+- E = Up
+
+- Escape = Quit Program
+
+
+
 
 
 ## Libraries Used
