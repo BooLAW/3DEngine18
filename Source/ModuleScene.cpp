@@ -347,7 +347,6 @@ void ModuleScene::DrawModuleConfig()
 		ImGui::Text("Octree");
 		ImGui::Separator();
 		ImGui::Spacing();
-		ImGui::Checkbox("   DrawOctree", &draw_octree);
 
 			ImGui::Text("   Static meshes:"); ImGui::SameLine();
 			ImGui::Text(" %d", octree_objects.size());

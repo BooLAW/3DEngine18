@@ -35,7 +35,6 @@ bool ModuleSceneGui::Init()
 	App->profiler.StartTimer("UI");
 	bool ret = true;
 	ImGui_ImplSdl_Init(App->window->window);
-	SetImguiStyle();
 	ImGui::InitDock();
 	//Add Panels HERE
 	console = new PanelConsole();
@@ -85,8 +84,7 @@ update_status ModuleSceneGui::Update(float dt)
 	App->profiler.StartTimer("UI");
 	//RICARD: For a cleaner code, we decided to have a switch with the CreateMainMenu.
 	CreateMainMenu();
-	//ImGui::ShowMetricsWindow();
-	//ImGui::ShowTestWindow();
+	ChangeModeWithInput();
 	App->profiler.SaveRunTimeData("UI");
 	return UPDATE_CONTINUE;
 }
@@ -349,10 +347,12 @@ void ModuleSceneGui::DrawTools(uint flags)
 		ImGui::SameLine();
 		ImGui::PushItemWidth(50);
 		ImGui::DragFloat("s", &App->time_manager->time_scale,0.1,0.1,1.0);
-	}
-	
+		ImGui::SameLine();
+		ImGui::VerticalSeparator();
+		ImGui::SameLine();
+		ImGui::Checkbox("DrawOctree", &App->scene_intro->draw_octree);
 
-	
+	}
 	ImGui::End();
 }
 
@@ -436,6 +436,16 @@ void ModuleSceneGui::SetImguiStyle()
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.96f, 0.93f, 0.07f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
+}
+
+void ModuleSceneGui::ChangeModeWithInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		guizmo_operation = TRANSLATE;
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		guizmo_operation = ROTATE;
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+		guizmo_operation = SCALE;
 }
 
 void ModuleSceneGui::ShowOnlyScene()

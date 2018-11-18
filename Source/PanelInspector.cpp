@@ -45,7 +45,7 @@ void PanelInspector::Draw()
 		////Drawing ImGui
 		if (selected_go != nullptr)
 		{	
-			ImGui::Text("Name: %s", selected_go->GetName()); ImGui::SameLine();
+			ImGui::Text("Name: %s", selected_go->GetName()); 
 			
 			ImGui::Separator();
 		
@@ -60,7 +60,6 @@ void PanelInspector::Draw()
 				if (ImGui::Button("Delete"))
 				{
 					App->scene_intro->DeleteGameObject(selected_go);
-
 				}
 				ImGui::Separator();
 
