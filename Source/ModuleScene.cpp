@@ -94,15 +94,15 @@ bool ModuleScene::Start()
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
 	////Load Baker HOuse
-	//App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
+	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
 	////Load Street
 	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
 	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
 	
 	//Loading Scene
-	App->loading_manager->Load(".\\Assets\\Scenes\\scene1.json");
+	//App->loading_manager->Load(".\\Assets\\Scenes\\scene1.json");
 
 
 	App->profiler.SaveRunTimeData("Scene");
