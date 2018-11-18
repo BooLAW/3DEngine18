@@ -29,6 +29,8 @@ public:
 	void DeleteGameObjectsInList();
 	bool HasObjects();
 	GameObject* CreateMainCamera();
+	GameObject* CreateMainCamera(ComponentTransform* comp_trans);
+
 	//Octree
 	void AddToOctree(GameObject* go);
 	void RemoveFromOctree(GameObject * go);

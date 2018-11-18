@@ -94,12 +94,12 @@ bool ModuleScene::Start()
 	//App->loading_manager->Load(".//Assets//Models//warrior.FBX");
 
 	////Load Baker HOuse
-	App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
+	//App->loading_manager->Load(".\\Assets\\Models\\BakerHouse.fbx");
+	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\BakerHouse.fbx";
 
 	////Load Street
-	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
-	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
+	App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
 	
 	//Loading Scene
 	//App->loading_manager->Load(".\\Assets\\Scenes\\scene1.json");
@@ -300,6 +300,24 @@ GameObject* ModuleScene::CreateMainCamera()
 	return main_camera_go;
 }
 
+GameObject * ModuleScene::CreateMainCamera(ComponentTransform * comp_trans)
+{
+	GameObject* main_camera_go = new GameObject();
+	main_camera_go->SetName("Main Camera");
+	main_camera_go->comp_transform = comp_trans;
+	ComponentTransform* aux_transform = (ComponentTransform*)main_camera_go->components_list[0];
+	aux_transform->SetTransform(main_camera_go->comp_transform->GetTransform().pos, main_camera_go->comp_transform->GetTransform().rot, main_camera_go->comp_transform->GetTransform().scale);
+	ComponentCamera* cam_comp = new ComponentCamera();
+	cam_comp->cam->SetFarPlane(1000);
+	cam_comp->SetOwner(main_camera_go);
+	cam_comp->cam->draw_frustum = true;
+	
+	cam_comp->Update();
+	main_camera_go->PushComponent(cam_comp);
+
+	return main_camera_go;
+}
+
 void ModuleScene::AddToOctree(GameObject * go)
 {
 	octree.Insert(go);
@@ -408,11 +426,11 @@ void ModuleScene::DrawChilds(GameObject* parent)
 	// Set Selected on click
 	if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1) )
 	{
-			if (!ImGui::IsItemClicked(1) || !parent->IsSelected())
-			{
-				ResetSelected();
-				parent->SetSelected(true);							
-			}
+		if (!ImGui::IsItemClicked(1) || !parent->IsSelected())
+		{
+			ResetSelected();
+			parent->SetSelected(true);							
+		}
 		
 	}
 	// Draw childs recursive --
@@ -472,16 +490,6 @@ void ModuleScene::SaveScene(std::vector<GameObject*> go_list)
 				//Parent number
 				static int parent_i = 0;
 				static int child_i = 0;
-				if ((*it)->IsRoot())
-				{					
-					
-					//std::string go_name;
-					//go_name.append("GameObject_");
-					//go_name.append(std::to_string(parent_i));
-					//Value v_go_name(go_name.c_str(), allocator);
-					//scene.AddMember(v_go_name, SaveGO((*it), allocator), allocator);
-
-				}
 				if ((*it)->GetChild(i)->childs_list.size() > 0)
 				{
 					++parent_i;
@@ -600,8 +608,10 @@ void ModuleScene::LoadScene(const char* path)
 						}
 						float3 pos(stat[0], stat[1], stat[2]);
 						Quat rot(stat[3], stat[4], stat[5], stat[6]);
-						float3 scale(stat[7], stat[8], stat[9]);
+						float3 scale(stat[7], stat[8], stat[9]);						
 						new_go->comp_transform->SetTransform(pos, rot, scale);
+						
+						
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
 					{
@@ -629,8 +639,17 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "CAMERA") == 0)
 					{
+						new_go = CreateMainCamera(new_go->comp_transform);
+
+						new_go->parent_uid = go_list[0]->GetUID();
+
+						if (new_go->HasCam())
+							App->camera->cams_list.push_back(new_go);
+						App->camera->SetCurrentCam(new_go);
+						App->camera->StartNewCamera();
 
 					}
+
 				}
 			}
 		}
@@ -743,13 +762,20 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			}
 			case CAMERA:
 			{
-				//Value obj_comp_camera(kObjectType);
-				//ComponentCamera* com_camera_aux = (ComponentCamera*)go->components_list[i];
-				//Camera* camera_aux = com_camera_aux->cam;
-				////Value mesh_name(camera_aux->draw_frustum, allocator);
-				//obj_comp_camera.AddMember("darw_fustrum", camera_aux->draw_frustum, allocator);
-				//obj_comp_camera.AddMember("aspect_ratio", camera_aux->GetAspectRatio, allocator);
-				//obj_comp_camera.AddMember("game_camera", com_camera_aux->game_camera, allocator);
+				Value obj_comp_camera(kObjectType);
+				ComponentCamera* com_camera_aux = (ComponentCamera*)go->components_list[i];
+				Camera* camera_aux = com_camera_aux->cam;
+				//Value mesh_name(camera_aux->draw_frustum, allocator);
+				obj_comp_camera.AddMember("darw_fustrum", camera_aux->draw_frustum, allocator);
+				obj_comp_camera.AddMember("aspect_ratio", camera_aux->GetAspectRatio(), allocator);
+				obj_comp_camera.AddMember("far_plane", camera_aux->GetFarPlane(), allocator);
+				obj_comp_camera.AddMember("near_plane", camera_aux->GetNearPlane(), allocator);
+				obj_comp_camera.AddMember("vertical_fov", camera_aux->GetVerticalFOV(), allocator);
+				obj_comp_camera.AddMember("game_camera", com_camera_aux->game_camera, allocator);
+
+				//Adding data to the component
+				arr_comp.AddMember("CAMERA", obj_comp_camera, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
 
 				break;
 			}

@@ -49,6 +49,7 @@ Camera * ComponentCamera::GetCamera()
 void ComponentCamera::UpdateTransform()
 {
 	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
+	//ComponentTransform* trans = owner->comp_transform;
 	Transform my_owner_trans = trans->transform;
 	cam->frustum.pos = my_owner_trans.pos;
 
