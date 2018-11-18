@@ -65,10 +65,9 @@ void PanelInspector::Draw()
 
 			if (selected_go != nullptr)
 			{
-				if (ImGui::CollapsingHeader("Transform"))
+				if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 				{
 					selected_go->comp_transform->DrawInspectorInfo();
-
 				}
 
 				//Check if has Mesh
