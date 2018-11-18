@@ -50,15 +50,15 @@ bool ModuleScene::Start()
 
 	scene_root = new GameObject();
 	scene_root->SetName("ROOT");
-	scene_root->root_go = true;
+	scene_root->SetRootGoFlag(true);
 	float3 root_pos = float3::zero;
 	Quat root_rotation = Quat::identity;
 	float3 root_scale = float3::one;
 	scene_root->comp_transform->SetTransform(root_pos, root_rotation, root_scale);
 	scene_root->comp_transform->CalculateGlobalMatrix();
 
-	scene_root->uid = 1355249013;
-	scene_root->parent_uid = NULL;
+	scene_root->SetUID(1355249013);
+	scene_root->SetParentUID(NULL);
 	scene_root->parent = NULL;
 	
 	
@@ -165,12 +165,12 @@ void ModuleScene::DrawGameObjects()
 	//Draw Dynamic GameObjects
 	for (int i = 0; i < go_list.size(); i++)
 	{
-		if (go_list[i]->first_update && go_list[i]->HasMesh())
+		if (go_list[i]->GetFirstUpdate() && go_list[i]->HasMesh())
 		{
 			go_list[i]->comp_transform->UpdateTransformValues();
 			if (go_list[i]->HasMesh())
 				go_list[i]->GetCMesh()->UpdateBoundingBox(go_list[i]->comp_transform->trans_matrix_g);
-			go_list[i]->first_update = false;
+			go_list[i]->SetFirstUpdate(false);
 
 		}
 		if (!go_list[i]->IsStatic() &&go_list[i]->HasMesh())
@@ -185,7 +185,7 @@ void ModuleScene::DrawGameObjects()
 	}
 	//Octree
 	octree.DrawOctree(draw_octree);
-	if (App->camera->GetCurrentCam()->draw_frustum)
+	if (App->camera->GetCurrentCam()->IsFrustumActive())
 		App->camera->GetCurrentCam()->DrawFrustum();
 	if(App->camera->draw_mouse_ray)
 		App->camera->DrawRay();
@@ -294,7 +294,7 @@ GameObject* ModuleScene::CreateMainCamera()
 	ComponentCamera* cam_comp = new ComponentCamera();
 	cam_comp->cam->SetFarPlane(1000);
 	cam_comp->SetOwner(main_camera_go);
-	cam_comp->cam->draw_frustum = true;
+	cam_comp->cam->ActivateFrustum(true);
 	main_camera_go->PushComponent(cam_comp);
 	
 	return main_camera_go;
@@ -310,7 +310,7 @@ GameObject * ModuleScene::CreateMainCamera(ComponentTransform * comp_trans)
 	ComponentCamera* cam_comp = new ComponentCamera();
 	cam_comp->cam->SetFarPlane(1000);
 	cam_comp->SetOwner(main_camera_go);
-	cam_comp->cam->draw_frustum = true;
+	cam_comp->cam->ActivateFrustum(true);
 	
 	cam_comp->Update();
 	main_camera_go->PushComponent(cam_comp);
@@ -553,7 +553,7 @@ void ModuleScene::LoadScene(const char* path)
 				if (strcmp(m_go_itr->value.GetString(), "ROOT") == 0) //if it's root
 				{		
 					
-					new_go->root_go = true;
+					new_go->SetRootGoFlag(true);
 					new_go->SetName(m_go_itr->value.GetString());
 				}
 				else if (go_name.find("//") == 1)
@@ -641,7 +641,7 @@ void ModuleScene::LoadScene(const char* path)
 					{
 						new_go = CreateMainCamera(new_go->comp_transform);
 
-						new_go->parent_uid = go_list[0]->GetUID();
+						new_go->SetParentUID(go_list[0]->GetUID());
 
 						if (new_go->HasCam())
 							App->camera->cams_list.push_back(new_go);
@@ -663,7 +663,7 @@ void ModuleScene::LoadScene(const char* path)
 	//Add Parents and Childs
 	for (std::vector<GameObject*>::iterator go_itr = go_list.begin(); go_itr != go_list.end(); go_itr++)
 	{		
-		(*go_itr)->SetParent(go_list, (*go_itr)->parent_uid);
+		(*go_itr)->SetParent(go_list, (*go_itr)->GetParentUID());
 	}
 	
 	uint this_size = sizeof(App->scene_intro->go_list);
@@ -677,11 +677,11 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 	//Name of the object
 	Value name(go->name.c_str(), allocator);
 	data_go.AddMember("name", name, allocator);
-	data_go.AddMember("active_go", go->active, allocator);
+	data_go.AddMember("active_go", go->IsActive(), allocator);
 
 	//UIDs
-	data_go.AddMember("uid", go->uid, allocator);
-	data_go.AddMember("parent_uid", go->parent_uid, allocator);
+	data_go.AddMember("uid", go->GetUID(), allocator);
+	data_go.AddMember("parent_uid", go->GetParentUID(), allocator);
 
 	//Components of the object
 	if (go->components_list.size() > 0)
@@ -766,7 +766,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				ComponentCamera* com_camera_aux = (ComponentCamera*)go->components_list[i];
 				Camera* camera_aux = com_camera_aux->cam;
 				//Value mesh_name(camera_aux->draw_frustum, allocator);
-				obj_comp_camera.AddMember("darw_fustrum", camera_aux->draw_frustum, allocator);
+				obj_comp_camera.AddMember("darw_fustrum", camera_aux->IsFrustumActive(), allocator);
 				obj_comp_camera.AddMember("aspect_ratio", camera_aux->GetAspectRatio(), allocator);
 				obj_comp_camera.AddMember("far_plane", camera_aux->GetFarPlane(), allocator);
 				obj_comp_camera.AddMember("near_plane", camera_aux->GetNearPlane(), allocator);

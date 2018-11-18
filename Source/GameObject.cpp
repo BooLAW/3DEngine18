@@ -484,3 +484,43 @@ UINT32 GameObject::GetUID() const
 {
 	return uid;
 }
+
+UINT32 GameObject::GetParentUID() const
+{
+	return parent_uid;
+}
+
+void GameObject::SetRootGoFlag(bool flag)
+{
+	root_go = flag;
+}
+
+void GameObject::SetFirstUpdate(bool flag)
+{
+	first_update = flag;
+}
+
+void GameObject::SetNumMeshes(uint num)
+{
+	num_meshes = num;
+}
+
+uint GameObject::GetNumMeshes() const
+{
+	return num_meshes;
+}
+
+bool GameObject::GetFirstUpdate() const
+{
+	return first_update;
+}
+
+void GameObject::SetDrawNormals(bool flag)
+{
+	draw_normals = flag;
+}
+
+bool GameObject::GetDrawNormals() const
+{
+	return draw_normals;
+}

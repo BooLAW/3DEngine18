@@ -15,7 +15,6 @@ public:
 	void SetCulling(bool culling);
 	Frustum GetFrustum();
 
-	void SetPosition(const float3& new_pos);
 	void SetFront(const float3& front);
 	void SetUp(const float3& up);
 
@@ -51,11 +50,12 @@ public:
 	bool IsGameObjectInFrustum(AABB& bb, float3 translation);
 	TextureMSAA* viewport_texture;
 	Frustum frustum;
-	bool draw_frustum = false;
+	void ActivateFrustum(bool var);
+	bool IsFrustumActive()const;
 
 private:
 
-	
+	bool draw_frustum = false;
 	float	aspect_ratio = 0.0f;
 	float3 frustum_vertices[8];
 	bool	is_culling = true;

@@ -23,7 +23,6 @@ public:
 	void DrawNormals();
 	//AABB
 	AABB GetBB();
-	void ResizeBB(GameObject* bb_owner);
 
 	//COMPONENTS
 	Component* GetComponent(ComponentType type);
@@ -72,16 +71,24 @@ public:
 
 	void ClearRelations();
 	UINT32 GetUID()const;
+	UINT32 GetParentUID()const;
+	void SetRootGoFlag(bool flag);
+	void SetFirstUpdate(bool flag);
+	void SetNumMeshes(uint num);
+	uint GetNumMeshes()const;
+	bool GetFirstUpdate()const;
+	void SetDrawNormals(bool flag);
+	bool GetDrawNormals()const;
 public:
 	GameObject* parent;
 	std::string name = "GO_NAME";
 	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
 	ComponentTransform* comp_transform;
+private:
 	uint num_meshes;
 	UINT32 uid;
 	UINT32 parent_uid;
-	//flags
 	bool active = true;
 	bool static_go = false;
 	bool selected = false;

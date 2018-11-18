@@ -108,7 +108,7 @@ void ComponentTransform::DrawInspectorInfo()
 			UpdateTransformValues();
 			updated_outside = false;
 		}
-		if (updated_transform || owner->first_update)
+		if (updated_transform || owner->GetFirstUpdate())
 		{
 			UpdateTransformValues();
 			if (owner->HasMesh())
@@ -121,7 +121,7 @@ void ComponentTransform::DrawInspectorInfo()
 			if (owner->HasCam())
 				owner->GetCCamera()->Update();
 
-			owner->first_update = false;
+			owner->SetFirstUpdate(false);
 		}
 		
 		

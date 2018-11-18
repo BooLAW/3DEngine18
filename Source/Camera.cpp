@@ -223,6 +223,14 @@ bool Camera::IsGameObjectInFrustum(AABB& bb, float3 translation)
 	}
 	return ret;
 }
+void Camera::ActivateFrustum(bool var)
+{
+	draw_frustum = var;
+}
+bool Camera::IsFrustumActive() const
+{
+	return draw_frustum;
+}
 void Camera::HandleMouse(const float dt)
 {
 

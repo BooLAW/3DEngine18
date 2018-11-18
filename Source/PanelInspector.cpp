@@ -91,8 +91,9 @@ void PanelInspector::Draw()
 						ImGui::SameLine();
 						ImGui::Text("      %i", aux->num_tex_coords);
 						ImGui::Spacing();
-						ImGui::Checkbox("Draw Normals", &selected_go->draw_normals);
-
+						bool draw_n = selected_go->GetDrawNormals();
+						if(ImGui::Checkbox("Draw Normals", &draw_n))
+							selected_go->SetDrawNormals(draw_n);
 					}
 				}
 				//Check if it has Materials and then it draws it
@@ -131,7 +132,9 @@ void PanelInspector::Draw()
 					{
 						Camera* cam = selected_go->GetCamera();
 						//AR
-						ImGui::Checkbox("Show Frustum", &cam->draw_frustum);
+						bool frust = cam->IsFrustumActive();
+						if (ImGui::Checkbox("Show Frustum", &frust))
+							cam->ActivateFrustum(frust);
 					
 						ImGui::Separator();
 						//Frustum 

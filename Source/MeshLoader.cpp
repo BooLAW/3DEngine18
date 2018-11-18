@@ -95,10 +95,10 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 
 	Mesh* my_mesh = LoadMeshBinary(final_file_name.c_str());
 
-	new_child->uid = App->loading_manager->GenerateNewUID();
+	new_child->SetUID(App->loading_manager->GenerateNewUID());
 
 	//new_child->SetName(my_mesh->file_path.c_str());
-	new_child->num_meshes = mesh_number;
+	new_child->SetNumMeshes(mesh_number);
 	//Vertices----------------------
 	glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);
 	glBindBuffer(GL_ARRAY_BUFFER, my_mesh->vertices_id);
@@ -207,7 +207,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				if ((*it)->IsRoot())
 				{
 					GO->SetParent((*it));
-					GO->parent_uid = (*it)->uid;
+					GO->SetParentUID((*it)->GetUID());
 				}
 			}
 	
@@ -234,7 +234,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 			GO->comp_transform->SetTransform(pos, rot, scale);
 		}
-		GO->uid = App->loading_manager->GenerateNewUID();
+		GO->SetUID(App->loading_manager->GenerateNewUID());
 		App->scene_intro->go_list.push_back(GO);
 	}
 	else
@@ -246,10 +246,10 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				//Create the Game Object
 				GameObject* new_child = new GameObject();
 				
-				new_child->uid = App->loading_manager->GenerateNewUID();
+				new_child->SetUID(App->loading_manager->GenerateNewUID());
 
 				new_child->SetName(node->mName.C_Str());
-				new_child->num_meshes = node->mNumMeshes;
+				new_child->SetNumMeshes(node->mNumMeshes);
 				
 
 				//MESH
