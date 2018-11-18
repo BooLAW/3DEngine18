@@ -72,7 +72,6 @@ bool ModuleWindow::Init()
 	return ret;
 }
 
-// Called before quitting
 bool ModuleWindow::CleanUp()
 {
 	CONSOLE_LOG_INFO("Destroying SDL window and quitting all SDL systems");
@@ -108,7 +107,6 @@ void ModuleWindow::DrawModuleConfig()
 	else
 		SDL_SetWindowBordered(window, SDL_bool(true));
 
-
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[0]);
@@ -122,7 +120,6 @@ void ModuleWindow::DrawModuleConfig()
 			size_modified = true;
 		}
 			
-
 		if (ImGui::DragInt("Height", &height, 1, 1, 10000))
 		{
 			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->window_tick_arr[2]);
@@ -130,8 +127,6 @@ void ModuleWindow::DrawModuleConfig()
 			size_modified = true;
 		}
 			
-
-
 		if (ImGui::Button("Center Window"))
 		{
 			SDL_SetWindowPosition(window, DM.w / 2 - width / 2, DM.h / 2 - height / 2);
@@ -171,7 +166,6 @@ void ModuleWindow::DrawModuleConfig()
 
 bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
 {
-
 	Document::AllocatorType& allocator = config_w.GetAllocator();
 	Value test(kObjectType);
 
@@ -185,7 +179,6 @@ bool ModuleWindow::Save(Document& config_w, FileWriteStream& os)
 }
 bool ModuleWindow::Load(Document* config_r)
 {
-
 	Document ret;
 	ret.Parse(App->loadBuf);
 	ret.IsObject();
@@ -214,7 +207,6 @@ void ModuleWindow::BroadcastEvent(SDL_Event & event)
 {
 	switch (event.window.event)
 	{
-	case SDL_WINDOWEVENT_RESIZED:
 	case SDL_WINDOWEVENT_SIZE_CHANGED:
 	{
 		if (event.window.event == SDL_WINDOWEVENT_RESIZED)
@@ -224,8 +216,7 @@ void ModuleWindow::BroadcastEvent(SDL_Event & event)
 
 			App->renderer3D->OnResize(width, height);
 		}
-
+		break;
 	}
-	break;
 	}
 }

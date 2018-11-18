@@ -66,6 +66,7 @@ public:
 	bool want_to_load = false;
 	void ShowOnlyScene();
 	void ShowSTDPanels();
+
 	//Application
 	bool isVsyncActive = false;
 	bool quit = false;
@@ -76,7 +77,6 @@ public:
 	int isBlitedDisplay = panels.size();
 	ImVec2 panel_pos;
 	ImVec2 panel_size;
-
 
 	//Geometry Creator
 	int rad_aux = 0;
@@ -90,6 +90,7 @@ public:
 	float3 pos_aux;
 	float3 min_pos_aux;
 	float3 max_pos_aux;
+
 	//Panels
 	std::vector<Panel*> panels;
 
@@ -100,6 +101,7 @@ public:
 	PanelInspector* inspector = nullptr;
 	PanelScene* scene = nullptr;
 	PanelGame* game = nullptr;
+
 	//Guizmo
 	OPERATION guizmo_operation;
 	MODE guizmo_mode;

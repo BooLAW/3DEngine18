@@ -28,7 +28,6 @@ ModuleSceneGui::ModuleSceneGui(bool start_enabled) : Module( start_enabled)
 ModuleSceneGui::~ModuleSceneGui()
 {}
 
-// Load assets
 bool ModuleSceneGui::Init()
 {
 	CONSOLE_LOG_INFO("Loading gui assets");
@@ -58,7 +57,6 @@ bool ModuleSceneGui::Init()
 	return ret;
 }
 
-// Load assets
 bool ModuleSceneGui::CleanUp()
 {
 	CONSOLE_LOG_INFO("Unloading gui scene");
@@ -78,7 +76,7 @@ update_status ModuleSceneGui::PreUpdate(float dt)
 
 	return UPDATE_CONTINUE;
 }
-// Update
+
 update_status ModuleSceneGui::Update(float dt)
 {
 	App->profiler.StartTimer("UI");
@@ -94,7 +92,8 @@ update_status ModuleSceneGui::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 
 }
-void ModuleSceneGui::DrawImGui() {
+void ModuleSceneGui::DrawImGui() 
+{
 	App->renderer3D->SetUILights();
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
 	flags |= ImGuiWindowFlags_NoMove;
@@ -147,8 +146,8 @@ void ModuleSceneGui::DrawImGuizmo()
 		if (!App->scene_intro->GetSelected()->IsStatic() && !global.Equals(trans->trans_matrix_g))
 		{
 			trans->UpdateTransformFromGuizmo(global);
+
 			//update childs
-			
 			if (go_selected->HasMesh())
 			{
 				go_selected->GetCMesh()->UpdateBoundingBox(trans->trans_matrix_g);
@@ -176,9 +175,10 @@ void ModuleSceneGui::DrawTools(uint flags)
 	
 	bool active = true;
 	ImGui::Begin("Tool Buttons", &active, flags);
+
 	//Guizmo
 	{
-		//TRANSLATE-------------------------
+		//Translate-------------------------
 		bool change_color = false;
 
 		if (guizmo_operation == TRANSLATE)
@@ -199,14 +199,12 @@ void ModuleSceneGui::DrawTools(uint flags)
 		}
 		ImGui::SameLine();
 
-
-		//ROTATE--------------------------------
+		//Rotate--------------------------------
 		if (guizmo_operation == ROTATE)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
 			change_color = true;
 		}
-
 
 		ImGui::SetCursorPos(ImVec2(60, 18));
 
@@ -220,7 +218,8 @@ void ModuleSceneGui::DrawTools(uint flags)
 
 		}
 		ImGui::SameLine();
-		//SCALE-------------------------------
+
+		//Scale-------------------------------
 		if (guizmo_operation == SCALE)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
@@ -241,13 +240,13 @@ void ModuleSceneGui::DrawTools(uint flags)
 		}
 		ImGui::SameLine();
 		bool change_mode_color = false;
-		//LOCAL-----------------------------------
+
+		//Local-----------------------------------
 		if (guizmo_mode == LOCAL)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
 			change_mode_color = true;
 		}
-
 
 		ImGui::SetCursorPos(ImVec2(250, 18));
 		if (ImGui::Button("LOCAL"))
@@ -258,13 +257,13 @@ void ModuleSceneGui::DrawTools(uint flags)
 			change_mode_color = false;
 		}
 		ImGui::SameLine();
-		//WORLD----------------------------------
+
+		//World----------------------------------
 		if (guizmo_mode == WORLD)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
 			change_mode_color = true;
 		}
-
 
 		ImGui::SetCursorPos(ImVec2(300, 18));
 		if (ImGui::Button("WORLD"))
@@ -276,10 +275,12 @@ void ModuleSceneGui::DrawTools(uint flags)
 
 		}
 	}
+
 	//Play & Pause
 	{
 		bool change_state = false;
-		//PLAY
+
+		//Play
 		if (App->state == playing)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
@@ -298,7 +299,8 @@ void ModuleSceneGui::DrawTools(uint flags)
 			ImGui::PopStyleColor(1);
 			change_state = false;
 		}
-		//PAUSE
+
+		//Pause
 		if (App->state == paused)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
@@ -318,7 +320,8 @@ void ModuleSceneGui::DrawTools(uint flags)
 			ImGui::PopStyleColor(1);
 			change_state = false;
 		}
-		//STOP
+
+		//Stop
 		if (App->state == stopped)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 0, 0.3));
@@ -342,7 +345,8 @@ void ModuleSceneGui::DrawTools(uint flags)
 		int decimal_part = App->time_manager->game_time - (1000 * non_decimal_part);
 		ImGui::Text("Game Time: %d.%d", non_decimal_part, decimal_part);
 		ImGui::SameLine();
-		//ImGui::Set
+
+		//ImGui
 		ImGui::Text("  Time step");
 		ImGui::SameLine();
 		ImGui::PushItemWidth(50);
@@ -351,7 +355,6 @@ void ModuleSceneGui::DrawTools(uint flags)
 		ImGui::VerticalSeparator();
 		ImGui::SameLine();
 		ImGui::Checkbox("DrawOctree", &App->scene_intro->draw_octree);
-
 	}
 	ImGui::End();
 }
@@ -359,6 +362,7 @@ void ModuleSceneGui::DrawTools(uint flags)
 bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 {
 	Document::AllocatorType& allocator = config_w.GetAllocator();
+
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
 	{
 		Value test(kObjectType);
@@ -378,6 +382,7 @@ bool ModuleSceneGui::Save(Document & config_w, FileWriteStream & os)
 bool ModuleSceneGui::Load(Document * config_r)
 {
 	Document ret;
+
 	ret.Parse(App->loadBuf);
 	ret.IsObject();
 	for (std::vector<Panel*>::iterator item = panels.begin(); item != panels.end(); ++item)
@@ -395,6 +400,7 @@ bool ModuleSceneGui::Load(Document * config_r)
 
 void ModuleSceneGui::SetImguiStyle()
 {
+	//Color change
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.Colors[ImGuiCol_Text] = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
 	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
@@ -435,7 +441,6 @@ void ModuleSceneGui::SetImguiStyle()
 	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.96f, 0.93f, 0.07f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
-
 }
 
 void ModuleSceneGui::ChangeModeWithInput()
@@ -480,7 +485,7 @@ void ModuleSceneGui::Log(const std::string text,int type)
 
 void ModuleSceneGui::CreateMainMenu()
 {
-	// Menu
+	// Menu Bar
 	static bool show_app_main_menu_bar = true;
 	if (show_app_main_menu_bar)
 	{
@@ -606,7 +611,6 @@ void ModuleSceneGui::CreateMainMenu()
 			if (ImGui::BeginMenu("About..."))
 			{
 				App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[17]);
-				//put links in  our names
 				ImGui::Text("Living Worlds");
 				ImGui::Text("by Pau Bonet");
 				ImGui::SameLine();
@@ -630,29 +634,7 @@ void ModuleSceneGui::CreateMainMenu()
 				ImGui::Separator();				
 				ImGui::Text("Living Worlds is a game engine to create 3D world with realisitic physics.");
 				ImGui::Separator();
-				ImGui::Text("MIT License");
-				/*
-									ImGui::Text("Copyright(c) 2018 Pau Bonet Vall Llebrera & Josep Pi");
-					ImGui::Spacing();
-					ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy");
-					ImGui::Text("of this software and associated documentation files(the Software), to deal");
-					ImGui::Text("in the Software without restriction, including without limitation the rights");
-					ImGui::Text("to use, copy, modify, merge, publish, distribute, sublicense, and/or sell");
-					ImGui::Text("copies of the Software, and to permit persons to whom the Software is");
-					ImGui::Text("furnished to do so, subject to the following conditions :");
-					ImGui::Spacing();
-					ImGui::Text("The above copyright notice and this permission notice shall be included in all");
-					ImGui::Text("copies or substantial portions of the Software.");
-					ImGui::Spacing();
-					ImGui::Text("THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR");
-						ImGui::Text("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,");
-						ImGui::Text("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE");
-						ImGui::Text("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER");
-						ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
-						ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE");
-						ImGui::Text("SOFTWARE.");
-						ImGui::Spacing();
-				*/				
+				ImGui::Text("MIT License");				
 				ImGui::Spacing();
 				ImGui::Separator();
 
