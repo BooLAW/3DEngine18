@@ -122,10 +122,7 @@ bool ModuleScene::CleanUp()
 		delete go_list[i];
 	}
 	ClearScene();
-	for (std::list<GameObject*>::iterator item = octree_objects.begin(); item != octree_objects.end(); item++)
-	{
-		delete (*item);
-	}
+
 	return true;
 }
 
@@ -152,20 +149,22 @@ void ModuleScene::DrawGameObjects()
 		base_plane.color = White;
 		base_plane.Render();
 	}
+	//TODO PAU
+
 	//Draw Static GameObjects
-	//for (std::list<GameObject*>::iterator it = octree_objects.end(); it != octree_objects.end(); it++)
-	//{
-	//	if ((*it)->HasMesh())
-	//	{
-	//		//Check In Frustum
-	//		if (App->camera->editor_cam->IsGameObjectInFrustum((*it)->GetBB(), (*it)->comp_transform->trans_matrix_g.TranslatePart()))
-	//			(*it)->Draw();
-	//		else
-	//			CONSOLE_LOG_INFO("DISCARDED %s", (*it)->GetName());
-	//	}
-	//	else if (!(*it)->IsRoot())
-	//		(*it)->Draw();
-	//}
+	for (std::list<GameObject*>::iterator it = octree_objects.end(); it != octree_objects.end(); it++)
+	{
+		if ((*it)->HasMesh())
+		{
+			//Check In Frustum
+			if (App->camera->editor_cam->IsGameObjectInFrustum((*it)->GetBB(), (*it)->comp_transform->trans_matrix_g.TranslatePart()))
+				(*it)->Draw();
+			else
+				CONSOLE_LOG_INFO("DISCARDED %s", (*it)->GetName());
+		}
+		else if (!(*it)->IsRoot())
+			(*it)->Draw();
+	}
 	//Draw Dynamic GameObjects
 	for (int i = 0; i < go_list.size(); i++)
 	{
@@ -298,6 +297,7 @@ GameObject* ModuleScene::CreateMainCamera()
 	ComponentCamera* cam_comp = new ComponentCamera();
 	cam_comp->cam->SetFarPlane(1000);
 	cam_comp->SetOwner(main_camera_go);
+	cam_comp->cam->draw_frustum = true;
 	main_camera_go->PushComponent(cam_comp);
 	
 	return main_camera_go;

@@ -50,17 +50,27 @@ void Camera::SetFOV(const float & new_fov)
 	{
 		frustum.verticalFov = new_fov * DEGTORAD;
 		frustum.horizontalFov = math::Atan(aspect_ratio * math::Tan(frustum.verticalFov / 2)) * 2;
+		CreateNewFrustum();
 	}
 }
 
 void Camera::SetFarPlane(const float & new_fp)
 {
-	frustum.farPlaneDistance =  new_fp;
+	if (new_fp < 1000 && new_fp > frustum.nearPlaneDistance)
+	{
+		frustum.farPlaneDistance = new_fp;
+		CreateNewFrustum();
+	}
 }
 
 void Camera::SetNearPlane(const float & new_np)
 {
-	frustum.nearPlaneDistance = new_np;
+	if (new_np >= 0.5 && new_np < frustum.farPlaneDistance)
+	{
+		frustum.nearPlaneDistance = new_np;
+		CreateNewFrustum();
+
+	}
 }
 
 void Camera::SetAspectRatio(const float & new_ar)
@@ -73,6 +83,7 @@ void Camera::SetAspectRatio(const float & new_ar)
 	{
 		aspect_ratio = new_ar;
 		frustum.horizontalFov = math::Atan(aspect_ratio * math::Tan(frustum.verticalFov / 2)) * 2;
+		CreateNewFrustum();
 	}
 }
 

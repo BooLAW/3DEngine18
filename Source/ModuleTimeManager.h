@@ -9,10 +9,10 @@ public:
 	ModuleTimeManager(bool start_enabled = true);
 	virtual ~ModuleTimeManager();
 	//Functions to call when cliccking Buttons
+	
 	void Play();
 	void Pause();
 	void Stop();
-	void Step();//Wait for the other 3 to work
 
 	update_status Update(float dt) override;
 

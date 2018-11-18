@@ -18,7 +18,9 @@ ModuleTimeManager::~ModuleTimeManager()
 void ModuleTimeManager::Play()
 {
 	EngineState state = App->state;
-	//TODO
+
+
+
 }
 
 void ModuleTimeManager::Pause()

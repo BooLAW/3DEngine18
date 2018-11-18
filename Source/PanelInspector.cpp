@@ -125,8 +125,6 @@ void PanelInspector::Draw()
 						image_size.x = image_size.x / 2;
 						image_size.y = image_size.x;
 						ImGui::Image(tex, image_size);
-
-
 					}
 				}
 				if (selected_go->HasCam()) //Checking if it the mesh has a texture to display.
@@ -136,44 +134,33 @@ void PanelInspector::Draw()
 						Camera* cam = selected_go->GetCamera();
 						//AR
 						ImGui::Checkbox("Show Frustum", &cam->draw_frustum);
-						ImGui::Text("Aspect Ratio:");
-						ImGui::SameLine();
-						ImGui::Text("  %f", cam->GetAspectRatio());
-						ImGui::Spacing();
+					
 						ImGui::Separator();
 						//Frustum 
 						ImGui::Text("Frustum Info");
 						ImGui::Spacing();
-						//Frustum Pos
-						ImGui::Text("Position: ");
-						ImGui::Text(" X: %d", &cam->frustum.pos.x);
-						ImGui::Text(" Y: %d", cam->frustum.pos.y);
-						ImGui::Text(" Z: %d", cam->frustum.pos.z);
-
-						/*ImGui::DragFloat(" Y", &cam->frustum.pos.y);
-						ImGui::DragFloat(" Z ", &cam->frustum.pos.z);*/
-
-						ImGui::Spacing();
 						//Far Plane
 						float far_aux = cam->GetFarPlane();
-						if (ImGui::DragFloat("Far Plane", &far_aux))
+						if (ImGui::InputFloat("Far Plane", &far_aux,10.0f))
 							cam->SetFarPlane(far_aux);
 						ImGui::Spacing();
 						//Near Plane
 						float near_aux = cam->GetNearPlane();
-						if (ImGui::DragFloat("Near Plane", &near_aux))
+						if (ImGui::InputFloat("Near Plane", &near_aux,0.5f))
 							cam->SetNearPlane(near_aux);
 						ImGui::Spacing();
 						//FOV
 						float fov_aux = cam->GetVerticalFOV();
-						if (ImGui::DragFloat("FOV", &fov_aux))
+						if (ImGui::InputFloat("FOV", &fov_aux,5.0f))
 							cam->SetFOV(fov_aux);
 						ImGui::Spacing();
-
+						float a_ratio = cam->GetAspectRatio();
+						if (ImGui::InputFloat("Aspect Ratio", &a_ratio, 10.0f))
+							cam->SetAspectRatio(a_ratio);
+						ImGui::Spacing();
 
 					}
 				}
-
 			}
 			
 		}
