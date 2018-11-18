@@ -4,7 +4,11 @@
 #include "MeshLoader.h"
 #include "MaterialLoader.h"
 #include "PanelConsole.h"
+#include "Component.h"
+#include "ComponentMesh.h"
+#include "Mesh.h"
 #include <map>
+
 
 enum resourceType
 {
@@ -15,17 +19,22 @@ enum resourceType
 class Resource
 {
 public:
-	Resource(const char* name, resourceType type, INT32 uid);
+	Resource(const char* path, resourceType type, INT32 uid);
+	Resource* CreateNewResource(const char* path, resourceType type);
 	~Resource();
 	std::string GetName();
+	Component* GetComponent();
 	resourceType GetType();
+	
 	//virtual void Init();
 
 	INT32 id;
 
 private:
-	std::string name;
+	std::string path;
 	resourceType type;
+	Component* comp;
+
 };
 class LoadManager : public Module
 {
@@ -41,7 +50,7 @@ public:
 	//UIDs methods
 	UINT32 Find(const char* path);
 	UINT32 ImportFile(const char* new_file_path, bool force = false);
-	UINT32 CreateRandUID();
+	UINT32 GenerateNewUID();
 
 	//Resources
 	Resource* Get(UINT32 uid);
