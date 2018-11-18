@@ -22,7 +22,6 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	int RandInt(int min, int max);
 	float RandFloat(float min, float max);
-	void Log(const std::string text);
 	GameObject* CreateNewGameObject();
 	void DrawGameObjects();
 	void ClearScene();
@@ -48,9 +47,11 @@ public:
 	void SaveScene(std::vector<GameObject*> go_list);
 	void LoadScene(const char* path);
 	Value SaveGO(GameObject* go, Document::AllocatorType& allocator);
+	
 	//MousePicking
 	GameObject* GetClosestGO(std::vector<GameObject*> gameobjects, LineSegment line);
 	void ClickSelection(LineSegment mouse_ray);
+
 public:
 	//Scene GameObjects(Now only meshes)
 	std::vector<GameObject*> go_list;	

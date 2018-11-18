@@ -762,7 +762,6 @@ void ModuleSceneGui::CreateMainMenu()
 			ImGui::EndMainMenuBar();
 		}
 	}
-	if (show_panel_inspector)ShowInspector();
 	if (show_test_window)showTestWindow();
 	if (show_sphere_creator)showSphereCreator();
 	if (show_cube_creator)showCubeCreator();
@@ -773,17 +772,8 @@ void ModuleSceneGui::CreateMainMenu()
 void ModuleSceneGui::showTestWindow() 
 {
 	ImGui::ShowTestWindow();
-
 }
 
-void ModuleSceneGui::ShowInspector()
-{
-}
-
-void ModuleSceneGui::showConsoleWindow()
-{
-
-}
 
 void ModuleSceneGui::showRandomNumberGenerator()
 {

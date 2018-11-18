@@ -253,10 +253,8 @@ bool Octree::CheckNoResizeToInsert(Mesh* mesh)
 	if (mesh->bounding_box.maxPoint.z > max_point.z)
 	{
 		max_point.z = mesh->bounding_box.maxPoint.z;
-		update_octree = true;
+		ret = true;
 	}
-
-
 
 	return ret;
 }

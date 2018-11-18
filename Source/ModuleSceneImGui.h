@@ -39,9 +39,6 @@ public:
 
 	void CreateMainMenu();
 	void showTestWindow();
-	void ShowInspector();
-	void showConfigurationWindow();
-	void showConsoleWindow();
 	void showSphereCreator();
 	void showRandomNumberGenerator();
 	void showCubeCreator();

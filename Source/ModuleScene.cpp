@@ -304,7 +304,6 @@ void ModuleScene::AddToOctree(GameObject * go)
 {
 	octree.Insert(go);
 	octree_objects.push_back(go);
-
 }
 
 void ModuleScene::RemoveFromOctree(GameObject * go)
