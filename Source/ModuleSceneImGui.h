@@ -54,6 +54,7 @@ public:
 	bool Save(Document& config_w, FileWriteStream& os);
 	bool Load(Document* config_r);
 	void SetImguiStyle();
+	void ChangeModeWithInput();
 
 public:
 	//flags
