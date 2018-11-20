@@ -1,5 +1,14 @@
 #ifndef __MODULE_PHYSICS_3D__
 #define __MODULE_PHYSICS_3D__
+//LINKS ----------------------------ç
+//QuickstartGuide: https://docs.google.com/document/d/10sXEhzFRSnvFcl3XxNGhnD4N2SedqwdAvK3dsihxVUA/edit#heading=h.2ye70wns7io3
+//Documentation: https://pybullet.org/wordpress/index.php/forum-2/
+//How Unity Does it: https://unity3d.com/learn/tutorials/s/physics
+	//RigidBody: https://docs.unity3d.com/Manual/RigidbodiesOverview.html
+	//Character Controller: 
+		//https://docs.unity3d.com/Manual/CharacterControllers.html
+		// https://docs.unity3d.com/Manual/class-CharacterController.html
+//----------------------
 
 #include "Module.h"
 #include "Globals.h"
