@@ -1,6 +1,18 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics3D.h"
+#include "Bullet/include//btBulletDynamicsCommon.h"
+
+#ifdef _DEBUG
+#pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
+#pragma comment (lib, "Bullet/libx86/BulletCollision_debug.lib")
+#pragma comment (lib, "Bullet/libx86/LinearMath_debug.lib")
+#else
+#pragma comment (lib, "Bullet/libx86/BulletDynamics.lib")
+#pragma comment (lib, "Bullet/libx86/BulletCollision.lib")
+#pragma comment (lib, "Bullet/libx86/LinearMath.lib")
+#endif
+
 
 
 ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
@@ -18,9 +30,13 @@ bool ModulePhysics3D::Init()
 {
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
+	InitializeWorld();
 	return ret;
 }
+void InitializeWorld()
+{
 
+}
 bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
@@ -119,5 +135,22 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 		candidate = 0;
 	}
 	return collisions_list;
+}
+
+void ModulePhysics3D::InitializeWorld()
+{
+	//create Config
+	coll_config = new btDefaultCollisionConfiguration();
+	//create Dispatcher
+	 coll_dispatcher = new btCollisionDispatcher(coll_config);
+	//create broadphase
+	broad_phase = new btDbvtBroadphase();
+
+	constraint_solver = new btSequentialImpulseConstraintSolver;
+
+	dynamicsWorld = new btDiscreteDynamicsWorld(coll_dispatcher, broad_phase, constraint_solver, coll_config);
+
+	//set Real Gravity for now
+	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 }
 
