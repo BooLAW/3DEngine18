@@ -100,6 +100,12 @@
     <Filter Include="Sources\External Tools\Dirent">
       <UniqueIdentifier>{8f1c7c98-47e2-47c8-8399-55b59c5bdf17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\RigidBody">
+      <UniqueIdentifier>{73061ebe-34a2-4acb-adcc-b905f1b70dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\BaseClasses\RigidBody">
+      <UniqueIdentifier>{6946de2b-72ef-48af-a400-c71f55e598bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -654,6 +660,12 @@
     <ClInclude Include="ModuleTimeManager.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentRigidBody.h">
+      <Filter>Sources\Modules\GameObjects\Components\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -889,6 +901,12 @@
     </ClCompile>
     <ClCompile Include="ModuleTimeManager.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentRigidBody.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Sources\Modules\GameObjects\BaseClasses\RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ enum ComponentType;
 class ComponentTransform;
 class ComponentMesh;
 class ComponentCamera;
+class ComponentRigidBody;
 class Camera;
 class GameObject
 {
@@ -32,6 +33,8 @@ public:
 	bool HasTex()const;
 	bool HasCam()const;
 	bool HasChilds()const;
+	bool HasRigidBody()const;
+
 	//flags interaction
 	void SetActive(bool active);
 	bool IsActive()const;
@@ -40,6 +43,7 @@ public:
 	bool IsRoot()const;
 	bool IsSelected()const;
 	void SetSelected(bool selected);
+
 	//Parent
 	GameObject* GetParent()const;
 	void SetParent(GameObject* new_parent);
@@ -60,6 +64,7 @@ public:
 	Mesh* GetMesh();
 	ComponentMesh* GetCMesh();
 	ComponentCamera* GetCCamera();
+	ComponentRigidBody* GetRigidBody();
 	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();

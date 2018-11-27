@@ -189,6 +189,18 @@ bool GameObject::HasChilds() const
 	return childs_list.empty() == false;
 }
 
+bool GameObject::HasRigidBody() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::RIGIDBODY)
+			ret = true;
+	}
+	return ret;
+
+}
+
 
 
 void GameObject::SetActive(bool active)
@@ -397,6 +409,18 @@ ComponentCamera * GameObject::GetCCamera()
 		ComponentCamera* cam_tmp = (ComponentCamera*)GetComponent(ComponentType::CAMERA);
 		if (cam_tmp != nullptr)
 			return cam_tmp;
+		else
+			return nullptr;
+	}
+}
+
+ComponentRigidBody * GameObject::GetRigidBody()
+{
+	if (this->IsActive())
+	{
+		ComponentRigidBody* rb_tmp = (ComponentRigidBody*)GetComponent(ComponentType::RIGIDBODY);
+		if (rb_tmp != nullptr)
+			return rb_tmp;
 		else
 			return nullptr;
 	}

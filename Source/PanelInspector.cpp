@@ -126,6 +126,7 @@ void PanelInspector::Draw()
 						ImGui::Image(tex, image_size);
 					}
 				}
+
 				if (selected_go->HasCam()) //Checking if it the mesh has a texture to display.
 				{
 					if (ImGui::CollapsingHeader("Camera"))
@@ -162,8 +163,17 @@ void PanelInspector::Draw()
 
 					}
 				}
-			}
-			
+
+				//Check if it has RigidBody
+				if (selected_go->HasRigidBody())
+				{
+					ComponentRigidBody* rb = selected_go->GetRigidBody();
+					if (ImGui::CollapsingHeader("Rigid Body", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						selected_go->GetComponent(RIGIDBODY)->DrawInspectorInfo();
+					}
+				}
+			}			
 		}
 		else
 			ImGui::Text("Select a GameObject in the Hierarchy");

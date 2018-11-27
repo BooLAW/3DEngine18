@@ -2,9 +2,10 @@
 #define __COMPONENT_H__
 #include "Globals.h"
 
-enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA};
+enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY};
 class GameObject;
 class ComponentMaterial;
+class ComponentRigidBody;
 class Component
 {
 public:
@@ -29,6 +30,7 @@ public:
 public:
 	ComponentType type;
 	ComponentMaterial* comp_material;
+	ComponentRigidBody* comp_rigidbody;
 	GameObject* owner;
 	std::string name;
 	bool active = true;

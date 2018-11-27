@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
+#include "ComponentRigidBody.h"
 #include <stdio.h>
 #include "Material.h"
 #include "PanelInspector.h"
@@ -369,6 +370,10 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
 
 				new_child->PushComponent((Component*)new_comp_mesh);
+
+				ComponentRigidBody* new_comp_rigidbody = new ComponentRigidBody(new_child);
+
+				new_child->PushComponent((Component*)new_comp_rigidbody);
 				
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
