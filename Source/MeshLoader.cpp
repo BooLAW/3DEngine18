@@ -846,11 +846,3 @@ bool MeshLoader::SaveMeshJson(const aiScene * scene, aiNode * node, Document * c
 
 	return false;
 }
-
-Mesh * MeshLoader::LoadSceneMeshJson(std::string file_name, const aiNode* node)
-{
-	//TODO JOSEP
-
-
-	return nullptr;
-}
