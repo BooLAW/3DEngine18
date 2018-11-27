@@ -648,9 +648,11 @@
     <ClInclude Include="ImGui\ImGuizmo.h">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTimeManager.h" />
     <ClInclude Include="dirent.h">
       <Filter>Sources\External Tools\Dirent</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTimeManager.h">
+      <Filter>Sources\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -885,7 +887,9 @@
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>Sources\External Tools\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTimeManager.cpp" />
+    <ClCompile Include="ModuleTimeManager.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\KDTree.inl">

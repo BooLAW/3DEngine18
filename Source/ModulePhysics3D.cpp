@@ -18,7 +18,6 @@
 ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 {
 	debug = true;
-
 }
 
 ModulePhysics3D::~ModulePhysics3D()
@@ -31,12 +30,10 @@ bool ModulePhysics3D::Init()
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
 	InitializeWorld();
+	//CreatePlane();
 	return ret;
 }
-void InitializeWorld()
-{
 
-}
 bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
@@ -45,6 +42,11 @@ bool ModulePhysics3D::Start()
 
 void ModulePhysics3D::DrawModuleConfig()
 {
+	if (ImGui::CollapsingHeader("Physics"))
+	{
+		if (ImGui::Button("Test"))
+			bullet_test = true;
+	}
 }
 
 update_status ModulePhysics3D::PreUpdate(float dt)
@@ -54,6 +56,11 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 update_status ModulePhysics3D::Update(float dt)
 {
+	if (bullet_test == true)
+	{
+		BulletTest();
+		bullet_test = false;
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -65,7 +72,27 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 bool ModulePhysics3D::CleanUp()
 {
 	CONSOLE_LOG_INFO("Destroying 3D Physics simulation");
+	//delete collision shapes
+		/*for (int j = 0; j < collisionShapes.size(); j++)
+		{
+			btCollisionShape* shape = collisionShapes[j];
+			collisionShapes[j] = 0;
+			delete shape;
+		}*/
 
+	//delete dynamics world
+	delete dynamicsWorld;
+	//delete solver
+	delete constraint_solver;
+	//delete broadphase
+	delete broad_phase;
+	//delete dispatcher
+	delete coll_dispatcher;
+
+	delete coll_config;
+
+	//next line is optional: it will be cleared by the destructor when the array goes out of scope
+	//collisionShapes.clear();
 	return true;
 }
 
@@ -151,6 +178,135 @@ void ModulePhysics3D::InitializeWorld()
 	dynamicsWorld = new btDiscreteDynamicsWorld(coll_dispatcher, broad_phase, constraint_solver, coll_config);
 
 	//set Real Gravity for now
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	dynamicsWorld->setGravity(btVector3(0, -10000, 0));
 }
+
+void ModulePhysics3D::CreatePlane()
+{
+	btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+
+		btDefaultMotionState* myMotionState = new btDefaultMotionState();
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
+
+		btRigidBody* body = new btRigidBody(rbInfo);
+		dynamicsWorld->addRigidBody(body);
+}
+
+void ModulePhysics3D::ShootSphere()
+{
+}
+
+void ModulePhysics3D::BulletTest()
+{
+	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+
+	///create a few basic rigid bodies
+
+	//the ground is a cube of side 100 at position y = -56.
+	//the sphere will hit it at y = -6, with center at -5
+	{
+		btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+
+		collisionShapes.push_back(groundShape);
+
+		btTransform groundTransform;
+		groundTransform.setIdentity();
+		groundTransform.setOrigin(btVector3(0, -56, 0));
+
+		btScalar mass(0.);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, 0, 0);
+		if (isDynamic)
+			groundShape->calculateLocalInertia(mass, localInertia);
+
+		//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
+		btRigidBody* body = new btRigidBody(rbInfo);
+
+		//add the body to the dynamics world
+		dynamicsWorld->addRigidBody(body);
+	}
+
+	{
+		//create a dynamic rigidbody
+
+		//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+		btCollisionShape* colShape = new btSphereShape(btScalar(1.));
+		collisionShapes.push_back(colShape);
+
+		/// Create Dynamic Objects
+		btTransform startTransform;
+		startTransform.setIdentity();
+
+
+		btScalar mass(1.f);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, -50000, 0);
+		if (isDynamic)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		startTransform.setOrigin(btVector3(0, 200, 0));
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		btRigidBody* body = new btRigidBody(rbInfo);
+
+		dynamicsWorld->addRigidBody(body);
+	}
+
+	/// Do some simulation
+
+	///-----stepsimulation_start-----
+	for (int i = 0; i < 20; i++)
+	{
+		dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+
+		//print positions of all objects
+		for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
+		{
+			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
+			btRigidBody* body = btRigidBody::upcast(obj);
+			btTransform trans;
+			if (body && body->getMotionState())
+			{
+				body->getMotionState()->getWorldTransform(trans);
+			}
+			else
+			{
+				trans = obj->getWorldTransform();
+			}
+			CONSOLE_LOG_INFO("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+			if (j != 0 && trans.getOrigin().getY() < -5)//where the box is
+				CONSOLE_LOG_INFO("Box Hitted by body %d \n", j);
+		}
+	}
+
+	///-----stepsimulation_end-----
+
+	//cleanup in the reverse order of creation/initialization
+
+	///-----cleanup_start-----
+
+	//remove the rigidbodies from the dynamics world and delete them
+	for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+		btRigidBody* body = btRigidBody::upcast(obj);
+		if (body && body->getMotionState())
+		{
+			delete body->getMotionState();
+		}
+		dynamicsWorld->removeCollisionObject(obj);
+		delete obj;
+	}
+}
+
 

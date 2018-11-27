@@ -37,16 +37,22 @@ public:
 	update_status PostUpdate(float dt);
 
 	bool CleanUp();
-
+	//Prev Assignment3
 	void CreateSphere(float3 position, int radius);
 	void CreateCube(float3 minPoint, float3 maxPoint);
 	std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
-	
+	//-------------------------
+	//Assignment 3--------------
 	void InitializeWorld();
-
+	void CreatePlane();
+	void ShootSphere();
+	void BulletTest();
+	bool bullet_test = false;
+	//-----------------------
 private:
 	bool debug;
+	
 	
 	std::vector<AABB> cube_list;
 	std::vector<Sphere> spheres_list;
