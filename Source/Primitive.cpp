@@ -3,8 +3,8 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "Module.h"
-
-
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 
 Primitive::Primitive() :transform(float4x4::identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
@@ -212,4 +212,20 @@ void PCube::InnerRender() const
 	glVertex3f(-sx, -sy, sz);
 
 	glEnd();
+}
+
+PSphere::PSphere() : Primitive(), radius(1.0f)
+{
+	type = PrimitiveTypes::Primitive_Sphere;
+}
+
+PSphere::PSphere(float radius) : Primitive(), radius(radius)
+{
+	type = PrimitiveTypes::Primitive_Sphere;
+}
+
+void PSphere::InnerRender() const
+{
+	//glutSolidSphere(radius, 25, 25);
+	Sphere(pos, radius);
 }

@@ -12,6 +12,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Primitive.h"
 
 class btDefaultCollisionConfiguration;
 class btCollisionDispatcher;
@@ -40,7 +41,7 @@ public:
 	//Prev Assignment3
 	void CreateSphere(float3 position, int radius);
 	void CreateCube(float3 minPoint, float3 maxPoint);
-	std::list<float2> GetSphereCollisions();
+	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	//-------------------------
 	//Assignment 3--------------
@@ -55,7 +56,7 @@ private:
 	
 	
 	std::vector<AABB> cube_list;
-	std::vector<Sphere> spheres_list;
+	std::vector<PSphere> spheres_list;
 
 	//physics
 	btDefaultCollisionConfiguration*	coll_config;

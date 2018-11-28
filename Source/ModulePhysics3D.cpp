@@ -61,6 +61,10 @@ update_status ModulePhysics3D::Update(float dt)
 		BulletTest();
 		bullet_test = false;
 	}
+	for (int i = 0; spheres_list.size() > i; i++)
+	{
+		spheres_list[i];
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -98,9 +102,9 @@ bool ModulePhysics3D::CleanUp()
 
 void ModulePhysics3D::CreateSphere(float3 position, int radius)
 {
-	Sphere new_sphere;
+	PSphere new_sphere;
 	new_sphere.pos = position;
-	new_sphere.r = radius;
+	new_sphere.radius = (float)radius;
 	spheres_list.push_back(new_sphere);
 }
 
@@ -112,31 +116,33 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 	cube_list.push_back(new_cube);
 }
 
-std::list<float2> ModulePhysics3D::GetSphereCollisions()
-{
-	int listener = 0;
-	int candidate = 0;
-	
-	std::list<float2> collisions_list;
-
-	for (listener; listener < spheres_list.size(); listener++)
-	{
-		bool collided = false;
-		for (candidate; candidate < spheres_list.size(); candidate++)
-		{
-			if (listener == candidate)
-				continue;
-			collided = spheres_list[listener].Intersects(spheres_list[candidate]);
-			if (collided)
-			{
-				collisions_list.push_back({(float) listener,(float)candidate });
-				CONSOLE_LOG_INFO("Sphere %d collides with Sphere %d",listener, candidate);
-			}
-		}
-		candidate = 0;
-	}
-	return collisions_list;
-}
+//std::list<float2> ModulePhysics3D::GetSphereCollisions()
+//{
+//	//int listener = 0;
+//	//int candidate = 0;
+//	//
+//	//std::list<float2> collisions_list;
+//
+//	//for (listener; listener < spheres_list.size(); listener++)
+//	//{
+//	//	bool collided = false;
+//	//	for (candidate; candidate < spheres_list.size(); candidate++)
+//	//	{
+//	//		if (listener == candidate)
+//	//			continue;
+//	//		collided = spheres_list[listener].Intersects(spheres_list[candidate]);
+//	//		if (collided)
+//	//		{
+//	//			collisions_list.push_back({(float) listener,(float)candidate });
+//	//			CONSOLE_LOG_INFO("Sphere %d collides with Sphere %d",listener, candidate);
+//	//		}
+//	//	}
+//	//	candidate = 0;
+//	//}
+//
+//
+//	//return new list<float2>;
+//}
 
 std::list<float2> ModulePhysics3D::GetCubeCollisions()
 {

@@ -549,7 +549,7 @@ void ModuleSceneGui::CreateMainMenu()
 				if (ImGui::MenuItem("Check Collisions"))
 				{
 					App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->menu_tick_arr[9]);
-					App->physics->GetSphereCollisions();
+					//App->physics->GetSphereCollisions();
 					App->physics->GetCubeCollisions();
 				}
 				else

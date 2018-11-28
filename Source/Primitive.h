@@ -56,6 +56,17 @@ public:
 	float constant;
 };
 
+class PSphere : public Primitive
+{
+public:
+	PSphere();
+	PSphere(float radius);
+	void InnerRender() const;
+public:
+	float radius;
+	float3 pos;
+	bool dead;
+};
 #endif
 
 

@@ -91,7 +91,6 @@ bool ModuleScene::Start()
 			App->loading_manager->mesh_loader->LoadMesh(App->loading_manager->load_paths[i].c_str(), false);
 		}
 	}
-	App->physics->CreateSphere({ 0,100,0 }, 100.0f);
 
 	//Load Street
 	/*App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
