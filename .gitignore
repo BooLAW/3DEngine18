@@ -105,6 +105,9 @@ ipch/
 # Settings Folder file
 Settings/
 
+# Library Folder Files
+Library/
+
 # Visual Studio profiler
 *.psess
 *.vsp

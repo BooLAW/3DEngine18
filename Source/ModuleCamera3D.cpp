@@ -447,51 +447,6 @@ bool ModuleCamera3D::Save(Document & config_w, FileWriteStream & os)
 
 bool ModuleCamera3D::Load(Document * config_r)
 {
-	/*
-	Camera* aux_cam = App->camera->editor_cam;
-		App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[0]);
-		float3 aux_pos = aux_cam->frustum.pos;
-		if (ImGui::SliderFloat3("Position", (float*)&aux_pos, -100.0f, 100.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[1]);
-			aux_cam->frustum.pos = aux_pos;
-			App->audio->camera_tick_arr[1] = FALSEBOOL;
-		}
-		ImGui::Spacing();
-		float  a = aux_cam->GetAspectRatio();
-		if (ImGui::SliderFloat("Aspect Ratio", &a, 0.0f, 2.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[2]);
-			aux_cam->SetAspectRatio(a);
-			App->audio->camera_tick_arr[2] = FALSEBOOL;
-		}
-
-		float  f = aux_cam->GetVerticalFOV();
-		if (ImGui::SliderFloat("FOV", &f, 45.0f, 90.0f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[3]);
-			aux_cam->SetFOV(f);
-			App->audio->camera_tick_arr[3] = FALSEBOOL;
-		}
-		ImGui::Spacing();
-
-		float  np = aux_cam->GetNearPlane();
-		if (ImGui::SliderFloat("Near Plane", &np, 0.5, 10.0))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[8]);
-			aux_cam->SetNearPlane(np);
-			App->audio->camera_tick_arr[8] = FALSEBOOL;
-		}
-		ImGui::Spacing();
-
-		float  fp = aux_cam->GetFarPlane();
-		if (ImGui::SliderFloat("Far Plane", &fp, 50.0f, 500.f))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[9]);
-			aux_cam->SetFarPlane(fp);
-			App->audio->camera_tick_arr[9] = FALSEBOOL;
-		}
-	*/
 	Document ret;
 
 	ret.Parse(App->loadBuf);
