@@ -107,6 +107,7 @@ Settings/
 
 # Library Folder Files
 Game/Library/*
+!.lw
 
 # Visual Studio profiler
 *.psess
