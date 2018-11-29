@@ -3,6 +3,7 @@
 #include "ModulePhysics3D.h"
 #include "Bullet/include//btBulletDynamicsCommon.h"
 
+
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
 #pragma comment (lib, "Bullet/libx86/BulletCollision_debug.lib")
@@ -37,6 +38,9 @@ bool ModulePhysics3D::Init()
 bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
+	sphere_test.radius = 4;
+	sphere_test.pos = float3(0, 10, 0);
+	sphere_test.dead = false;
 	return true;
 }
 
@@ -65,6 +69,7 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		spheres_list[i];
 	}
+	sphere_test.Render();
 	return UPDATE_CONTINUE;
 }
 
@@ -168,6 +173,33 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 		candidate = 0;
 	}
 	return collisions_list;
+}
+
+PhysBody3D * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
+{
+	btCollisionShape* colShape = new btSphereShape(sphere.radius);
+	shapes.push_back(colShape);
+
+	btTransform startTransform;
+	btScalar* btsphere = new btScalar();
+	sphere.transform;
+	//startTransform.setFromOpenGLMatrix(&sphere.transform);
+
+	btVector3 localInertia(0, 0, 0);
+	if (mass != 0.f)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.push_back(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+	PhysBody3D* pbody = nullptr;
+
+	dynamicsWorld->addRigidBody(body);
+	//bodies.push_back(pbody);
+
+	return pbody;
 }
 
 void ModulePhysics3D::InitializeWorld()

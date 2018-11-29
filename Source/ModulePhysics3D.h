@@ -14,6 +14,11 @@
 #include "Globals.h"
 #include "Primitive.h"
 
+#include "Bullet/include/btBulletDynamicsCommon.h"
+
+// Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
+#define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
+
 class btDefaultCollisionConfiguration;
 class btCollisionDispatcher;
 class btBroadphaseInterface;
@@ -22,6 +27,10 @@ class btDiscreteDynamicsWorld;
 class btCollisionShape;
 class btDefaultMotionState;
 class btTypedConstraint;
+class DebugDrawer;
+
+struct PhysBody3D;
+
 
 class ModulePhysics3D : public Module
 {
@@ -43,6 +52,7 @@ public:
 	void CreateCube(float3 minPoint, float3 maxPoint);
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
+	PhysBody3D* AddBody(const PSphere& sphere, float mass);
 	//-------------------------
 	//Assignment 3--------------
 	void InitializeWorld();
@@ -53,6 +63,7 @@ public:
 	//-----------------------
 private:
 	bool debug;
+	PSphere sphere_test;
 	
 	
 	std::vector<AABB> cube_list;
