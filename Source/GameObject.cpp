@@ -414,11 +414,11 @@ ComponentCamera * GameObject::GetCCamera()
 	}
 }
 
-ComponentRigidBody * GameObject::GetRigidBody()
+ComponentPhysBody * GameObject::GetRigidBody()
 {
 	if (this->IsActive())
 	{
-		ComponentRigidBody* rb_tmp = (ComponentRigidBody*)GetComponent(ComponentType::RIGIDBODY);
+		ComponentPhysBody* rb_tmp = (ComponentPhysBody*)GetComponent(ComponentType::RIGIDBODY);
 		if (rb_tmp != nullptr)
 			return rb_tmp;
 		else

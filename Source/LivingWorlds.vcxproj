@@ -82,7 +82,7 @@
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
-    <ClInclude Include="ComponentRigidBody.h" />
+    <ClInclude Include="ComponentPhysBody.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="dirent.h" />
@@ -186,7 +186,7 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Octree.h" />
-    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="PhysBody.h" />
     <ClInclude Include="SDL\include\begin_code.h" />
     <ClInclude Include="SDL\include\close_code.h" />
     <ClInclude Include="SDL\include\SDL.h" />
@@ -269,7 +269,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
-    <ClCompile Include="ComponentRigidBody.cpp" />
+    <ClCompile Include="ComponentPhysBody.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -338,7 +338,7 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Octree.cpp" />
-    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="PhysBody.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />

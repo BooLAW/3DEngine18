@@ -3,11 +3,11 @@
 #include "Component.h"
 #include "Transform.h"
 class GameObject;
-class ComponentRigidBody : public Component
+class ComponentPhysBody : public Component
 {
 public:
-	ComponentRigidBody(GameObject* owner);
-	virtual ~ComponentRigidBody();
+	ComponentPhysBody(GameObject* owner);
+	virtual ~ComponentPhysBody();
 	
 	bool Update()override;
 

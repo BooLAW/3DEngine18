@@ -10,7 +10,7 @@ enum ComponentType;
 class ComponentTransform;
 class ComponentMesh;
 class ComponentCamera;
-class ComponentRigidBody;
+class ComponentPhysBody;
 class Camera;
 class GameObject
 {
@@ -64,7 +64,7 @@ public:
 	Mesh* GetMesh();
 	ComponentMesh* GetCMesh();
 	ComponentCamera* GetCCamera();
-	ComponentRigidBody* GetRigidBody();
+	ComponentPhysBody* GetRigidBody();
 	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();

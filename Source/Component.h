@@ -5,7 +5,7 @@
 enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY};
 class GameObject;
 class ComponentMaterial;
-class ComponentRigidBody;
+class ComponentPhysBody;
 class Component
 {
 public:
@@ -30,7 +30,7 @@ public:
 public:
 	ComponentType type;
 	ComponentMaterial* comp_material;
-	ComponentRigidBody* comp_rigidbody;
+	ComponentPhysBody* comp_rigidbody;
 	GameObject* owner;
 	std::string name;
 	bool active = true;

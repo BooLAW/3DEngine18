@@ -1,4 +1,4 @@
-#include "ComponentRigidBody.h"
+#include "ComponentPhysBody.h"
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -7,27 +7,27 @@
 #include "Camera.h"
 #include "Application.h"
 
-ComponentRigidBody::ComponentRigidBody(GameObject * owner)
+ComponentPhysBody::ComponentPhysBody(GameObject * owner)
 {
 	this->SetOwner(owner);
 	this->SetActive(true);
-	SetName("Component RigidBody");
+	SetName("Component PhysBody");
 	type = ComponentType::RIGIDBODY;
 
 
 }
 
-ComponentRigidBody::~ComponentRigidBody()
+ComponentPhysBody::~ComponentPhysBody()
 {
 }
 
-bool ComponentRigidBody::Update()
+bool ComponentPhysBody::Update()
 {
 	
 	return false;
 }
 
-void ComponentRigidBody::UpdateTransformValues()
+void ComponentPhysBody::UpdateTransformValues()
 {
 	trans_matrix_g = float4x4::identity;
 	trans_matrix_l = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
@@ -36,14 +36,14 @@ void ComponentRigidBody::UpdateTransformValues()
 		trans_matrix_g = trans_matrix_l;
 	else
 	{
-		ComponentRigidBody* owner_transform = (ComponentRigidBody*)GetOwner()->GetParent()->GetComponent(ComponentType::TRANSFORM);
+		ComponentPhysBody* owner_transform = (ComponentPhysBody*)GetOwner()->GetParent()->GetComponent(ComponentType::TRANSFORM);
 		trans_matrix_g = owner_transform->trans_matrix_g * trans_matrix_l;
 	}
 	if(owner->HasChilds())	
 		owner->RecursiveUpdateTransformChilds();
 }
 
-void ComponentRigidBody::DrawInspectorInfo()
+void ComponentPhysBody::DrawInspectorInfo()
 {
 	bool reset_transform = false;
 
@@ -126,7 +126,7 @@ void ComponentRigidBody::DrawInspectorInfo()
 
 
 }
-void ComponentRigidBody::UpdateBBChilds(GameObject* parent)
+void ComponentPhysBody::UpdateBBChilds(GameObject* parent)
 {
 	for (std::vector<GameObject*>::iterator it = parent->childs_list.begin(); it != parent->childs_list.end(); it++)
 	{
@@ -138,7 +138,7 @@ void ComponentRigidBody::UpdateBBChilds(GameObject* parent)
 			//UpdateBBChilds((*it));
 	}
 }
-void ComponentRigidBody::SetLocalPos(const float3 & new_pos)
+void ComponentPhysBody::SetLocalPos(const float3 & new_pos)
 {
 	ComponentMesh* mesh;
 
@@ -155,7 +155,7 @@ void ComponentRigidBody::SetLocalPos(const float3 & new_pos)
 
 }
 
-void ComponentRigidBody::SetGlobalPos(const float3 & new_pos)
+void ComponentPhysBody::SetGlobalPos(const float3 & new_pos)
 {
 	ComponentMesh* mesh;
 
@@ -171,7 +171,7 @@ void ComponentRigidBody::SetGlobalPos(const float3 & new_pos)
 	updated_transform = true;
 }
 
-void ComponentRigidBody::SetTransform(float3 pos, Quat rot,float3 scale)
+void ComponentPhysBody::SetTransform(float3 pos, Quat rot,float3 scale)
 {
 	this->transform.pos = pos;
 	this->transform.rot = rot;
@@ -186,12 +186,12 @@ void ComponentRigidBody::SetTransform(float3 pos, Quat rot,float3 scale)
 	CalculateGlobalMatrix();
 }
 
-Transform ComponentRigidBody::GetTransform() const
+Transform ComponentPhysBody::GetTransform() const
 {
 	return transform;
 }
 
-void ComponentRigidBody::ResetTransform()
+void ComponentPhysBody::ResetTransform()
 {
 	transform.pos = float3::zero;
 	transform.rot = Quat::identity;
@@ -203,7 +203,7 @@ void ComponentRigidBody::ResetTransform()
 	CalculateLocalMatrix();
 }
 
-void ComponentRigidBody::CalculateLocalMatrix()
+void ComponentPhysBody::CalculateLocalMatrix()
 {
 	//reset
 	trans_matrix_l = float4x4::identity;
@@ -217,7 +217,7 @@ void ComponentRigidBody::CalculateLocalMatrix()
 	CalculateGlobalMatrix();
 }
 
-void ComponentRigidBody::SetLocalMatrix(const float4x4 new_local)
+void ComponentPhysBody::SetLocalMatrix(const float4x4 new_local)
 {
 	trans_matrix_l = new_local;
 
@@ -228,7 +228,7 @@ void ComponentRigidBody::SetLocalMatrix(const float4x4 new_local)
 
 }
 
-void ComponentRigidBody::CalculateGlobalMatrix()
+void ComponentPhysBody::CalculateGlobalMatrix()
 {
 	//reset
 	GameObject* parent = owner->parent;
@@ -250,7 +250,7 @@ void ComponentRigidBody::CalculateGlobalMatrix()
 	updated_transform = true;
 }
 
-void ComponentRigidBody::UpdateTransformFromGuizmo(const float4x4 new_global)
+void ComponentPhysBody::UpdateTransformFromGuizmo(const float4x4 new_global)
 {
 	trans_matrix_g = new_global;
 	//if (owner->GetParent() != nullptr)

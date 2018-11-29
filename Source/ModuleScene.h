@@ -8,7 +8,7 @@
 #include "Octree.h"
 
 
-struct PhysBody3D;
+struct PhysBody;
 class ModuleScene : public Module
 {
 public:
@@ -19,7 +19,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	void OnCollision(PhysBody* body1, PhysBody* body2);
 	int RandInt(int min, int max);
 	float RandFloat(float min, float max);
 

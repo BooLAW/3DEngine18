@@ -164,10 +164,10 @@ void PanelInspector::Draw()
 					}
 				}
 
-				//Check if it has RigidBody
+				//Check if it has PhysBody
 				if (selected_go->HasRigidBody())
 				{
-					ComponentRigidBody* rb = selected_go->GetRigidBody();
+					ComponentPhysBody* rb = selected_go->GetRigidBody();
 					if (ImGui::CollapsingHeader("Rigid Body", ImGuiTreeNodeFlags_DefaultOpen))
 					{
 						selected_go->GetComponent(RIGIDBODY)->DrawInspectorInfo();

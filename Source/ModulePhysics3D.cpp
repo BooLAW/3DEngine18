@@ -175,7 +175,7 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 	return collisions_list;
 }
 
-PhysBody3D * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
+PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.push_back(colShape);
@@ -194,7 +194,7 @@ PhysBody3D * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = nullptr;
+	PhysBody* pbody = nullptr;
 
 	dynamicsWorld->addRigidBody(body);
 	//bodies.push_back(pbody);

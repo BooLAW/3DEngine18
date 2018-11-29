@@ -184,7 +184,7 @@ void ModuleScene::DrawGameObjects()
 }
 
 
-void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+void ModuleScene::OnCollision(PhysBody* body1, PhysBody* body2)
 {
 
 }

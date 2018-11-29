@@ -14,7 +14,7 @@
 using namespace rapidjson;
 
 class Application;
-struct PhysBody3D;
+struct PhysBody;
 
 
 class Module
@@ -61,7 +61,7 @@ public:
 	}
 	virtual void DrawModuleConfig() {}
 	virtual void BroadcastEvent(SDL_Event & event) {}
-	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+	virtual void OnCollision(PhysBody* body1, PhysBody* body2)
 	{}
 	virtual bool Save(Document& config_w, FileWriteStream& os) 
 	{ 
