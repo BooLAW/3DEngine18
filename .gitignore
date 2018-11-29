@@ -106,8 +106,7 @@ ipch/
 Settings/
 
 # Library Folder Files
-Game/Library/*
-!.lw
+ignore/Game/Library/*
 
 # Visual Studio profiler
 *.psess
