@@ -38,7 +38,7 @@ bool ModulePhysics3D::Init()
 {
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
-	InitializeWorld();
+	//InitializeWorld();
 	//CreatePlane();
 	return ret;
 }
@@ -49,6 +49,15 @@ bool ModulePhysics3D::Start()
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 
 	world->setGravity(GRAVITY);
+
+	////Big plane
+	//btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+
+	//btDefaultMotionState* myMotionState = new btDefaultMotionState();
+	//btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
+
+	//btRigidBody* body = new btRigidBody(rbInfo);
+	//world->addRigidBody(body);
 
 	return true;
 }
@@ -64,6 +73,35 @@ void ModulePhysics3D::DrawModuleConfig()
 
 update_status ModulePhysics3D::PreUpdate(float dt)
 {	
+	world->stepSimulation(dt, 15);
+
+	int numManifolds = world->getDispatcher()->getNumManifolds();
+	for (int i = 0; i<numManifolds; i++)
+	{
+		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
+		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+
+		int numContacts = contactManifold->getNumContacts();
+		if (numContacts > 0)
+		{
+			PhysBody* pbodyA = (PhysBody*)obA->getUserPointer();
+			PhysBody* pbodyB = (PhysBody*)obB->getUserPointer();
+
+			if (pbodyA && pbodyB)
+			{				
+				for (std::vector<Module*>::iterator item = pbodyA->collision_listeners.begin(); item != pbodyA->collision_listeners.begin(); item++)
+				{
+					(*item)->OnCollision(pbodyA, pbodyB);
+				}
+
+				for (std::vector<Module*>::iterator item = pbodyB->collision_listeners.begin(); item != pbodyB->collision_listeners.begin(); item++)
+				{
+					(*item)->OnCollision(pbodyB, pbodyA);
+				}
+			}
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 

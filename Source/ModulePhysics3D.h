@@ -53,6 +53,8 @@ public:
 	void BulletTest();
 	bool bullet_test = false;
 	//-----------------------
+
+	btDiscreteDynamicsWorld*			world;
 private:
 	bool debug;	
 	
@@ -67,7 +69,6 @@ private:
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	
 
-	btDiscreteDynamicsWorld*			world;
 	std::vector<btCollisionShape*>		shapes;
 	std::vector<PhysBody*>				bodies;
 	std::vector<btDefaultMotionState*>	motions;

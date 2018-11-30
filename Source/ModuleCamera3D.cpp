@@ -381,6 +381,7 @@ void ModuleCamera3D::CameraMovement(float dt)
 	float wheel_speed = wheel_speed_base * dt * 100;
 	if (App->imgui->scene->MouseOver() && App->input->GetMouseZ() != 0)
 		WheelMove(wheel_speed, wheel);
+
 	//Look at Target
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{

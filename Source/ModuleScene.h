@@ -64,7 +64,9 @@ public:
 	std::vector<GameObject*> to_delete;
 	std::list<GameObject*> octree_objects;
 
-	PCube testcube;
+	PCube cube;
+	PCube testcube2;
+	PhysBody* pcube;
 	
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
@@ -73,6 +75,8 @@ public:
 	
 	std::string fbx_name;
 	std::string folder_path;
+
+	std::vector<PhysBody*> cube_list;
 	
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];

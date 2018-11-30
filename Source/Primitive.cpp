@@ -18,9 +18,6 @@ void Primitive::Render() const
 	glPushMatrix();
 	glMultMatrixf(transform.ptr());
 
-	glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
-
 	if (axis == true)
 	{
 		// Draw Axis Grid
@@ -54,37 +51,11 @@ void Primitive::Render() const
 	}
 
 	glColor3f(color.r, color.g, color.b);
-	glEnable(GL_TEXTURE_2D);
 	
-	if (App->renderer3D->attributes.lighting)
-		glEnable(GL_LIGHTING);
-	else
-		glDisable(GL_LIGHTING);	
 	
 	InnerRender();
 
-	/*
-	//Draw Line
-	glLineWidth(5.0f);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(0.f, 0.f, 20.f);
-	glVertex3f(0.f, 5.f, 20.f);
-	glVertex3f(5.f, 0.f, 20.f);
-
-	glVertex3f(0.f, 5.f, 20.f);
-	glVertex3f(5.f, 5.f, 20.f);
-	glVertex3f(5.f, 0.f, 20.f);
-
-	glVertex3f(5.f, 5.f, 20.f);
-	glVertex3f(5.f, 0.f, 20.f);
-	glVertex3f(5.f, 0.f, 25.f);
-
-	glVertex3f(0.f, 0.f, 20.f);
-	glVertex3f(5.f, 0.f, 25.f);
-	glVertex3f(0.f, 0.f, 25.f);
-	glEnd();
-
-	glLineWidth(1.0f);*/
+	glLineWidth(1.0f);
 
 
 	glPopMatrix();
@@ -105,7 +76,10 @@ void Primitive::InnerRender() const
 
 void Primitive::SetPos(float x, float y, float z)
 {
-	transform.Translate(x, y, z);
+	transform[3][0] = x;
+	transform[3][1] = y;
+	transform[3][2] = z;
+
 }
 
 void Primitive::SetRotation(float angle, const float3 & u)
@@ -125,44 +99,13 @@ PrimitiveTypes Primitive::GetType() const
 
 
 //CUBE=====================================================
-
-// PLANE ==================================================
-PPlane::PPlane() : Primitive(), normal(0, 1, 0), constant(1)
-{
-	type = PrimitiveTypes::Primitive_Plane;
-}
-
-PPlane::PPlane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
-{
-	type = PrimitiveTypes::Primitive_Plane;
-}
-
-void PPlane::InnerRender() const
-{
-	glLineWidth(1.0f);
-
-	glBegin(GL_LINES);
-
-	float d = 200.0f;
-
-	for (float i = -d; i <= d; i += 1.0f)
-	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
-	}
-
-	glEnd();
-}
-
-PCube::PCube():Primitive()
+PCube::PCube() :Primitive()
 {
 	type = PrimitiveTypes::Primitive_Cube;
 
 }
 
-PCube::PCube(float x, float y, float z):Primitive(), dimensions(x,y,z)
+PCube::PCube(float x, float y, float z) :Primitive(), dimensions(x, y, z)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
@@ -174,7 +117,7 @@ void PCube::InnerRender() const
 	float sx = dimensions.x * 0.5f;
 	float sy = dimensions.y * 0.5f;
 	float sz = dimensions.z * 0.5f;
-
+	glLineWidth(5.0f);
 	glBegin(GL_QUADS);
 
 	glNormal3f(0.0f, 0.0f, 1.0f);
@@ -212,6 +155,56 @@ void PCube::InnerRender() const
 	glVertex3f(sx, -sy, -sz);
 	glVertex3f(sx, -sy, sz);
 	glVertex3f(-sx, -sy, sz);
+
+	glEnd();
+
+	////Draw Line
+	//glLineWidth(5.0f);
+	//glBegin(GL_TRIANGLES);
+	//glVertex3f(0.f, 0.f, 20.f);
+	//glVertex3f(0.f, 5.f, 20.f);
+	//glVertex3f(5.f, 0.f, 20.f);
+
+	//glVertex3f(0.f, 5.f, 20.f);
+	//glVertex3f(5.f, 5.f, 20.f);
+	//glVertex3f(5.f, 0.f, 20.f);
+
+	//glVertex3f(5.f, 5.f, 20.f);
+	//glVertex3f(5.f, 0.f, 20.f);
+	//glVertex3f(5.f, 0.f, 25.f);
+
+	//glVertex3f(0.f, 0.f, 20.f);
+	//glVertex3f(5.f, 0.f, 25.f);
+	//glVertex3f(0.f, 0.f, 25.f);
+	//glEnd();
+}
+
+// PLANE ==================================================
+PPlane::PPlane() : Primitive(), normal(0, 1, 0), constant(1)
+{
+	type = PrimitiveTypes::Primitive_Plane;
+}
+
+PPlane::PPlane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
+{
+	type = PrimitiveTypes::Primitive_Plane;
+}
+
+void PPlane::InnerRender() const
+{
+	glLineWidth(1.0f);
+
+	glBegin(GL_LINES);
+
+	float d = 200.0f;
+
+	for (float i = -d; i <= d; i += 1.0f)
+	{
+		glVertex3f(i, 0.0f, -d);
+		glVertex3f(i, 0.0f, d);
+		glVertex3f(-d, 0.0f, i);
+		glVertex3f(d, 0.0f, i);
+	}
 
 	glEnd();
 }

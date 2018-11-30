@@ -88,10 +88,10 @@ bool ModuleScene::Start()
 		}
 	}
 
-	testcube.dimensions = float3(10.0f, 10.0f, 10.0f);
-	testcube.SetPos(0, 0, 0);
+	cube.dimensions = float3(5.0f, 5.0f, 5.0f);
+	cube.SetPos(0, 10, 10);
 
-	App->physics->AddBody(testcube, 0)->collision_listeners.push_back(this);
+	cube_list.push_back(App->physics->AddBody(cube, 1));
 	
 
 	//Load Street
@@ -119,7 +119,7 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	testcube.Render();
+
 	
 	if (octree.update_octree)
 	{
@@ -128,6 +128,7 @@ update_status ModuleScene::Update(float dt)
 	}
 	
 	DeleteGameObjectsInList();
+
 	return UPDATE_CONTINUE;
 }
 void ModuleScene::DrawGameObjects()
@@ -183,6 +184,17 @@ void ModuleScene::DrawGameObjects()
 		App->camera->GetCurrentCam()->DrawFrustum();
 	if(App->camera->draw_mouse_ray)
 		App->camera->DrawRay();
+
+	cube.Render();	
+
+	for (std::vector<PhysBody*>::iterator item = cube_list.begin(); item != cube_list.end(); item++)
+	{
+		float matrix[16];
+		(*item)->GetTransform(matrix);
+		float3 position(matrix[12], matrix[13], matrix[14]);
+
+		cube.SetPos(position.x, position.y, position.z);
+	}
 
 	
 }
