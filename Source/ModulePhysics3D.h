@@ -14,20 +14,11 @@
 #include "Globals.h"
 #include "Primitive.h"
 
+
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
-
-class btDefaultCollisionConfiguration;
-class btCollisionDispatcher;
-class btBroadphaseInterface;
-class btSequentialImpulseConstraintSolver;
-class btDiscreteDynamicsWorld;
-class btCollisionShape;
-class btDefaultMotionState;
-class btTypedConstraint;
-class DebugDrawer;
 
 struct PhysBody;
 
@@ -53,6 +44,7 @@ public:
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	PhysBody* AddBody(const PSphere& sphere, float mass);
+	PhysBody* AddBody(const PCube& sphere, float mass);
 	//-------------------------
 	//Assignment 3--------------
 	void InitializeWorld();
@@ -62,25 +54,25 @@ public:
 	bool bullet_test = false;
 	//-----------------------
 private:
-	bool debug;
-	PSphere sphere_test;
-	
+	bool debug;	
 	
 	std::vector<AABB> cube_list;
 	std::vector<PSphere> spheres_list;
 
 	//physics
-	btDefaultCollisionConfiguration*	coll_config;
-	btCollisionDispatcher*				coll_dispatcher;
+	btDefaultCollisionConfiguration*	collision_conf;
+	btCollisionDispatcher*				dispatcher;
 	btBroadphaseInterface*				broad_phase;
-	btSequentialImpulseConstraintSolver* constraint_solver;
-	btDiscreteDynamicsWorld*			dynamicsWorld;
+	btSequentialImpulseConstraintSolver* solver;
+	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	
 
-	std::list<btCollisionShape*> shapes;
-	std::list<PhysBody*> bodies;
-	std::list<btDefaultMotionState*> motions;
-	std::list<btTypedConstraint*> constraints;
+	btDiscreteDynamicsWorld*			world;
+	std::vector<btCollisionShape*>		shapes;
+	std::vector<PhysBody*>				bodies;
+	std::vector<btDefaultMotionState*>	motions;
+	std::vector<btTypedConstraint*>		constraints;
 };
+
 #endif
 

@@ -35,7 +35,6 @@ public:
 protected:
 	PrimitiveTypes type;
 };
-
 class PCube : public Primitive {
 public:
 	PCube();

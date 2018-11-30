@@ -1,7 +1,5 @@
 #include "Globals.h"
-#include "Application.h"
 #include "ModuleScene.h"
-#include "Component.h"
 #include "imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
@@ -9,19 +7,17 @@
 #include <sstream>
 #include <limits>
 
-#include "GameObject.h"
-
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "Component.h"
 
 #include "Transform.h"
 #include "Material.h"
 #include "Camera.h"
 #include "Mesh.h"
 
-#include "Primitive.h"
 #include "TextureMSAA.h"
 
 #include "ImGui/ImGuizmo.h"
@@ -92,6 +88,12 @@ bool ModuleScene::Start()
 		}
 	}
 
+	testcube.dimensions = float3(10.0f, 10.0f, 10.0f);
+	testcube.SetPos(0, 0, 0);
+
+	App->physics->AddBody(testcube, 0)->collision_listeners.push_back(this);
+	
+
 	//Load Street
 	/*App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
 	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";*/
@@ -117,6 +119,8 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
+	testcube.Render();
+	
 	if (octree.update_octree)
 	{
 		octree.RefactorOctree();

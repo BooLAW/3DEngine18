@@ -6,6 +6,8 @@
 #include "Mesh.h"
 #include "GameObject.h"
 #include "Octree.h"
+#include "Primitive.h"
+#include "PhysBody.h"
 
 
 struct PhysBody;
@@ -61,6 +63,8 @@ public:
 	std::vector<GameObject*> go_list;	
 	std::vector<GameObject*> to_delete;
 	std::list<GameObject*> octree_objects;
+
+	PCube testcube;
 	
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;

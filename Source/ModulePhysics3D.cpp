@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics3D.h"
-#include "Bullet/include//btBulletDynamicsCommon.h"
+#include "PhysBody.h"
 
 
 #ifdef _DEBUG
@@ -19,11 +19,19 @@
 ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 {
 	debug = true;
+
+	collision_conf = new btDefaultCollisionConfiguration();
+	dispatcher = new btCollisionDispatcher(collision_conf);
+	broad_phase = new btDbvtBroadphase();
+	solver = new btSequentialImpulseConstraintSolver();
 }
 
 ModulePhysics3D::~ModulePhysics3D()
 {
-
+	delete solver;
+	delete broad_phase;
+	delete dispatcher;
+	delete collision_conf;
 }
 
 bool ModulePhysics3D::Init()
@@ -38,9 +46,10 @@ bool ModulePhysics3D::Init()
 bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
-	sphere_test.radius = 4;
-	sphere_test.pos = float3(0, 10, 0);
-	sphere_test.dead = false;
+	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
+
+	world->setGravity(GRAVITY);
+
 	return true;
 }
 
@@ -69,7 +78,6 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		spheres_list[i];
 	}
-	sphere_test.Render();
 	return UPDATE_CONTINUE;
 }
 
@@ -81,27 +89,37 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 bool ModulePhysics3D::CleanUp()
 {
 	CONSOLE_LOG_INFO("Destroying 3D Physics simulation");
-	//delete collision shapes
-		/*for (int j = 0; j < collisionShapes.size(); j++)
-		{
-			btCollisionShape* shape = collisionShapes[j];
-			collisionShapes[j] = 0;
-			delete shape;
-		}*/
+	// Remove from the world all collision bodies
+	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = world->getCollisionObjectArray()[i];
+		world->removeCollisionObject(obj);
+	}
 
-	//delete dynamics world
-	delete dynamicsWorld;
-	//delete solver
-	delete constraint_solver;
-	//delete broadphase
-	delete broad_phase;
-	//delete dispatcher
-	delete coll_dispatcher;
+	for (std::vector<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); item++)
+	{
+		world->removeConstraint((*item));
+		delete (*item);
+	}
 
-	delete coll_config;
+	constraints.clear();
 
-	//next line is optional: it will be cleared by the destructor when the array goes out of scope
-	//collisionShapes.clear();
+	for (std::vector<btDefaultMotionState*>::iterator item = motions.begin(); item != motions.end(); item++)
+		delete (*item);
+
+	motions.clear();
+
+	for (std::vector<btCollisionShape*>::iterator item = shapes.begin(); item != shapes.end(); item++)
+		delete (*item);
+
+	shapes.clear();
+
+	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+		delete (*item);
+
+	bodies.clear();
+
+	delete world;
 	return true;
 }
 
@@ -120,34 +138,6 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 	new_cube.maxPoint = maxPoint;
 	cube_list.push_back(new_cube);
 }
-
-//std::list<float2> ModulePhysics3D::GetSphereCollisions()
-//{
-//	//int listener = 0;
-//	//int candidate = 0;
-//	//
-//	//std::list<float2> collisions_list;
-//
-//	//for (listener; listener < spheres_list.size(); listener++)
-//	//{
-//	//	bool collided = false;
-//	//	for (candidate; candidate < spheres_list.size(); candidate++)
-//	//	{
-//	//		if (listener == candidate)
-//	//			continue;
-//	//		collided = spheres_list[listener].Intersects(spheres_list[candidate]);
-//	//		if (collided)
-//	//		{
-//	//			collisions_list.push_back({(float) listener,(float)candidate });
-//	//			CONSOLE_LOG_INFO("Sphere %d collides with Sphere %d",listener, candidate);
-//	//		}
-//	//	}
-//	//	candidate = 0;
-//	//}
-//
-//
-//	//return new list<float2>;
-//}
 
 std::list<float2> ModulePhysics3D::GetCubeCollisions()
 {
@@ -175,6 +165,31 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 	return collisions_list;
 }
 
+PhysBody* ModulePhysics3D::AddBody(const PCube& cube, float mass)
+{
+	btCollisionShape* colShape = new btBoxShape(btVector3(cube.dimensions.x*0.5f, cube.dimensions.y*0.5f, cube.dimensions.z*0.5f));
+	shapes.push_back(colShape);
+
+	btTransform startTransform;
+	startTransform.setFromOpenGLMatrix(cube.transform.ptr());
+
+	btVector3 localInertia(0, 0, 0);
+	if (mass != 0.f)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.push_back(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+	PhysBody* pbody = new PhysBody(body);
+
+	world->addRigidBody(body);
+	bodies.push_back(pbody);
+
+	return pbody;
+}
+
 PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
@@ -196,7 +211,7 @@ PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody* pbody = nullptr;
 
-	dynamicsWorld->addRigidBody(body);
+	world->addRigidBody(body);
 	//bodies.push_back(pbody);
 
 	return pbody;
@@ -204,30 +219,18 @@ PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 
 void ModulePhysics3D::InitializeWorld()
 {
-	//create Config
-	coll_config = new btDefaultCollisionConfiguration();
-	//create Dispatcher
-	 coll_dispatcher = new btCollisionDispatcher(coll_config);
-	//create broadphase
-	broad_phase = new btDbvtBroadphase();
 
-	constraint_solver = new btSequentialImpulseConstraintSolver;
-
-	dynamicsWorld = new btDiscreteDynamicsWorld(coll_dispatcher, broad_phase, constraint_solver, coll_config);
-
-	//set Real Gravity for now
-	dynamicsWorld->setGravity(btVector3(0, -10000, 0));
 }
 
 void ModulePhysics3D::CreatePlane()
 {
 	btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 
-		btDefaultMotionState* myMotionState = new btDefaultMotionState();
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
+	btDefaultMotionState* myMotionState = new btDefaultMotionState();
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
-		btRigidBody* body = new btRigidBody(rbInfo);
-		dynamicsWorld->addRigidBody(body);
+	btRigidBody* body = new btRigidBody(rbInfo);
+	world->addRigidBody(body);
 }
 
 void ModulePhysics3D::ShootSphere()
@@ -266,7 +269,7 @@ void ModulePhysics3D::BulletTest()
 		btRigidBody* body = new btRigidBody(rbInfo);
 
 		//add the body to the dynamics world
-		dynamicsWorld->addRigidBody(body);
+		world->addRigidBody(body);
 	}
 
 	{
@@ -297,7 +300,7 @@ void ModulePhysics3D::BulletTest()
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 		btRigidBody* body = new btRigidBody(rbInfo);
 
-		dynamicsWorld->addRigidBody(body);
+		world->addRigidBody(body);
 	}
 
 	/// Do some simulation
@@ -305,12 +308,12 @@ void ModulePhysics3D::BulletTest()
 	///-----stepsimulation_start-----
 	for (int i = 0; i < 20; i++)
 	{
-		dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+		world->stepSimulation(1.f / 60.f, 10);
 
 		//print positions of all objects
-		for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
+		for (int j = world->getNumCollisionObjects() - 1; j >= 0; j--)
 		{
-			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
+			btCollisionObject* obj = world->getCollisionObjectArray()[j];
 			btRigidBody* body = btRigidBody::upcast(obj);
 			btTransform trans;
 			if (body && body->getMotionState())
@@ -334,17 +337,45 @@ void ModulePhysics3D::BulletTest()
 	///-----cleanup_start-----
 
 	//remove the rigidbodies from the dynamics world and delete them
-	for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
 	{
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+		btCollisionObject* obj = world->getCollisionObjectArray()[i];
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
 			delete body->getMotionState();
 		}
-		dynamicsWorld->removeCollisionObject(obj);
+		world->removeCollisionObject(obj);
 		delete obj;
 	}
+	//std::list<float2> ModulePhysics3D::GetSphereCollisions()
+	//{
+	//	//int listener = 0;
+	//	//int candidate = 0;
+	//	//
+	//	//std::list<float2> collisions_list;
+	//
+	//	//for (listener; listener < spheres_list.size(); listener++)
+	//	//{
+	//	//	bool collided = false;
+	//	//	for (candidate; candidate < spheres_list.size(); candidate++)
+	//	//	{
+	//	//		if (listener == candidate)
+	//	//			continue;
+	//	//		collided = spheres_list[listener].Intersects(spheres_list[candidate]);
+	//	//		if (collided)
+	//	//		{
+	//	//			collisions_list.push_back({(float) listener,(float)candidate });
+	//	//			CONSOLE_LOG_INFO("Sphere %d collides with Sphere %d",listener, candidate);
+	//	//		}
+	//	//	}
+	//	//	candidate = 0;
+	//	//}
+	//
+	//
+	//	//return new list<float2>;
+	//}
 }
+
 
 

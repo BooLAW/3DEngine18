@@ -1,5 +1,5 @@
-#ifndef __PhysBody3D_H__
-#define __PhysBody3D_H__
+#ifndef __PhysBody_H__
+#define __PhysBody_H__
 
 #include "Module.h"
 
