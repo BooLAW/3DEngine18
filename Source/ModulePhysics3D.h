@@ -37,6 +37,8 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 
+	void UpdatePhysics();
+
 	bool CleanUp();
 	//Prev Assignment3
 	void CreateSphere(float3 position, int radius);
@@ -44,7 +46,7 @@ public:
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	PhysBody* AddBody(const PSphere& sphere, float mass);
-	PhysBody* AddBody(const PCube& sphere, float mass);
+	PhysBody* AddBody(PCube& sphere, float mass);
 	//-------------------------
 	//Assignment 3--------------
 	void InitializeWorld();
@@ -58,8 +60,9 @@ public:
 private:
 	bool debug;	
 	
-	std::vector<AABB> cube_list;
+	std::vector<AABB> pcube_list;
 	std::vector<PSphere> spheres_list;
+	std::vector<PCube*> cube_list;
 
 	//physics
 	btDefaultCollisionConfiguration*	collision_conf;

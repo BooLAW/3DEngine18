@@ -90,8 +90,13 @@ bool ModuleScene::Start()
 
 	cube.dimensions = float3(5.0f, 5.0f, 5.0f);
 	cube.SetPos(0, 10, 10);
+	App->physics->AddBody(cube, 1);
+	
 
-	cube_list.push_back(App->physics->AddBody(cube, 1));
+	cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
+	cube2.SetPos(0, 30, 7.5f);
+	App->physics->AddBody(cube2, 3);
+
 	
 
 	//Load Street
@@ -118,9 +123,7 @@ bool ModuleScene::CleanUp()
 
 // Update
 update_status ModuleScene::Update(float dt)
-{
-
-	
+{	
 	if (octree.update_octree)
 	{
 		octree.RefactorOctree();
@@ -184,17 +187,11 @@ void ModuleScene::DrawGameObjects()
 		App->camera->GetCurrentCam()->DrawFrustum();
 	if(App->camera->draw_mouse_ray)
 		App->camera->DrawRay();
+	App->physics->world->debugDrawWorld();
 
-	cube.Render();	
+	App->physics->UpdatePhysics();
 
-	for (std::vector<PhysBody*>::iterator item = cube_list.begin(); item != cube_list.end(); item++)
-	{
-		float matrix[16];
-		(*item)->GetTransform(matrix);
-		float3 position(matrix[12], matrix[13], matrix[14]);
 
-		cube.SetPos(position.x, position.y, position.z);
-	}
 
 	
 }

@@ -42,6 +42,7 @@ public:
 	void InnerRender() const override;
 public:
 	float3 dimensions;
+	bool hasmesh;
 };
 
 class PPlane : public Primitive

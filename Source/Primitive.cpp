@@ -51,12 +51,10 @@ void Primitive::Render() const
 	}
 
 	glColor3f(color.r, color.g, color.b);
-	
-	
+		
 	InnerRender();
 
 	glLineWidth(1.0f);
-
 
 	glPopMatrix();
 }
@@ -85,6 +83,7 @@ void Primitive::SetPos(float x, float y, float z)
 void Primitive::SetRotation(float angle, const float3 & u)
 {
 	transform.RotateAxisAngle(u,angle);
+	
 }
 
 void Primitive::Scale(float x, float y, float z)
@@ -157,26 +156,6 @@ void PCube::InnerRender() const
 	glVertex3f(-sx, -sy, sz);
 
 	glEnd();
-
-	////Draw Line
-	//glLineWidth(5.0f);
-	//glBegin(GL_TRIANGLES);
-	//glVertex3f(0.f, 0.f, 20.f);
-	//glVertex3f(0.f, 5.f, 20.f);
-	//glVertex3f(5.f, 0.f, 20.f);
-
-	//glVertex3f(0.f, 5.f, 20.f);
-	//glVertex3f(5.f, 5.f, 20.f);
-	//glVertex3f(5.f, 0.f, 20.f);
-
-	//glVertex3f(5.f, 5.f, 20.f);
-	//glVertex3f(5.f, 0.f, 20.f);
-	//glVertex3f(5.f, 0.f, 25.f);
-
-	//glVertex3f(0.f, 0.f, 20.f);
-	//glVertex3f(5.f, 0.f, 25.f);
-	//glVertex3f(0.f, 0.f, 25.f);
-	//glEnd();
 }
 
 // PLANE ==================================================
