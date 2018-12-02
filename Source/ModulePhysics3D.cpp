@@ -3,25 +3,25 @@
 #include "ModulePhysics3D.h"
 
 
-//#ifdef _DEBUG
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3DEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CommonDEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundationDEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3ExtensionsDEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CookingDEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDKDEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PxTaskDEBUG_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXmlDEBUG_x86.lib")
-//#else
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Common_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundation_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Extensions_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Cooking_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDK_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PxTask_x86.lib")
-//#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXml_x86.lib")
-//#endif
+#ifdef _DEBUG
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3DEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CommonDEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundationDEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3ExtensionsDEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CookingDEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDKDEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PxTaskDEBUG_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXmlDEBUG_x86.lib")
+#else
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Common_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundation_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Extensions_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Cooking_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDK_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PxTask_x86.lib")
+#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXml_x86.lib")
+#endif
 
 
 
@@ -98,33 +98,7 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 	cube_list.push_back(new_cube);
 }
 
-//std::list<float2> ModulePhysics3D::GetSphereCollisions()
-//{
-//	//int listener = 0;
-//	//int candidate = 0;
-//	//
-//	//std::list<float2> collisions_list;
-//
-//	//for (listener; listener < spheres_list.size(); listener++)
-//	//{
-//	//	bool collided = false;
-//	//	for (candidate; candidate < spheres_list.size(); candidate++)
-//	//	{
-//	//		if (listener == candidate)
-//	//			continue;
-//	//		collided = spheres_list[listener].Intersects(spheres_list[candidate]);
-//	//		if (collided)
-//	//		{
-//	//			collisions_list.push_back({(float) listener,(float)candidate });
-//	//			CONSOLE_LOG_INFO("Sphere %d collides with Sphere %d",listener, candidate);
-//	//		}
-//	//	}
-//	//	candidate = 0;
-//	//}
-//
-//
-//	//return new list<float2>;
-//}
+
 
 std::list<float2> ModulePhysics3D::GetCubeCollisions()
 {

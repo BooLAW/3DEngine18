@@ -455,14 +455,14 @@ bool ModuleCamera3D::Load(Document * config_r)
 	mouse_sensitivity = ret["camera"]["MouseSensitivity"].GetFloat();
 	wheel_speed_base = ret["camera"]["MouseWheelSpeed"].GetFloat();
 
-	GetEditorCam()->frustum.pos.x = ret["camera"]["Position_x"].GetFloat();
+	/*GetEditorCam()->frustum.pos.x = ret["camera"]["Position_x"].GetFloat();
 	GetEditorCam()->frustum.pos.y = ret["camera"]["Position_y"].GetFloat();
 	GetEditorCam()->frustum.pos.z = ret["camera"]["Position_z"].GetFloat();
 
 	GetEditorCam()->SetAspectRatio(ret["camera"]["AspectRatio"].GetFloat());
 	GetEditorCam()->SetFOV(wheel_speed_base = ret["camera"]["FOV"].GetFloat());
 	GetEditorCam()->SetNearPlane(wheel_speed_base = ret["camera"]["NearPlane"].GetFloat());
-	GetEditorCam()->SetFarPlane(wheel_speed_base = ret["camera"]["FarPlane"].GetFloat());
+	GetEditorCam()->SetFarPlane(wheel_speed_base = ret["camera"]["FarPlane"].GetFloat());*/
 
 	return true;
 }
