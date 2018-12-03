@@ -162,14 +162,7 @@ Alternatively, one can instead directly #include a subset of the below files.
 #include "characterkinematic/PxControllerObstacles.h"
 #include "characterkinematic/PxExtended.h"
 
-//Cloth Simulation
-#if PX_USE_CLOTH_API
-#include "cloth/PxCloth.h"
-#include "cloth/PxClothCollisionData.h"
-#include "cloth/PxClothFabric.h"
-#include "cloth/PxClothParticleData.h"
-#include "cloth/PxClothTypes.h"
-#endif
+
 
 //Cooking (data preprocessing)
 #include "cooking/Pxc.h"
@@ -215,22 +208,6 @@ Alternatively, one can instead directly #include a subset of the below files.
 #include "particles/PxParticleReadData.h"
 #include "particles/PxParticleSystem.h"
 #endif
-
-//Vehicle Simulation
-#include "vehicle/PxVehicleComponents.h"
-#include "vehicle/PxVehicleDrive.h"
-#include "vehicle/PxVehicleDrive4W.h"
-#include "vehicle/PxVehicleDriveTank.h"
-#include "vehicle/PxVehicleSDK.h"
-#include "vehicle/PxVehicleShaders.h"
-#include "vehicle/PxVehicleTireFriction.h"
-#include "vehicle/PxVehicleUpdate.h"
-#include "vehicle/PxVehicleUtilControl.h"
-#include "vehicle/PxVehicleUtilSetup.h"
-#include "vehicle/PxVehicleUtilTelemetry.h"
-#include "vehicle/PxVehicleWheels.h"
-#include "vehicle/PxVehicleNoDrive.h"
-#include "vehicle/PxVehicleDriveNW.h"
 
 //Connecting the SDK to Visual Debugger
 #include "pvd/PxPvdSceneClient.h"

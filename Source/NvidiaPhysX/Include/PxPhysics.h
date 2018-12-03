@@ -42,10 +42,7 @@
 #include "PxShape.h"
 
 
-#if PX_USE_CLOTH_API
-#include "cloth/PxClothTypes.h"
-#include "cloth/PxClothFabric.h"
-#endif
+
 
 
 #if !PX_DOXYGEN
@@ -252,65 +249,7 @@ public:
 	virtual	PxU32				getConvexMeshes(PxConvexMesh** userBuffer, PxU32 bufferSize, PxU32 startIndex=0) const = 0;
 
 
-#if PX_USE_CLOTH_API
-	/**
-	\brief Creates a cloth fabric object.
 
-	This can then be instanced into #PxCloth objects.
-
-	\param[in] stream The stream to load the cloth fabric from.
-	\return The new cloth fabric.
-	
-	\deprecated The PhysX cloth feature has been deprecated in PhysX version 3.4.1
-
-	@see PxClothFabric PxClothFabric.release() PxInputStream PxCloth PxRegisterCloth
-	*/
-	PX_DEPRECATED virtual PxClothFabric*	createClothFabric(PxInputStream& stream) = 0;
-
-	/**
-	\brief Creates a cloth fabric object from particle connectivity and restlength information.
-
-	\note The particle connectivity can be created using #PxClothFabricCooker in extensions.
-
-	This can then be instanced into #PxCloth objects.
-
-	\param[in] desc Fabric descriptor, see #PxClothFabricDesc.
-	\return The new cloth fabric.
-
-	\deprecated The PhysX cloth feature has been deprecated in PhysX version 3.4.1
-
-	@see PxClothFabric PxClothFabric.release() PxCloth
-	*/
-	PX_DEPRECATED virtual PxClothFabric*	createClothFabric(const PxClothFabricDesc& desc) = 0;
-
-	/**
-	\brief Return the number of cloth fabrics that currently exist.
-
-	\return Number of cloth fabrics.
-	
-	\deprecated The PhysX cloth feature has been deprecated in PhysX version 3.4.1
-
-	@see getClothFabrics()
-	*/
-	PX_DEPRECATED virtual PxU32	getNbClothFabrics() const = 0;
-
-	/**
-	\brief Writes the array of cloth fabrics to a user buffer.
-	
-	Returns the number of pointers written.
-
-	The ordering of the cloth fabrics in the array is not specified.
-
-	\param[out] userBuffer The buffer to receive cloth fabric pointers.
-	\param[in] bufferSize The number of cloth fabric pointers which can be stored in the buffer.
-	\return The number of cloth fabric pointers written to userBuffer, this should be less or equal to bufferSize.
-
-	\deprecated The PhysX cloth feature has been deprecated in PhysX version 3.4.1
-
-	@see getNbClothFabrics() PxClothFabric
-	*/
-	PX_DEPRECATED virtual	PxU32	getClothFabrics(PxClothFabric** userBuffer, PxU32 bufferSize) const = 0;
-#endif
 
 	//@}
 	/** @name Scenes
@@ -428,7 +367,7 @@ public:
 	
 	@see PxCloth PxClothFabric PxClothFlags PxRegisterCloth
 	*/
-	PX_DEPRECATED virtual PxCloth*	createCloth(const PxTransform& globalPose, PxClothFabric& fabric, const PxClothParticle* particles, PxClothFlags flags) = 0;
+	//PX_DEPRECATED virtual PxCloth*	createCloth(const PxTransform& globalPose, PxClothFabric& fabric, const PxClothParticle* particles, PxClothFlags flags) = 0;
 #endif
 
 	/**

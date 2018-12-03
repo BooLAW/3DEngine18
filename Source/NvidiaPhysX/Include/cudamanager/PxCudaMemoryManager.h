@@ -30,6 +30,7 @@
 
 #include "foundation/PxPreprocessor.h"
 
+
 #if PX_SUPPORT_GPU_PHYSX
 
 #include "task/PxTaskDefine.h"
@@ -41,7 +42,7 @@
 #define PX_ALLOC_INFO_PARAMS_INPUT()  file, line, allocName, allocId
 #define PX_ALLOC_INFO_PARAMS_INPUT_INFO(info) info.getFileName(), info.getLine(), info.getAllocName(), info.getAllocId()
 
-#ifndef NULL // don't want to include <string.h>
+#ifndef NULL // don't want to include string.h
 #define NULL 0
 #endif
 
@@ -50,15 +51,10 @@ namespace physx
 
 PX_PUSH_PACK_DEFAULT
 
-/** \brief ID of the Feature which owns/allocated memory from the heap
- *
- * Maximum of 64k IDs allowed.
- */
+
 struct PxAllocId
 {
-    /**
-     * \brief ID of the Feature which owns/allocated memory from the heap
-     */
+   
 	enum Enum
 	{
 		UNASSIGNED,		//!< default
@@ -73,9 +69,7 @@ struct PxAllocId
 /// \brief memory type managed by a heap
 struct PxCudaBufferMemorySpace
 {
-    /**
-     * \brief memory type managed by a heap
-     */
+    
 	enum Enum
 	{
 		T_GPU,
@@ -90,14 +84,10 @@ struct PxCudaBufferMemorySpace
 class PxAllocInfo
 {
 public:
-    /**
-     * \brief AllocInfo default constructor
-     */
+   
 	PxAllocInfo() {}
 
-    /**
-     * \brief AllocInfo constructor that initializes all of the members
-     */
+   
 	PxAllocInfo(const char* file, int line, const char* allocName, PxAllocId::Enum allocId)
 		: mFileName(file)
 		, mLine(line)
@@ -172,53 +162,39 @@ struct PxCudaMemoryManagerStats
 };
 
 
-/// \brief Buffer type: made of hint flags and the memory space (Device Memory, Pinned Host Memory, ...)
 struct PxCudaBufferType
 {
-	/// \brief PxCudaBufferType copy constructor
 	PX_INLINE PxCudaBufferType(const PxCudaBufferType& t)
 		: memorySpace(t.memorySpace)
 		, flags(t.flags)
 	{}
 	
-	/// \brief PxCudaBufferType constructor to explicitely assign members
 	PX_INLINE PxCudaBufferType(PxCudaBufferMemorySpace::Enum _memSpace, PxCudaBufferFlags::Enum _flags)
 		: memorySpace(_memSpace)
 		, flags(_flags)
 	{}
 
-	PxCudaBufferMemorySpace::Enum	memorySpace; 	//!< specifies which memory space for the buffer 
-	PxCudaBufferFlags::Enum			flags;			//!< specifies the usage flags for the buffer
+	PxCudaBufferMemorySpace::Enum	memorySpace; 	
+	PxCudaBufferFlags::Enum			flags;			
 };
 
 
-/// \brief Buffer which keeps informations about allocated piece of memory.
 class PxCudaBuffer
 {
 public:
-	/// Retrieves the manager over which the buffer was allocated.
 	virtual	PxCudaMemoryManager*			getCudaMemoryManager() const = 0;
 
-	/// Releases the buffer and the memory it used, returns true if successful.
-	virtual	bool						free() = 0;
+	virtual	bool						cudafree() = 0;
 
-	/// Realloc memory. Use to shrink or resize the allocated chunk of memory of this buffer.
-	/// Returns true if successful. Fails if the operation would change the address and need a memcopy.
-	/// In that case the user has to allocate, copy and free the memory with separate steps.
-	/// Realloc to size 0 always returns false and doesn't change the state.
-	virtual	bool						realloc(size_t size, PX_ALLOC_INFO_PARAMS_DECL(NULL, 0, NULL, UNASSIGNED)) = 0;
+	virtual	bool						cudarealloc(size_t size, PX_ALLOC_INFO_PARAMS_DECL(NULL, 0, NULL, UNASSIGNED)) = 0;
 
-	/// Returns the type of the allocated memory.
 	virtual	const PxCudaBufferType&		getType() const = 0;
 
-	/// Returns the pointer to the allocated memory.
 	virtual	PxCudaBufferPtr				getPtr() const = 0;
 
-	/// Returns the size of the allocated memory.
 	virtual	size_t						getSize() const = 0;
 
 protected:
-    /// \brief protected destructor
     virtual ~PxCudaBuffer() {}
 };
 
@@ -234,10 +210,10 @@ public:
 	virtual PxCudaBufferPtr				alloc(PxCudaBufferMemorySpace::Enum memorySpace, size_t size, PX_ALLOC_INFO_PARAMS_DECL(NULL, 0, NULL, UNASSIGNED)) = 0;
 
 	/// Basic heap deallocator without PxCudaBuffer
-	virtual bool						free(PxCudaBufferMemorySpace::Enum memorySpace, PxCudaBufferPtr addr) = 0;
+	virtual bool						cudafree(PxCudaBufferMemorySpace::Enum memorySpace, PxCudaBufferPtr addr) = 0;
 
 	/// Basic heap realloc without PxCudaBuffer
-	virtual bool						realloc(PxCudaBufferMemorySpace::Enum memorySpace, PxCudaBufferPtr addr, size_t size, PX_ALLOC_INFO_PARAMS_DECL(NULL, 0, NULL, UNASSIGNED)) = 0;
+	virtual bool						cudarealloc(PxCudaBufferMemorySpace::Enum memorySpace, PxCudaBufferPtr addr, size_t size, PX_ALLOC_INFO_PARAMS_DECL(NULL, 0, NULL, UNASSIGNED)) = 0;
 
 	/// Retrieve stats for the memory of given type. See PxCudaMemoryManagerStats.
 	virtual void						getStats(const PxCudaBufferType& type, PxCudaMemoryManagerStats& outStats) = 0;
