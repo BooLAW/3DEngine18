@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody.h"
-
+#include "ModuleCamera3D.h"
+#include "Camera.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -28,10 +29,7 @@ ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 
 ModulePhysics3D::~ModulePhysics3D()
 {
-	delete solver;
-	delete broad_phase;
-	delete dispatcher;
-	delete collision_conf;
+
 }
 
 bool ModulePhysics3D::Init()
@@ -51,13 +49,13 @@ bool ModulePhysics3D::Start()
 	world->setGravity(GRAVITY);
 
 	////Big plane
-	//btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+	btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 
-	//btDefaultMotionState* myMotionState = new btDefaultMotionState();
-	//btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
+	btDefaultMotionState* myMotionState = new btDefaultMotionState();
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
-	//btRigidBody* body = new btRigidBody(rbInfo);
-	//world->addRigidBody(body);
+	btRigidBody* body = new btRigidBody(rbInfo);
+	world->addRigidBody(body);
 
 	return true;
 }
@@ -112,9 +110,12 @@ update_status ModulePhysics3D::Update(float dt)
 		BulletTest();
 		bullet_test = false;
 	}
-	for (int i = 0; spheres_list.size() > i; i++)
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		spheres_list[i];
+		PCube c(1.0f, 1.0f, 1.0f);
+		c.SetPos(App->camera->editor_cam->frustum.pos.x, App->camera->editor_cam->frustum.pos.y, App->camera->editor_cam->frustum.pos.z);
+		float force = 30.0f;		
 	}
 	return UPDATE_CONTINUE;
 }
@@ -122,6 +123,28 @@ update_status ModulePhysics3D::Update(float dt)
 update_status ModulePhysics3D::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
+}
+
+void ModulePhysics3D::UpdatePhysics()
+{
+	int i = 0;
+	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+	{
+		float matrix[16];
+		(*item)->GetTransform(matrix);
+		if (cube_list.size() > i)
+		{
+
+			cube_list.at(i)->transform.Set(matrix);
+		}
+		
+		i++;
+	}
+
+	for (int i = 0; i < cube_list.size(); i++)
+	{		
+		cube_list[i]->Render();
+	}
 }
 
 bool ModulePhysics3D::CleanUp()
@@ -158,6 +181,12 @@ bool ModulePhysics3D::CleanUp()
 	bodies.clear();
 
 	delete world;
+
+	delete solver;
+	delete broad_phase;
+	delete dispatcher;
+	delete collision_conf;
+
 	return true;
 }
 
@@ -166,7 +195,7 @@ void ModulePhysics3D::CreateSphere(float3 position, int radius)
 	PSphere new_sphere;
 	new_sphere.pos = position;
 	new_sphere.radius = (float)radius;
-	spheres_list.push_back(new_sphere);
+	//spheres_list.push_back(new_sphere);
 }
 
 void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
@@ -174,7 +203,7 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 	AABB new_cube;
 	new_cube.minPoint = minPoint;
 	new_cube.maxPoint = maxPoint;
-	cube_list.push_back(new_cube);
+	//pcube_list.push_back(new_cube);
 }
 
 std::list<float2> ModulePhysics3D::GetCubeCollisions()
@@ -184,14 +213,14 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 
 	std::list<float2> collisions_list;
 
-	for (listener; listener < cube_list.size(); listener++)
+	for (listener; listener < pcube_list.size(); listener++)
 	{
 		bool collided = false;
-		for (candidate; candidate < cube_list.size(); candidate++)
+		for (candidate; candidate < pcube_list.size(); candidate++)
 		{
 			if (listener == candidate)
 				continue;
-			collided = cube_list[listener].Intersects(cube_list[candidate]);
+			collided = pcube_list[listener].Intersects(pcube_list[candidate]);
 			if (collided)
 			{
 				collisions_list.push_back({ (float)listener,(float)candidate });
@@ -203,10 +232,12 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 	return collisions_list;
 }
 
-PhysBody* ModulePhysics3D::AddBody(const PCube& cube, float mass)
+PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 {
+	PCube aux = cube;
 	btCollisionShape* colShape = new btBoxShape(btVector3(cube.dimensions.x*0.5f, cube.dimensions.y*0.5f, cube.dimensions.z*0.5f));
 	shapes.push_back(colShape);
+	
 
 	btTransform startTransform;
 	startTransform.setFromOpenGLMatrix(cube.transform.ptr());
@@ -225,6 +256,10 @@ PhysBody* ModulePhysics3D::AddBody(const PCube& cube, float mass)
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
 
+	cube_list.push_back(&cube);
+
+
+
 	return pbody;
 }
 
@@ -235,8 +270,7 @@ PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 
 	btTransform startTransform;
 	btScalar* btsphere = new btScalar();
-	sphere.transform;
-	//startTransform.setFromOpenGLMatrix(&sphere.transform);
+	startTransform.setFromOpenGLMatrix(sphere.transform.ptr());
 
 	btVector3 localInertia(0, 0, 0);
 	if (mass != 0.f)
@@ -250,7 +284,7 @@ PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 	PhysBody* pbody = nullptr;
 
 	world->addRigidBody(body);
-	//bodies.push_back(pbody);
+	bodies.push_back(pbody);
 
 	return pbody;
 }

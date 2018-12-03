@@ -460,7 +460,7 @@ void LoadManager::CreateFolders(const char * path)
 	CreateDirectory(main_dir_name.c_str(), NULL); //Create Library Folder
 	CreateDirectory(secondary_dir_name.c_str(), NULL); //Create SubFolders inside Library
 	CreateDirectory(dir_name.c_str(), NULL); //Create Folder with then name of the mesh
-
+	App->scene_intro->folder_path = "";
 	App->scene_intro->folder_path = dir_name;
 }
 
