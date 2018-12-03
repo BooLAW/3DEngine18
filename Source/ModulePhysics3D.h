@@ -2,17 +2,16 @@
 #define __MODULE_PHYSICS_3D__
 
 
-
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
-
-
+#include "NvidiaPhysX/Include/PxPhysicsAPI.h"
+#include <map>
 
 class ModulePhysics3D : public Module
 {
 public:
-	ModulePhysics3D( bool start_enabled = true);
+	ModulePhysics3D(bool start_enabled = true);
 	~ModulePhysics3D();
 
 	bool Init();
@@ -30,18 +29,26 @@ public:
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	//-------------------------
-	
+
 	//Assignment 3--------------
-	
+	void NvidiaBuild();
+	void NvidiaShutDown();
+	void InitMainScene();
+	void NvidiaValuesToNull();
 	//-----------------------
 private:
 	bool debug;
-	
-	
+
+
 	std::vector<AABB> cube_list;
 	std::vector<PSphere> spheres_list;
 
-	
+	//Nvidia
+	physx::PxScene* myScene;
+	physx::PxFoundation* myFoundation;
+	physx::PxPvd* myPvd;
+	physx::PxCooking* myCooking;
+	physx::PxPhysics* myPhysics;
 };
 #endif
 

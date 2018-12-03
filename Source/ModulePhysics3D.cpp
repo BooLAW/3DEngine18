@@ -3,25 +3,25 @@
 #include "ModulePhysics3D.h"
 
 
-#ifdef _DEBUG
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3DEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CommonDEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundationDEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3ExtensionsDEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CookingDEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDKDEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PxTaskDEBUG_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXmlDEBUG_x86.lib")
-#else
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Common_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundation_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Extensions_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Cooking_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDK_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PxTask_x86.lib")
-#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXml_x86.lib")
-#endif
+//#ifdef _DEBUG
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3DEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CommonDEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundationDEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3ExtensionsDEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3CookingDEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDKDEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PxTaskDEBUG_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXmlDEBUG_x86.lib")
+//#else
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Common_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PxFoundation_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Extensions_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PhysX3Cooking_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PxPvdSDK_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PxTask_x86.lib")
+//#pragma comment (lib, "NvidiaPhysX/Libs/PsFastXml_x86.lib")
+//#endif
 
 
 
