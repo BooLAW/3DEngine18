@@ -95,7 +95,7 @@ bool ModuleScene::Start()
 
 	cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
 	cube2.SetPos(0, 30, 7.5f);
-	App->physics->AddBody(cube2, 3);
+	App->physics->AddBody(cube2, 1);
 
 	
 

@@ -130,14 +130,17 @@ void ModulePhysics3D::UpdatePhysics()
 	int i = 0;
 	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 	{
+		(*item)->GetRigidBody()->applyForce({ 0,6,0 }, { 0,1,0 });
+	}
+	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+	{
 		float matrix[16];
 		(*item)->GetTransform(matrix);
+
 		if (cube_list.size() > i)
 		{
-
 			cube_list.at(i)->transform.Set(matrix);
 		}
-		
 		i++;
 	}
 
