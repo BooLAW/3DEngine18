@@ -63,7 +63,14 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 update_status ModulePhysics3D::Update(float dt)
 {
-	
+	if (App->state == playing)
+	{
+		//now we will use the main scene only but we can check all the scenes and
+		myScene->simulate(dt);
+		myScene->fetchResults(true);
+		//CHECK COLLISIONS-------------------------
+		//http://gameworksdocs.nvidia.com/PhysX/3.4/PhysXGuide/Manual/Threading.html
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -78,7 +85,10 @@ bool ModulePhysics3D::CleanUp()
 	CONSOLE_LOG_INFO("Destroying 3D Physics simulation");
 
 
+	//myPhysics->release();
 
+	//Do not forget to release the foundation object as well, but only after all other PhysX modules have been released:
+	//myFoundation->release();
 	return true;
 }
 
@@ -124,5 +134,27 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 		candidate = 0;
 	}
 	return collisions_list;
+}
+
+void ModulePhysics3D::InitMainScene()
+{
+	physx::PxSceneDesc sceneDesc(myPhysics->getTolerancesScale());
+
+	//create CudaManager
+	physx::PxCudaContextManagerDesc cudaCMD;
+	myCudaManager = PxCreateCudaContextManager(*myFoundation, cudaCMD);
+	sceneDesc.gpuDispatcher = myCudaManager->getGpuDispatcher();
+
+
+}
+
+bool ModulePhysics3D::HasValidScenes()
+{
+	return (myPhysics!=nullptr && myPhysics->getNbScenes() > 0);
+}
+
+uint ModulePhysics3D::GetNumScenes()const
+{
+	return myPhysics->getNbScenes();
 }
 

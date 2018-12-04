@@ -35,6 +35,9 @@ public:
 	void NvidiaShutDown();
 	void InitMainScene();
 	void NvidiaValuesToNull();
+
+	bool HasValidScenes();
+	uint GetNumScenes()const;
 	//-----------------------
 private:
 	bool debug;
@@ -49,6 +52,7 @@ private:
 	physx::PxPvd* myPvd;
 	physx::PxCooking* myCooking;
 	physx::PxPhysics* myPhysics;
+	physx::PxCudaContextManager* myCudaManager;
 };
 #endif
 
