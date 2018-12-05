@@ -190,10 +190,6 @@ void ModuleScene::DrawGameObjects()
 	App->physics->world->debugDrawWorld();
 
 	App->physics->UpdatePhysics();
-
-
-
-	
 }
 
 

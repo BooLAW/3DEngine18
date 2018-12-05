@@ -45,7 +45,7 @@ public:
 	void CreateCube(float3 minPoint, float3 maxPoint);
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
-	PhysBody* AddBody(const PSphere& sphere, float mass);
+	PhysBody* AddBody(PSphere& sphere, float mass,bool throw_list = false);
 	PhysBody* AddBody(PCube& sphere, float mass);
 	//-------------------------
 	//Assignment 3--------------
@@ -54,15 +54,20 @@ public:
 	void ShootSphere();
 	void BulletTest();
 	bool bullet_test = false;
+	bool tick = false;
 	//-----------------------
 
 	btDiscreteDynamicsWorld*			world;
 private:
 	bool debug;	
+
+
 	
 	std::vector<AABB> pcube_list;
-	std::vector<PSphere> spheres_list;
 	std::vector<PCube*> cube_list;
+	std::vector<Primitive*> primitive_list;
+
+
 
 	//physics
 	btDefaultCollisionConfiguration*	collision_conf;
