@@ -9,6 +9,7 @@
 #include "MeshLoader.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ComponentPhysBody.h"
 #include "Transform.h"
 #include "GameObject.h"
 #include "Camera.h"
@@ -76,8 +77,8 @@ void PanelInspector::Draw()
 							//CREATE EACH ELEMENT
 							if (items[n] == "PhysBody")
 							{
-								//Add A physbody to current component
-								
+								ComponentPhysBody* new_comp = new ComponentPhysBody(selected_go);
+								selected_go->PushComponent(new_comp);
 							}
 							else if (items[n] == "Camera")
 							{

@@ -4,6 +4,7 @@
 #include "PhysBody.h"
 #include "ModuleCamera3D.h"
 #include "Camera.h"
+#include "PanelScene.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -107,7 +108,7 @@ update_status ModulePhysics3D::Update(float dt)
 		bullet_test = false;
 	}
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->scene->MouseOver())
 	{
 		PSphere* test = new PSphere();
 		test->radius = 3;

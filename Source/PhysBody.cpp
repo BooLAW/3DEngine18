@@ -7,6 +7,10 @@ PhysBody::PhysBody(btRigidBody* body) : body(body)
 	body->setUserPointer(this);
 }
 
+PhysBody::PhysBody()
+{
+}
+
 // ---------------------------------------------------------
 PhysBody::~PhysBody()
 {
@@ -31,6 +35,16 @@ void PhysBody::GetTransform(float* matrix) const
 btRigidBody * PhysBody::GetRigidBody()
 {
 	return body;
+}
+
+void PhysBody::SetMass(const uint new_mass)
+{
+	mass = new_mass;
+}
+
+uint PhysBody::GetMass() const
+{
+	return mass;
 }
 
 // ---------------------------------------------------------
