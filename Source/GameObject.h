@@ -12,6 +12,7 @@ class ComponentMesh;
 class ComponentCamera;
 class ComponentPhysBody;
 class Camera;
+
 class GameObject
 {
 public:

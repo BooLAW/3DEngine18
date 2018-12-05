@@ -37,7 +37,7 @@ bool ModulePhysics3D::Init()
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
 	//InitializeWorld();
-	//CreatePlane();
+	
 	return ret;
 }
 
@@ -49,13 +49,7 @@ bool ModulePhysics3D::Start()
 	world->setGravity(GRAVITY);
 
 	////Big plane
-	btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
-
-	btDefaultMotionState* myMotionState = new btDefaultMotionState();
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
-
-	btRigidBody* body = new btRigidBody(rbInfo);
-	world->addRigidBody(body);
+	CreatePlane();
 
 	return true;
 }
@@ -261,8 +255,6 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 
 	cube_list.push_back(&cube);
 
-
-
 	return pbody;
 }
 
@@ -290,11 +282,6 @@ PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 	bodies.push_back(pbody);
 
 	return pbody;
-}
-
-void ModulePhysics3D::InitializeWorld()
-{
-
 }
 
 void ModulePhysics3D::CreatePlane()

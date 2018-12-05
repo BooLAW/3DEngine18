@@ -8,6 +8,7 @@
 #include "ImGui/imgui_dock.h"
 #include "MeshLoader.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "Transform.h"
 #include "GameObject.h"
 #include "Camera.h"
@@ -61,7 +62,41 @@ void PanelInspector::Draw()
 				{
 					App->scene_intro->DeleteGameObject(selected_go);
 				}
+				static ImGuiComboFlags flags = 0;
+				const char* items[] = { "PhysBody", "Camera","Material WiP", "Mesh WiP" };
+				static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
+				if (ImGui::BeginCombo("Create", item_current, flags)) // The second parameter is the label previewed before opening the combo.
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+					{
+						bool is_selected = (item_current == items[n]);
+						if (ImGui::Selectable(items[n], is_selected))
+						{
+							item_current = items[n];
+							//CREATE EACH ELEMENT
+							if (items[n] == "PhysBody")
+							{
+								//Add A physbody to current component
+								
+							}
+							else if (items[n] == "Camera")
+							{
+								if (selected_go->HasCam())
+									continue;
+								ComponentCamera* new_comp = new ComponentCamera();
+								new_comp->SetOwner(selected_go);
+								selected_go->PushComponent(new_comp);
+									
+							}
+							
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+					}
+					ImGui::EndCombo();
+				}
 				ImGui::Separator();
+				
 
 			if (selected_go != nullptr)
 			{

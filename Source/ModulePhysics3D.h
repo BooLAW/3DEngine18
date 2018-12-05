@@ -49,7 +49,6 @@ public:
 	PhysBody* AddBody(PCube& sphere, float mass);
 	//-------------------------
 	//Assignment 3--------------
-	void InitializeWorld();
 	void CreatePlane();
 	void ShootSphere();
 	void BulletTest();
