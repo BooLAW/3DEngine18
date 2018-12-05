@@ -37,5 +37,24 @@ void ComponentPhysBody::DrawInspectorInfo()
 	if (ImGui::InputInt("Mass", &mass))
 		physbody->SetMass(mass);
 
+	bool aux_grav = physbody->HasGravity();
+	if (ImGui::Checkbox("Use Gravity", &aux_grav))
+		physbody->ActivateGravity(aux_grav);
+
+	if (ImGui::TreeNode("Constraints"))
+	{
+		ImGui::Text("Freeze Position"); ImGui::SameLine();
+		ImGui::Checkbox("X", &physbody->const_px); ImGui::SameLine();
+		ImGui::Checkbox("Y", &physbody->const_py); ImGui::SameLine();
+		ImGui::Checkbox("Z", &physbody->const_pz); 
+
+		ImGui::Text("Freeze Rotation"); ImGui::SameLine();
+		ImGui::Checkbox("X", &physbody->const_rx); ImGui::SameLine();
+		ImGui::Checkbox("Y", &physbody->const_ry); ImGui::SameLine();
+		ImGui::Checkbox("Z", &physbody->const_rz);
+
+		ImGui::TreePop();
+	}
+
 }
 

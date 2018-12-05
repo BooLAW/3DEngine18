@@ -47,6 +47,16 @@ uint PhysBody::GetMass() const
 	return mass;
 }
 
+void PhysBody::ActivateGravity(const bool active)
+{
+	use_gravity = active;
+}
+
+bool PhysBody::HasGravity()const
+{
+	return use_gravity;
+}
+
 // ---------------------------------------------------------
 void PhysBody::SetTransform(const float* matrix) const
 {

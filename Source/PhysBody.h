@@ -22,13 +22,31 @@ public:
 	void SetAsSensor(bool is_sensor);
 	bool IsSensor() const;
 	btRigidBody* GetRigidBody();
+
 	void SetMass(const uint new_mass);
 	uint GetMass()const;
+	void ActivateGravity(const bool active);
+	bool HasGravity()const;
 private:
 	btRigidBody * body = nullptr;
 	bool is_sensor = false;
+	//Unity Elements------------
+	//Mass
 	uint mass = 0;
+	//Affected by gravity?
 	bool use_gravity = false;
+	//Collision Detection
+public:
+	//Constraints
+	bool const_px;
+	bool const_py;
+	bool const_pz;
+
+	bool const_rx;
+	bool const_ry;
+	bool const_rz;
+
+	//--------------------------
 
 public:
 	std::vector<Module*> collision_listeners;
