@@ -51,6 +51,8 @@ bool ModulePhysics3D::Start()
 	////Big plane
 	CreatePlane();
 
+
+
 	return true;
 }
 
@@ -105,11 +107,17 @@ update_status ModulePhysics3D::Update(float dt)
 		bullet_test = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		PCube c(1.0f, 1.0f, 1.0f);
-		c.SetPos(App->camera->editor_cam->frustum.pos.x, App->camera->editor_cam->frustum.pos.y, App->camera->editor_cam->frustum.pos.z);
-		float force = 30.0f;		
+		PSphere* test = new PSphere();
+		test->radius = 3;
+		float position[3];
+		position[0] = App->camera->editor_cam->frustum.pos.x;
+		position[1] = App->camera->editor_cam->frustum.pos.y;
+		position[2] = App->camera->editor_cam->frustum.pos.z;
+
+		test->SetPos(position[0], position[1], position[2]);
+		App->physics->AddBody(*test, 1,true);
 	}
 	return UPDATE_CONTINUE;
 }
@@ -124,23 +132,22 @@ void ModulePhysics3D::UpdatePhysics()
 	int i = 0;
 	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 	{
-		(*item)->GetRigidBody()->applyForce({ 0,6,0 }, { 0,1,0 });
-	}
-	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
-	{
 		float matrix[16];
 		(*item)->GetTransform(matrix);
 
-		if (cube_list.size() > i)
+		if (primitive_list.size() > i)
 		{
-			cube_list.at(i)->transform.Set(matrix);
+			primitive_list.at(i)->transform.Set(matrix);
+			
 		}
 		i++;
 	}
 
-	for (int i = 0; i < cube_list.size(); i++)
+
+
+	for (int i = 0; i < primitive_list.size(); i++)
 	{		
-		cube_list[i]->Render();
+		primitive_list[i]->Render();
 	}
 }
 
@@ -190,7 +197,6 @@ bool ModulePhysics3D::CleanUp()
 void ModulePhysics3D::CreateSphere(float3 position, int radius)
 {
 	PSphere new_sphere;
-	new_sphere.pos = position;
 	new_sphere.radius = (float)radius;
 	//spheres_list.push_back(new_sphere);
 }
@@ -253,12 +259,12 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
 
-	cube_list.push_back(&cube);
+	primitive_list.push_back((Primitive*)&cube);
 
 	return pbody;
 }
 
-PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
+PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool push)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.push_back(colShape);
@@ -276,10 +282,23 @@ PhysBody * ModulePhysics3D::AddBody(const PSphere& sphere, float mass)
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody* pbody = nullptr;
-
+	PhysBody* pbody = new PhysBody(body);
+	if (push)
+	{
+		btVector3 editor_cam_dir;
+		editor_cam_dir.setX(App->camera->editor_cam->frustum.front.x);
+		editor_cam_dir.setY(App->camera->editor_cam->frustum.front.y);
+		editor_cam_dir.setZ(App->camera->editor_cam->frustum.front.z);
+		
+		editor_cam_dir = editor_cam_dir * 40;
+		pbody->GetRigidBody()->applyCentralImpulse(editor_cam_dir);
+		//The position is changed on the PSphere class
+	}
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
+	primitive_list.push_back((Primitive*)&sphere);
+
+
 
 	return pbody;
 }
