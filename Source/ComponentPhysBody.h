@@ -13,10 +13,12 @@ public:
 	bool Update()override;
 
 	void DrawInspectorInfo();
-
+	void UpdateTransform();
 
 public:
 	PhysBody* physbody;
+	bool bullet_trans_updated;
+	bool owner_trans_updated;
 };
 
 #endif

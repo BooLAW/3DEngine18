@@ -52,7 +52,8 @@ public:
 	void CreatePlane();
 	void ShootSphere();
 	void BulletTest();
-	void SetGravity(int new_gravity);
+	void SetGravity(float new_gravity);
+	float GetGravity()const;
 	bool bullet_test = false;
 	bool tick = false;
 	//-----------------------
@@ -61,7 +62,7 @@ public:
 private:
 	bool debug;	
 
-	 int gravity;
+	float gravity;
 	
 	std::vector<AABB> pcube_list;
 	std::vector<PCube*> cube_list;

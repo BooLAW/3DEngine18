@@ -26,7 +26,6 @@ public:
 	float4x4 GetGlobalMatrix();
 	float4x4 GetLocalMatrix();
 	void CalculateGlobalMatrix();
-	void SetGlobalMatrix(const float4x4 new_global);
 	void UpdateBBChilds(GameObject* parent);
 	void UpdateTransformFromGuizmo(const float4x4 new_global);
 

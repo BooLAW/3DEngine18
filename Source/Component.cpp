@@ -50,6 +50,11 @@ GameObject * Component::GetOwner() const
 	return owner;
 }
 
+bool Component::HasOwner() const
+{
+	return owner!=nullptr;
+}
+
 ComponentType Component::GetType() const
 {
 	return type;

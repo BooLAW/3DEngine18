@@ -1,4 +1,6 @@
 #include "PhysBody.h"
+#include "ModulePhysics3D.h"
+#include "Application.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // =================================================
@@ -50,6 +52,7 @@ uint PhysBody::GetMass() const
 void PhysBody::ActivateGravity(const bool active)
 {
 	use_gravity = active;
+	use_gravity ? body->setGravity({ 0,App->physics->GetGravity(),0 }) : body->setGravity({ 0,0,0 });
 }
 
 bool PhysBody::HasGravity()const
@@ -58,7 +61,7 @@ bool PhysBody::HasGravity()const
 }
 
 // ---------------------------------------------------------
-void PhysBody::SetTransform(const float* matrix) const
+void PhysBody::SetTransform(float* matrix) 
 {
 	if (body != NULL && matrix != NULL)
 	{

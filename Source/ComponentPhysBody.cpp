@@ -7,6 +7,10 @@
 #include "Camera.h"
 #include "Application.h"
 #include "PhysBody.h"
+#include "Transform.h"
+#include "ComponentTransform.h"
+
+
 ComponentPhysBody::ComponentPhysBody(GameObject * owner)
 {
 	this->SetOwner(owner);
@@ -39,7 +43,6 @@ void ComponentPhysBody::DrawInspectorInfo()
 	if (ImGui::Checkbox("Use Gravity", &aux_grav))
 	{
 		physbody->ActivateGravity(aux_grav);
-		App->physics->SetGravity(aux_grav);
 	}
 
 	if (ImGui::TreeNode("Constraints"))
@@ -57,5 +60,18 @@ void ComponentPhysBody::DrawInspectorInfo()
 		ImGui::TreePop();
 	}
 
+}
+
+void ComponentPhysBody::UpdateTransform()
+{
+	if (HasOwner())
+	{
+		if (owner_trans_updated)
+		{
+			GameObject* owner = GetOwner();
+			physbody->SetTransform((float*)&owner->comp_transform->trans_matrix_g);
+		}
+	
+	}
 }
 

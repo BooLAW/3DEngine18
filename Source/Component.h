@@ -20,6 +20,7 @@ public:
 	bool IsActive()const;
 	void SetActive(bool active);
 	GameObject* GetOwner()const;
+	bool HasOwner()const;
 	ComponentType GetType()const;
 	ComponentMaterial* GetComponentMaterial()const;
 	void SetType(ComponentType type);

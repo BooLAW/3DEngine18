@@ -62,7 +62,7 @@ void ModulePhysics3D::DrawModuleConfig()
 	if (ImGui::CollapsingHeader("Physics"))
 	{
 		
-		if (ImGui::InputInt("Y Gravity",&gravity))
+		if (ImGui::InputFloat("Y Gravity",&gravity))
 		{
 			App->physics->SetGravity(gravity);
 		}
@@ -463,11 +463,16 @@ void ModulePhysics3D::BulletTest()
 	//}
 }
 
-void ModulePhysics3D::SetGravity(int new_gravity)
+void ModulePhysics3D::SetGravity(float new_gravity)
 {
 	//Gravity will always be setted on the Y axis
-	world->setGravity({ 0.0f,(float)new_gravity,0.0f});
+	world->setGravity({ 0.0f,new_gravity,0.0f});
 	
+}
+
+float ModulePhysics3D::GetGravity() const
+{
+	return gravity;
 }
 
 
