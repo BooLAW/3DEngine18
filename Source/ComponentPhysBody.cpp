@@ -29,8 +29,6 @@ bool ComponentPhysBody::Update()
 	return false;
 }
 
-
-
 void ComponentPhysBody::DrawInspectorInfo()
 {
 	int mass = physbody->GetMass();
@@ -39,7 +37,10 @@ void ComponentPhysBody::DrawInspectorInfo()
 
 	bool aux_grav = physbody->HasGravity();
 	if (ImGui::Checkbox("Use Gravity", &aux_grav))
+	{
 		physbody->ActivateGravity(aux_grav);
+		App->physics->SetGravity(aux_grav);
+	}
 
 	if (ImGui::TreeNode("Constraints"))
 	{

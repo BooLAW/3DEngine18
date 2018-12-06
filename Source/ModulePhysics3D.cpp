@@ -26,6 +26,7 @@ ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 	dispatcher = new btCollisionDispatcher(collision_conf);
 	broad_phase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver();
+	gravity = -10;
 }
 
 ModulePhysics3D::~ModulePhysics3D()
@@ -38,7 +39,6 @@ bool ModulePhysics3D::Init()
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
 	//InitializeWorld();
-	
 	return ret;
 }
 
@@ -61,8 +61,12 @@ void ModulePhysics3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Physics"))
 	{
-		if (ImGui::Button("Test"))
-			bullet_test = true;
+		
+		if (ImGui::InputInt("Y Gravity",&gravity))
+		{
+			App->physics->SetGravity(gravity);
+		}
+		
 	}
 }
 
@@ -457,6 +461,13 @@ void ModulePhysics3D::BulletTest()
 	//
 	//	//return new list<float2>;
 	//}
+}
+
+void ModulePhysics3D::SetGravity(int new_gravity)
+{
+	//Gravity will always be setted on the Y axis
+	world->setGravity({ 0.0f,(float)new_gravity,0.0f});
+	
 }
 
 
