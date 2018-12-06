@@ -60,6 +60,8 @@ bool PhysBody::HasGravity()const
 	return use_gravity;
 }
 
+
+
 // ---------------------------------------------------------
 void PhysBody::SetTransform(float* matrix) 
 {

@@ -58,6 +58,10 @@ public:
 	GameObject* GetClosestGO(std::vector<GameObject*> gameobjects, LineSegment line);
 	void ClickSelection(LineSegment mouse_ray);
 
+	//Camera Movement
+	void MoveCurrentCamera();
+	void MoveCameraGO();
+	void RotateCameraGO();
 public:
 	//Scene GameObjects
 	std::vector<GameObject*> go_list;	
@@ -69,13 +73,13 @@ public:
 	
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
-	
+	GameObject* main_camera_go = nullptr;
 	Octree octree;
 	
 	std::string fbx_name;
 	std::string folder_path;
 
-	
+	int game_cam_speed = 3;
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];
 

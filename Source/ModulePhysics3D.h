@@ -53,6 +53,7 @@ public:
 	void ShootSphere();
 	void BulletTest();
 	void SetGravity(float new_gravity);
+	void ToggleDebugDraw();
 	float GetGravity()const;
 	bool bullet_test = false;
 	bool tick = false;

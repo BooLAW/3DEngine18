@@ -27,6 +27,7 @@ public:
 	uint GetMass()const;
 	void ActivateGravity(const bool active);
 	bool HasGravity()const;
+	
 private:
 	btRigidBody * body = nullptr;
 	bool is_sensor = false;

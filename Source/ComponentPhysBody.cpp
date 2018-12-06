@@ -66,12 +66,25 @@ void ComponentPhysBody::UpdateTransform()
 {
 	if (HasOwner())
 	{
-		if (owner_trans_updated)
-		{
 			GameObject* owner = GetOwner();
-			physbody->SetTransform((float*)&owner->comp_transform->trans_matrix_g);
-		}
-	
+			physbody->SetTransform((float*)&owner->comp_transform->trans_matrix_g);			
 	}
+}
+
+bool ComponentPhysBody::HasMoved()
+{
+	bool ret = false;
+
+	if (!IsBulletStatic())
+	{
+		//PAU WiP
+	}
+
+	return ret;
+}
+bool ComponentPhysBody::IsBulletStatic()
+{
+	bool ret = physbody->GetRigidBody()->isStaticObject();
+	return ret;
 }
 

@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "Camera.h"
 #include "Application.h"
+#include "ComponentPhysBody.h"
 
 ComponentTransform::ComponentTransform(GameObject * owner)
 {
@@ -111,6 +112,10 @@ void ComponentTransform::DrawInspectorInfo()
 		if (updated_transform || owner->GetFirstUpdate())
 		{
 			UpdateTransformValues();
+			if (owner->HasRigidBody())
+			{
+				owner->GetRigidBody()->owner_trans_updated = true;
+			}
 			if (owner->HasMesh())
 			{
 				owner->GetCMesh()->UpdateBoundingBox(trans_matrix_g);

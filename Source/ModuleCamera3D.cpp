@@ -155,7 +155,7 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	//Profiler
 	App->profiler.StartTimer("Camera");
-	if (!locked)
+	if (!locked && App->state != playing)
 		CameraMovement(dt);	
 	//Mouse Picking
 	bool mouse_picking_working = true;
@@ -188,17 +188,19 @@ void ModuleCamera3D::Move(const float &speed)
 	//Camera Movement inputs
 	float3 newPos(0, 0, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += editor_cam->frustum.front * speed; //Forward
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= editor_cam->frustum.front * speed; //Backwards
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += editor_cam->frustum.front * speed; //Forward
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= editor_cam->frustum.front * speed; //Backwards
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->frustum.WorldRight() * speed; //Left
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->frustum.WorldRight() * speed; //Right
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= editor_cam->frustum.WorldRight() * speed; //Left
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += editor_cam->frustum.WorldRight() * speed; //Right
 
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -=  speed; //Down
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y +=  speed; //Up
-	if(!newPos.IsZero())
-		editor_cam->frustum.Translate(newPos);
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos.y -= speed; //Down
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y += speed; //Up
+		if (!newPos.IsZero())
+			editor_cam->frustum.Translate(newPos);
+	
+
 
 	
 }

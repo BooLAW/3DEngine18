@@ -7,12 +7,14 @@
 #include <sstream>
 #include <limits>
 
+#include "ComponentPhysBody.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
 #include "Component.h"
 
+#include "PhysBody.h"
 #include "Transform.h"
 #include "Material.h"
 #include "Camera.h"
@@ -69,12 +71,12 @@ bool ModuleScene::Start()
 	App->camera->StartEditorCamera();
 
 	//Creating Game Camera
-	GameObject* new_cam = CreateMainCamera();
-	go_list.push_back(new_cam);
-	scene_root->AddChild(new_cam);
-	if (new_cam->HasCam())
-		App->camera->cams_list.push_back(new_cam);
-	App->camera->SetCurrentCam(new_cam);
+	main_camera_go = CreateMainCamera();
+	go_list.push_back(main_camera_go);
+	scene_root->AddChild(main_camera_go);
+	if (main_camera_go->HasCam())
+		App->camera->cams_list.push_back(main_camera_go);
+	App->camera->SetCurrentCam(main_camera_go);
 	App->camera->StartNewCamera();
 
 	//Create Library folder
@@ -129,7 +131,8 @@ update_status ModuleScene::Update(float dt)
 		octree.RefactorOctree();
 		octree.update_octree = false;
 	}
-	
+	if (App->state == playing)
+		MoveCurrentCamera();
 	DeleteGameObjectsInList();
 
 	return UPDATE_CONTINUE;
@@ -181,6 +184,7 @@ void ModuleScene::DrawGameObjects()
 			go_list[i]->Draw();
 
 	}
+	
 	//Octree
 	octree.DrawOctree(draw_octree);
 	if (App->camera->GetCurrentCam()->IsFrustumActive())
@@ -844,6 +848,91 @@ void ModuleScene::ClickSelection(LineSegment mouse_ray)
 	if(GetSelected() != nullptr)
 		GetSelected()->SetSelected(false);
 	closestGo->SetSelected(true);
+}
+
+void ModuleScene::MoveCurrentCamera()
+{
+	//WASD
+	MoveCameraGO();
+	//Mouse Rotation
+	RotateCameraGO();
+}
+
+void ModuleScene::MoveCameraGO()
+{
+	Camera* curr_cam = main_camera_go->GetCamera();
+	Transform curr_trans = main_camera_go->comp_transform->GetTransform();
+	bool cam_moved = false;
+	//Z
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		float new_z = curr_trans.pos.z;
+		new_z += game_cam_speed;
+		curr_trans.SetPosition(curr_trans.pos.x, curr_trans.pos.y, new_z);
+		cam_moved = true;
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		float new_z = curr_trans.pos.z;
+		new_z -= game_cam_speed;
+		curr_trans.SetPosition(curr_trans.pos.x, curr_trans.pos.y, new_z);
+		cam_moved = true;
+
+	}
+	//X														
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		float new_x = curr_trans.pos.x;
+		new_x += game_cam_speed;
+		curr_trans.SetPosition(curr_trans.pos.x, curr_trans.pos.y, curr_trans.pos.z);
+		cam_moved = true;
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		float new_x = curr_trans.pos.x;
+		new_x -= game_cam_speed;
+		curr_trans.SetPosition(new_x, curr_trans.pos.y, curr_trans.pos.z);
+		cam_moved = true;
+
+	}
+
+	//Y
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
+	{
+		float new_y = curr_trans.pos.y;
+		new_y += game_cam_speed;
+		curr_trans.SetPosition(curr_trans.pos.x, new_y, curr_trans.pos.z);
+		cam_moved = true;
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+	{
+		float new_y = curr_trans.pos.x;
+		new_y -= game_cam_speed;
+		curr_trans.SetPosition(curr_trans.pos.x, new_y, curr_trans.pos.z);
+		cam_moved = true;
+	}
+	
+	if (cam_moved || main_camera_go->GetFirstUpdate())
+	{
+		main_camera_go->comp_transform->UpdateTransformValues();
+		/*if (main_camera_go->HasRigidBody())
+		{
+			main_camera_go->GetRigidBody()->UpdateTransform();
+		}
+		if (main_camera_go->HasCam())
+			main_camera_go->GetCCamera()->Update();*/
+
+		main_camera_go->SetFirstUpdate(false);
+	}
+	
+
+}
+
+void ModuleScene::RotateCameraGO()
+{
 }
 
 

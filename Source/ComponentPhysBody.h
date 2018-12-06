@@ -14,7 +14,8 @@ public:
 
 	void DrawInspectorInfo();
 	void UpdateTransform();
-
+	bool HasMoved();
+	bool IsBulletStatic();
 public:
 	PhysBody* physbody;
 	bool bullet_trans_updated;

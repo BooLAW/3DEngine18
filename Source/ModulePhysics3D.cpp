@@ -61,11 +61,13 @@ void ModulePhysics3D::DrawModuleConfig()
 {
 	if (ImGui::CollapsingHeader("Physics"))
 	{
-		
 		if (ImGui::InputFloat("Y Gravity",&gravity))
 		{
 			App->physics->SetGravity(gravity);
 		}
+		ImGui::Checkbox("Debug", &debug);
+
+		
 		
 	}
 }
@@ -111,7 +113,8 @@ update_status ModulePhysics3D::Update(float dt)
 		BulletTest();
 		bullet_test = false;
 	}
-
+	if (debug)
+		world->debugDrawWorld();
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->scene->MouseOver())
 	{
 		PSphere* test = new PSphere();
@@ -468,6 +471,11 @@ void ModulePhysics3D::SetGravity(float new_gravity)
 	//Gravity will always be setted on the Y axis
 	world->setGravity({ 0.0f,new_gravity,0.0f});
 	
+}
+
+void ModulePhysics3D::ToggleDebugDraw()
+{
+	debug = !debug;
 }
 
 float ModulePhysics3D::GetGravity() const

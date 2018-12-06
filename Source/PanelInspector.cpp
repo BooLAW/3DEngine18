@@ -64,7 +64,7 @@ void PanelInspector::Draw()
 					App->scene_intro->DeleteGameObject(selected_go);
 				}
 				static ImGuiComboFlags flags = 0;
-				const char* items[] = { "PhysBody", "Camera","Material WiP", "Mesh WiP" };
+				const char* items[] = { "NONE","PhysBody", "Camera","Material WiP", "Mesh WiP" };
 				static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
 				if (ImGui::BeginCombo("Create", item_current, flags)) // The second parameter is the label previewed before opening the combo.
 				{
