@@ -40,6 +40,7 @@ Editor Camera Controls
 - E = Up
 
 - Escape = Quit Program
+- F1 = Physics Wireframe
 
 
 
