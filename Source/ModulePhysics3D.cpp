@@ -20,12 +20,14 @@
 
 ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 {
-	debug = true;
+	pdebug = true;
 
 	collision_conf = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collision_conf);
 	broad_phase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver();
+	pdebug_draw = new PDebugDrawer();
+
 	gravity = -10;
 }
 
@@ -46,10 +48,13 @@ bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
+	
+	pdebug_draw->setDebugMode(pdebug_draw->DBG_DrawWireframe);
+	world->setDebugDrawer(pdebug_draw);
 
 	world->setGravity(GRAVITY);
 
-	////Big plane
+	//Big plane
 	CreatePlane();
 
 
@@ -65,7 +70,7 @@ void ModulePhysics3D::DrawModuleConfig()
 		{
 			App->physics->SetGravity(gravity);
 		}
-		ImGui::Checkbox("Debug", &debug);
+		ImGui::Checkbox("Debug", &pdebug);
 
 		
 		
@@ -108,12 +113,15 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 update_status ModulePhysics3D::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		pdebug = !pdebug;
+
 	if (bullet_test == true)
 	{
 		BulletTest();
 		bullet_test = false;
 	}
-	if (debug)
+	if (pdebug)
 	{
 		world->debugDrawWorld();
 	}
@@ -148,6 +156,12 @@ void ModulePhysics3D::UpdatePhysics()
 	for (int i = 0; i < primitive_list.size(); i++)
 	{		
 		primitive_list[i]->Render();
+	}
+
+	//Debug Physics World
+	if (pdebug)
+	{
+		world->debugDrawWorld();
 	}
 }
 
@@ -186,6 +200,7 @@ bool ModulePhysics3D::CleanUp()
 
 	delete world;
 
+	delete pdebug_draw;
 	delete solver;
 	delete broad_phase;
 	delete dispatcher;
@@ -493,7 +508,7 @@ void ModulePhysics3D::SetGravity(float new_gravity)
 
 void ModulePhysics3D::ToggleDebugDraw()
 {
-	debug = !debug;
+	pdebug = !pdebug;
 }
 
 float ModulePhysics3D::GetGravity() const

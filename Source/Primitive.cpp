@@ -52,6 +52,11 @@ void Primitive::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 		
+	if (App->renderer3D->attributes.wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	InnerRender();
 
 	glLineWidth(1.0f);
@@ -76,9 +81,7 @@ void Primitive::SetPos(float x, float y, float z)
 {
 	transform[3][0] = x;
 	transform[3][1] = y;
-	transform[3][2] = z;
-	
-
+	transform[3][2] = z;	
 }
 
 void Primitive::SetRotation(float angle, const float3 & u)
@@ -203,4 +206,65 @@ void PSphere::InnerRender() const
 {
 	glutSolidSphere(radius, 25, 25);
 
+}
+
+// LINE ==================================================
+PLine::PLine() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
+{
+	type = PrimitiveTypes::Primitive_Line;
+}
+
+PLine::PLine(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
+{
+	type = PrimitiveTypes::Primitive_Line;
+}
+
+void PLine::InnerRender() const
+{
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+
+	glVertex3f(origin.x, origin.y, origin.z);
+	glVertex3f(destination.x, destination.y, destination.z);
+
+	glEnd();
+
+	glLineWidth(1.0f);
+}
+
+// =============================================
+void PDebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+{
+	debug_line.origin.Set(from.getX(), from.getY(), from.getZ());
+	debug_line.destination.Set(to.getX(), to.getY(), to.getZ());
+	debug_line.color.Set(color.getX(), color.getY(), color.getZ());
+	debug_line.Render();
+}
+
+void PDebugDrawer::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
+{
+	point.SetPos(PointOnB.getX(), PointOnB.getY(), PointOnB.getZ());
+	point.color.Set(color.getX(), color.getY(), color.getZ());
+	point.Render();
+}
+
+void PDebugDrawer::reportErrorWarning(const char* warningString)
+{
+	LOG("Bullet warning: %s", warningString);
+}
+
+void PDebugDrawer::draw3dText(const btVector3& location, const char* textString)
+{
+	LOG("Bullet draw text: %s", textString);
+}
+
+void PDebugDrawer::setDebugMode(int debugMode)
+{
+	mode = (DebugDrawModes)debugMode;
+}
+
+int	 PDebugDrawer::getDebugMode() const
+{
+	return mode;
 }

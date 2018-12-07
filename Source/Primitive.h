@@ -35,6 +35,16 @@ public:
 protected:
 	PrimitiveTypes type;
 };
+class PLine : public Primitive
+{
+public:
+	PLine();
+	PLine(float x, float y, float z);
+	void InnerRender() const;
+public:
+	float3 origin;
+	float3 destination;
+};
 class PCube : public Primitive {
 public:
 	PCube();

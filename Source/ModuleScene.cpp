@@ -191,9 +191,9 @@ void ModuleScene::DrawGameObjects()
 		App->camera->GetCurrentCam()->DrawFrustum();
 	if(App->camera->draw_mouse_ray)
 		App->camera->DrawRay();
-	App->physics->world->debugDrawWorld();
 
 	App->physics->UpdatePhysics();
+
 }
 
 
