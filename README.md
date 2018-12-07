@@ -67,3 +67,5 @@ Editor Camera Controls
 --> [OpenGL](https://www.opengl.org/documentation/): For the render of 3D models and textures.
 
 --> [Dirent](https://github.com/tronkko/dirent): For iterating thought the files of the working directory.
+
+--> [ThomasThelen](https://github.com/ThomasThelen/Convex-Hull): For Creating a ConvexHull for the Physics bodies of the meshes.
