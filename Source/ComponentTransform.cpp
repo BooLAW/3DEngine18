@@ -13,10 +13,11 @@ ComponentTransform::ComponentTransform(GameObject * owner)
 	this->SetOwner(owner);
 	this->SetActive(true);
 	SetName("Component Transform");
-	transform.pos = float3(0.0f, 0.0f, 0.0f);
-	transform.rot = Quat::identity;
-	transform.rot_euler = float3(0.0f, 0.0f, 0.0f);
-	transform.scale = float3(1.0f, 1.0f, 1.0f);
+	transform = new Transform();
+	transform->pos = float3(0.0f, 0.0f, 0.0f);
+	transform->rot = Quat::identity;
+	transform->rot_euler = float3(0.0f, 0.0f, 0.0f);
+	transform->scale = float3(1.0f, 1.0f, 1.0f);
 
 	CalculateLocalMatrix();
 
@@ -40,7 +41,7 @@ bool ComponentTransform::Update()
 void ComponentTransform::UpdateTransformValues()
 {
 	trans_matrix_g = float4x4::identity;
-	trans_matrix_l = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
+	trans_matrix_l = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 
 	if(owner->GetParent() == nullptr)//IS ROOT
 		trans_matrix_g = trans_matrix_l;
@@ -57,10 +58,10 @@ void ComponentTransform::DrawInspectorInfo()
 {
 	bool reset_transform = false;
 
-	float pos[3] = { transform.pos.x,transform.pos.y,transform.pos.z };
-	float rot[3] = { transform.rot.ToEulerXYZ().x * RADTODEG, transform.rot.ToEulerXYZ().y * RADTODEG, transform.rot.ToEulerXYZ().z *RADTODEG };
-	float scale[3] = { transform.scale.x,transform.scale.y,transform.scale.z };
-	transform.rot_euler = (float3)rot;
+	float pos[3] = { transform->pos.x,transform->pos.y,transform->pos.z };
+	float rot[3] = { transform->rot.ToEulerXYZ().x * RADTODEG, transform->rot.ToEulerXYZ().y * RADTODEG, transform->rot.ToEulerXYZ().z *RADTODEG };
+	float scale[3] = { transform->scale.x,transform->scale.y,transform->scale.z };
+	transform->rot_euler = (float3)rot;
 
 	if (ImGui::Button("Identity Reset"))
 		reset_transform = !reset_transform;
@@ -83,20 +84,20 @@ void ComponentTransform::DrawInspectorInfo()
 	updated_transform = false;
 	if (!owner->IsStatic())
 	{
-		if (pos[0] != transform.pos.x || pos[1] != transform.pos.y || pos[2] != transform.pos.z)
+		if (pos[0] != transform->pos.x || pos[1] != transform->pos.y || pos[2] != transform->pos.z)
 		{
-			transform.SetPosition(pos[0], pos[1], pos[2]);
+			transform->SetPosition(pos[0], pos[1], pos[2]);
 			updated_transform = true;
 		}
 		Quat aux = Quat::FromEulerXYZ(rot[0] * DEGTORAD, rot[1] * DEGTORAD, rot[2] * DEGTORAD);
-		if (!transform.rot_euler.Equals(rot[0],rot[1],rot[2]))
+		if (!transform->rot_euler.Equals(rot[0],rot[1],rot[2]))
 		{
-			transform.SetRotation(aux);
+			transform->SetRotation(aux);
 			updated_transform = true;
 		}
-		if (scale[0] != transform.scale.x || scale[1] != transform.scale.y || scale[2] != transform.scale.z)
+		if (scale[0] != transform->scale.x || scale[1] != transform->scale.y || scale[2] != transform->scale.z)
 		{
-			transform.SetScale(scale[0], scale[1], scale[2]);
+			transform->SetScale(scale[0], scale[1], scale[2]);
 			updated_transform = true;
 		}
 		if (reset_transform)
@@ -155,8 +156,8 @@ void ComponentTransform::SetLocalPos(const float3 & new_pos)
 	else
 		CONSOLE_LOG_WARNING("Component Transform has no owner");
 
-	transform.pos = new_pos;
-	trans_matrix_l = float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
+	transform->pos = new_pos;
+	trans_matrix_l = float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	updated_transform = true;
 
 }
@@ -172,37 +173,37 @@ void ComponentTransform::SetGlobalPos(const float3 & new_pos)
 	else
 		CONSOLE_LOG_WARNING("Component Transform has no owner");
 
-	transform.pos = new_pos;
-	trans_matrix_g = trans_matrix_g * float4x4::FromTRS(transform.pos, transform.rot, transform.scale);
+	transform->pos = new_pos;
+	trans_matrix_g = trans_matrix_g * float4x4::FromTRS(transform->pos, transform->rot, transform->scale);
 	updated_transform = true;
 }
 
 void ComponentTransform::SetTransform(float3 pos, Quat rot,float3 scale)
 {
-	this->transform.pos = pos;
-	this->transform.rot = rot;
-	this->transform.scale = scale;
+	this->transform->pos = pos;
+	this->transform->rot = rot;
+	this->transform->scale = scale;
 	
 	float4x4 aux = float4x4::identity;
-	aux = aux * aux.Scale(transform.scale);
-	aux = aux * transform.rot;
-	aux.SetTranslatePart(transform.pos);
+	aux = aux * aux.Scale(transform->scale);
+	aux = aux * transform->rot;
+	aux.SetTranslatePart(transform->pos);
 
 	trans_matrix_l = aux;
 	CalculateGlobalMatrix();
 }
 
-Transform ComponentTransform::GetTransform() const
+Transform* ComponentTransform::GetTransform() const
 {
 	return transform;
 }
 
 void ComponentTransform::ResetTransform()
 {
-	transform.pos = float3::zero;
-	transform.rot = Quat::identity;
-	transform.scale = float3::one;
-	transform.rot_euler = float3::zero;
+	transform->pos = float3::zero;
+	transform->rot = Quat::identity;
+	transform->scale = float3::one;
+	transform->rot_euler = float3::zero;
 
 
 
@@ -214,11 +215,11 @@ void ComponentTransform::CalculateLocalMatrix()
 	//reset
 	trans_matrix_l = float4x4::identity;
 	//scale
-	trans_matrix_l = trans_matrix_l * trans_matrix_l.Scale(transform.scale);
+	trans_matrix_l = trans_matrix_l * trans_matrix_l.Scale(transform->scale);
 	//roation
-	trans_matrix_l = trans_matrix_l * transform.rot;
+	trans_matrix_l = trans_matrix_l * transform->rot;
 	//translation
-	trans_matrix_l.SetTranslatePart(transform.pos);
+	trans_matrix_l.SetTranslatePart(transform->pos);
 
 	CalculateGlobalMatrix();
 }

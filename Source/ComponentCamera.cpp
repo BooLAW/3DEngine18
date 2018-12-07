@@ -50,10 +50,10 @@ void ComponentCamera::UpdateTransform()
 {
 	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
 	//ComponentTransform* trans = owner->comp_transform;
-	Transform my_owner_trans = trans->transform;
-	cam->frustum.pos = my_owner_trans.pos;
+	Transform* my_owner_trans = trans->GetTransform();
+	cam->frustum.pos = my_owner_trans->pos;
 
-	float3 eul = my_owner_trans.rot_euler;
+	float3 eul = my_owner_trans->rot_euler;
 
 
 	cam->frustum.front = *(float3*)&(float4x4::RotateAxisAngle({ 1,0,0 }, eul.x * DEGTORAD) * float4({ 0,0,-1 }, 1.0f));

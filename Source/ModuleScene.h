@@ -79,7 +79,7 @@ public:
 	std::string fbx_name;
 	std::string folder_path;
 
-	int game_cam_speed = 3;
+	float game_cam_speed = 0.5;
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];
 

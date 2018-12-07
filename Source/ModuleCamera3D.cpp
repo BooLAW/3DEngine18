@@ -99,9 +99,9 @@ void ModuleCamera3D::DrawModuleConfig()
 			if (App->scene_intro->GetSelected() != nullptr)
 			{
 				if (App->scene_intro->GetSelected()->HasMesh())
-					App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform.pos);
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform->pos);
 				else
-					App->camera->AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform.pos);
+					App->camera->AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform->pos);
 			}
 			else
 				CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");
@@ -318,9 +318,9 @@ void ModuleCamera3D::WheelMove(const float & mouse_speed, int direction)
 	float3 newPos(0, 0, 0);
 
 	if (direction == 1)
-		newPos -= editor_cam->frustum.front * mouse_speed;
-	else
 		newPos += editor_cam->frustum.front * mouse_speed;
+	else
+		newPos -= editor_cam->frustum.front * mouse_speed;
 	
 	if(!newPos.IsZero())
 		editor_cam->frustum.Translate(newPos);
@@ -380,7 +380,7 @@ void ModuleCamera3D::CameraMovement(float dt)
 
 	//Mouse wheel
 	int wheel = App->input->GetMouseZ();
-	float wheel_speed = wheel_speed_base * dt * 100;
+	float wheel_speed = wheel_speed_base * dt ;
 	if (App->imgui->scene->MouseOver() && App->input->GetMouseZ() != 0)
 		WheelMove(wheel_speed, wheel);
 
@@ -390,9 +390,9 @@ void ModuleCamera3D::CameraMovement(float dt)
 		if (App->scene_intro->GetSelected() != nullptr)
 		{
 			if (App->scene_intro->GetSelected()->HasMesh())
-				AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform.pos);
+				AdaptCamera(App->scene_intro->GetSelected()->GetBB(), App->scene_intro->GetSelected()->comp_transform->transform->pos);
 			else
-				AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform.pos);
+				AdaptCamera(App->scene_intro->GetSelected()->comp_transform->transform->pos);
 		}
 		else
 			CONSOLE_LOG_INFO("Select GameObject in the hierarchy to focus");

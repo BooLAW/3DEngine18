@@ -309,7 +309,7 @@ GameObject * ModuleScene::CreateMainCamera(ComponentTransform * comp_trans)
 	main_camera_go->SetName("Main Camera");
 	main_camera_go->comp_transform = comp_trans;
 	ComponentTransform* aux_transform = (ComponentTransform*)main_camera_go->components_list[0];
-	aux_transform->SetTransform(main_camera_go->comp_transform->GetTransform().pos, main_camera_go->comp_transform->GetTransform().rot, main_camera_go->comp_transform->GetTransform().scale);
+	aux_transform->SetTransform(main_camera_go->comp_transform->GetTransform()->pos, main_camera_go->comp_transform->GetTransform()->rot, main_camera_go->comp_transform->GetTransform()->scale);
 	ComponentCamera* cam_comp = new ComponentCamera();
 	cam_comp->cam->SetFarPlane(1000);
 	cam_comp->SetOwner(main_camera_go);
@@ -628,9 +628,9 @@ void ModuleScene::LoadScene(const char* path)
 						App->loading_manager->mesh_loader->InitMesh(file_path, new_go);
 
 						if(new_go->HasMesh())
-							App->camera->AdaptCamera(new_go->GetBB(), new_go->comp_transform->transform.pos);
+							App->camera->AdaptCamera(new_go->GetBB(), new_go->comp_transform->transform->pos);
 						else
-							App->camera->AdaptCamera(new_go->comp_transform->transform.pos);
+							App->camera->AdaptCamera(new_go->comp_transform->transform->pos);
 
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MATERIAL") == 0)
@@ -714,19 +714,19 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 			{
 				//Getting the data from the GO
 				Value arr_comp_transform(kArrayType);
-				Transform  trans = go->comp_transform->GetTransform();
-				arr_comp_transform.PushBack((float)trans.pos.x, allocator);
-				arr_comp_transform.PushBack((float)trans.pos.y, allocator);
-				arr_comp_transform.PushBack((float)trans.pos.z, allocator);
+				Transform*  trans = go->comp_transform->GetTransform();
+				arr_comp_transform.PushBack((float)trans->pos.x, allocator);
+				arr_comp_transform.PushBack((float)trans->pos.y, allocator);
+				arr_comp_transform.PushBack((float)trans->pos.z, allocator);
 
-				arr_comp_transform.PushBack((float)trans.rot.x, allocator);
-				arr_comp_transform.PushBack((float)trans.rot.y, allocator);
-				arr_comp_transform.PushBack((float)trans.rot.z, allocator);
-				arr_comp_transform.PushBack((float)trans.rot.w, allocator);
+				arr_comp_transform.PushBack((float)trans->rot.x, allocator);
+				arr_comp_transform.PushBack((float)trans->rot.y, allocator);
+				arr_comp_transform.PushBack((float)trans->rot.z, allocator);
+				arr_comp_transform.PushBack((float)trans->rot.w, allocator);
 
-				arr_comp_transform.PushBack((float)trans.scale.x, allocator);
-				arr_comp_transform.PushBack((float)trans.scale.y, allocator);
-				arr_comp_transform.PushBack((float)trans.scale.z, allocator);
+				arr_comp_transform.PushBack((float)trans->scale.x, allocator);
+				arr_comp_transform.PushBack((float)trans->scale.y, allocator);
+				arr_comp_transform.PushBack((float)trans->scale.z, allocator);
 
 				//Adding data to the component
 				arr_comp.AddMember("TRANSFORM", arr_comp_transform, allocator);
@@ -861,69 +861,67 @@ void ModuleScene::MoveCurrentCamera()
 void ModuleScene::MoveCameraGO()
 {
 	Camera* curr_cam = main_camera_go->GetCamera();
-	Transform curr_trans = main_camera_go->comp_transform->GetTransform();
+	Transform* curr_trans = main_camera_go->comp_transform->GetTransform();
 	bool cam_moved = false;
 	//Z
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		float new_z = curr_trans.pos.z;
-		new_z += game_cam_speed;
-		curr_trans.SetPosition(curr_trans.pos.x, curr_trans.pos.y, new_z);
+		float new_z = curr_trans->pos.z;
+		new_z -= game_cam_speed;
+		curr_trans->SetPosition(curr_trans->pos.x, curr_trans->pos.y, new_z);
 		cam_moved = true;
-
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		float new_z = curr_trans.pos.z;
-		new_z -= game_cam_speed;
-		curr_trans.SetPosition(curr_trans.pos.x, curr_trans.pos.y, new_z);
+		float new_z = curr_trans->pos.z;
+		new_z += game_cam_speed;
+		curr_trans->SetPosition(curr_trans->pos.x, curr_trans->pos.y, new_z);
 		cam_moved = true;
 
 	}
 	//X														
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		float new_x = curr_trans.pos.x;
-		new_x += game_cam_speed;
-		curr_trans.SetPosition(curr_trans.pos.x, curr_trans.pos.y, curr_trans.pos.z);
+		float new_x = curr_trans->pos.x;
+		new_x -= game_cam_speed;
+		curr_trans->SetPosition(new_x, curr_trans->pos.y, curr_trans->pos.z);
 		cam_moved = true;
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		float new_x = curr_trans.pos.x;
-		new_x -= game_cam_speed;
-		curr_trans.SetPosition(new_x, curr_trans.pos.y, curr_trans.pos.z);
+		float new_x = curr_trans->pos.x;
+		new_x += game_cam_speed;
+		curr_trans->SetPosition(new_x, curr_trans->pos.y, curr_trans->pos.z);
 		cam_moved = true;
 
 	}
-
 	//Y
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
 	{
-		float new_y = curr_trans.pos.y;
-		new_y += game_cam_speed;
-		curr_trans.SetPosition(curr_trans.pos.x, new_y, curr_trans.pos.z);
+		float new_y = curr_trans->pos.y;
+		new_y -= game_cam_speed;
+		curr_trans->SetPosition(curr_trans->pos.x, new_y, curr_trans->pos.z);
 		cam_moved = true;
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 	{
-		float new_y = curr_trans.pos.x;
-		new_y -= game_cam_speed;
-		curr_trans.SetPosition(curr_trans.pos.x, new_y, curr_trans.pos.z);
+		float new_y = curr_trans->pos.y;
+		new_y += game_cam_speed;
+		curr_trans->SetPosition(curr_trans->pos.x, new_y, curr_trans->pos.z);
 		cam_moved = true;
 	}
 	
 	if (cam_moved || main_camera_go->GetFirstUpdate())
 	{
 		main_camera_go->comp_transform->UpdateTransformValues();
-		/*if (main_camera_go->HasRigidBody())
+	/*	if (main_camera_go->HasRigidBody())
 		{
 			main_camera_go->GetRigidBody()->UpdateTransform();
-		}
+		}*/
 		if (main_camera_go->HasCam())
-			main_camera_go->GetCCamera()->Update();*/
+			main_camera_go->GetCCamera()->Update();
 
 		main_camera_go->SetFirstUpdate(false);
 	}
@@ -933,6 +931,7 @@ void ModuleScene::MoveCameraGO()
 
 void ModuleScene::RotateCameraGO()
 {
+
 }
 
 
