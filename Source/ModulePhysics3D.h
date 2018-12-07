@@ -45,7 +45,7 @@ public:
 	void CreateCube(float3 minPoint, float3 maxPoint);
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
-	PhysBody* AddBody(PSphere& sphere, float mass,bool throw_list = false);
+	PhysBody* AddBody(PSphere& sphere, float mass, bool isCollider = false, bool addForce = false);
 	PhysBody* AddBody(PCube& sphere, float mass);
 	//-------------------------
 	//Assignment 3--------------

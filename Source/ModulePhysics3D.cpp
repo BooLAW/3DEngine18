@@ -114,19 +114,11 @@ update_status ModulePhysics3D::Update(float dt)
 		bullet_test = false;
 	}
 	if (debug)
-		world->debugDrawWorld();
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->scene->MouseOver())
 	{
-		PSphere* test = new PSphere();
-		test->radius = 3;
-		float position[3];
-		position[0] = App->camera->editor_cam->frustum.pos.x;
-		position[1] = App->camera->editor_cam->frustum.pos.y;
-		position[2] = App->camera->editor_cam->frustum.pos.z;
-
-		test->SetPos(position[0], position[1], position[2]);
-		App->physics->AddBody(*test, 1,true);
+		world->debugDrawWorld();
 	}
+	ShootSphere();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -272,7 +264,7 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 	return pbody;
 }
 
-PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool push)
+PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider, bool addForce)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.push_back(colShape);
@@ -291,20 +283,34 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool push)
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody* pbody = new PhysBody(body);
-	if (push)
+
+	if (addForce)
 	{
+		//Grab direction of the camera
 		btVector3 editor_cam_dir;
 		editor_cam_dir.setX(App->camera->editor_cam->frustum.front.x);
 		editor_cam_dir.setY(App->camera->editor_cam->frustum.front.y);
 		editor_cam_dir.setZ(App->camera->editor_cam->frustum.front.z);
 		
+		//Adding 40 Newtons of force
 		editor_cam_dir = editor_cam_dir * 40;
 		pbody->GetRigidBody()->applyCentralImpulse(editor_cam_dir);
-		//The position is changed on the PSphere class
+
+		//The spawn position is changed on the Start() method of this module
 	}
+
+	if (isCollider)
+	{
+		pbody->has_render = false;
+	}
+	else
+	{
+		pbody->has_render = true;
+		primitive_list.push_back((Primitive*)&sphere);
+	}
+
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
-	primitive_list.push_back((Primitive*)&sphere);
 
 
 
@@ -324,6 +330,18 @@ void ModulePhysics3D::CreatePlane()
 
 void ModulePhysics3D::ShootSphere()
 {
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->scene->MouseOver())
+	{
+		PSphere* test = new PSphere();
+		test->radius = 3;
+		float position[3];
+		position[0] = App->camera->editor_cam->frustum.pos.x;
+		position[1] = App->camera->editor_cam->frustum.pos.y;
+		position[2] = App->camera->editor_cam->frustum.pos.z;
+
+		test->SetPos(position[0], position[1], position[2]);
+		App->physics->AddBody(*test, 1, false, true);
+	}
 }
 
 void ModulePhysics3D::BulletTest()

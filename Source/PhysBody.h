@@ -36,6 +36,7 @@ private:
 	uint mass = 0;
 	//Affected by gravity?
 	bool use_gravity = false;
+	bool has_render = true;
 	//Collision Detection
 public:
 	//Constraints
