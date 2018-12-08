@@ -33,30 +33,25 @@ ComponentCollider::~ComponentCollider()
 
 bool ComponentCollider::Update()
 {
-	//owner->physbody->SetTransform(owner->comp_transform->trans_matrix_g.ptr());
-	
-	owner->physbody->SetPos(owner->comp_transform->transform->pos.x, owner->comp_transform->transform->pos.y, owner->comp_transform->transform->pos.z);
+	//TODO Make the same with a matrix
+	//owner->physbody->SetTransform(owner->comp_transform->trans_matrix_g.ptr());	
+
+	owner->physbody->SetPos(owner->comp_transform->transform->pos.x + center_offset[0], owner->comp_transform->transform->pos.y + center_offset[1], owner->comp_transform->transform->pos.z + center_offset[2]);
 	return false;
 }
 
 void ComponentCollider::DrawInspectorInfo()
 {
-	static float center[3] = { 0,0,0 };
 	
-	if (ImGui::DragFloat3("Center##collider", center, 0.1f, -INFINITY, INFINITY))
+	if (ImGui::DragFloat3("Center##collider", center_offset, 0.1f, -INFINITY, INFINITY)) 
 	{
-		float matrix[16];
-		owner->physbody->GetTransform(matrix);
-		matrix[12] =+ center[0];
-		matrix[13] =+ center[1];
-		matrix[14] =+ center[2];
-		owner->physbody->SetTransform(matrix);
+		Update();
 	}
 
 	static float radius = 1.0f;
-	if (ImGui::DragFloat("Radius##collider", &radius, 0.1f, -INFINITY, INFINITY))
+	if (ImGui::DragFloat("Radius##collider", &radius, 0.01f, 1, 10))
 	{
-		owner->physbody->GetRigidBody()->setCcdSweptSphereRadius(radius);
+		
 	}
 
 }
