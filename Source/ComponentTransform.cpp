@@ -2,6 +2,7 @@
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentCollider.h"
 #include "ModuleSceneImGui.h"
 #include "Globals.h"
 #include "Camera.h"
@@ -126,6 +127,10 @@ void ComponentTransform::DrawInspectorInfo()
 				UpdateBBChilds(owner);
 			if (owner->HasCam())
 				owner->GetCCamera()->Update();
+			if (owner->HasCollider())
+				owner->GetCollider()->Update();
+			
+				
 
 			owner->SetFirstUpdate(false);
 		}

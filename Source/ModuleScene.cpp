@@ -8,6 +8,7 @@
 #include <limits>
 
 #include "ComponentRigidBody.h"
+#include "ComponentCollider.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
@@ -919,8 +920,8 @@ void ModuleScene::MoveCameraGO()
 		if (main_camera_go->HasPhysBody())
 		{
 			//TODO JOSEP
-			float* go_position_matrix = main_camera_go->comp_transform->trans_matrix_l.ptr();
-			main_camera_go->physbody->SetTransform(go_position_matrix);
+			main_camera_go->GetCollider()->Update();
+			
 		}
 		if (main_camera_go->HasCam())
 			main_camera_go->GetCCamera()->Update();

@@ -19,6 +19,7 @@ public:
 public:
 	bool bullet_trans_updated;
 	bool owner_trans_updated;
+
 };
 
 #endif

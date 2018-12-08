@@ -24,6 +24,7 @@ ComponentCollider::ComponentCollider(GameObject * owner)
 	type = ComponentType::COLLIDER;
 
 
+
 }
 
 ComponentCollider::~ComponentCollider()
@@ -33,13 +34,15 @@ ComponentCollider::~ComponentCollider()
 bool ComponentCollider::Update()
 {
 	//owner->physbody->SetTransform(owner->comp_transform->trans_matrix_g.ptr());
+	
+	owner->physbody->SetPos(owner->comp_transform->transform->pos.x, owner->comp_transform->transform->pos.y, owner->comp_transform->transform->pos.z);
 	return false;
 }
 
 void ComponentCollider::DrawInspectorInfo()
 {
 	static float center[3] = { 0,0,0 };
-	;
+	
 	if (ImGui::DragFloat3("Center##collider", center, 0.1f, -INFINITY, INFINITY))
 	{
 		float matrix[16];
@@ -53,7 +56,7 @@ void ComponentCollider::DrawInspectorInfo()
 	static float radius = 1.0f;
 	if (ImGui::DragFloat("Radius##collider", &radius, 0.1f, -INFINITY, INFINITY))
 	{
-		//physbody->ActivateGravity(aux_grav);
+		owner->physbody->GetRigidBody()->setCcdSweptSphereRadius(radius);
 	}
 
 }
