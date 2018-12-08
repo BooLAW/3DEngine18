@@ -151,8 +151,6 @@ void ModulePhysics3D::UpdatePhysics()
 		i++;
 	}
 
-
-
 	for (int i = 0; i < primitive_list.size(); i++)
 	{		
 		primitive_list[i]->Render();

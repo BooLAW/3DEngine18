@@ -95,7 +95,7 @@ private:
 	btSequentialImpulseConstraintSolver*solver;
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	PDebugDrawer*						pdebug_draw;
-	btDiscreteDynamicsWorld * world;
+	btDiscreteDynamicsWorld*			world;
 	
 
 	std::vector<btCollisionShape*>		shapes;

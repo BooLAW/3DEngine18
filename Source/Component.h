@@ -2,7 +2,7 @@
 #define __COMPONENT_H__
 #include "Globals.h"
 
-enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY};
+enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY,COLLIDER};
 class GameObject;
 class ComponentMaterial;
 class ComponentPhysBody;
