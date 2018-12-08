@@ -15,9 +15,12 @@ ComponentCollider::ComponentCollider(GameObject * owner)
 {
 	this->SetOwner(owner);
 	this->SetActive(true);
-	SetName("Component PhysBody");
+	SetName("Component Collider");
 
-	physbody = new PhysBody();
+	if (owner->physbody == nullptr)
+	{
+		new PhysBody(owner);
+	}
 	type = ComponentType::COLLIDER;
 
 
@@ -29,35 +32,28 @@ ComponentCollider::~ComponentCollider()
 
 bool ComponentCollider::Update()
 {
-	
+	//owner->physbody->SetTransform(owner->comp_transform->trans_matrix_g.ptr());
 	return false;
 }
 
 void ComponentCollider::DrawInspectorInfo()
 {
-	int mass = physbody->GetMass();
-	if (ImGui::InputInt("Mass", &mass))
-		physbody->SetMass(mass);
-
-	bool aux_grav = physbody->HasGravity();
-	if (ImGui::Checkbox("Use Gravity", &aux_grav))
+	static float center[3] = { 0,0,0 };
+	;
+	if (ImGui::DragFloat3("Center##collider", center, 0.1f, -INFINITY, INFINITY))
 	{
-		physbody->ActivateGravity(aux_grav);
+		float matrix[16];
+		owner->physbody->GetTransform(matrix);
+		matrix[12] =+ center[0];
+		matrix[13] =+ center[1];
+		matrix[14] =+ center[2];
+		owner->physbody->SetTransform(matrix);
 	}
 
-	if (ImGui::TreeNode("Constraints"))
+	static float radius = 1.0f;
+	if (ImGui::DragFloat("Radius##collider", &radius, 0.1f, -INFINITY, INFINITY))
 	{
-		ImGui::Text("Freeze Position"); ImGui::SameLine();
-		ImGui::Checkbox("X", &physbody->const_px); ImGui::SameLine();
-		ImGui::Checkbox("Y", &physbody->const_py); ImGui::SameLine();
-		ImGui::Checkbox("Z", &physbody->const_pz); 
-
-		ImGui::Text("Freeze Rotation"); ImGui::SameLine();
-		ImGui::Checkbox("X", &physbody->const_rx); ImGui::SameLine();
-		ImGui::Checkbox("Y", &physbody->const_ry); ImGui::SameLine();
-		ImGui::Checkbox("Z", &physbody->const_rz);
-
-		ImGui::TreePop();
+		//physbody->ActivateGravity(aux_grav);
 	}
 
 }
@@ -66,8 +62,8 @@ void ComponentCollider::UpdateTransform()
 {
 	if (HasOwner())
 	{
-			GameObject* owner = GetOwner();
-			physbody->SetTransform((float*)&owner->comp_transform->trans_matrix_g);			
+		GameObject* owner = GetOwner();
+		owner->physbody->SetTransform((float*)&owner->comp_transform->trans_matrix_g);			
 	}
 }
 
@@ -84,7 +80,7 @@ bool ComponentCollider::HasMoved()
 }
 bool ComponentCollider::IsBulletStatic()
 {
-	bool ret = physbody->GetRigidBody()->isStaticObject();
+	bool ret = owner->physbody->GetRigidBody()->isStaticObject();
 	return ret;
 }
 

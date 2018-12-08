@@ -9,7 +9,8 @@
 #include "MeshLoader.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
-#include "ComponentPhysBody.h"
+#include "ComponentRigidBody.h"
+#include "ComponentCollider.h"
 #include "Transform.h"
 #include "GameObject.h"
 #include "Camera.h"
@@ -64,7 +65,7 @@ void PanelInspector::Draw()
 					App->scene_intro->DeleteGameObject(selected_go);
 				}
 				static ImGuiComboFlags flags = 0;
-				const char* items[] = { "NONE","PhysBody", "Camera","Material WiP", "Mesh WiP" };
+				const char* items[] = { "NONE","RigidBody","Collider", "Camera","Material WiP", "Mesh WiP" };
 				static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
 				if (ImGui::BeginCombo("Create", item_current, flags)) // The second parameter is the label previewed before opening the combo.
 				{
@@ -75,9 +76,9 @@ void PanelInspector::Draw()
 						{
 							item_current = items[n];
 							//CREATE EACH ELEMENT
-							if (items[n] == "PhysBody")
+							if (items[n] == "RigidBody")
 							{
-								ComponentPhysBody* new_comp = new ComponentPhysBody(selected_go);
+								ComponentRigidBody* new_comp = new ComponentRigidBody(selected_go);
 								selected_go->PushComponent(new_comp);
 							}
 							else if (items[n] == "Camera")
@@ -86,8 +87,14 @@ void PanelInspector::Draw()
 									continue;
 								ComponentCamera* new_comp = new ComponentCamera();
 								new_comp->SetOwner(selected_go);
+								selected_go->PushComponent(new_comp);									
+							}
+							else if (items[n] == "Collider")
+							{
+								if (selected_go->HasCollider())
+									continue;
+								ComponentCollider* new_comp = new ComponentCollider(selected_go);
 								selected_go->PushComponent(new_comp);
-									
 							}
 							
 						}
@@ -203,10 +210,19 @@ void PanelInspector::Draw()
 				//Check if it has PhysBody
 				if (selected_go->HasRigidBody())
 				{
-					ComponentPhysBody* rb = selected_go->GetRigidBody();
+					ComponentRigidBody* rb = selected_go->GetRigidBody();
 					if (ImGui::CollapsingHeader("Rigid Body", ImGuiTreeNodeFlags_DefaultOpen))
 					{
 						selected_go->GetComponent(RIGIDBODY)->DrawInspectorInfo();
+					}
+				}
+				//Check if it has PhysBody
+				if (selected_go->HasCollider())
+				{
+					ComponentCollider* rb = selected_go->GetCollider();
+					if (ImGui::CollapsingHeader("Collider", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						selected_go->GetComponent(COLLIDER)->DrawInspectorInfo();
 					}
 				}
 			}			

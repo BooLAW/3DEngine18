@@ -7,7 +7,7 @@
 #include <sstream>
 #include <limits>
 
-#include "ComponentPhysBody.h"
+#include "ComponentRigidBody.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
@@ -916,10 +916,12 @@ void ModuleScene::MoveCameraGO()
 	if (cam_moved || main_camera_go->GetFirstUpdate())
 	{
 		main_camera_go->comp_transform->UpdateTransformValues();
-	/*	if (main_camera_go->HasRigidBody())
+		if (main_camera_go->HasPhysBody())
 		{
-			main_camera_go->GetRigidBody()->UpdateTransform();
-		}*/
+			//TODO JOSEP
+			float* go_position_matrix = main_camera_go->comp_transform->trans_matrix_l.ptr();
+			main_camera_go->physbody->SetTransform(go_position_matrix);
+		}
 		if (main_camera_go->HasCam())
 			main_camera_go->GetCCamera()->Update();
 

@@ -198,6 +198,28 @@ bool GameObject::HasRigidBody() const
 
 }
 
+bool GameObject::HasCollider() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::COLLIDER)
+			ret = true;
+	}
+	return ret;
+}
+
+bool GameObject::HasPhysBody() const
+{
+	if (physbody != nullptr)
+	{
+		return true;
+	}
+	else
+		return false;
+	
+}
+
 
 
 void GameObject::SetActive(bool active)
@@ -411,11 +433,23 @@ ComponentCamera * GameObject::GetCCamera()
 	}
 }
 
-ComponentPhysBody * GameObject::GetRigidBody()
+ComponentRigidBody * GameObject::GetRigidBody()
 {
 	if (this->IsActive())
 	{
-		ComponentPhysBody* rb_tmp = (ComponentPhysBody*)GetComponent(ComponentType::RIGIDBODY);
+		ComponentRigidBody* rb_tmp = (ComponentRigidBody*)GetComponent(ComponentType::RIGIDBODY);
+		if (rb_tmp != nullptr)
+			return rb_tmp;
+		else
+			return nullptr;
+	}
+}
+
+ComponentCollider * GameObject::GetCollider()
+{
+	if (this->IsActive())
+	{
+		ComponentCollider* rb_tmp = (ComponentCollider*)GetComponent(ComponentType::COLLIDER);
 		if (rb_tmp != nullptr)
 			return rb_tmp;
 		else

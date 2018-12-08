@@ -6,7 +6,7 @@
 #include "Globals.h"
 #include "Camera.h"
 #include "Application.h"
-#include "ComponentPhysBody.h"
+#include "ComponentRigidBody.h"
 
 ComponentTransform::ComponentTransform(GameObject * owner)
 {

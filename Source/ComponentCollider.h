@@ -1,5 +1,5 @@
-#ifndef __COMPONENT_RIGIDBODY__
-#define __COMPONENT_RIGIDBODY__
+#ifndef __COMPONENT_COLLIDER__
+#define __COMPONENT_COLLIDER__
 #include "Component.h"
 
 class GameObject;
@@ -17,7 +17,6 @@ public:
 	bool HasMoved();
 	bool IsBulletStatic();
 public:
-	PhysBody* physbody;
 	bool bullet_trans_updated;
 	bool owner_trans_updated;
 };

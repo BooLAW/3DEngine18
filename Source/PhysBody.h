@@ -2,6 +2,7 @@
 #define __PhysBody_H__
 
 #include "Module.h"
+#include "GameObject.h"
 
 class btRigidBody;
 class Module;
@@ -12,6 +13,7 @@ struct PhysBody
 	friend class ModulePhysics3D;
 public:
 	PhysBody(btRigidBody* body);
+	PhysBody(GameObject* owner);
 	PhysBody();
 	~PhysBody();
 

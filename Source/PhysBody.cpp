@@ -9,9 +9,21 @@ PhysBody::PhysBody(btRigidBody* body) : body(body)
 	body->setUserPointer(this);
 }
 
+PhysBody::PhysBody(GameObject* owner)
+{
+	PSphere* psphere = new PSphere();
+	psphere->radius = 5;
+	owner->physbody = App->physics->AddBody(*psphere, 0);
+}
+
 PhysBody::PhysBody()
 {
+	PSphere* psphere = new PSphere();
+	psphere->radius = 5;
+	App->physics->AddBody(*psphere, 0);
 }
+
+
 
 // ---------------------------------------------------------
 PhysBody::~PhysBody()

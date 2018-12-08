@@ -4,11 +4,11 @@
 
 class GameObject;
 class PhysBody;
-class ComponentPhysBody : public Component
+class ComponentRigidBody : public Component
 {
 public:
-	ComponentPhysBody(GameObject* owner);
-	virtual ~ComponentPhysBody();
+	ComponentRigidBody(GameObject* owner);
+	virtual ~ComponentRigidBody();
 	
 	bool Update()override;
 
@@ -17,7 +17,6 @@ public:
 	bool HasMoved();
 	bool IsBulletStatic();
 public:
-	PhysBody* physbody;
 	bool bullet_trans_updated;
 	bool owner_trans_updated;
 };

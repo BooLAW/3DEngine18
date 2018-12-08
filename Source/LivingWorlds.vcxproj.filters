@@ -109,9 +109,6 @@
     <Filter Include="Sources\Modules\GameObjects\Components\Collider">
       <UniqueIdentifier>{a722d4df-8241-49da-9360-90adf6c064ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\GameObjects\BaseClasses\Collider">
-      <UniqueIdentifier>{33eaac0b-675a-4882-8656-1f3407a59175}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -669,14 +666,11 @@
     <ClInclude Include="PhysBody.h">
       <Filter>Sources\Modules\GameObjects\BaseClasses\PhysBody</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentPhysBody.h">
-      <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentCollider.h">
       <Filter>Sources\Modules\GameObjects\Components\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Sources\Modules\GameObjects\BaseClasses\Collider</Filter>
+    <ClInclude Include="ComponentRigidBody.h">
+      <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -917,14 +911,11 @@
     <ClCompile Include="PhysBody.cpp">
       <Filter>Sources\Modules\GameObjects\BaseClasses\PhysBody</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentPhysBody.cpp">
-      <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentCollider.cpp">
       <Filter>Sources\Modules\GameObjects\Components\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Sources\Modules\GameObjects\BaseClasses\Collider</Filter>
+    <ClCompile Include="ComponentRigidBody.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

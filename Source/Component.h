@@ -5,7 +5,8 @@
 enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY,COLLIDER};
 class GameObject;
 class ComponentMaterial;
-class ComponentPhysBody;
+class ComponentRigidBody;
+class ComponentCollider;
 class Component
 {
 public:
@@ -31,7 +32,8 @@ public:
 public:
 	ComponentType type;
 	ComponentMaterial* comp_material;
-	ComponentPhysBody* comp_rigidbody;
+	ComponentRigidBody* comp_rigidbody;
+	ComponentCollider* comp_collider;
 	GameObject* owner;
 	std::string name;
 	bool active = true;

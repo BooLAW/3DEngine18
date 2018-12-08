@@ -10,7 +10,8 @@ enum ComponentType;
 class ComponentTransform;
 class ComponentMesh;
 class ComponentCamera;
-class ComponentPhysBody;
+class ComponentRigidBody;
+class ComponentCollider;
 class Camera;
 
 class GameObject
@@ -35,6 +36,8 @@ public:
 	bool HasCam()const;
 	bool HasChilds()const;
 	bool HasRigidBody()const;
+	bool HasCollider()const;
+	bool HasPhysBody()const;
 
 	//flags interaction
 	void SetActive(bool active);
@@ -60,12 +63,17 @@ public:
 	int GetNumChilds()const;
 
 	void SetUID(UINT32 id);
+
 	//Mesh functionalities
 	void ActivateBB();
 	Mesh* GetMesh();
+
+	//Get Components
 	ComponentMesh* GetCMesh();
 	ComponentCamera* GetCCamera();
-	ComponentPhysBody* GetRigidBody();
+	ComponentRigidBody* GetRigidBody();
+	ComponentCollider* GetCollider();
+
 	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();
@@ -91,6 +99,7 @@ public:
 	std::vector<GameObject*> childs_list;
 	std::vector<Component*> components_list;
 	ComponentTransform* comp_transform;
+	PhysBody* physbody = nullptr;
 private:
 	uint num_meshes;
 	UINT32 uid;

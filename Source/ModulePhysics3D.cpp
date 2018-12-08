@@ -140,15 +140,19 @@ void ModulePhysics3D::UpdatePhysics()
 	int i = 0;
 	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 	{
-		float matrix[16];
-		(*item)->GetTransform(matrix);
 
-		if (primitive_list.size() > i)
+		if ((*item)->has_render == true)
 		{
-			primitive_list.at(i)->transform.Set(matrix);
-			
+			float matrix[16];
+			(*item)->GetTransform(matrix);
+			if (primitive_list.size() > i)
+			{
+				primitive_list.at(i)->transform.Set(matrix);
+			}
+			i++;
 		}
-		i++;
+
+
 	}
 
 	for (int i = 0; i < primitive_list.size(); i++)
@@ -314,7 +318,7 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 
 	if (isCollider)
 	{
-		pbody->has_render = false;
+		pbody->has_render = false;		
 	}
 	else
 	{
@@ -324,8 +328,6 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
-
-
 
 	return pbody;
 }
