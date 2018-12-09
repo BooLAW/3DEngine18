@@ -4,7 +4,7 @@
 #include "PhysBody.h"
 #include "ModuleCamera3D.h"
 #include "Camera.h"
-#include "PanelScene.h"
+#include "PanelGame.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -305,9 +305,9 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 	{
 		//Grab direction of the camera
 		btVector3 editor_cam_dir;
-		editor_cam_dir.setX(App->camera->editor_cam->frustum.front.x);
-		editor_cam_dir.setY(App->camera->editor_cam->frustum.front.y);
-		editor_cam_dir.setZ(App->camera->editor_cam->frustum.front.z);
+		editor_cam_dir.setX(App->camera->current_game_camera->GetCamera()->frustum.front.x);
+		editor_cam_dir.setY(App->camera->current_game_camera->GetCamera()->frustum.front.y);
+		editor_cam_dir.setZ(App->camera->current_game_camera->GetCamera()->frustum.front.z);
 		
 		//Adding 40 Newtons of force
 		editor_cam_dir = editor_cam_dir * 40;
@@ -345,14 +345,14 @@ void ModulePhysics3D::CreatePlane()
 
 void ModulePhysics3D::ShootSphere()
 {
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->scene->MouseOver())
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->game->MouseOver())
 	{
 		PSphere* test = new PSphere();
 		test->radius = 3;
 		float position[3];
-		position[0] = App->camera->editor_cam->frustum.pos.x;
-		position[1] = App->camera->editor_cam->frustum.pos.y;
-		position[2] = App->camera->editor_cam->frustum.pos.z;
+		position[0] = App->camera->current_game_camera->GetCamera()->frustum.pos.x;
+		position[1] = App->camera->current_game_camera->GetCamera()->frustum.pos.y;
+		position[2] = App->camera->current_game_camera->GetCamera()->frustum.pos.z;
 
 		test->SetPos(position[0], position[1], position[2]);
 		App->physics->AddBody(*test, 1, false, true);
