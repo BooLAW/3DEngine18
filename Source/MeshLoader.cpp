@@ -98,7 +98,6 @@ bool MeshLoader::InitMesh(std::string lw_path, GameObject* new_child)
 
 	new_child->SetUID(App->loading_manager->GenerateNewUID());
 
-	//new_child->SetName(my_mesh->file_path.c_str());
 	new_child->SetNumMeshes(mesh_number);
 	//Vertices----------------------
 	glGenBuffers(1, (GLuint*)&my_mesh->vertices_id);

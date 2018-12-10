@@ -8,13 +8,15 @@
 #include "Application.h"
 
 
-class PanelHierarchy :
-	public Panel
+class PanelHierarchy : public Panel
 {
 public:
 	PanelHierarchy();
 	virtual ~PanelHierarchy();
 	void Draw()override;
+
+private:
+	int id_new_sphere = 0;
 };
 #endif
 

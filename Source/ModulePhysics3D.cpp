@@ -70,10 +70,7 @@ void ModulePhysics3D::DrawModuleConfig()
 		{
 			App->physics->SetGravity(gravity);
 		}
-		ImGui::Checkbox("Debug", &pdebug);
-
-		
-		
+		ImGui::Checkbox("Debug", &pdebug);			
 	}
 }
 
@@ -125,7 +122,7 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		world->debugDrawWorld();
 	}
-	ShootSphere();
+	//ShootSphere();
 
 	return UPDATE_CONTINUE;
 }

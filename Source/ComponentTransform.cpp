@@ -129,6 +129,8 @@ void ComponentTransform::DrawInspectorInfo()
 				owner->GetCCamera()->Update();
 			if (owner->HasCollider())
 				owner->GetCollider()->Update();
+			//if (owner->GetRigidBody())
+				//owner->GetRigidBody()->Update();
 			
 				
 

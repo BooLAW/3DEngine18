@@ -18,6 +18,7 @@
 #include "ModuleCamera3D.h"
 #include "ComponentTransform.h"
 #include "ComponentCollider.h"
+#include "ComponentRigidBody.h"
 #include "ComponentCamera.h"
 #include "Camera.h"
 
@@ -161,6 +162,8 @@ void ModuleSceneGui::DrawImGuizmo()
 				go_selected->GetCCamera()->Update();
 			if (go_selected->HasCollider())
 				go_selected->GetCollider()->Update();
+			//if (go_selected->HasRigidBody())
+				//go_selected->GetRigidBody()->Update();
 			
 
 		}
