@@ -33,10 +33,34 @@ ComponentCollider::~ComponentCollider()
 
 bool ComponentCollider::Update()
 {
-	//TODO Make the same with a matrix
-	//owner->physbody->SetTransform(owner->comp_transform->trans_matrix_g.ptr());	
+	//Gather the pointer with the transform matrix
+	float* transform_matrix = new float[16];
+	transform_matrix = owner->comp_transform->trans_matrix_g.ptr();
 
-	owner->physbody->SetPos(owner->comp_transform->transform->pos.x + center_offset[0], owner->comp_transform->transform->pos.y + center_offset[1], owner->comp_transform->transform->pos.z + center_offset[2]);
+	//Get the identity of the body
+	float current_matrix[16];
+	owner->physbody->GetTransform(current_matrix);
+
+	//Creating the final matrix where we will create the new base
+	float final_matrix[16];
+	for (int i = 0; i < 16; i++)
+	{
+		final_matrix[i] = current_matrix[i];
+	}
+
+	//Relate both matrix translation
+	final_matrix[12] = transform_matrix[3] + center_offset[0];
+	final_matrix[13] = transform_matrix[7] + center_offset[1];
+	final_matrix[14] = transform_matrix[11] + center_offset[2];
+
+	//Relate both matrix rotation and inverting the rotation
+	final_matrix[0] = -transform_matrix[0];/**/final_matrix[1] = transform_matrix[1];/**/final_matrix[2] = transform_matrix[2];
+	final_matrix[4] = transform_matrix[4];/**/final_matrix[5] = -transform_matrix[5];/**/final_matrix[6] = transform_matrix[6];
+	final_matrix[8] = transform_matrix[8];/**/final_matrix[9] = transform_matrix[9];/**/final_matrix[10] = -transform_matrix[10];
+
+	//Add the result on the object
+	owner->physbody->SetTransform(final_matrix);
+	
 	return false;
 }
 
