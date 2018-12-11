@@ -260,6 +260,33 @@ void Camera::HandleMouse(const float dt)
 
 }
 
+void Camera::RotateGameCamera(const float sensitivity)
+{
+	float dx = -App->input->GetMouseXMotion() *sensitivity;
+	float dy = -App->input->GetMouseYMotion() * sensitivity;
+
+	Frustum* game_frustum = &this->frustum;
+	if (dx != 0)
+	{
+		Quat X_rot = Quat::RotateY(dx);
+		game_frustum->front = X_rot.Mul(game_frustum->front).Normalized();
+		game_frustum->up = X_rot.Mul(game_frustum->up).Normalized();
+	}
+
+	if (dy != 0)
+	{
+		Quat rotation_y = Quat::RotateAxisAngle(game_frustum->WorldRight(), dy);
+
+		float3 new_up = rotation_y.Mul(game_frustum->up).Normalized();
+
+		if (new_up.y > 0.0f)
+		{
+			game_frustum->up = new_up;
+			game_frustum->front = rotation_y.Mul(game_frustum->front).Normalized();
+		}
+	}
+}
+
 void Camera::CreateNewFrustum()
 {
 	frustum.GetCornerPoints(frustum_vertices);

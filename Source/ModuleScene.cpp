@@ -1,5 +1,7 @@
 #include "Globals.h"
 #include "ModuleScene.h"
+#include "ModuleSceneImGui.h"
+#include "PanelGame.h"
 #include "imgui_impl_sdl.h"
 #include <stdlib.h>
 #include <time.h>
@@ -878,9 +880,18 @@ void ModuleScene::NewMainCamera()
 void ModuleScene::MoveCurrentCamera()
 {
 	//WASD
-	MoveCameraGO();
-	//Mouse Rotation
-	RotateCameraGO();
+	if (!App->camera->current_game_camera->IsStatic())
+	{
+		MoveCameraGO();
+		//Mouse Rotation
+		if (App->imgui->game->MouseOver())
+			RotateCameraGO();
+		if (main_camera_go->HasCam())
+			main_camera_go->GetCCamera()->Update();
+	}
+
+	
+	
 }
 
 void ModuleScene::MoveCameraGO()
@@ -921,19 +932,11 @@ void ModuleScene::MoveCameraGO()
 		cam_moved = true;
 
 	}
-	//Y
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
+	//JUMP
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		float new_y = curr_trans->pos.y;
-		new_y -= game_cam_speed;
-		curr_trans->SetPosition(curr_trans->pos.x, new_y, curr_trans->pos.z);
-		cam_moved = true;
-
-	}
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
-	{
-		float new_y = curr_trans->pos.y;
-		new_y += game_cam_speed;
+		new_y += jump_force;
 		curr_trans->SetPosition(curr_trans->pos.x, new_y, curr_trans->pos.z);
 		cam_moved = true;
 	}
@@ -947,9 +950,6 @@ void ModuleScene::MoveCameraGO()
 			main_camera_go->GetCollider()->Update();
 			
 		}
-		if (main_camera_go->HasCam())
-			main_camera_go->GetCCamera()->Update();
-
 		main_camera_go->SetFirstUpdate(false);
 	}
 	
@@ -958,7 +958,13 @@ void ModuleScene::MoveCameraGO()
 
 void ModuleScene::RotateCameraGO()
 {
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		main_camera_go->GetCamera()->HandleMouse(0.01);
+		main_camera_go->GetCCamera()->user_rotate = true;
 
+	}
+	
 }
 
 

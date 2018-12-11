@@ -16,6 +16,7 @@ public:
 public:
 	Camera * cam;
 	bool game_camera;
+	bool user_rotate = false;
 
 };
 #endif

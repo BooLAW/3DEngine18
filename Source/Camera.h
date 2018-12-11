@@ -44,6 +44,7 @@ public:
 	void Look(const float3 &Position, const float3 &Reference, bool Pivoting);
 	void LookAt(const float3& at);
 	void HandleMouse(const float dt);
+	void RotateGameCamera(const float sensitivity);
 	void CreateNewFrustum();
 	void DrawFrustum();
 	TextureMSAA* SceneMSAA();

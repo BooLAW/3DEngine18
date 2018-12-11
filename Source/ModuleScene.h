@@ -80,8 +80,11 @@ public:
 	
 	std::string fbx_name;
 	std::string folder_path;
-
+	
+	//PLAYER CONTROLLER
 	float game_cam_speed = 0.5;
+	float jump_force = 0.3;
+	
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];
 

@@ -122,7 +122,7 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		world->debugDrawWorld();
 	}
-	//ShootSphere();
+	ShootSphere();
 
 	return UPDATE_CONTINUE;
 }
@@ -345,7 +345,7 @@ void ModulePhysics3D::ShootSphere()
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->game->MouseOver())
 	{
 		PSphere* test = new PSphere();
-		test->radius = 3;
+		test->radius = 0.5;
 		float position[3];
 		position[0] = App->camera->current_game_camera->GetCamera()->frustum.pos.x;
 		position[1] = App->camera->current_game_camera->GetCamera()->frustum.pos.y;
