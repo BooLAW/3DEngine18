@@ -31,7 +31,7 @@ void PanelHierarchy::Draw()
 
 	static ImGuiComboFlags flags = ImGuiComboFlags_PopupAlignLeft;
 
-	const char* items[] = { "NONE", "Empty Child","Sphere","Cube", "Plane WiP"};
+	const char* items[] = { "NONE", "Empty Child","Sphere","Cube", "Plane WiP","Main Camera"};
 	static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
 	if (ImGui::BeginCombo("Add GO", item_current, flags)) // The second parameter is the label previewed before opening the combo.
 	{
@@ -81,6 +81,13 @@ void PanelHierarchy::Draw()
 				{
 
 				}
+				else if (items[n] == "Main Camera")
+				{
+					if (App->scene_intro->main_camera_go == nullptr)
+					{
+						App->scene_intro->NewMainCamera();
+					}
+				}
 
 			}
 			if (is_selected)
@@ -89,7 +96,8 @@ void PanelHierarchy::Draw()
 		ImGui::EndCombo();
 	}
 	
-	ImGui::SameLine();  ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size()/*-1*/); //Why there is a -1 here?
+	ImGui::Text("Total GameObjects: %d", App->scene_intro->go_list.size()/*-1*/); //Why there is a -1 here?
+	
 	ImGui::Separator();
 	App->scene_intro->DrawHierarchy();
 

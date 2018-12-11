@@ -230,7 +230,7 @@ Camera * ModuleCamera3D::GetCurrentCam() const
 	Camera* ret = nullptr;
 	if (current_game_camera == nullptr)
 	{
-		CONSOLE_LOG_WARNING("No current Camera for Game");
+		ret = editor_cam;
 	}
 	else
 	{

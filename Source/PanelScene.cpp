@@ -28,7 +28,7 @@ void PanelScene::Draw()
 		}
 		pos = ImGui::GetWindowPos();
 		if (ImGui::Button("ClearScene"))
-			App->scene_intro->ClearScene();
+			App->scene_intro->ClearSceneButton();
 		ImVec2 size = ImGui::GetContentRegionAvail();
 		if (App->camera->GetEditorCam()->SceneMSAA() != nullptr)
 		{

@@ -72,13 +72,7 @@ bool ModuleScene::Start()
 	App->camera->StartEditorCamera();
 
 	//Creating Game Camera
-	main_camera_go = CreateMainCamera();
-	go_list.push_back(main_camera_go);
-	scene_root->AddChild(main_camera_go);
-	if (main_camera_go->HasCam())
-		App->camera->cams_list.push_back(main_camera_go);
-	App->camera->SetCurrentCam(main_camera_go);
-	App->camera->StartNewCamera();
+	NewMainCamera();
 
 	//Create Library folder
 	for (int i = 0; App->loading_manager->load_paths.size() > i; i++)
@@ -246,6 +240,25 @@ void ModuleScene::ClearScene()
 		go_list.push_back(scene_root);
 	}
 		
+	App->loading_manager->unique_fbx_path = "";
+	App->loading_manager->unique_material_path = "";
+	imported_go = nullptr;
+}
+void ModuleScene::ClearSceneButton()
+{
+	if (scene_root->HasChilds())
+	{
+		scene_root->ClearRelations();
+		scene_root->childs_list.clear();
+		go_list.clear();
+		go_list.push_back(scene_root);
+		main_camera_go = nullptr;
+	}
+	if (main_camera_go == nullptr)
+	{
+		App->camera->current_game_camera = nullptr;
+	}
+
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
 	imported_go = nullptr;
@@ -849,6 +862,17 @@ void ModuleScene::ClickSelection(LineSegment mouse_ray)
 	if(GetSelected() != nullptr)
 		GetSelected()->SetSelected(false);
 	closestGo->SetSelected(true);
+}
+
+void ModuleScene::NewMainCamera()
+{
+	main_camera_go = CreateMainCamera();
+	go_list.push_back(main_camera_go);
+	scene_root->AddChild(main_camera_go);
+	if (main_camera_go->HasCam())
+		App->camera->cams_list.push_back(main_camera_go);
+	App->camera->SetCurrentCam(main_camera_go);
+	App->camera->StartNewCamera();
 }
 
 void ModuleScene::MoveCurrentCamera()

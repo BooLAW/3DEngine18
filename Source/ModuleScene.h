@@ -29,6 +29,7 @@ public:
 	GameObject* CreateNewGameObject();
 	void DrawGameObjects();
 	void ClearScene();
+	void ClearSceneButton();
 	void DeleteGameObject(GameObject* go_to_delete);
 	void DeleteGameObjectsInList();
 	bool HasObjects();
@@ -59,6 +60,7 @@ public:
 	void ClickSelection(LineSegment mouse_ray);
 
 	//Camera Movement
+	void NewMainCamera();
 	void MoveCurrentCamera();
 	void MoveCameraGO();
 	void RotateCameraGO();
