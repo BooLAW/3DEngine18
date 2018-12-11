@@ -122,7 +122,7 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		world->debugDrawWorld();
 	}
-	ShootSphere();
+	
 
 	return UPDATE_CONTINUE;
 }

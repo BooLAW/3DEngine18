@@ -82,11 +82,7 @@ void ComponentRigidBody::DrawInspectorInfo()
 
 void ComponentRigidBody::UpdateTransform()
 {
-	//if (HasOwner() && owner->physbody != nullptr)
-	//{
-	//	GameObject* owner = GetOwner();
-	//	owner->physbody->SetTransform((float*)&owner->comp_transform->trans_matrix_g);
-	//}
+	
 }
 
 bool ComponentRigidBody::HasMoved()
@@ -96,13 +92,13 @@ bool ComponentRigidBody::HasMoved()
 	if (!IsBulletStatic())
 	{
 		//PAU WiP
+
 	}
 
 	return ret;
 }
 bool ComponentRigidBody::IsBulletStatic()
 {
-	bool ret = owner->physbody->GetRigidBody()->isStaticObject();
-	return ret;
+	return owner->physbody->GetRigidBody()->isStaticObject();
 }
 
