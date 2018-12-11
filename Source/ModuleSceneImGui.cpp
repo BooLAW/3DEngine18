@@ -16,6 +16,7 @@
 #include "PanelGame.h"
 #include "Camera.h"
 #include "ModuleCamera3D.h"
+#include "ModulePhysics3D.h"
 #include "ComponentTransform.h"
 #include "ComponentCollider.h"
 #include "ComponentRigidBody.h"
@@ -298,6 +299,7 @@ void ModuleSceneGui::DrawTools(uint flags)
 		{
 			App->time_manager->Play();
 			App->state = playing;
+			App->physics->LoadPhysBodies();
 		}
 	
 		if (change_state == true)

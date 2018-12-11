@@ -89,12 +89,13 @@ bool ModuleScene::Start()
 
 	cube.dimensions = float3(5.0f, 5.0f, 5.0f);
 	cube.SetPos(0, 10, 10);
-	App->physics->AddBody(cube, 1);
-	
+	App->physics->loading_list.push_back((Primitive*)&cube);
 
 	cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
 	cube2.SetPos(0, 30, 7.5f);
-	App->physics->AddBody(cube2, 1);
+	cube2.mass = 1;
+	
+	App->physics->loading_list.push_back((Primitive*)&cube2);
 
 	
 

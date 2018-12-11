@@ -129,33 +129,35 @@ update_status ModulePhysics3D::Update(float dt)
 
 update_status ModulePhysics3D::PostUpdate(float dt)
 {
+
 	return UPDATE_CONTINUE;
 }
 
 void ModulePhysics3D::UpdatePhysics()
 {
-	int i = 0;
-	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+	if (App->state == playing)
 	{
-
-		if ((*item)->has_render == true)
+		int i = 0;
+		for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 		{
-			float matrix[16];
-			(*item)->GetTransform(matrix);
-			if (primitive_list.size() > i)
+			if ((*item)->has_render == true)
 			{
-				primitive_list.at(i)->transform.Set(matrix);
+				float matrix[16];
+				(*item)->GetTransform(matrix);
+				if (primitive_list.size() > i)
+				{
+					primitive_list.at(i)->transform.Set(matrix);
+				}
+				i++;
 			}
-			i++;
 		}
 
-
+		for (int i = 0; i < primitive_list.size(); i++)
+		{
+			primitive_list[i]->Render();
+		}
 	}
 
-	for (int i = 0; i < primitive_list.size(); i++)
-	{		
-		primitive_list[i]->Render();
-	}
 
 	//Debug Physics World
 	if (pdebug)
@@ -223,6 +225,17 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 	//pcube_list.push_back(new_cube);
 }
 
+void ModulePhysics3D::LoadPhysBodies()
+{
+	for (std::vector<Primitive*>::iterator item = loading_list.begin(); item != loading_list.end(); item++)
+	{
+		PCube* temp_cube = (PCube*)(*item);
+
+		AddBody(*temp_cube, 1);
+		//delete (*item);
+	}
+}
+
 std::list<float2> ModulePhysics3D::GetCubeCollisions()
 {
 	int listener = 0;
@@ -269,6 +282,7 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody* pbody = new PhysBody(body);
+	pbody->dimensions = cube.dimensions.x;
 
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
