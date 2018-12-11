@@ -53,6 +53,7 @@ public:
 public:
 	float3 dimensions;
 	bool hasmesh;
+	float mass;
 };
 
 class PPlane : public Primitive

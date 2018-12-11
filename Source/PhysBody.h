@@ -50,6 +50,8 @@ public:
 	bool const_ry;
 	bool const_rz;
 
+	int dimensions = 0;
+
 	//--------------------------
 
 public:
