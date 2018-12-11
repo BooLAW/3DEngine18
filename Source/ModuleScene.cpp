@@ -890,9 +890,6 @@ void ModuleScene::MoveCurrentCamera()
 			main_camera_go->GetCCamera()->Update();
 		App->physics->ShootSphere();
 	}
-
-	
-	
 }
 
 void ModuleScene::MoveCameraGO()

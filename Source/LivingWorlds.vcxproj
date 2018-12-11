@@ -83,6 +83,7 @@
     <ClInclude Include="ComponentCollider.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentPlayerController.h" />
     <ClInclude Include="ComponentRigidBody.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="DebugDraw.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="ComponentCollider.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="ComponentPlayerController.cpp" />
     <ClCompile Include="ComponentRigidBody.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="DebugDraw.cpp" />

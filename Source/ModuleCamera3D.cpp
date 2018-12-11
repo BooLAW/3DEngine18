@@ -137,12 +137,7 @@ void ModuleCamera3D::DrawModuleConfig()
 			App->audio->camera_tick_arr[6] = FALSEBOOL;
 
 		ImGui::Spacing();
-		if (ImGui::Checkbox("Draw Ray", &draw_mouse_ray))
-		{
-			App->audio->PlayFx(LIGHT_BUTTON_CLICK, &App->audio->camera_tick_arr[8]);
-		}
-		else
-			App->audio->camera_tick_arr[8] = FALSEBOOL;
+		
 
 
 	}

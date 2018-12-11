@@ -361,6 +361,12 @@ void ModuleSceneGui::DrawTools(uint flags)
 		ImGui::VerticalSeparator();
 		ImGui::SameLine();
 		ImGui::Checkbox("DrawOctree", &App->scene_intro->draw_octree);
+		ImGui::SameLine();
+		ImGui::VerticalSeparator();
+		ImGui::SameLine();
+		ImGui::Checkbox("Draw Ray", &App->camera->draw_mouse_ray);
+		
+
 	}
 	ImGui::End();
 }
