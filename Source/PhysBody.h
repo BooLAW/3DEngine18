@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
+#include "Primitive.h"
 
 class btRigidBody;
 class Module;
@@ -33,6 +34,7 @@ public:
 private:
 	btRigidBody * body = nullptr;
 	bool is_sensor = false;
+
 	//Unity Elements------------
 	//Mass
 	uint mass = 0;
@@ -50,7 +52,10 @@ public:
 	bool const_ry;
 	bool const_rz;
 
-	int dimensions = 0;
+	float3 dimensions = { 1,1,1 };
+	bool dead = false;
+	GameObject* owner = nullptr;
+	Primitive* primitive_ptr = nullptr;
 
 	//--------------------------
 

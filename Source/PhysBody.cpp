@@ -1,6 +1,7 @@
 #include "PhysBody.h"
 #include "ModulePhysics3D.h"
 #include "Application.h"
+#include "ComponentTransform.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // =================================================
@@ -13,7 +14,10 @@ PhysBody::PhysBody(GameObject* owner)
 {
 	PSphere* psphere = new PSphere();
 	psphere->radius = 5;
+	psphere->has_render = false;
+	psphere->mass = 1;
 	owner->physbody = App->physics->AddBody(*psphere, 0);
+	owner->physbody->owner = owner;
 }
 
 PhysBody::PhysBody()

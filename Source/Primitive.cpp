@@ -15,53 +15,56 @@ Primitive::Primitive() :transform(float4x4::identity), color(White), wire(false)
 
 void Primitive::Render() const
 {
-	glPushMatrix();
-	glMultMatrixf(transform.ptr());
-
-	if (axis == true)
+	if (has_render)
 	{
-		// Draw Axis Grid
-		glLineWidth(2.0f);
+		glPushMatrix();
+		glMultMatrixf(transform.ptr());
 
-		glBegin(GL_LINES);
+		if (axis == true)
+		{
+			// Draw Axis Grid
+			glLineWidth(2.0f);
 
-		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+			glBegin(GL_LINES);
 
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-		glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+			glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 
-		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+			glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+			glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+			glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
 
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+			glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 
-		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+			glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+			glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+			glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
 
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-		glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-		glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+			glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
 
-		glEnd();
+			glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+			glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+			glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+			glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+
+			glEnd();
+
+			glLineWidth(1.0f);
+		}
+
+		glColor3f(color.r, color.g, color.b);
+
+		if (App->renderer3D->attributes.wireframe)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		InnerRender();
 
 		glLineWidth(1.0f);
+
+		glPopMatrix();
 	}
-
-	glColor3f(color.r, color.g, color.b);
-		
-	if (App->renderer3D->attributes.wireframe)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	InnerRender();
-
-	glLineWidth(1.0f);
-
-	glPopMatrix();
 }
 
 void Primitive::InnerRender() const

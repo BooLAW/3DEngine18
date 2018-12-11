@@ -60,6 +60,7 @@ public:
 	void CreateSphere(float3 position, int radius);
 	void CreateCube(float3 minPoint, float3 maxPoint);
 	void LoadPhysBodies();
+	void SwitchPhysBody(PhysBody* body_to_switch);
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	PhysBody* AddBody(PSphere& sphere, float mass, bool isCollider = true, bool addForce = false,float force = 40);
@@ -77,7 +78,7 @@ public:
 	//-----------------------
 
 
-	std::vector<Primitive*> loading_list;
+	std::vector<PhysBody*> loading_list;
 private:
 
 	bool pdebug;

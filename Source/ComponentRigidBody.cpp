@@ -34,14 +34,14 @@ bool ComponentRigidBody::Update()
 
 void ComponentRigidBody::DrawInspectorInfo()
 {
-	int mass;
+	int mass = 1;
 	if (owner->physbody != nullptr)
 	{
-		mass = owner->physbody->GetMass();
+		mass = owner->physbody->primitive_ptr->mass;
 
 		if (ImGui::InputInt("Mass", &mass))
 		{
-			owner->physbody->SetMass(mass);
+			owner->physbody->primitive_ptr->mass = mass;
 		}
 			
 
@@ -49,6 +49,9 @@ void ComponentRigidBody::DrawInspectorInfo()
 		if (ImGui::Checkbox("Use Gravity", &aux_grav))
 		{
 			owner->physbody->ActivateGravity(aux_grav);
+			App->physics->SwitchPhysBody(owner->physbody);
+			
+
 		}
 
 		if (ImGui::TreeNode("Constraints"))

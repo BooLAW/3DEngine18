@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics3D.h"
+#include "ComponentTransform.h"
 #include "PhysBody.h"
 #include "ModuleCamera3D.h"
 #include "Camera.h"
@@ -135,27 +136,41 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 
 void ModulePhysics3D::UpdatePhysics()
 {
+	std::vector<float*> matrix_list;
 	if (App->state == playing)
 	{
-		int i = 0;
-		for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+
+	}
+	int i = 0;
+	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+	{
+		if ((*item)->dead == false)
 		{
 			if ((*item)->has_render == true)
 			{
-				float matrix[16];
+				float *matrix = new float[16];
 				(*item)->GetTransform(matrix);
-				if (primitive_list.size() > i)
-				{
-					primitive_list.at(i)->transform.Set(matrix);
-				}
+				matrix_list.push_back(matrix);
 				i++;
 			}
-		}
+		}		
+	}
 
-		for (int i = 0; i < primitive_list.size(); i++)
-		{
-			primitive_list[i]->Render();
+	if (matrix_list.size() > 0)
+	{
+		int i2 = 0;
+		for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
+		{			
+			(*item2)->transform.Set(matrix_list[i2]);
+			i2++;
 		}
+	}
+
+	
+
+	for (int i = 0; i < primitive_list.size(); i++)
+	{
+		primitive_list[i]->Render();
 	}
 
 
@@ -227,13 +242,45 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 
 void ModulePhysics3D::LoadPhysBodies()
 {
-	for (std::vector<Primitive*>::iterator item = loading_list.begin(); item != loading_list.end(); item++)
-	{
-		PCube* temp_cube = (PCube*)(*item);
+	primitive_list.clear();
 
-		AddBody(*temp_cube, 1);
-		//delete (*item);
+	for (std::vector<PhysBody*>::iterator item = loading_list.begin(); item != loading_list.end(); item++)
+	{
+		SwitchPhysBody((*item));
 	}
+}
+
+void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
+{
+	int shape_type = body_to_switch->GetRigidBody()->getCollisionShape()->getShapeType();
+
+	switch (shape_type)
+	{
+		case 0://Cube
+		{
+			PCube* cube = (PCube*)body_to_switch->primitive_ptr;
+			body_to_switch->dead = true;
+			world->removeRigidBody(body_to_switch->GetRigidBody());
+
+			AddBody(*cube, cube->mass);
+			break;
+		}
+		case 8://Sphere
+		{
+			PSphere* sphere = (PSphere*)body_to_switch->primitive_ptr;
+			body_to_switch->dead = true;
+			world->removeRigidBody(body_to_switch->GetRigidBody());
+
+			float* transform_matrix = new float[16];
+			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
+			sphere->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
+
+			body_to_switch->owner->physbody = AddBody(*sphere, sphere->mass);
+			break;
+		}
+	}
+	
+
 }
 
 std::list<float2> ModulePhysics3D::GetCubeCollisions()
@@ -282,7 +329,8 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody* pbody = new PhysBody(body);
-	pbody->dimensions = cube.dimensions.x;
+	pbody->dimensions = cube.dimensions;
+	pbody->primitive_ptr = &cube;
 
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
@@ -336,6 +384,7 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 		pbody->has_render = true;
 		primitive_list.push_back((Primitive*)&sphere);
 	}
+	pbody->primitive_ptr = &sphere;
 
 	world->addRigidBody(body);
 	bodies.push_back(pbody);

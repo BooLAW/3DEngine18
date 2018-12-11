@@ -31,6 +31,8 @@ public:
 	Color color;
 	float4x4 transform;
 	bool axis, wire;
+	float mass = 0;
+	bool has_render = true;
 
 protected:
 	PrimitiveTypes type;
@@ -52,8 +54,6 @@ public:
 	void InnerRender() const override;
 public:
 	float3 dimensions;
-	bool hasmesh;
-	float mass;
 };
 
 class PPlane : public Primitive

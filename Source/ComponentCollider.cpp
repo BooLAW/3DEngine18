@@ -33,6 +33,7 @@ ComponentCollider::~ComponentCollider()
 
 bool ComponentCollider::Update()
 {
+
 	//Gather the pointer with the transform matrix
 	float* transform_matrix = new float[16];
 	transform_matrix = owner->comp_transform->trans_matrix_g.ptr();
