@@ -10,6 +10,7 @@
 #include <limits>
 
 #include "ComponentRigidBody.h"
+#include "ComponentPlayerController.h"
 #include "ComponentCollider.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
@@ -869,13 +870,18 @@ void ModuleScene::ClickSelection(LineSegment mouse_ray)
 
 void ModuleScene::NewMainCamera()
 {
+	
 	main_camera_go = CreateMainCamera();
 	go_list.push_back(main_camera_go);
 	scene_root->AddChild(main_camera_go);
 	if (main_camera_go->HasCam())
 		App->camera->cams_list.push_back(main_camera_go);
+
 	App->camera->SetCurrentCam(main_camera_go);
 	App->camera->StartNewCamera();
+	//create Player Controller
+	CrateBasePlayerController(main_camera_go);
+	
 }
 
 void ModuleScene::MoveCurrentCamera()
@@ -964,6 +970,14 @@ void ModuleScene::RotateCameraGO()
 
 	}
 	
+}
+
+void ModuleScene::CrateBasePlayerController(GameObject* parent)
+{
+	
+	ComponentPlayerController* comp = new ComponentPlayerController(parent);
+	
+	parent->PushComponent(comp);
 }
 
 

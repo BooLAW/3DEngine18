@@ -5,8 +5,21 @@
 
 ComponentPlayerController::ComponentPlayerController()
 {
+	type = CONTROLLER;
+	speed = 10;
+	sensitivity = 0.5;
+	bullet_radius = 3;
+	shoot_force = 30;
 }
-
+ComponentPlayerController::ComponentPlayerController(GameObject* owner)
+{
+	type = CONTROLLER;
+	SetOwner(owner);
+	speed = 10;
+	sensitivity = 0.5;
+	bullet_radius = 3;
+	shoot_force = 30;
+}
 
 ComponentPlayerController::~ComponentPlayerController()
 {

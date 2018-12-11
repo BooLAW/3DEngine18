@@ -66,6 +66,11 @@ ComponentMaterial * Component::GetComponentMaterial() const
 	return comp_material;
 }
 
+ComponentPlayerController * Component::GetController() const
+{
+	return comp_controller;
+}
+
 void Component::SetType(ComponentType type)
 {
 	this->type = type;

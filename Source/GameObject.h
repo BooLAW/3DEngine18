@@ -35,6 +35,7 @@ public:
 	bool HasTex()const;
 	bool HasCam()const;
 	bool HasChilds()const;
+	bool HasController()const;
 	bool HasRigidBody()const;
 	bool HasCollider()const;
 	bool HasPhysBody()const;

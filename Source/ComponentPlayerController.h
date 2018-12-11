@@ -2,10 +2,13 @@
 #define __COMPONENT_PLAYERCONTROLLER_H__
 
 #include "Component.h"
+class GameObject;
 class ComponentPlayerController : public Component
 {
 public:
 	ComponentPlayerController();
+	ComponentPlayerController(GameObject* owner);
+
 	virtual ~ComponentPlayerController();
 	void DrawInspectorInfo()override;
 

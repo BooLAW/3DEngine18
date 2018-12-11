@@ -64,6 +64,8 @@ public:
 	void MoveCurrentCamera();
 	void MoveCameraGO();
 	void RotateCameraGO();
+	// Player Controller
+	void CrateBasePlayerController(GameObject* parent);
 public:
 	//Scene GameObjects
 	std::vector<GameObject*> go_list;	
@@ -90,7 +92,6 @@ public:
 
 	bool draw_octree = false;
 	bool has_meshes = false;
-
 
 };
 

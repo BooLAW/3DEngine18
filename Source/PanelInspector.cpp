@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentRigidBody.h"
+#include "ComponentPlayerController.h"
 #include "ComponentCollider.h"
 #include "Transform.h"
 #include "GameObject.h"
@@ -224,6 +225,14 @@ void PanelInspector::Draw()
 					{
 						selected_go->GetComponent(COLLIDER)->DrawInspectorInfo();
 					}
+				}
+				if (selected_go->HasController())
+				{
+					if (ImGui::CollapsingHeader("Player Controller", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						selected_go->GetComponent(CONTROLLER)->DrawInspectorInfo();
+					}
+
 				}
 			}			
 		}

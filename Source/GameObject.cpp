@@ -186,6 +186,17 @@ bool GameObject::HasChilds() const
 	return childs_list.empty() == false;
 }
 
+bool GameObject::HasController() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::CONTROLLER)
+			ret = true;
+	}
+	return ret;
+}
+
 bool GameObject::HasRigidBody() const
 {
 	bool ret = false;
