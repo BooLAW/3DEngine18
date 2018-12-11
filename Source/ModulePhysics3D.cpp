@@ -292,7 +292,7 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 	return pbody;
 }
 
-PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider, bool addForce)
+PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider, bool addForce, float force)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.push_back(colShape);
@@ -321,7 +321,7 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 		editor_cam_dir.setZ(App->camera->current_game_camera->GetCamera()->frustum.front.z);
 		
 		//Adding 40 Newtons of force
-		editor_cam_dir = editor_cam_dir * 40;
+		editor_cam_dir = editor_cam_dir * force;
 		pbody->GetRigidBody()->applyCentralImpulse(editor_cam_dir);
 
 		//The spawn position is changed on the Start() method of this module
@@ -354,12 +354,12 @@ void ModulePhysics3D::CreatePlane()
 	world->addRigidBody(body);
 }
 
-void ModulePhysics3D::ShootSphere()
+void ModulePhysics3D::ShootSphere(float force,float radius)
 {
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && App->imgui->game->MouseOver())
 	{
 		PSphere* test = new PSphere();
-		test->radius = 0.5;
+		test->radius = radius;
 		float position[3];
 		position[0] = App->camera->current_game_camera->GetCamera()->frustum.pos.x;
 		position[1] = App->camera->current_game_camera->GetCamera()->frustum.pos.y;

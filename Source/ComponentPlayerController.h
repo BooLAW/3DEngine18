@@ -23,9 +23,12 @@ public:
 
 	float GetPlayerSensitivity()const;
 	void SetPlayerSensitivity(float sens);
+
+
 private:
 	float speed;
 	float shoot_force;
+	float jump_force;
 	float bullet_radius;
 	float sensitivity;
 };

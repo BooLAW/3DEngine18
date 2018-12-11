@@ -73,7 +73,8 @@ bool ModuleScene::Start()
 
 	//Creating Editor Camera
 	App->camera->StartEditorCamera();
-
+	//Init Controller Settings
+	settings = new ControllerSettings();
 	//Creating Game Camera
 	NewMainCamera();
 
@@ -895,7 +896,7 @@ void ModuleScene::MoveCurrentCamera()
 			RotateCameraGO();
 		if (main_camera_go->HasCam())
 			main_camera_go->GetCCamera()->Update();
-		App->physics->ShootSphere();
+		App->physics->ShootSphere(settings->force,settings->bullet_radius);
 	}
 }
 
@@ -908,14 +909,14 @@ void ModuleScene::MoveCameraGO()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		float new_z = curr_trans->pos.z;
-		new_z -= game_cam_speed;
+		new_z -= settings->game_cam_speed;
 		curr_trans->SetPosition(curr_trans->pos.x, curr_trans->pos.y, new_z);
 		cam_moved = true;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		float new_z = curr_trans->pos.z;
-		new_z += game_cam_speed;
+		new_z += settings->game_cam_speed;
 		curr_trans->SetPosition(curr_trans->pos.x, curr_trans->pos.y, new_z);
 		cam_moved = true;
 
@@ -924,7 +925,7 @@ void ModuleScene::MoveCameraGO()
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		float new_x = curr_trans->pos.x;
-		new_x -= game_cam_speed;
+		new_x -= settings->game_cam_speed;
 		curr_trans->SetPosition(new_x, curr_trans->pos.y, curr_trans->pos.z);
 		cam_moved = true;
 
@@ -932,7 +933,7 @@ void ModuleScene::MoveCameraGO()
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		float new_x = curr_trans->pos.x;
-		new_x += game_cam_speed;
+		new_x += settings->game_cam_speed;
 		curr_trans->SetPosition(new_x, curr_trans->pos.y, curr_trans->pos.z);
 		cam_moved = true;
 
@@ -941,7 +942,7 @@ void ModuleScene::MoveCameraGO()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		float new_y = curr_trans->pos.y;
-		new_y += jump_force;
+		new_y += settings->jump_force;
 		curr_trans->SetPosition(curr_trans->pos.x, new_y, curr_trans->pos.z);
 		cam_moved = true;
 	}
@@ -965,9 +966,8 @@ void ModuleScene::RotateCameraGO()
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
-		main_camera_go->GetCamera()->HandleMouse(0.01);
+		main_camera_go->GetCamera()->HandleMouse(settings->sensitivity);
 		main_camera_go->GetCCamera()->user_rotate = true;
-
 	}
 	
 }
@@ -980,6 +980,11 @@ void ModuleScene::CrateBasePlayerController(GameObject* parent)
 	parent->PushComponent(comp);
 }
 
-
-
-
+ControllerSettings::ControllerSettings()
+{
+	 game_cam_speed = 0.5f;
+	 jump_force = 0.3f;
+	 sensitivity = 0.1f;
+	 bullet_radius = 0.5f;
+	 force = 30.0f;
+}

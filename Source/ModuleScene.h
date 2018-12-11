@@ -9,6 +9,14 @@
 #include "Primitive.h"
 #include "PhysBody.h"
 
+struct ControllerSettings {
+	ControllerSettings();
+	float game_cam_speed;
+	float jump_force;
+	float sensitivity;
+	float bullet_radius;
+	float force;
+};
 
 struct PhysBody;
 class ModuleScene : public Module
@@ -75,6 +83,8 @@ public:
 	PCube cube;
 	PCube cube2;
 	
+	ControllerSettings* settings;
+
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
 	GameObject* main_camera_go = nullptr;
@@ -84,8 +94,7 @@ public:
 	std::string folder_path;
 	
 	//PLAYER CONTROLLER
-	float game_cam_speed = 0.5;
-	float jump_force = 0.3;
+	
 	
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];
