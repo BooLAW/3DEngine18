@@ -888,6 +888,7 @@ void ModuleScene::MoveCurrentCamera()
 			RotateCameraGO();
 		if (main_camera_go->HasCam())
 			main_camera_go->GetCCamera()->Update();
+		App->physics->ShootSphere();
 	}
 
 	
