@@ -22,15 +22,7 @@
 
 ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 {
-	pdebug = true;
 
-	collision_conf = new btDefaultCollisionConfiguration();
-	dispatcher = new btCollisionDispatcher(collision_conf);
-	broad_phase = new btDbvtBroadphase();
-	solver = new btSequentialImpulseConstraintSolver();
-	pdebug_draw = new PDebugDrawer();
-
-	gravity = -10;
 }
 
 ModulePhysics3D::~ModulePhysics3D()
@@ -43,12 +35,23 @@ bool ModulePhysics3D::Init()
 	CONSOLE_LOG_INFO("Creating 3D Physics simulation");
 	bool ret = true;
 	//InitializeWorld();
+	pdebug = true;
+
+	collision_conf = new btDefaultCollisionConfiguration();
+	dispatcher = new btCollisionDispatcher(collision_conf);
+	broad_phase = new btDbvtBroadphase();
+	solver = new btSequentialImpulseConstraintSolver();
+	pdebug_draw = new PDebugDrawer();
+
+	gravity = -10;
 	return ret;
 }
 
 bool ModulePhysics3D::Start()
 {
 	CONSOLE_LOG_INFO("Creating Physics environment");
+
+
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 	
 	pdebug_draw->setDebugMode(pdebug_draw->DBG_DrawWireframe);

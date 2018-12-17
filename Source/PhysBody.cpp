@@ -78,6 +78,11 @@ bool PhysBody::HasGravity()const
 	return use_gravity;
 }
 
+bool PhysBody::GetRender() const
+{
+	return has_render;
+}
+
 
 
 // ---------------------------------------------------------

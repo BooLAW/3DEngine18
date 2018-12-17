@@ -240,6 +240,7 @@ GameObject * ModuleScene::CreateNewGameObject()
 
 void ModuleScene::ClearScene()
 {
+
 	if (scene_root->HasChilds())
 	{
 		scene_root->ClearRelations();
@@ -606,6 +607,7 @@ void ModuleScene::LoadScene(const char* path)
 			{
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
+					float pmatrix[16] = {};
 					//Iterate through GameObjects Component values
 					Component* aux_comp = new Component();
 					if (strcmp(m_cmp_itr->name.GetString(), "active_comp") == 0)
@@ -622,7 +624,7 @@ void ModuleScene::LoadScene(const char* path)
 						comp_type = (ComponentType)cmp_type;
 					}
 					else if (m_cmp_itr->value.IsArray())
-					{
+					{		
 						int i = 0;
 						float stat[10] = {};
 						for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr->value.Begin(); m_cmp_trans_itr != m_cmp_itr->value.End(); ++m_cmp_trans_itr)
@@ -632,9 +634,8 @@ void ModuleScene::LoadScene(const char* path)
 						}
 						float3 pos(stat[0], stat[1], stat[2]);
 						Quat rot(stat[3], stat[4], stat[5], stat[6]);
-						float3 scale(stat[7], stat[8], stat[9]);						
+						float3 scale(stat[7], stat[8], stat[9]);
 						new_go->comp_transform->SetTransform(pos, rot, scale);
-						
 						
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "MESH") == 0)
@@ -673,7 +674,27 @@ void ModuleScene::LoadScene(const char* path)
 						App->camera->StartNewCamera();
 
 					}
-
+					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDER") == 0)
+					{
+						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
+						{
+							if (m_cmp_itr2->value.IsArray())
+							{
+								int i = 0;
+								for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr2->value.Begin(); m_cmp_trans_itr != m_cmp_itr2->value.End(); ++m_cmp_trans_itr)
+								{
+									pmatrix[i] = m_cmp_trans_itr->GetFloat();
+									i++;
+								}
+							}
+							else
+							{
+								ComponentCollider* aux_comp = new ComponentCollider(new_go);
+								new_go->PushComponent((Component*)aux_comp);
+								new_go->physbody->SetTransform(pmatrix);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -802,6 +823,41 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
 
 				break;
+			}
+			case RIGIDBODY:
+			{
+				Value obj_comp_rigidbody(kObjectType);
+				ComponentRigidBody* com_rigidbody_aux = (ComponentRigidBody*)go->components_list[i];
+				
+
+				//Adding data to the component
+				arr_comp.AddMember("CAMERA", obj_comp_rigidbody, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
+			}
+			case COLLIDER:
+			{
+				Value obj_comp_collider(kObjectType);
+				ComponentCollider* com_collider_aux = (ComponentCollider*)go->components_list[i];				
+				PhysBody* aux_phybody = go->physbody;
+
+
+				Value obj_ptransform_collider(kArrayType);
+				float* phy_matrix = new float[16];
+				aux_phybody->GetTransform(phy_matrix);
+				float arr_matrix[16];
+				for (int i = 0; i < 16; i++)
+				{
+					obj_ptransform_collider.PushBack(phy_matrix[i],allocator);
+				}
+				
+				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider,  allocator);
+				obj_comp_collider.AddMember("render", aux_phybody->GetRender(), allocator);
+				//shall never have rigid body
+
+
+				//Adding data to the component
+				arr_comp.AddMember("COLLIDER", obj_comp_collider, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
 			}
 			default:
 				break;

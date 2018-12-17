@@ -30,6 +30,7 @@ public:
 	uint GetMass()const;
 	void ActivateGravity(const bool active);
 	bool HasGravity()const;
+	bool GetRender()const;
 	
 private:
 	btRigidBody * body = nullptr;
