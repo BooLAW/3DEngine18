@@ -831,8 +831,9 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				
 
 				//Adding data to the component
-				arr_comp.AddMember("CAMERA", obj_comp_rigidbody, allocator);
+				arr_comp.AddMember("RIGIDBODY", obj_comp_rigidbody, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
 			}
 			case COLLIDER:
 			{
@@ -858,6 +859,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				//Adding data to the component
 				arr_comp.AddMember("COLLIDER", obj_comp_collider, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
 			}
 			default:
 				break;
