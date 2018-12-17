@@ -695,6 +695,23 @@ void ModuleScene::LoadScene(const char* path)
 							}
 						}
 					}
+					else if (strcmp(m_cmp_itr->name.GetString(), "RIGIDBODY") == 0)
+					{
+						;
+						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
+						{
+							if (m_cmp_itr2->value.IsFloat())
+							{
+								new_go->physbody->primitive_ptr->mass = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsBool())
+							{
+								new_go->physbody->ActivateGravity(m_cmp_itr2->value.GetBool());
+								ComponentRigidBody* aux_comp = new ComponentRigidBody(new_go);
+								new_go->PushComponent((Component*)aux_comp);								
+							}
+						}
+					}
 				}
 			}
 		}
@@ -824,17 +841,6 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 				break;
 			}
-			case RIGIDBODY:
-			{
-				Value obj_comp_rigidbody(kObjectType);
-				ComponentRigidBody* com_rigidbody_aux = (ComponentRigidBody*)go->components_list[i];
-				
-
-				//Adding data to the component
-				arr_comp.AddMember("RIGIDBODY", obj_comp_rigidbody, allocator);
-				data_go.AddMember(v_comp_name, arr_comp, allocator);
-				break;
-			}
 			case COLLIDER:
 			{
 				Value obj_comp_collider(kObjectType);
@@ -858,6 +864,20 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 				//Adding data to the component
 				arr_comp.AddMember("COLLIDER", obj_comp_collider, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
+			}
+			case RIGIDBODY:
+			{
+				Value obj_comp_rigidbody(kObjectType);
+				ComponentRigidBody* com_rigidbody_aux = (ComponentRigidBody*)go->components_list[i];
+				PhysBody* aux_phybody = go->physbody;
+
+				obj_comp_rigidbody.AddMember("mass", aux_phybody->primitive_ptr->mass, allocator);
+				obj_comp_rigidbody.AddMember("use_gravity", aux_phybody->HasGravity(), allocator);
+
+				//Adding data to the component
+				arr_comp.AddMember("RIGIDBODY", obj_comp_rigidbody, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
 				break;
 			}

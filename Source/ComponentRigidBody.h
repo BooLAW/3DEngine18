@@ -19,6 +19,8 @@ public:
 public:
 	bool bullet_trans_updated;
 	bool owner_trans_updated;
+	int comp_mass = 1;
+	bool use_gravity = false;
 };
 
 #endif
