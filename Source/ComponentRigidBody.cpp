@@ -48,10 +48,7 @@ void ComponentRigidBody::DrawInspectorInfo()
 		bool aux_grav = owner->physbody->HasGravity();
 		if (ImGui::Checkbox("Use Gravity", &aux_grav))
 		{
-			owner->physbody->ActivateGravity(aux_grav);
-			App->physics->SwitchPhysBody(owner->physbody);
-			
-
+			owner->physbody->ActivateGravity(aux_grav);					
 		}
 
 		if (ImGui::TreeNode("Constraints"))

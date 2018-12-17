@@ -217,7 +217,7 @@ void PanelInspector::Draw()
 						selected_go->GetComponent(RIGIDBODY)->DrawInspectorInfo();
 					}
 				}
-				//Check if it has PhysBody
+				//Check if it has Collider
 				if (selected_go->HasCollider())
 				{
 					ComponentCollider* rb = selected_go->GetCollider();

@@ -6,6 +6,7 @@
 #include "ModuleCamera3D.h"
 #include "Camera.h"
 #include "PanelGame.h"
+#include "ModuleScene.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -243,6 +244,16 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 void ModulePhysics3D::LoadPhysBodies()
 {
 	primitive_list.clear();
+	for (std::vector<GameObject*>::iterator item = App->scene_intro->go_list.begin(); item != App->scene_intro->go_list.end(); item++)
+	{
+		if ((*item)->physbody != nullptr)
+		{
+			if ((*item)->physbody->use_gravity == true)
+			{
+				SwitchPhysBody((*item)->physbody);
+			}
+		}
+	}
 
 	for (std::vector<PhysBody*>::iterator item = loading_list.begin(); item != loading_list.end(); item++)
 	{
@@ -315,7 +326,6 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 	btCollisionShape* colShape = new btBoxShape(btVector3(cube.dimensions.x*0.5f, cube.dimensions.y*0.5f, cube.dimensions.z*0.5f));
 	shapes.push_back(colShape);
 	
-
 	btTransform startTransform;
 	startTransform.setFromOpenGLMatrix(cube.transform.ptr());
 
@@ -329,6 +339,8 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody* pbody = new PhysBody(body);
+
+	pbody->use_gravity = true;
 	pbody->dimensions = cube.dimensions;
 	pbody->primitive_ptr = &cube;
 
