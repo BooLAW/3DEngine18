@@ -140,37 +140,35 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 
 void ModulePhysics3D::UpdatePhysics()
 {
-	std::vector<float*> matrix_list;
+
 	if (App->state == playing)
 	{
-
-	}
-	int i = 0;
-	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
-	{
-		if ((*item)->dead == false)
+		std::vector<float*> matrix_list;
+		int i = 0;
+		for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 		{
-			if ((*item)->has_render == true)
+			if ((*item)->dead == false)
 			{
-				float *matrix = new float[16];
-				(*item)->GetTransform(matrix);
-				matrix_list.push_back(matrix);
-				i++;
+				if ((*item)->has_render == true)
+				{
+					float *matrix = new float[16];
+					(*item)->GetTransform(matrix);
+					matrix_list.push_back(matrix);
+					i++;
+				}
 			}
-		}		
-	}
+		}
 
-	if (matrix_list.size() > 0)
-	{
-		int i2 = 0;
-		for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
-		{			
-			(*item2)->transform.Set(matrix_list[i2]);
-			i2++;
+		if (matrix_list.size() > 0)
+		{
+			int i2 = 0;
+			for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
+			{
+				(*item2)->transform.Set(matrix_list[i2]);
+				i2++;
+			}
 		}
 	}
-
-	
 
 	for (int i = 0; i < primitive_list.size(); i++)
 	{
@@ -183,6 +181,8 @@ void ModulePhysics3D::UpdatePhysics()
 	{
 		world->debugDrawWorld();
 	}
+
+
 }
 
 bool ModulePhysics3D::CleanUp()
@@ -295,6 +295,11 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 	}
 	
 
+}
+
+btDiscreteDynamicsWorld * ModulePhysics3D::GetWorld()const
+{
+	return world;
 }
 
 std::list<float2> ModulePhysics3D::GetCubeCollisions()

@@ -61,6 +61,7 @@ public:
 	void CreateCube(float3 minPoint, float3 maxPoint);
 	void LoadPhysBodies();
 	void SwitchPhysBody(PhysBody* body_to_switch);
+	btDiscreteDynamicsWorld* GetWorld()const;
 	//std::list<float2> GetSphereCollisions();
 	std::list<float2> GetCubeCollisions();
 	PhysBody* AddBody(PSphere& sphere, float mass, bool isCollider = true, bool addForce = false,float force = 40);
