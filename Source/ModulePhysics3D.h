@@ -74,6 +74,8 @@ public:
 	void SetGravity(float new_gravity);
 	void ToggleDebugDraw();
 	float GetGravity()const;
+	void AddConstraintP2P(PhysBody& bodyA, PhysBody& bodyB, const float3& anchorA, const float3& anchorB);
+
 	bool bullet_test = false;
 	bool tick = false;
 	//-----------------------
@@ -88,6 +90,8 @@ private:
 	std::vector<AABB> pcube_list;
 	std::vector<PCube*> cube_list;
 	std::vector<Primitive*> primitive_list;
+	std::vector<btTypedConstraint*> constraints;
+
 
 
 
