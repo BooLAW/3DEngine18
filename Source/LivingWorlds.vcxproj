@@ -82,6 +82,7 @@
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentColliderCube.h" />
     <ClInclude Include="ComponentColliderSphere.h" />
+    <ClInclude Include="ComponentConstraint.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentPlayerController.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentColliderCube.cpp" />
     <ClCompile Include="ComponentColliderSphere.cpp" />
+    <ClCompile Include="ComponentConstraint.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentPlayerController.cpp" />

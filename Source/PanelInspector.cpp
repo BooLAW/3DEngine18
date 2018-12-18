@@ -251,6 +251,14 @@ void PanelInspector::Draw()
 					}
 
 				}
+				
+				if (selected_go->HasConstraintJoint()) {
+					if (ImGui::CollapsingHeader("Constraint", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						ImGui::Text("Type: %d", "Point to Point");
+						
+					}
+				}
 			}			
 		}
 		else

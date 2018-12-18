@@ -609,7 +609,7 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody& bodyA, PhysBody& bodyB, const f
 		btVector3(anchorA.x, anchorA.y, anchorA.z),
 		btVector3(anchorB.x, anchorB.y, anchorB.z));
 	world->addConstraint(p2p);
-	constraints.add(p2p);
+	constraints.push_back(p2p);
 	p2p->setDbgDrawSize(2.0f);
 }
 

@@ -32,7 +32,7 @@ void PanelHierarchy::Draw()
 
 	static ImGuiComboFlags flags = ImGuiComboFlags_PopupAlignLeft;
 
-	const char* items[] = { "NONE", "Empty Child","Sphere","Cube", "Plane WiP","Main Camera"};
+	const char* items[] = { "NONE", "Empty Child","Sphere","Cube", "Plane WiP","Main Camera","Distance Joint"};
 	static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
 	if (ImGui::BeginCombo("Add GO", item_current, flags)) // The second parameter is the label previewed before opening the combo.
 	{
@@ -112,7 +112,10 @@ void PanelHierarchy::Draw()
 						App->scene_intro->NewMainCamera();
 					}
 				}
-
+				else if (items[n] == "Distance Joint")
+				{
+					App->scene_intro->CreateDistanceJoint();
+				}
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)

@@ -122,7 +122,7 @@ void ModuleRenderer3D::DrawModuleConfig()
 		App->audio->renderer_tick_arr[0] = FALSEBOOL;
 
 }
-
+	
 
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {

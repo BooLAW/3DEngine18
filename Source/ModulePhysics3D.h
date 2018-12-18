@@ -90,7 +90,6 @@ private:
 	std::vector<AABB> pcube_list;
 	std::vector<PCube*> cube_list;
 	std::vector<Primitive*> primitive_list;
-	std::vector<btTypedConstraint*> constraints;
 
 
 

@@ -13,6 +13,7 @@ class ComponentCamera;
 class ComponentRigidBody;
 class ComponentColliderSphere;
 class ComponentColliderCube;
+class ComponentConstraint;
 class Camera;
 
 class GameObject
@@ -33,6 +34,7 @@ public:
 	void PushComponent(Component* new_component);
 	void RemoveComponent(ComponentType type);
 	bool HasMesh()const;
+	bool HasConstraintJoint()const;
 	bool HasTex()const;
 	bool HasCam()const;
 	bool HasChilds()const;
@@ -77,6 +79,7 @@ public:
 	ComponentRigidBody* GetRigidBody();
 	ComponentColliderSphere* GetColliderSphere();
 	ComponentColliderCube* GetColliderCube();
+	ComponentConstraint* GetConstraint();
 
 	Camera* GetCamera();
 	Material* GetMaterial();

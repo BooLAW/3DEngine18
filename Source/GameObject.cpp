@@ -196,6 +196,16 @@ bool GameObject::HasController() const
 	}
 	return ret;
 }
+bool GameObject::HasConstraintJoint() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::CONSTRAINT)
+			ret = true;
+	}
+	return ret;
+}
 
 bool GameObject::HasRigidBody() const
 {

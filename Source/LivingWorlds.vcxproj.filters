@@ -112,6 +112,9 @@
     <Filter Include="Sources\Modules\GameObjects\Components\Colliders">
       <UniqueIdentifier>{a722d4df-8241-49da-9360-90adf6c064ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Constraint">
+      <UniqueIdentifier>{4c11646f-1d86-476c-8424-5abe6562126e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -681,6 +684,9 @@
     <ClInclude Include="ComponentColliderCube.h">
       <Filter>Sources\Modules\GameObjects\Components\Colliders</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentConstraint.h">
+      <Filter>Sources\Modules\GameObjects\Components\Constraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -931,6 +937,9 @@
     </ClCompile>
     <ClCompile Include="ComponentColliderCube.cpp">
       <Filter>Sources\Modules\GameObjects\Components\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentConstraint.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@
 #include <sstream>
 #include <limits>
 
+#include "ComponentConstraint.h"
 #include "ComponentRigidBody.h"
 #include "ComponentPlayerController.h"
 #include "ComponentColliderSphere.h"
@@ -1123,6 +1124,14 @@ void ModuleScene::CrateBasePlayerController(GameObject* parent)
 	ComponentPlayerController* comp = new ComponentPlayerController(parent);
 	
 	parent->PushComponent(comp);
+}
+
+void ModuleScene::CreateDistanceJoint()
+{
+	GameObject* aux = CreateNewGameObject();
+	ComponentConstraint* new_constraint = new ComponentConstraint(aux);
+	aux->PushComponent(new_constraint);
+	
 }
 
 ControllerSettings::ControllerSettings()

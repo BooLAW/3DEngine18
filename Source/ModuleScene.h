@@ -74,6 +74,8 @@ public:
 	void RotateCameraGO();
 	// Player Controller
 	void CrateBasePlayerController(GameObject* parent);
+	//Joint
+	void CreateDistanceJoint();
 public:
 	//Scene GameObjects
 	std::vector<GameObject*> go_list;	

@@ -2,13 +2,15 @@
 #define __COMPONENT_H__
 #include "Globals.h"
 
-enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY,COLLIDERSPHERE,COLLIDERCUBE,CONTROLLER};
+enum ComponentType{TRANSFORM,MESH,MATERIAL,CAMERA,RIGIDBODY,COLLIDERSPHERE,COLLIDERCUBE,CONTROLLER, CONSTRAINT};
 class GameObject;
 class ComponentMaterial;
 class ComponentRigidBody;
 class ComponentPlayerController;
 class ComponentColliderSphere;
 class ComponentColliderCube;
+class ComponentConstraint;
+
 class Component
 {
 public:
@@ -39,6 +41,8 @@ public:
 	ComponentColliderSphere* comp_collider_sphere;
 	ComponentColliderCube* comp_collider_cube;
 	ComponentPlayerController* comp_controller;
+	ComponentConstraint* comp_constraint;
+
 	GameObject* owner;
 	std::string name;
 	bool active = true;
