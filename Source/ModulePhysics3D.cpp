@@ -272,11 +272,20 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 	{
 		case 0://Cube
 		{
+
 			PCube* cube = (PCube*)body_to_switch->primitive_ptr;
 			body_to_switch->dead = true;
 			world->removeRigidBody(body_to_switch->GetRigidBody());
 
+			float* transform_matrix = new float[16];
+			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
+			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
+
+			body_to_switch->owner->physbody = AddBody(*cube, cube->mass);
+
 			AddBody(*cube, cube->mass);
+
+
 			break;
 		}
 		case 8://Sphere

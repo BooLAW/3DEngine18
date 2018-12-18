@@ -90,18 +90,18 @@ bool ModuleScene::Start()
 		}
 	}
 
-	cube.dimensions = float3(5.0f, 5.0f, 5.0f);
-	cube.SetPos(0, 10, 10);
-	cube.mass = 1;
-	cube.has_render = true;
-	App->physics->loading_list.push_back(App->physics->AddBody(cube, 0));
+	//cube.dimensions = float3(5.0f, 5.0f, 5.0f);
+	//cube.SetPos(0, 10, 10);
+	//cube.mass = 1;
+	//cube.has_render = true;
+	//App->physics->loading_list.push_back(App->physics->AddBody(cube, 0));
 
-	cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
-	cube2.SetPos(0, 30, 7.5f);
-	cube2.mass = 1;
-	cube.has_render = true;
-	
-	App->physics->loading_list.push_back(App->physics->AddBody(cube2, 0));
+	//cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
+	//cube2.SetPos(0, 30, 7.5f);
+	//cube2.mass = 1;
+	//cube.has_render = true;
+	//
+	//App->physics->loading_list.push_back(App->physics->AddBody(cube2, 0));
 
 	
 
@@ -616,7 +616,7 @@ void ModuleScene::LoadScene(const char* path)
 			{
 				for (Value::ConstMemberIterator m_cmp_itr = m_go_itr->value.MemberBegin(); m_cmp_itr != m_go_itr->value.MemberEnd(); ++m_cmp_itr)
 				{
-					float pmatrix[16] = {};
+	
 					//Iterate through GameObjects Component values
 					Component* aux_comp = new Component();
 					if (strcmp(m_cmp_itr->name.GetString(), "active_comp") == 0)
@@ -685,6 +685,7 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDERSPHERE") == 0)
 					{
+						float pspherematrix[16] = {};
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
 							if (m_cmp_itr2->value.IsArray())
@@ -692,7 +693,7 @@ void ModuleScene::LoadScene(const char* path)
 								int i = 0;
 								for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr2->value.Begin(); m_cmp_trans_itr != m_cmp_itr2->value.End(); ++m_cmp_trans_itr)
 								{
-									pmatrix[i] = m_cmp_trans_itr->GetFloat();
+									pspherematrix[i] = m_cmp_trans_itr->GetFloat();
 									i++;
 								}
 							}
@@ -700,7 +701,29 @@ void ModuleScene::LoadScene(const char* path)
 							{
 								ComponentColliderSphere* aux_comp = new ComponentColliderSphere(new_go);
 								new_go->PushComponent((Component*)aux_comp);
-								new_go->physbody->SetTransform(pmatrix);
+								new_go->physbody->SetTransform(pspherematrix);
+							}
+						}
+					}
+					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDERCUBE") == 0)
+					{
+						float pcubematrix[16] = {};
+						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
+						{
+							if (m_cmp_itr2->value.IsArray())
+							{
+								int i = 0;
+								for (Value::ConstValueIterator m_cmp_trans_itr = m_cmp_itr2->value.Begin(); m_cmp_trans_itr != m_cmp_itr2->value.End(); ++m_cmp_trans_itr)
+								{
+									pcubematrix[i] = m_cmp_trans_itr->GetFloat();
+									i++;
+								}
+							}
+							else
+							{
+								ComponentColliderCube* aux_comp = new ComponentColliderCube(new_go);
+								new_go->PushComponent((Component*)aux_comp);
+								new_go->physbody->SetTransform(pcubematrix);
 							}
 						}
 					}
@@ -873,6 +896,32 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 				//Adding data to the component
 				arr_comp.AddMember("COLLIDERSPHERE", obj_comp_collider, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
+			}
+			case COLLIDERCUBE:
+			{
+				Value obj_comp_collider(kObjectType);
+				ComponentColliderSphere* com_collider_aux = (ComponentColliderSphere*)go->components_list[i];
+				PhysBody* aux_phybody = go->physbody;
+
+
+				Value obj_ptransform_collider(kArrayType);
+				float* phy_matrix = new float[16];
+				aux_phybody->GetTransform(phy_matrix);
+				float arr_matrix[16];
+				for (int i = 0; i < 16; i++)
+				{
+					obj_ptransform_collider.PushBack(phy_matrix[i], allocator);
+				}
+
+				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider, allocator);
+				obj_comp_collider.AddMember("render", aux_phybody->GetRender(), allocator);
+				//shall never have rigid body
+
+
+				//Adding data to the component
+				arr_comp.AddMember("COLLIDERCUBE", obj_comp_collider, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
 				break;
 			}

@@ -58,6 +58,7 @@ bool ComponentColliderCube::Update()
 	//Add the result on the object
 	owner->physbody->SetTransform(final_matrix);
 	
+	
 	return false;
 }
 
