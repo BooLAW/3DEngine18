@@ -275,6 +275,10 @@ void ModuleScene::ClearSceneButton()
 
 void ModuleScene::DeleteGameObject(GameObject* go_to_delete)
 {
+	if (go_to_delete->HasCollider())
+	{
+		App->physics->GetWorld()->removeRigidBody(go_to_delete->physbody->GetRigidBody());
+	}
 	if (go_to_delete->HasChilds())
 	{
 		for (std::vector<GameObject*>::iterator it = go_to_delete->childs_list.begin(); it != go_to_delete->childs_list.end(); it++)
