@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "PanelGame.h"
 #include "ModuleScene.h"
+#include "GameObject.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -149,12 +151,26 @@ void ModulePhysics3D::UpdatePhysics()
 		{
 			if ((*item)->dead == false)
 			{
+				float *matrix = new float[16];
+				(*item)->GetTransform(matrix);
 				if ((*item)->has_render == true)
-				{
-					float *matrix = new float[16];
-					(*item)->GetTransform(matrix);
+				{										
 					matrix_list.push_back(matrix);
 					i++;
+				}
+
+				if ((*item)->owner != nullptr)
+				{
+					float matrix_view[16];
+					memcpy(matrix_view, matrix, sizeof(float[16]));
+					float4x4 final_matrix4x4;
+					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];		final_matrix4x4[0][3] = matrix[12];
+					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = -matrix[5];	final_matrix4x4[1][2] = matrix[6];		final_matrix4x4[1][3] = matrix[13];
+					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = -matrix[10];	final_matrix4x4[2][3] = matrix[14];
+					final_matrix4x4[3][0] = 1;			final_matrix4x4[3][1] = 1;			final_matrix4x4[3][2] = 1;				final_matrix4x4[3][3] = matrix[15];
+					(*item)->owner->comp_transform->SetLocalPos({ matrix[12],matrix[13],matrix[14] });
+					(*item)->owner->comp_transform->UpdateTransformValues();
+					(*item)->owner->comp_transform->updated_outside = false;
 				}
 			}
 		}
@@ -282,6 +298,7 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
 
 			body_to_switch->owner->physbody = AddBody(*cube, cube->mass);
+			body_to_switch->owner->physbody->owner = body_to_switch->owner;
 			break;
 		}
 		case 8://Sphere
@@ -295,6 +312,7 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			sphere->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
 
 			body_to_switch->owner->physbody = AddBody(*sphere, sphere->mass);
+			body_to_switch->owner->physbody->owner = body_to_switch->owner;
 			break;
 		}
 	}
