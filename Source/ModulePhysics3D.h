@@ -109,7 +109,7 @@ private:
 	std::vector<btCollisionShape*>		shapes;
 	std::vector<PhysBody*>				bodies;
 	std::vector<btDefaultMotionState*>	motions;
-	std::vector<btTypedConstraint*>		constraints;
+	//std::vector<btTypedConstraint*>		constraints;
 
 };
 

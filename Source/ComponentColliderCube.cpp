@@ -46,17 +46,24 @@ bool ComponentColliderCube::Update()
 
 	if (App->state == stopped)
 	{
+		
+		float3x3 rot = {
+			transform_matrix[0],transform_matrix[1],transform_matrix[2],
+			transform_matrix[4],transform_matrix[5],transform_matrix[6],
+			transform_matrix[8],transform_matrix[9],transform_matrix[10] 
+		};
+					
+		rot.Transpose();
 
+		//Relate both matrix rotation and inverting the rotation
+		final_pmatrix[0] = rot[0][0];		final_pmatrix[1] = rot[0][1];			final_pmatrix[2] = rot[0][2];
+		final_pmatrix[4] = rot[1][0];		final_pmatrix[5] = rot[1][1];			final_pmatrix[6] = rot[1][2];
+		final_pmatrix[8] = rot[2][0];		final_pmatrix[9] = rot[2][1];			final_pmatrix[10] = rot[2][2];
 
 		//Relate both matrix translation
 		final_pmatrix[12] = transform_matrix[3] + center_offset[0];
 		final_pmatrix[13] = transform_matrix[7] + center_offset[1];
 		final_pmatrix[14] = transform_matrix[11] + center_offset[2];
-
-		//Relate both matrix rotation and inverting the rotation
-		final_pmatrix[0] = -transform_matrix[0];		final_pmatrix[1] = transform_matrix[1];			final_pmatrix[2] = transform_matrix[2];
-		final_pmatrix[4] = transform_matrix[4];			final_pmatrix[5] = -transform_matrix[5];			final_pmatrix[6] = transform_matrix[6];
-		final_pmatrix[8] = transform_matrix[8];			final_pmatrix[9] = transform_matrix[9];			final_pmatrix[10] = -transform_matrix[10];
 
 		//Add the result on the object
 		owner->physbody->SetTransform(final_pmatrix);

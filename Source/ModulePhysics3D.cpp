@@ -164,11 +164,18 @@ void ModulePhysics3D::UpdatePhysics()
 					float matrix_view[16];
 					memcpy(matrix_view, matrix, sizeof(float[16]));
 					float4x4 final_matrix4x4;
-					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];		final_matrix4x4[0][3] = matrix[12];
-					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = -matrix[5];	final_matrix4x4[1][2] = matrix[6];		final_matrix4x4[1][3] = matrix[13];
-					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = -matrix[10];	final_matrix4x4[2][3] = matrix[14];
+					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];
+					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = matrix[5];	final_matrix4x4[1][2] = matrix[6];
+					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
+					
+					final_matrix4x4.Transpose();
+																																	final_matrix4x4[0][3] = matrix[12];
+																																	final_matrix4x4[1][3] = matrix[13];
+																																	final_matrix4x4[2][3] = matrix[14];
 					final_matrix4x4[3][0] = 1;			final_matrix4x4[3][1] = 1;			final_matrix4x4[3][2] = 1;				final_matrix4x4[3][3] = matrix[15];
-					(*item)->owner->comp_transform->SetLocalPos({ matrix[12],matrix[13],matrix[14] });
+					(*item)->owner->comp_transform->SetLocalMatrix(final_matrix4x4);
+
+
 					(*item)->owner->comp_transform->UpdateTransformValues();
 					(*item)->owner->comp_transform->updated_outside = false;
 				}
@@ -627,7 +634,7 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody& bodyA, PhysBody& bodyB, const f
 		btVector3(anchorA.x, anchorA.y, anchorA.z),
 		btVector3(anchorB.x, anchorB.y, anchorB.z));
 	world->addConstraint(p2p);
-	constraints.add(p2p);
+	//constraints.add(p2p);
 	p2p->setDbgDrawSize(2.0f);
 }
 
