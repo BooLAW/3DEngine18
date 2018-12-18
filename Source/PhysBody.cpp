@@ -30,7 +30,7 @@ PhysBody::PhysBody(GameObject* owner,ComponentType type)
 		pcube->dimensions = { 5,5,5 };
 		pcube->has_render = false;
 		pcube->mass = 1;
-		owner->physbody = App->physics->AddBody(*pcube, 0);
+		owner->physbody = App->physics->AddBody(*pcube, 0);		
 		break;
 	}
 	default:

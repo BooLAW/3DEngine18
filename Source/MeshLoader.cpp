@@ -370,9 +370,9 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 				new_child->PushComponent((Component*)new_comp_mesh);
 
-				ComponentRigidBody* new_comp_rigidbody = new ComponentRigidBody(new_child);
+				//ComponentRigidBody* new_comp_rigidbody = new ComponentRigidBody(new_child);
 
-				new_child->PushComponent((Component*)new_comp_rigidbody);
+				//new_child->PushComponent((Component*)new_comp_rigidbody);
 				
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 

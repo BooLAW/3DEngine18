@@ -251,8 +251,8 @@ void ModulePhysics3D::LoadPhysBodies()
 	{
 		if ((*item)->physbody != nullptr)
 		{
-			if ((*item)->physbody->use_gravity == true)
-			{
+			if ((*item)->physbody->use_gravity == true && (*item)->HasRigidBody())
+			{				
 				SwitchPhysBody((*item)->physbody);
 			}
 		}
@@ -282,10 +282,6 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
 
 			body_to_switch->owner->physbody = AddBody(*cube, cube->mass);
-
-			AddBody(*cube, cube->mass);
-
-
 			break;
 		}
 		case 8://Sphere

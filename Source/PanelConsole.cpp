@@ -8,7 +8,7 @@ PanelConsole::PanelConsole() :Panel("Console")
 	ini_pos_y = 800;
 	ini_width = 800;
 	ini_height = 150;
-	active = true;
+	active = false;
 }
 PanelConsole::~PanelConsole()
 {
