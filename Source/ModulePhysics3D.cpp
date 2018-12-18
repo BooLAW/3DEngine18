@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "PanelGame.h"
 #include "ModuleScene.h"
+#include "GameObject.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -53,7 +55,7 @@ bool ModulePhysics3D::Start()
 
 
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
-	
+
 	pdebug_draw->setDebugMode(pdebug_draw->DBG_DrawWireframe);
 	world->setDebugDrawer(pdebug_draw);
 
@@ -75,12 +77,12 @@ void ModulePhysics3D::DrawModuleConfig()
 		{
 			App->physics->SetGravity(gravity);
 		}
-		ImGui::Checkbox("Debug", &pdebug);			
+		ImGui::Checkbox("Debug", &pdebug);
 	}
 }
 
 update_status ModulePhysics3D::PreUpdate(float dt)
-{	
+{
 	world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
@@ -97,7 +99,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 			PhysBody* pbodyB = (PhysBody*)obB->getUserPointer();
 
 			if (pbodyA && pbodyB)
-			{				
+			{
 				for (std::vector<Module*>::iterator item = pbodyA->collision_listeners.begin(); item != pbodyA->collision_listeners.begin(); item++)
 				{
 					(*item)->OnCollision(pbodyA, pbodyB);
@@ -127,7 +129,7 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		world->debugDrawWorld();
 	}
-	
+
 
 	return UPDATE_CONTINUE;
 }
@@ -149,12 +151,33 @@ void ModulePhysics3D::UpdatePhysics()
 		{
 			if ((*item)->dead == false)
 			{
+				float *matrix = new float[16];
+				(*item)->GetTransform(matrix);
 				if ((*item)->has_render == true)
 				{
-					float *matrix = new float[16];
-					(*item)->GetTransform(matrix);
 					matrix_list.push_back(matrix);
 					i++;
+				}
+
+				if ((*item)->owner != nullptr)
+				{
+					float matrix_view[16];
+					memcpy(matrix_view, matrix, sizeof(float[16]));
+					float4x4 final_matrix4x4;
+					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];
+					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = matrix[5];	final_matrix4x4[1][2] = matrix[6];
+					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
+
+					final_matrix4x4.Transpose();
+																																	final_matrix4x4[0][3] = matrix[12];
+																																	final_matrix4x4[1][3] = matrix[13];
+																																	final_matrix4x4[2][3] = matrix[14];
+					final_matrix4x4[3][0] = 1;			final_matrix4x4[3][1] = 1;			final_matrix4x4[3][2] = 1;				final_matrix4x4[3][3] = matrix[15];
+					(*item)->owner->comp_transform->SetLocalMatrix(final_matrix4x4);
+
+
+					(*item)->owner->comp_transform->UpdateTransformValues();
+					(*item)->owner->comp_transform->updated_outside = false;
 				}
 			}
 		}
@@ -252,7 +275,7 @@ void ModulePhysics3D::LoadPhysBodies()
 		if ((*item)->physbody != nullptr)
 		{
 			if ((*item)->physbody->use_gravity == true && (*item)->HasRigidBody())
-			{				
+			{
 				SwitchPhysBody((*item)->physbody);
 			}
 		}
@@ -282,6 +305,7 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
 
 			body_to_switch->owner->physbody = AddBody(*cube, cube->mass);
+			body_to_switch->owner->physbody->owner = body_to_switch->owner;
 			break;
 		}
 		case 8://Sphere
@@ -295,10 +319,11 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			sphere->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
 
 			body_to_switch->owner->physbody = AddBody(*sphere, sphere->mass);
+			body_to_switch->owner->physbody->owner = body_to_switch->owner;
 			break;
 		}
 	}
-	
+
 
 }
 
@@ -338,7 +363,7 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 	PCube aux = cube;
 	btCollisionShape* colShape = new btBoxShape(btVector3(cube.dimensions.x*0.5f, cube.dimensions.y*0.5f, cube.dimensions.z*0.5f));
 	shapes.push_back(colShape);
-	
+
 	btTransform startTransform;
 	startTransform.setFromOpenGLMatrix(cube.transform.ptr());
 
@@ -392,7 +417,7 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 		editor_cam_dir.setX(App->camera->current_game_camera->GetCamera()->frustum.front.x);
 		editor_cam_dir.setY(App->camera->current_game_camera->GetCamera()->frustum.front.y);
 		editor_cam_dir.setZ(App->camera->current_game_camera->GetCamera()->frustum.front.z);
-		
+
 		//Adding 40 Newtons of force
 		editor_cam_dir = editor_cam_dir * force;
 		pbody->GetRigidBody()->applyCentralImpulse(editor_cam_dir);
@@ -402,7 +427,7 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 
 	if (isCollider)
 	{
-		pbody->has_render = false;		
+		pbody->has_render = false;
 	}
 	else
 	{
@@ -588,7 +613,7 @@ void ModulePhysics3D::SetGravity(float new_gravity)
 {
 	//Gravity will always be setted on the Y axis
 	world->setGravity({ 0.0f,new_gravity,0.0f});
-	
+
 }
 
 void ModulePhysics3D::ToggleDebugDraw()
@@ -612,5 +637,3 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody& bodyA, PhysBody& bodyB, const f
 	constraints.push_back(p2p);
 	p2p->setDbgDrawSize(2.0f);
 }
-
-

@@ -131,7 +131,7 @@ void ComponentTransform::DrawInspectorInfo()
 			if (owner->HasColliderSphere())
 				owner->GetColliderSphere()->Update();
 			if (owner->HasColliderCube())
-				owner->GetColliderCube()->Update();
+				owner->GetColliderCube()->Update();			
 			//if (owner->GetRigidBody())
 				//owner->GetRigidBody()->Update();
 			
