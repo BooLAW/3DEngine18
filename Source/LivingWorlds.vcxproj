@@ -80,7 +80,8 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
-    <ClInclude Include="ComponentCollider.h" />
+    <ClInclude Include="ComponentColliderCube.h" />
+    <ClInclude Include="ComponentColliderSphere.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentPlayerController.h" />
@@ -269,7 +270,8 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
-    <ClCompile Include="ComponentCollider.cpp" />
+    <ClCompile Include="ComponentColliderCube.cpp" />
+    <ClCompile Include="ComponentColliderSphere.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentPlayerController.cpp" />

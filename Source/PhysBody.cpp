@@ -1,6 +1,7 @@
 #include "PhysBody.h"
 #include "ModulePhysics3D.h"
 #include "Application.h"
+#include "Component.h"
 #include "ComponentTransform.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
@@ -10,13 +11,32 @@ PhysBody::PhysBody(btRigidBody* body) : body(body)
 	body->setUserPointer(this);
 }
 
-PhysBody::PhysBody(GameObject* owner)
+PhysBody::PhysBody(GameObject* owner,ComponentType type)
 {
-	PSphere* psphere = new PSphere();
-	psphere->radius = 5;
-	psphere->has_render = false;
-	psphere->mass = 1;
-	owner->physbody = App->physics->AddBody(*psphere, 0);
+	switch (type)
+	{
+	case COLLIDERSPHERE:
+	{
+		PSphere* psphere = new PSphere();
+		psphere->radius = 5;
+		psphere->has_render = false;
+		psphere->mass = 1;
+		owner->physbody = App->physics->AddBody(*psphere, 0);
+		break;
+	}
+	case COLLIDERCUBE:
+	{
+		PCube* pcube = new PCube();
+		pcube->dimensions = { 5,5,5 };
+		pcube->has_render = false;
+		pcube->mass = 1;
+		owner->physbody = App->physics->AddBody(*pcube, 0);
+		break;
+	}
+	default:
+		break;
+	}
+
 	owner->physbody->owner = owner;
 }
 

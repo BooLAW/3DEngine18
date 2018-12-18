@@ -11,7 +11,8 @@
 
 #include "ComponentRigidBody.h"
 #include "ComponentPlayerController.h"
-#include "ComponentCollider.h"
+#include "ComponentColliderSphere.h"
+#include "ComponentColliderCube.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
@@ -275,7 +276,11 @@ void ModuleScene::ClearSceneButton()
 
 void ModuleScene::DeleteGameObject(GameObject* go_to_delete)
 {
-	if (go_to_delete->HasCollider())
+	if (go_to_delete->HasColliderSphere())
+	{
+		App->physics->GetWorld()->removeRigidBody(go_to_delete->physbody->GetRigidBody());
+	}
+	if (go_to_delete->HasColliderCube())
 	{
 		App->physics->GetWorld()->removeRigidBody(go_to_delete->physbody->GetRigidBody());
 	}
@@ -678,7 +683,7 @@ void ModuleScene::LoadScene(const char* path)
 						App->camera->StartNewCamera();
 
 					}
-					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDER") == 0)
+					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDERSPHERE") == 0)
 					{
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
@@ -693,7 +698,7 @@ void ModuleScene::LoadScene(const char* path)
 							}
 							else
 							{
-								ComponentCollider* aux_comp = new ComponentCollider(new_go);
+								ComponentColliderSphere* aux_comp = new ComponentColliderSphere(new_go);
 								new_go->PushComponent((Component*)aux_comp);
 								new_go->physbody->SetTransform(pmatrix);
 							}
@@ -845,10 +850,10 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 				break;
 			}
-			case COLLIDER:
+			case COLLIDERSPHERE:
 			{
 				Value obj_comp_collider(kObjectType);
-				ComponentCollider* com_collider_aux = (ComponentCollider*)go->components_list[i];				
+				ComponentColliderSphere* com_collider_aux = (ComponentColliderSphere*)go->components_list[i];				
 				PhysBody* aux_phybody = go->physbody;
 
 
@@ -867,7 +872,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 
 				//Adding data to the component
-				arr_comp.AddMember("COLLIDER", obj_comp_collider, allocator);
+				arr_comp.AddMember("COLLIDERSPHERE", obj_comp_collider, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
 				break;
 			}
@@ -1037,9 +1042,15 @@ void ModuleScene::MoveCameraGO()
 		main_camera_go->comp_transform->UpdateTransformValues();
 		if (main_camera_go->HasPhysBody())
 		{
-			//TODO JOSEP
-			main_camera_go->GetCollider()->Update();
-			
+			if (main_camera_go->HasColliderSphere())
+			{
+				main_camera_go->GetColliderSphere()->Update();
+			}
+			if (main_camera_go->HasColliderCube())
+			{
+				main_camera_go->GetColliderCube()->Update();
+			}
+	
 		}
 		main_camera_go->SetFirstUpdate(false);
 	}

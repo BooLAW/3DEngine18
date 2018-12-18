@@ -103,14 +103,14 @@
     <Filter Include="Sources\Modules\GameObjects\BaseClasses\PhysBody">
       <UniqueIdentifier>{6946de2b-72ef-48af-a400-c71f55e598bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\GameObjects\Components\Collider">
-      <UniqueIdentifier>{a722d4df-8241-49da-9360-90adf6c064ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Modules\GameObjects\Components\PlayerController">
       <UniqueIdentifier>{bae5a924-e472-4308-86d4-fcf71c078aa6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\Modules\GameObjects\Components\Camera">
       <UniqueIdentifier>{1752be37-31e1-43c7-8767-80389e750b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\Colliders">
+      <UniqueIdentifier>{a722d4df-8241-49da-9360-90adf6c064ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -666,9 +666,6 @@
     <ClInclude Include="PhysBody.h">
       <Filter>Sources\Modules\GameObjects\BaseClasses\PhysBody</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentCollider.h">
-      <Filter>Sources\Modules\GameObjects\Components\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentRigidBody.h">
       <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
     </ClInclude>
@@ -677,6 +674,12 @@
     </ClInclude>
     <ClInclude Include="ComponentCamera.h">
       <Filter>Sources\Modules\GameObjects\Components\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentColliderSphere.h">
+      <Filter>Sources\Modules\GameObjects\Components\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentColliderCube.h">
+      <Filter>Sources\Modules\GameObjects\Components\Colliders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -914,9 +917,6 @@
     <ClCompile Include="PhysBody.cpp">
       <Filter>Sources\Modules\GameObjects\BaseClasses\PhysBody</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentCollider.cpp">
-      <Filter>Sources\Modules\GameObjects\Components\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentRigidBody.cpp">
       <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
     </ClCompile>
@@ -925,6 +925,12 @@
     </ClCompile>
     <ClCompile Include="ComponentPlayerController.cpp">
       <Filter>Sources\Modules\GameObjects\Components\PlayerController</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentColliderSphere.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentColliderCube.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\Colliders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,8 @@ class ComponentTransform;
 class ComponentMesh;
 class ComponentCamera;
 class ComponentRigidBody;
-class ComponentCollider;
+class ComponentColliderSphere;
+class ComponentColliderCube;
 class Camera;
 
 class GameObject
@@ -37,7 +38,8 @@ public:
 	bool HasChilds()const;
 	bool HasController()const;
 	bool HasRigidBody()const;
-	bool HasCollider()const;
+	bool HasColliderSphere()const;
+	bool HasColliderCube()const;
 	bool HasPhysBody()const;
 
 	//flags interaction
@@ -73,7 +75,8 @@ public:
 	ComponentMesh* GetCMesh();
 	ComponentCamera* GetCCamera();
 	ComponentRigidBody* GetRigidBody();
-	ComponentCollider* GetCollider();
+	ComponentColliderSphere* GetColliderSphere();
+	ComponentColliderCube* GetColliderCube();
 
 	Camera* GetCamera();
 	Material* GetMaterial();

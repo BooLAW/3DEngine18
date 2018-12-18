@@ -14,7 +14,7 @@ struct PhysBody
 	friend class ModulePhysics3D;
 public:
 	PhysBody(btRigidBody* body);
-	PhysBody(GameObject* owner);
+	PhysBody(GameObject* owner,ComponentType type);
 	PhysBody();
 	~PhysBody();
 

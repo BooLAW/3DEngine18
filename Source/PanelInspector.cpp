@@ -11,7 +11,8 @@
 #include "ComponentCamera.h"
 #include "ComponentRigidBody.h"
 #include "ComponentPlayerController.h"
-#include "ComponentCollider.h"
+#include "ComponentColliderSphere.h"
+#include "ComponentColliderCube.h"
 #include "Transform.h"
 #include "GameObject.h"
 #include "Camera.h"
@@ -66,7 +67,7 @@ void PanelInspector::Draw()
 					App->scene_intro->DeleteGameObject(selected_go);
 				}
 				static ImGuiComboFlags flags = 0;
-				const char* items[] = { "NONE","RigidBody","Collider", "Camera","Material WiP", "Mesh WiP" };
+				const char* items[] = { "NONE","RigidBody","Collider Sphere", "Collider Cube", "Camera","Material WiP", "Mesh WiP" };
 				static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
 				if (ImGui::BeginCombo("Create", item_current, flags)) // The second parameter is the label previewed before opening the combo.
 				{
@@ -90,11 +91,18 @@ void PanelInspector::Draw()
 								new_comp->SetOwner(selected_go);
 								selected_go->PushComponent(new_comp);									
 							}
-							else if (items[n] == "Collider")
+							else if (items[n] == "Collider Sphere")
 							{
-								if (selected_go->HasCollider())
+								if (selected_go->HasColliderSphere())
 									continue;
-								ComponentCollider* new_comp = new ComponentCollider(selected_go);
+								ComponentColliderSphere* new_comp = new ComponentColliderSphere(selected_go);
+								selected_go->PushComponent(new_comp);
+							}
+							else if (items[n] == "Collider Cube")
+							{
+								if (selected_go->HasColliderCube())
+									continue;
+								ComponentColliderCube* new_comp = new ComponentColliderCube(selected_go);
 								selected_go->PushComponent(new_comp);
 							}
 							
@@ -217,13 +225,22 @@ void PanelInspector::Draw()
 						selected_go->GetComponent(RIGIDBODY)->DrawInspectorInfo();
 					}
 				}
-				//Check if it has Collider
-				if (selected_go->HasCollider())
+				//Check if it has Collider Sphere
+				if (selected_go->HasColliderSphere())
 				{
-					ComponentCollider* rb = selected_go->GetCollider();
-					if (ImGui::CollapsingHeader("Collider", ImGuiTreeNodeFlags_DefaultOpen))
+					ComponentColliderSphere* rb = selected_go->GetColliderSphere();
+					if (ImGui::CollapsingHeader("Collider Sphere", ImGuiTreeNodeFlags_DefaultOpen))
 					{
-						selected_go->GetComponent(COLLIDER)->DrawInspectorInfo();
+						selected_go->GetComponent(COLLIDERSPHERE)->DrawInspectorInfo();
+					}
+				}
+				//Check if it has Collider Cube
+				if (selected_go->HasColliderCube())
+				{
+					ComponentColliderCube* rb = selected_go->GetColliderCube();
+					if (ImGui::CollapsingHeader("Collider Cube", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						selected_go->GetComponent(COLLIDERCUBE)->DrawInspectorInfo();
 					}
 				}
 				if (selected_go->HasController())

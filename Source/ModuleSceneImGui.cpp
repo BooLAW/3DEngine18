@@ -18,7 +18,8 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ComponentTransform.h"
-#include "ComponentCollider.h"
+#include "ComponentColliderSphere.h"
+#include "ComponentColliderCube.h"
 #include "ComponentRigidBody.h"
 #include "ComponentCamera.h"
 #include "Camera.h"
@@ -161,8 +162,10 @@ void ModuleSceneGui::DrawImGuizmo()
 			}
 			if (go_selected->HasCam())
 				go_selected->GetCCamera()->Update();
-			if (go_selected->HasCollider())
-				go_selected->GetCollider()->Update();
+			if (go_selected->HasColliderSphere())
+				go_selected->GetColliderSphere()->Update();
+			if (go_selected->HasColliderCube())
+				go_selected->GetColliderCube()->Update();
 			//if (go_selected->HasRigidBody())
 				//go_selected->GetRigidBody()->Update();
 			

@@ -17,6 +17,7 @@ public:
 
 private:
 	int id_new_sphere = 0;
+	int id_new_cube = 0;
 };
 #endif
 

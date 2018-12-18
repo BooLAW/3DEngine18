@@ -1,4 +1,4 @@
-#include "ComponentCollider.h"
+#include "ComponentColliderSphere.h"
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -11,27 +11,27 @@
 #include "ComponentTransform.h"
 
 
-ComponentCollider::ComponentCollider(GameObject * owner)
+ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 {
 	this->SetOwner(owner);
 	this->SetActive(true);
 	SetName("Component Collider");
-
+	type = ComponentType::COLLIDERSPHERE;
 	if (owner->physbody == nullptr)
 	{
-		new PhysBody(owner);
+		new PhysBody(owner,type);
 	}
-	type = ComponentType::COLLIDER;
+
 
 
 
 }
 
-ComponentCollider::~ComponentCollider()
+ComponentColliderSphere::~ComponentColliderSphere()
 {
 }
 
-bool ComponentCollider::Update()
+bool ComponentColliderSphere::Update()
 {
 
 	//Gather the pointer with the transform matrix
@@ -65,7 +65,7 @@ bool ComponentCollider::Update()
 	return false;
 }
 
-void ComponentCollider::DrawInspectorInfo()
+void ComponentColliderSphere::DrawInspectorInfo()
 {
 	
 	if (ImGui::DragFloat3("Center##collider", center_offset, 0.1f, -INFINITY, INFINITY)) 
@@ -81,7 +81,7 @@ void ComponentCollider::DrawInspectorInfo()
 
 }
 
-void ComponentCollider::UpdateTransform()
+void ComponentColliderSphere::UpdateTransform()
 {
 	if (HasOwner())
 	{
@@ -90,7 +90,7 @@ void ComponentCollider::UpdateTransform()
 	}
 }
 
-bool ComponentCollider::HasMoved()
+bool ComponentColliderSphere::HasMoved()
 {
 	bool ret = false;
 
@@ -101,7 +101,7 @@ bool ComponentCollider::HasMoved()
 
 	return ret;
 }
-bool ComponentCollider::IsBulletStatic()
+bool ComponentColliderSphere::IsBulletStatic()
 {
 	bool ret = owner->physbody->GetRigidBody()->isStaticObject();
 	return ret;

@@ -2,7 +2,8 @@
 #include "stdio.h"
 #include "ImGui/imgui_dock.h"
 #include "GameObject.h"
-#include "ComponentCollider.h"
+#include "ComponentColliderSphere.h"
+#include "ComponentColliderCube.h"
 #include "ComponentTransform.h"
 
 
@@ -70,7 +71,7 @@ void PanelHierarchy::Draw()
 					tmp_go->comp_transform->UpdateTransformValues();					
 					
 
-					ComponentCollider* cmp_collider = new ComponentCollider(tmp_go);
+					ComponentColliderSphere* cmp_collider = new ComponentColliderSphere(tmp_go);
 					
 					tmp_go->PushComponent((Component*)cmp_collider);
 
@@ -79,7 +80,30 @@ void PanelHierarchy::Draw()
 				}
 				else if (items[n] == "Cube")
 				{
+					PCube* test = new PCube();
+					test->dimensions = { 5,5,5 };
 
+					GameObject* tmp_go = new GameObject();
+					std::string new_name = "Cube (";
+
+					//Add number
+					new_name += std::to_string(id_new_cube);
+					new_name.append(")");
+					id_new_cube++;
+
+					tmp_go->SetName(new_name.c_str());
+					tmp_go->SetParent(App->scene_intro->scene_root);
+					tmp_go->comp_transform->SetGlobalPos(float3(0, 15, 0));
+					tmp_go->SetSelected(true);
+					tmp_go->comp_transform->UpdateTransformValues();
+
+
+					ComponentColliderCube* cmp_collider = new ComponentColliderCube(tmp_go);
+
+					tmp_go->PushComponent((Component*)cmp_collider);
+
+
+					App->scene_intro->go_list.push_back(tmp_go);
 				}
 				else if (items[n] == "Main Camera")
 				{

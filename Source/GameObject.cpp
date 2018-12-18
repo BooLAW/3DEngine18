@@ -209,12 +209,23 @@ bool GameObject::HasRigidBody() const
 
 }
 
-bool GameObject::HasCollider() const
+bool GameObject::HasColliderSphere() const
 {
 	bool ret = false;
 	for (int i = 0; i < components_list.size(); i++)
 	{
-		if (components_list[i]->type == ComponentType::COLLIDER)
+		if (components_list[i]->type == ComponentType::COLLIDERSPHERE)
+			ret = true;
+	}
+	return ret;
+}
+
+bool GameObject::HasColliderCube() const
+{
+	bool ret = false;
+	for (int i = 0; i < components_list.size(); i++)
+	{
+		if (components_list[i]->type == ComponentType::COLLIDERCUBE)
 			ret = true;
 	}
 	return ret;
@@ -456,11 +467,23 @@ ComponentRigidBody * GameObject::GetRigidBody()
 	}
 }
 
-ComponentCollider * GameObject::GetCollider()
+ComponentColliderSphere * GameObject::GetColliderSphere()
 {
 	if (this->IsActive())
 	{
-		ComponentCollider* rb_tmp = (ComponentCollider*)GetComponent(ComponentType::COLLIDER);
+		ComponentColliderSphere* rb_tmp = (ComponentColliderSphere*)GetComponent(ComponentType::COLLIDERSPHERE);
+		if (rb_tmp != nullptr)
+			return rb_tmp;
+		else
+			return nullptr;
+	}
+}
+
+ComponentColliderCube * GameObject::GetColliderCube()
+{
+	if (this->IsActive())
+	{
+		ComponentColliderCube* rb_tmp = (ComponentColliderCube*)GetComponent(ComponentType::COLLIDERCUBE);
 		if (rb_tmp != nullptr)
 			return rb_tmp;
 		else

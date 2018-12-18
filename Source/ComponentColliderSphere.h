@@ -1,14 +1,14 @@
-#ifndef __COMPONENT_COLLIDER__
-#define __COMPONENT_COLLIDER__
+#ifndef __COMPONENT_COLLIDER_SPHERE__
+#define __COMPONENT_COLLIDER_SPHERE__
 #include "Component.h"
 
 class GameObject;
 class PhysBody;
-class ComponentCollider : public Component
+class ComponentColliderSphere : public Component
 {
 public:
-	ComponentCollider(GameObject* owner);
-	virtual ~ComponentCollider();
+	ComponentColliderSphere(GameObject* owner);
+	virtual ~ComponentColliderSphere();
 	
 	bool Update()override;
 
