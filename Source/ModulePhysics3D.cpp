@@ -601,5 +601,16 @@ float ModulePhysics3D::GetGravity() const
 	return gravity;
 }
 
+void ModulePhysics3D::AddConstraintP2P(PhysBody& bodyA, PhysBody& bodyB, const float3& anchorA, const float3& anchorB)
+{
+	btTypedConstraint* p2p = new btPoint2PointConstraint(
+		*(bodyA.body),
+		*(bodyB.body),
+		btVector3(anchorA.x, anchorA.y, anchorA.z),
+		btVector3(anchorB.x, anchorB.y, anchorB.z));
+	world->addConstraint(p2p);
+	constraints.add(p2p);
+	p2p->setDbgDrawSize(2.0f);
+}
 
 
