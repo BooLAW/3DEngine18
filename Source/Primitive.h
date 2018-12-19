@@ -37,6 +37,7 @@ public:
 protected:
 	PrimitiveTypes type;
 };
+
 class PLine : public Primitive
 {
 public:
@@ -47,13 +48,14 @@ public:
 	float3 origin;
 	float3 destination;
 };
+
 class PCube : public Primitive {
 public:
 	PCube();
 	PCube(float x, float y, float z);
 	void InnerRender() const override;
 public:
-	float3 dimensions;
+	float3 dimensions = { 5,5,5 };
 };
 
 class PPlane : public Primitive
@@ -74,8 +76,8 @@ public:
 	PSphere(float radius);
 	void InnerRender() const;
 public:
-	float radius;
-	bool dead;
+	float radius = 5;
+	bool dead = false;
 };
 #endif
 

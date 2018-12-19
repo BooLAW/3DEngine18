@@ -16,15 +16,11 @@ ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 	this->SetOwner(owner);
 	this->SetActive(true);
 	SetName("Component Collider");
-	type = ComponentType::COLLIDERSPHERE;
+	PSphere* aux_sphere = new PSphere();
 	if (owner->physbody == nullptr)
 	{
-		new PhysBody(owner,type);
+		new PhysBody(owner,aux_sphere);
 	}
-
-
-
-
 }
 
 ComponentColliderSphere::~ComponentColliderSphere()

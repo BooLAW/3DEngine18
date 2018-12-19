@@ -17,9 +17,10 @@ ComponentColliderCube::ComponentColliderCube(GameObject * owner)
 	this->SetActive(true);
 	SetName("Component Collider");
 	type = ComponentType::COLLIDERCUBE;
+	PCube* aux_cube = new PCube();
 	if (owner->physbody == nullptr)
 	{
-		new PhysBody(owner,type);
+		new PhysBody(owner, aux_cube);
 	}
 }
 

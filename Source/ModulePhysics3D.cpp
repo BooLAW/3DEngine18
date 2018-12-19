@@ -142,33 +142,47 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 
 void ModulePhysics3D::UpdatePhysics()
 {
+	std::vector<float*> matrix_list;
+	float *matrix = new float[16];
+	int i = 0;
+	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+	{
+		if ((*item)->has_render == true)
+		{
+			(*item)->GetTransform(matrix);
+			if ((*item)->primitive_ptr != nullptr)
+			{
+				(*item)->primitive_ptr->transform.Set(matrix);
+			}			
+			
+			i++;
+		}
+		
+	}
+
+	for (int i = 0; i < primitive_list.size(); i++)
+	{
+		primitive_list[i]->Render();
+	}
+
 
 	if (App->state == playing)
 	{
-		std::vector<float*> matrix_list;
-		int i = 0;
+
 		for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 		{
 			if ((*item)->dead == false)
 			{
-				float *matrix = new float[16];
-				(*item)->GetTransform(matrix);
-				if ((*item)->has_render == true)
-				{
-					matrix_list.push_back(matrix);
-					i++;
-				}
 
 				if ((*item)->owner != nullptr)
 				{
-					float matrix_view[16];
-					memcpy(matrix_view, matrix, sizeof(float[16]));
 					float4x4 final_matrix4x4;
 					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];
 					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = matrix[5];	final_matrix4x4[1][2] = matrix[6];
 					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
 
 					final_matrix4x4.Transpose();
+					//Matrix Translation and size
 																																	final_matrix4x4[0][3] = matrix[12];
 																																	final_matrix4x4[1][3] = matrix[13];
 																																	final_matrix4x4[2][3] = matrix[14];
@@ -180,23 +194,23 @@ void ModulePhysics3D::UpdatePhysics()
 					(*item)->owner->comp_transform->updated_outside = false;
 				}
 			}
+
 		}
 
-		if (matrix_list.size() > 0)
-		{
-			int i2 = 0;
-			for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
-			{
-				(*item2)->transform.Set(matrix_list[i2]);
-				i2++;
-			}
-		}
 	}
 
-	for (int i = 0; i < primitive_list.size(); i++)
-	{
-		primitive_list[i]->Render();
-	}
+
+	//if (matrix_list.size() > 0)
+	//{
+	//	int i2 = 0;
+	//	for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
+	//	{
+	//		(*item2)->transform.Set(matrix_list[i2]);
+	//		i2++;
+	//	}
+	//}
+
+
 
 
 	//Debug Physics World
@@ -269,21 +283,12 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 
 void ModulePhysics3D::LoadPhysBodies()
 {
-	primitive_list.clear();
 	for (std::vector<GameObject*>::iterator item = App->scene_intro->go_list.begin(); item != App->scene_intro->go_list.end(); item++)
 	{
-		if ((*item)->physbody != nullptr)
+		if ((*item)->physbody != nullptr && (*item)->HasRigidBody())
 		{
-			if ((*item)->physbody->use_gravity == true && (*item)->HasRigidBody())
-			{
-				SwitchPhysBody((*item)->physbody);
-			}
+			SwitchPhysBody((*item)->physbody);			
 		}
-	}
-
-	for (std::vector<PhysBody*>::iterator item = loading_list.begin(); item != loading_list.end(); item++)
-	{
-		SwitchPhysBody((*item));
 	}
 }
 
@@ -294,18 +299,23 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 	switch (shape_type)
 	{
 		case 0://Cube
-		{
+		{			
+			//Store Primitive
+			PCube* cube = new PCube();
+			cube = (PCube*)body_to_switch->primitive_ptr;							
 
-			PCube* cube = (PCube*)body_to_switch->primitive_ptr;
-			body_to_switch->dead = true;
-			world->removeRigidBody(body_to_switch->GetRigidBody());
-
+			//Store Position of GO and set it to primitive
 			float* transform_matrix = new float[16];
 			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
 			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
+			
+			//Remove Rigid Body
+			world->removeRigidBody(body_to_switch->GetRigidBody());		
 
+			//Create New Rigid Body and link it to GO
 			body_to_switch->owner->physbody = AddBody(*cube, cube->mass);
 			body_to_switch->owner->physbody->owner = body_to_switch->owner;
+
 			break;
 		}
 		case 8://Sphere

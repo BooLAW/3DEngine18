@@ -11,6 +11,20 @@ PhysBody::PhysBody(btRigidBody* body) : body(body)
 	body->setUserPointer(this);
 }
 
+PhysBody::PhysBody(GameObject * owner, PSphere * primitive)
+{
+	owner->physbody = App->physics->AddBody(*primitive, 0);
+	owner->physbody->owner = owner;
+}
+
+PhysBody::PhysBody(GameObject * owner, PCube * primitive)
+{
+
+	owner->physbody = App->physics->AddBody(*primitive, 0);
+	owner->physbody->owner = owner;
+
+}
+
 PhysBody::PhysBody(GameObject* owner,ComponentType type)
 {
 	switch (type)
