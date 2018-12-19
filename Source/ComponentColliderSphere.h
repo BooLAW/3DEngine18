@@ -4,10 +4,12 @@
 
 class GameObject;
 class PhysBody;
+class PSphere;
 class ComponentColliderSphere : public Component
 {
 public:
 	ComponentColliderSphere(GameObject* owner);
+	ComponentColliderSphere(GameObject* owner,PSphere* psphere);
 	virtual ~ComponentColliderSphere();
 	
 	bool Update()override;

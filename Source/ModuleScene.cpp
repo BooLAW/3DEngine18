@@ -277,6 +277,11 @@ void ModuleScene::ClearSceneButton()
 
 void ModuleScene::DeleteGameObject(GameObject* go_to_delete)
 {
+	if (go_to_delete->HasPhysBody())
+	{
+		delete go_to_delete->physbody->primitive_ptr;
+		go_to_delete->physbody->primitive_ptr = nullptr;
+	}
 	if (go_to_delete->HasColliderSphere())
 	{
 		App->physics->GetWorld()->removeRigidBody(go_to_delete->physbody->GetRigidBody());

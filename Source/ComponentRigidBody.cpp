@@ -37,8 +37,11 @@ void ComponentRigidBody::DrawInspectorInfo()
 	int mass = comp_mass;
 	if (owner->physbody != nullptr)
 	{
-		mass = owner->physbody->primitive_ptr->mass;
-
+		if (owner->physbody->primitive_ptr != nullptr)
+		{
+			mass = owner->physbody->primitive_ptr->mass;
+		}
+		
 		if (ImGui::InputInt("Mass", &mass))
 		{
 			owner->physbody->primitive_ptr->mass = mass;

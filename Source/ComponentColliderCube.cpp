@@ -9,6 +9,7 @@
 #include "PhysBody.h"
 #include "Transform.h"
 #include "ComponentTransform.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 
 ComponentColliderCube::ComponentColliderCube(GameObject * owner)
@@ -18,6 +19,21 @@ ComponentColliderCube::ComponentColliderCube(GameObject * owner)
 	SetName("Component Collider");
 	type = ComponentType::COLLIDERCUBE;
 	PCube* aux_cube = new PCube();
+	aux_cube->has_render = false;	
+
+	float3 diagonal_aabb = { 5,5,5 };
+	float3 position = { 0,0,0 };
+	if (owner->HasMesh())
+	{
+		AABB aux_bb = owner->GetBB();
+		position = aux_bb.CenterPoint();
+		diagonal_aabb = aux_bb.Diagonal();
+		
+	}
+		 
+	aux_cube->dimensions = diagonal_aabb;
+	aux_cube->SetPos(position.x, position.y, position.z);
+
 	if (owner->physbody == nullptr)
 	{
 		new PhysBody(owner, aux_cube);
@@ -45,46 +61,42 @@ bool ComponentColliderCube::Update()
 		final_pmatrix[i] = current_pmatrix[i];
 	}
 
-	if (App->state == stopped)
+	if(App->state == stopped)
 	{
-		
 		float3x3 rot = {
 			transform_matrix[0],transform_matrix[1],transform_matrix[2],
 			transform_matrix[4],transform_matrix[5],transform_matrix[6],
-			transform_matrix[8],transform_matrix[9],transform_matrix[10] 
+			transform_matrix[8],transform_matrix[9],transform_matrix[10]
 		};
-					
+
 		rot.Transpose();
 
 		//Relate both matrix rotation and inverting the rotation
 		final_pmatrix[0] = rot[0][0];		final_pmatrix[1] = rot[0][1];			final_pmatrix[2] = rot[0][2];
 		final_pmatrix[4] = rot[1][0];		final_pmatrix[5] = rot[1][1];			final_pmatrix[6] = rot[1][2];
 		final_pmatrix[8] = rot[2][0];		final_pmatrix[9] = rot[2][1];			final_pmatrix[10] = rot[2][2];
+		float3 position = { 0,0,0 };
+		if (owner->HasMesh())
+		{
+			//Relate both matrix translation
+			position = owner->GetBB().CenterPoint();
+			final_pmatrix[12] = position.x + center_offset[0];
+			final_pmatrix[13] = position.y + center_offset[1];
+			final_pmatrix[14] = position.z + center_offset[2];
+		}
+		else
+		{
+			//Relate both matrix translation
+			final_pmatrix[12] = transform_matrix[3] + center_offset[0];
+			final_pmatrix[13] = transform_matrix[7] + center_offset[1];
+			final_pmatrix[14] = transform_matrix[11] + center_offset[2];
+		}
+	
+		
 
-		//Relate both matrix translation
-		final_pmatrix[12] = transform_matrix[3] + center_offset[0];
-		final_pmatrix[13] = transform_matrix[7] + center_offset[1];
-		final_pmatrix[14] = transform_matrix[11] + center_offset[2];
 
 		//Add the result on the object
 		owner->physbody->SetTransform(final_pmatrix);
-	}
-	if (App->state == playing)
-	{
-		////Creating the final matrix where we will create the new base
-		//float final_matrix[16];
-		//for (int i = 0; i < 16; i++)
-		//{
-		//	final_matrix[i] = current_pmatrix[i];
-		//}
-
-		//float4x4 final_matrix4x4;
-		//final_matrix4x4[0][0] = -transform_matrix[0];	final_matrix4x4[0][1] = transform_matrix[1];	final_matrix4x4[0][2] = transform_matrix[2];	final_matrix4x4[0][3] = 1.0f;
-		//final_matrix4x4[1][0] = transform_matrix[4];	final_matrix4x4[1][1] = -transform_matrix[5];	final_matrix4x4[1][2] = transform_matrix[6];	final_matrix4x4[1][3] = 1.0f;
-		//final_matrix4x4[2][0] = transform_matrix[8];	final_matrix4x4[2][1] = transform_matrix[9];	final_matrix4x4[2][2] = -transform_matrix[10];	final_matrix4x4[2][3] = 1.0f;
-		//final_matrix4x4[3][0] = transform_matrix[3];	final_matrix4x4[3][1] = transform_matrix[7];	final_matrix4x4[3][2] = transform_matrix[11];	final_matrix4x4[3][3] = 1.0f;
-
-		//owner->comp_transform->SetLocalMatrix(final_matrix4x4);
 	}
 
 	

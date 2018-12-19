@@ -2,6 +2,9 @@
 #include "Application.h"
 #include "ModulePhysics3D.h"
 #include "ComponentTransform.h"
+#include "ComponentColliderCube.h"
+#include "ComponentColliderSphere.h"
+#include "Component.h"
 #include "PhysBody.h"
 #include "ModuleCamera3D.h"
 #include "Camera.h"
@@ -183,10 +186,20 @@ void ModulePhysics3D::UpdatePhysics()
 
 					final_matrix4x4.Transpose();
 					//Matrix Translation and size
-																																	final_matrix4x4[0][3] = matrix[12];
-																																	final_matrix4x4[1][3] = matrix[13];
-																																	final_matrix4x4[2][3] = matrix[14];
-					final_matrix4x4[3][0] = 1;			final_matrix4x4[3][1] = 1;			final_matrix4x4[3][2] = 1;				final_matrix4x4[3][3] = matrix[15];
+					float3 pos = float3(matrix[12], matrix[13], matrix[14]);
+					float* offset = (*item)->owner->GetColliderCube()->center_offset;
+					float final_pos[3];
+
+					final_pos[0] = pos.x - offset[0];
+					final_pos[1] = pos.y - offset[1];
+					final_pos[2] = pos.z - offset[2];
+					
+					
+					//Transform + size
+					final_matrix4x4[0][3] = final_pos[0];
+					final_matrix4x4[1][3] = final_pos[1];
+					final_matrix4x4[2][3] = final_pos[2];
+					final_matrix4x4[3][0] = 1;						final_matrix4x4[3][1] = 1;	final_matrix4x4[3][2] = 1;	final_matrix4x4[3][3] = matrix[15];
 					(*item)->owner->comp_transform->SetLocalMatrix(final_matrix4x4);
 
 

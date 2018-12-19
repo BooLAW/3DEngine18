@@ -11,15 +11,31 @@
 #include "ComponentTransform.h"
 
 
+
 ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 {
 	this->SetOwner(owner);
 	this->SetActive(true);
 	SetName("Component Collider");
+	type = ComponentType::COLLIDERSPHERE;
 	PSphere* aux_sphere = new PSphere();
+	owner->GetBB();
+	aux_sphere->has_render = false;	
 	if (owner->physbody == nullptr)
 	{
 		new PhysBody(owner,aux_sphere);
+	}
+}
+
+ComponentColliderSphere::ComponentColliderSphere(GameObject * owner, PSphere* psphere)
+{
+	this->SetOwner(owner);
+	this->SetActive(true);
+	SetName("Component Collider");
+	type = ComponentType::COLLIDERSPHERE;
+	if (owner->physbody == nullptr)
+	{
+		new PhysBody(owner, psphere);
 	}
 }
 
