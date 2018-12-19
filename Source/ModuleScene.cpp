@@ -713,9 +713,12 @@ void ModuleScene::LoadScene(const char* path)
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDERCUBE") == 0)
 					{
+
 						float pcubematrix[16] = {};
+						float offset[3] = { 0,0,0 };
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
+
 							if (m_cmp_itr2->value.IsArray())
 							{
 								int i = 0;
@@ -725,9 +728,27 @@ void ModuleScene::LoadScene(const char* path)
 									i++;
 								}
 							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "offsetx") == 0)
+							{
+								offset[0] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "offsety") == 0)
+							{
+								offset[1] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "offsetz") == 0)
+							{
+								offset[2] = m_cmp_itr2->value.GetFloat();
+							}
 							else
 							{
 								ComponentColliderCube* aux_comp = new ComponentColliderCube(new_go);
+
+								aux_comp->center_offset[0] = offset[0];
+								aux_comp->center_offset[1] = offset[1];
+								aux_comp->center_offset[2] = offset[2];
+								aux_comp->owner->physbody->primitive_ptr->has_render = m_cmp_itr2->value.GetBool();
+
 								new_go->PushComponent((Component*)aux_comp);
 								new_go->physbody->SetTransform(pcubematrix);
 							}
@@ -921,8 +942,11 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 					obj_ptransform_collider.PushBack(phy_matrix[i], allocator);
 				}
 
-				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider, allocator);
-				obj_comp_collider.AddMember("render", aux_phybody->GetRender(), allocator);
+				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider, allocator);				
+				obj_comp_collider.AddMember("offsetx", com_collider_aux->center_offset[0], allocator);
+				obj_comp_collider.AddMember("offsety", com_collider_aux->center_offset[1], allocator);
+				obj_comp_collider.AddMember("offsetz", com_collider_aux->center_offset[2], allocator);
+				obj_comp_collider.AddMember("render", aux_phybody->primitive_ptr->has_render, allocator);
 				//shall never have rigid body
 
 

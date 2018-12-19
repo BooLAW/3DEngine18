@@ -193,15 +193,13 @@ void ModulePhysics3D::UpdatePhysics()
 					final_pos[0] = pos.x - offset[0];
 					final_pos[1] = pos.y - offset[1];
 					final_pos[2] = pos.z - offset[2];
-					
-					
+										
 					//Transform + size
 					final_matrix4x4[0][3] = final_pos[0];
 					final_matrix4x4[1][3] = final_pos[1];
 					final_matrix4x4[2][3] = final_pos[2];
 					final_matrix4x4[3][0] = 1;						final_matrix4x4[3][1] = 1;	final_matrix4x4[3][2] = 1;	final_matrix4x4[3][3] = matrix[15];
 					(*item)->owner->comp_transform->SetLocalMatrix(final_matrix4x4);
-
 
 					(*item)->owner->comp_transform->UpdateTransformValues();
 					(*item)->owner->comp_transform->updated_outside = false;
@@ -212,16 +210,15 @@ void ModulePhysics3D::UpdatePhysics()
 
 	}
 
-
-	//if (matrix_list.size() > 0)
-	//{
-	//	int i2 = 0;
-	//	for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
-	//	{
-	//		(*item2)->transform.Set(matrix_list[i2]);
-	//		i2++;
-	//	}
-	//}
+	if (matrix_list.size() > 0)
+	{
+		int i2 = 0;
+		for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
+		{
+			(*item2)->transform.Set(matrix_list[i2]);
+			i2++;
+		}
+	}
 
 
 
