@@ -15,7 +15,7 @@ Primitive::Primitive() :transform(float4x4::identity), color(White), wire(false)
 
 void Primitive::Render() const
 {
-	if (has_render)
+	if (has_primitive_render)
 	{
 		glPushMatrix();
 		glMultMatrixf(transform.ptr());

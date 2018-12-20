@@ -32,7 +32,7 @@ public:
 	float4x4 transform;
 	bool axis, wire;
 	float mass = 0;
-	bool has_render = true;
+	bool has_primitive_render = true;
 
 protected:
 	PrimitiveTypes type;

@@ -150,7 +150,7 @@ void ModulePhysics3D::UpdatePhysics()
 	int i = 0;
 	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
 	{
-		if ((*item)->has_render == true)
+		if ((*item)->has_primitive_render == true)
 		{
 			(*item)->GetTransform(matrix);
 			if ((*item)->primitive_ptr != nullptr)
@@ -187,12 +187,24 @@ void ModulePhysics3D::UpdatePhysics()
 					final_matrix4x4.Transpose();
 					//Matrix Translation and size
 					float3 pos = float3(matrix[12], matrix[13], matrix[14]);
-					float* offset = (*item)->owner->GetColliderCube()->center_offset;
 					float final_pos[3];
+					float* offset = new float[3];
 
-					final_pos[0] = pos.x - offset[0];
-					final_pos[1] = pos.y - offset[1];
-					final_pos[2] = pos.z - offset[2];
+					if ((*item)->owner->HasColliderCube())
+					{
+						offset = (*item)->owner->GetColliderCube()->center_offset;
+		
+						final_pos[0] = pos.x - offset[0];
+						final_pos[1] = pos.y - offset[1];
+						final_pos[2] = pos.z - offset[2];
+					}
+					else
+					{
+						final_pos[0] = pos.x;
+						final_pos[1] = pos.y;
+						final_pos[2] = pos.z;
+					}
+
 										
 					//Transform + size
 					final_matrix4x4[0][3] = final_pos[0];
@@ -447,14 +459,15 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 
 	if (isCollider)
 	{
-		pbody->has_render = false;
+		pbody->has_primitive_render = false;
 	}
 	else
 	{
-		pbody->has_render = true;
+		pbody->has_primitive_render = true;
 		primitive_list.push_back((Primitive*)&sphere);
+		pbody->primitive_ptr = &sphere;
 	}
-	pbody->primitive_ptr = &sphere;
+
 
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
@@ -479,6 +492,7 @@ void ModulePhysics3D::ShootSphere(float force,float radius)
 	{
 		PSphere* test = new PSphere();
 		test->radius = radius;
+		test->has_primitive_render = false;
 		float position[3];
 		position[0] = App->camera->current_game_camera->GetCamera()->frustum.pos.x;
 		position[1] = App->camera->current_game_camera->GetCamera()->frustum.pos.y;

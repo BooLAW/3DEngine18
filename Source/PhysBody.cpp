@@ -33,7 +33,7 @@ PhysBody::PhysBody(GameObject* owner,ComponentType type)
 	{
 		PSphere* psphere = new PSphere();
 		psphere->radius = 5;
-		psphere->has_render = false;
+		psphere->has_primitive_render = false;
 		psphere->mass = 1;
 		owner->physbody = App->physics->AddBody(*psphere, 0);
 		break;
@@ -42,7 +42,7 @@ PhysBody::PhysBody(GameObject* owner,ComponentType type)
 	{
 		PCube* pcube = new PCube();
 		pcube->dimensions = { 5,5,5 };
-		pcube->has_render = false;
+		pcube->has_primitive_render = false;
 		pcube->mass = 1;
 		owner->physbody = App->physics->AddBody(*pcube, 0);		
 		break;
@@ -114,7 +114,7 @@ bool PhysBody::HasGravity()const
 
 bool PhysBody::GetRender() const
 {
-	return has_render;
+	return has_primitive_render;
 }
 
 

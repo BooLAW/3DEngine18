@@ -19,16 +19,16 @@ ComponentColliderCube::ComponentColliderCube(GameObject * owner)
 	SetName("Component Collider");
 	type = ComponentType::COLLIDERCUBE;
 	PCube* aux_cube = new PCube();
-	aux_cube->has_render = false;	
+	aux_cube->has_primitive_render = false;	
 
 	float3 diagonal_aabb = { 5,5,5 };
 	float3 position = { 0,0,0 };
 	if (owner->HasMesh())
 	{
+		aux_cube->has_primitive_render = false;
 		AABB aux_bb = owner->GetBB();
 		position = aux_bb.CenterPoint();
 		diagonal_aabb = aux_bb.Diagonal();
-		
 	}
 		 
 	aux_cube->dimensions = diagonal_aabb;
@@ -37,6 +37,7 @@ ComponentColliderCube::ComponentColliderCube(GameObject * owner)
 	if (owner->physbody == nullptr)
 	{
 		new PhysBody(owner, aux_cube);
+		owner->physbody->mesh_ptr = owner->GetMesh();
 	}
 }
 

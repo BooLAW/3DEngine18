@@ -94,13 +94,13 @@ bool ModuleScene::Start()
 	//cube.dimensions = float3(5.0f, 5.0f, 5.0f);
 	//cube.SetPos(0, 10, 10);
 	//cube.mass = 1;
-	//cube.has_render = true;
+	//cube.has_primitive_render = true;
 	//App->physics->loading_list.push_back(App->physics->AddBody(cube, 0));
 
 	//cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
 	//cube2.SetPos(0, 30, 7.5f);
 	//cube2.mass = 1;
-	//cube.has_render = true;
+	//cube.has_primitive_render = true;
 	//
 	//App->physics->loading_list.push_back(App->physics->AddBody(cube2, 0));
 
@@ -747,7 +747,7 @@ void ModuleScene::LoadScene(const char* path)
 								aux_comp->center_offset[0] = offset[0];
 								aux_comp->center_offset[1] = offset[1];
 								aux_comp->center_offset[2] = offset[2];
-								aux_comp->owner->physbody->primitive_ptr->has_render = m_cmp_itr2->value.GetBool();
+								aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
 
 								new_go->PushComponent((Component*)aux_comp);
 								new_go->physbody->SetTransform(pcubematrix);
@@ -946,7 +946,7 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				obj_comp_collider.AddMember("offsetx", com_collider_aux->center_offset[0], allocator);
 				obj_comp_collider.AddMember("offsety", com_collider_aux->center_offset[1], allocator);
 				obj_comp_collider.AddMember("offsetz", com_collider_aux->center_offset[2], allocator);
-				obj_comp_collider.AddMember("render", aux_phybody->primitive_ptr->has_render, allocator);
+				obj_comp_collider.AddMember("render", aux_phybody->primitive_ptr->has_primitive_render, allocator);
 				//shall never have rigid body
 
 

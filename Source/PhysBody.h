@@ -43,7 +43,7 @@ private:
 	uint mass = 0;
 	//Affected by gravity?
 	bool use_gravity = false;
-	bool has_render = true;
+	bool has_primitive_render = true;
 	//Collision Detection
 public:
 	//Constraints
@@ -59,6 +59,7 @@ public:
 	bool dead = false;
 	GameObject* owner = nullptr;
 	Primitive* primitive_ptr = nullptr;
+	Mesh* mesh_ptr = nullptr;
 
 	//--------------------------
 

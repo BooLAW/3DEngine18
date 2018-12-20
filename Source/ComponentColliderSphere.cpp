@@ -19,8 +19,9 @@ ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 	SetName("Component Collider");
 	type = ComponentType::COLLIDERSPHERE;
 	PSphere* aux_sphere = new PSphere();
+	aux_sphere->radius = 5;
 	owner->GetBB();
-	aux_sphere->has_render = false;	
+	aux_sphere->has_primitive_render = false;	
 	if (owner->physbody == nullptr)
 	{
 		new PhysBody(owner,aux_sphere);
