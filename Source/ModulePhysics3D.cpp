@@ -86,7 +86,7 @@ void ModulePhysics3D::DrawModuleConfig()
 
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
-	world->stepSimulation(dt, 15);
+
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for (int i = 0; i<numManifolds; i++)
@@ -145,6 +145,12 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 
 void ModulePhysics3D::UpdatePhysics()
 {
+	static float step = 0;
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_UP)
+	{
+		step = 1;
+	}
+	world->stepSimulation(App->dt, step);
 	std::vector<float*> matrix_list;
 	float *matrix = new float[16];
 	int i = 0;
@@ -165,7 +171,10 @@ void ModulePhysics3D::UpdatePhysics()
 	{
 		primitive_list[i]->Render();
 	}
-
+	if (App->state == stopped)
+	{
+		updateoncecollider = false;
+	}
 
 	if (App->state == playing)
 	{
@@ -176,25 +185,34 @@ void ModulePhysics3D::UpdatePhysics()
 			{
 				if ((*item)->owner != nullptr)
 				{
+					//Get matrix from bullet physics
 					float4x4 final_matrix4x4;
-					(*item)->GetTransform(matrix);//NO M'HO PUC CREURE
+					(*item)->GetTransform(matrix);
+
+					//Set Rotations
 					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];
 					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = matrix[5];	final_matrix4x4[1][2] = matrix[6];
 					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
-
 					final_matrix4x4.Transpose();
+
 					//Matrix Translation and size
-					float3 pos = float3(matrix[12], matrix[13], matrix[14]);
+					//float3 pos = float3(matrix[12], matrix[13], matrix[14]);
+
+
 					float final_pos[3];
-					float* offset = new float[3];
+					float* user_offset = new float[3];
 
 					if ((*item)->owner->HasColliderCube())
 					{
-						offset = (*item)->owner->GetColliderCube()->center_offset;
-		
-						final_pos[0] = pos.x - offset[0];
-						final_pos[1] = pos.y - offset[1];
-						final_pos[2] = pos.z - offset[2];
+						if (updateoncecollider == false)
+						{
+							(*item)->owner->GetColliderCube()->Update();
+							updateoncecollider = true;
+						}
+						user_offset = (*item)->owner->GetColliderCube()->center_offset;		
+						final_pos[0] = pos.x - user_offset[0];
+						final_pos[1] = pos.y - user_offset[1];
+						final_pos[2] = pos.z - user_offset[2];
 					}
 					else
 					{
@@ -208,7 +226,9 @@ void ModulePhysics3D::UpdatePhysics()
 					final_matrix4x4[0][3] = final_pos[0];
 					final_matrix4x4[1][3] = final_pos[1];
 					final_matrix4x4[2][3] = final_pos[2];
-					final_matrix4x4[3][0] = 1;				final_matrix4x4[3][1] = 1;	final_matrix4x4[3][2] = 1;	final_matrix4x4[3][3] = matrix[15];
+					final_matrix4x4[3][0] = 1;				final_matrix4x4[3][1] = 1;	final_matrix4x4[3][2] = 1;	final_matrix4x4[3][3] = matrix[15];			
+					
+
 					(*item)->owner->comp_transform->SetLocalMatrix(final_matrix4x4);
 
 					(*item)->owner->comp_transform->UpdateTransformValues();

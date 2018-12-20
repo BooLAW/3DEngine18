@@ -46,23 +46,22 @@ ComponentColliderCube::~ComponentColliderCube()
 
 bool ComponentColliderCube::Update()
 {	
-	//Gather the pointer with the transform matrix
-	float* transform_matrix = new float[16];
-	transform_matrix = owner->comp_transform->trans_matrix_g.ptr();
-
-	//Get the identity of the body
-	float current_pmatrix[16];
-	owner->physbody->GetTransform(current_pmatrix);
-
-	//Creating the final matrix where we will create the new base
-	float final_pmatrix[16];
-	for (int i = 0; i < 16; i++)
+	if (owner->physbody != nullptr)
 	{
-		final_pmatrix[i] = current_pmatrix[i];
-	}
+		//Gather the pointer with the transform matrix
+		float* transform_matrix = new float[16];
+		transform_matrix = owner->comp_transform->trans_matrix_g.ptr();
 
-	if(App->state == stopped)
-	{
+		//Get the identity of the body
+		float current_pmatrix[16];
+		owner->physbody->GetTransform(current_pmatrix);
+
+		//Creating the final matrix where we will create the new base
+		for (int i = 0; i < 16; i++)
+		{
+			final_pmatrix[i] = current_pmatrix[i];
+		}
+
 		float3x3 rot = {
 			transform_matrix[0],transform_matrix[1],transform_matrix[2],
 			transform_matrix[4],transform_matrix[5],transform_matrix[6],
@@ -91,16 +90,11 @@ bool ComponentColliderCube::Update()
 			final_pmatrix[13] = transform_matrix[7] + center_offset[1];
 			final_pmatrix[14] = transform_matrix[11] + center_offset[2];
 		}
-	
-		
-
 
 		//Add the result on the object
 		owner->physbody->SetTransform(final_pmatrix);
 	}
 
-	
-	
 	return false;
 }
 

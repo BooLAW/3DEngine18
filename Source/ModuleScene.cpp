@@ -105,8 +105,8 @@ bool ModuleScene::Start()
 	//App->physics->loading_list.push_back(App->physics->AddBody(cube2, 0));
 
 	//Load Str
-	App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
-	App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
+	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
+	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
 	
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;

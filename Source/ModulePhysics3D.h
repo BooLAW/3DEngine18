@@ -82,11 +82,12 @@ public:
 
 
 	std::vector<PhysBody*> loading_list;
-	std::vector<Primitive*> primitive_list;
+	std::vector<Primitive*> primitive_list;	
 private:
 
 	bool pdebug;
 	float gravity;
+	bool updateoncecollider = false;
 	
 	std::vector<AABB> pcube_list;
 	std::vector<PCube*> cube_list;
