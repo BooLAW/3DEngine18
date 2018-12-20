@@ -250,6 +250,7 @@ void ModuleScene::ClearScene()
 		go_list.clear();		
 		go_list.push_back(scene_root);
 	}
+	App->physics->primitive_list.clear();
 		
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";
@@ -747,7 +748,15 @@ void ModuleScene::LoadScene(const char* path)
 								aux_comp->center_offset[0] = offset[0];
 								aux_comp->center_offset[1] = offset[1];
 								aux_comp->center_offset[2] = offset[2];
-								aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
+								if (m_cmp_itr2->value.IsBool())
+								{
+									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
+								}
+								else
+								{
+									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = false;
+								}
+								
 
 								new_go->PushComponent((Component*)aux_comp);
 								new_go->physbody->SetTransform(pcubematrix);

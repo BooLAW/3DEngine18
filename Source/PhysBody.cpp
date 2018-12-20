@@ -19,7 +19,10 @@ PhysBody::PhysBody(GameObject * owner, PSphere * primitive)
 
 PhysBody::PhysBody(GameObject * owner, PCube * primitive)
 {
-
+	if (owner->HasChilds())
+	{
+		primitive->has_primitive_render = false;
+	}
 	owner->physbody = App->physics->AddBody(*primitive, 0);
 	owner->physbody->owner = owner;
 

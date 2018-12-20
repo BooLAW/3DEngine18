@@ -82,6 +82,7 @@ public:
 
 
 	std::vector<PhysBody*> loading_list;
+	std::vector<Primitive*> primitive_list;
 private:
 
 	bool pdebug;
@@ -89,7 +90,7 @@ private:
 	
 	std::vector<AABB> pcube_list;
 	std::vector<PCube*> cube_list;
-	std::vector<Primitive*> primitive_list;
+
 
 
 

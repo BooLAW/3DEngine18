@@ -156,11 +156,9 @@ void ModulePhysics3D::UpdatePhysics()
 			if ((*item)->primitive_ptr != nullptr)
 			{
 				(*item)->primitive_ptr->transform.Set(matrix);
-			}			
-			
+			}						
 			i++;
-		}
-		
+		}		
 	}
 
 	for (int i = 0; i < primitive_list.size(); i++)
@@ -176,10 +174,10 @@ void ModulePhysics3D::UpdatePhysics()
 		{
 			if ((*item)->dead == false)
 			{
-
 				if ((*item)->owner != nullptr)
 				{
 					float4x4 final_matrix4x4;
+					(*item)->GetTransform(matrix);//NO M'HO PUC CREURE
 					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];
 					final_matrix4x4[1][0] = matrix[4];	final_matrix4x4[1][1] = matrix[5];	final_matrix4x4[1][2] = matrix[6];
 					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
@@ -210,7 +208,7 @@ void ModulePhysics3D::UpdatePhysics()
 					final_matrix4x4[0][3] = final_pos[0];
 					final_matrix4x4[1][3] = final_pos[1];
 					final_matrix4x4[2][3] = final_pos[2];
-					final_matrix4x4[3][0] = 1;						final_matrix4x4[3][1] = 1;	final_matrix4x4[3][2] = 1;	final_matrix4x4[3][3] = matrix[15];
+					final_matrix4x4[3][0] = 1;				final_matrix4x4[3][1] = 1;	final_matrix4x4[3][2] = 1;	final_matrix4x4[3][3] = matrix[15];
 					(*item)->owner->comp_transform->SetLocalMatrix(final_matrix4x4);
 
 					(*item)->owner->comp_transform->UpdateTransformValues();
@@ -307,7 +305,7 @@ void ModulePhysics3D::LoadPhysBodies()
 {
 	for (std::vector<GameObject*>::iterator item = App->scene_intro->go_list.begin(); item != App->scene_intro->go_list.end(); item++)
 	{
-		if ((*item)->physbody != nullptr && (*item)->HasRigidBody())
+		if ((*item)->HasRigidBody())
 		{
 			SwitchPhysBody((*item)->physbody);			
 		}
@@ -417,7 +415,11 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
 
-	primitive_list.push_back((Primitive*)&cube);
+	if (cube.has_primitive_render)
+	{
+		primitive_list.push_back((Primitive*)&cube);
+	}
+	
 
 	return pbody;
 }
@@ -492,7 +494,6 @@ void ModulePhysics3D::ShootSphere(float force,float radius)
 	{
 		PSphere* test = new PSphere();
 		test->radius = radius;
-		test->has_primitive_render = false;
 		float position[3];
 		position[0] = App->camera->current_game_camera->GetCamera()->frustum.pos.x;
 		position[1] = App->camera->current_game_camera->GetCamera()->frustum.pos.y;

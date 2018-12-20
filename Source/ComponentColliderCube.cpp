@@ -19,7 +19,6 @@ ComponentColliderCube::ComponentColliderCube(GameObject * owner)
 	SetName("Component Collider");
 	type = ComponentType::COLLIDERCUBE;
 	PCube* aux_cube = new PCube();
-	aux_cube->has_primitive_render = false;	
 
 	float3 diagonal_aabb = { 5,5,5 };
 	float3 position = { 0,0,0 };
