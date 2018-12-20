@@ -122,7 +122,6 @@ void ComponentTransform::DrawInspectorInfo()
 			if (owner->HasMesh())
 			{
 				owner->GetCMesh()->UpdateBoundingBox(trans_matrix_g);
-				
 			}
 			if (owner->HasChilds())
 				UpdateBBChilds(owner);
@@ -134,15 +133,38 @@ void ComponentTransform::DrawInspectorInfo()
 				owner->GetColliderCube()->Update();			
 			//if (owner->GetRigidBody())
 				//owner->GetRigidBody()->Update();
-			
-				
-
 			owner->SetFirstUpdate(false);
 		}
 		
 		
 	}
 
+}
+void ComponentTransform::LogicUpdate()
+{
+	UpdateTransformValues();
+	if (owner->HasRigidBody())
+	{
+		owner->GetRigidBody()->owner_trans_updated = true;
+	}
+	if (owner->HasMesh())
+	{
+		owner->GetCMesh()->UpdateBoundingBox(trans_matrix_g);
+	}
+	if (owner->HasChilds())
+		UpdateBBChilds(owner);
+	if (owner->HasCam())
+		owner->GetCCamera()->Update();
+	if (owner->HasColliderSphere())
+		owner->GetColliderSphere()->Update();
+	if (owner->HasColliderCube())
+		owner->GetColliderCube()->Update();
+	//if (owner->GetRigidBody())
+	//owner->GetRigidBody()->Update();
+
+
+
+	owner->SetFirstUpdate(false);
 }
 void ComponentTransform::UpdateBBChilds(GameObject* parent)
 {

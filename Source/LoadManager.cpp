@@ -38,7 +38,6 @@ void LoadManager::Load(const char * path)
 			mesh_loader->LoadMesh(path);
 
 			App->scene_intro->has_meshes = true;
-			//unique_fbx_path = path;
 		}
 		else
 		{

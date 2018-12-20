@@ -16,7 +16,7 @@ Camera::Camera()
 	frustum.horizontalFov = 90;
 	SetFOV(80);
 	frustum.nearPlaneDistance = 0.5;//needs to be higher than 0.4
-	frustum.farPlaneDistance = 100;
+	frustum.farPlaneDistance = 1000;
 	frustum.type = FrustumType::PerspectiveFrustum;
 
 	SetAspectRatio(1.77);

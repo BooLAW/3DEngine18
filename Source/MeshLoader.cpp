@@ -251,7 +251,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				new_child->SetName(node->mName.C_Str());
 				new_child->SetNumMeshes(node->mNumMeshes);
 				
-
 				//MESH
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				
@@ -395,11 +394,9 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 					new_child->comp_transform->SetTransform(pos, rot, scale);
 				}
 				App->scene_intro->go_list.push_back(new_child);
-				//new_child->RecalculateBoundingBox(new_child);
+				new_child->RecalculateBoundingBox(new_child);
 				App->camera->AdaptCamera(new_child->GetBB(), new_child->comp_transform->transform->pos);
-				
-			}
-					
+			}	
 		}
 		else
 		{
@@ -409,9 +406,14 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
+
 		InitMesh(scene, node->mChildren[i], GO, path);
+
 	}
+	GO->SetFirstUpdate(true);
+
 	GO->comp_transform->UpdateTransformValues();
+
 	return true;
 }
 
