@@ -1172,6 +1172,24 @@ void ModuleScene::CreateDistanceJoint()
 	
 }
 
+std::list<const char*> ModuleScene::GetBodiesForJoints()
+{
+	std::list<const char*> ret;
+	//iterate all active GO 
+	for (std::vector<GameObject*>::iterator it = go_list.end(); it != go_list.end(); it++)
+	{
+		if ((*it)->IsActive())
+		{
+			//check if it has physbody
+			if ((*it)->HasPhysBody())
+				ret.push_back((*it)->name.c_str());
+		}
+		
+	}
+	//put in a list all the names 
+	return ret;
+}
+
 ControllerSettings::ControllerSettings()
 {
 	 game_cam_speed = 0.5f;

@@ -76,6 +76,7 @@ public:
 	void CrateBasePlayerController(GameObject* parent);
 	//Joint
 	void CreateDistanceJoint();
+	std::list<const char*> GetBodiesForJoints();
 public:
 	//Scene GameObjects
 	std::vector<GameObject*> go_list;	

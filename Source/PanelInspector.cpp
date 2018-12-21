@@ -255,8 +255,37 @@ void PanelInspector::Draw()
 				if (selected_go->HasConstraintJoint()) {
 					if (ImGui::CollapsingHeader("Constraint", ImGuiTreeNodeFlags_DefaultOpen))
 					{
-						ImGui::Text("Type: %d", "Point to Point");
-						
+						static ImGuiComboFlags flags = ImGuiComboFlags_PopupAlignLeft;
+
+						ImGui::Text("Type: Point to Point");
+						ImGui::Text("GameObject 1"); ImGui::Separator();
+						std::list<const char*> valid_go1 =  App->scene_intro->GetBodiesForJoints();
+						static const char* go1 = (*valid_go1.begin());
+						if (ImGui::BeginCombo("Choose GO",go1,flags))
+						{
+							for (int n = 0; n < valid_go1.size(); n++)
+							{
+								//bool is_selected = (go1 == valid_go1.[n]);
+								//ImGui::Selectable(valid_go1[n], );
+
+							}
+						}
+						ImGui::Text("GameObject 2:"); ImGui::Separator();
+						std::list<const char*> valid_go2 = App->scene_intro->GetBodiesForJoints();
+						static const char* go2 = (*valid_go2.begin());
+						if (ImGui::BeginCombo("Choose GO", go1, flags))
+						{
+
+						}
+						if (ImGui::Button("Create Joint"))
+						{
+							if (go1 != go2 && go1 != "NONE" && go2 != "NONE")
+							{
+								//Create Joint with the two center points
+							}
+
+
+						}
 					}
 				}
 			}			
