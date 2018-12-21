@@ -166,6 +166,7 @@ void ModuleScene::DrawGameObjects()
 		else if (!(*it)->IsRoot())
 			(*it)->Draw();
 	}
+
 	//Draw Dynamic GameObjects
 	for (int i = 0; i < go_list.size(); i++)
 	{
@@ -185,7 +186,6 @@ void ModuleScene::DrawGameObjects()
 		}
 		else if (!go_list[i]->IsRoot())
 			go_list[i]->Draw();
-
 	}
 	
 	//Octree
@@ -249,6 +249,10 @@ void ModuleScene::ClearScene()
 		go_list.push_back(scene_root);
 	}
 	App->physics->primitive_list.clear();
+
+	App->physics->CleanUp();
+	App->physics->Init();
+	App->physics->Start();
 		
 	App->loading_manager->unique_fbx_path = "";
 	App->loading_manager->unique_material_path = "";

@@ -164,13 +164,18 @@ void ModulePhysics3D::UpdatePhysics()
 				(*item)->primitive_ptr->transform.Set(matrix);
 			}						
 			i++;
-		}		
+		}	
+		if (App->state == stopped)
+		{
+			(*item)->initial_pos = nullptr;
+		}
 	}
 
 	for (int i = 0; i < primitive_list.size(); i++)
 	{
 		primitive_list[i]->Render();
 	}
+
 	if (App->state == stopped)
 	{
 		updateoncecollider = false;
@@ -195,8 +200,19 @@ void ModulePhysics3D::UpdatePhysics()
 					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
 					final_matrix4x4.Transpose();
 
+					float3 pos = float3(0, 0, 0);
+					if ((*item)->initial_pos == nullptr)
+					{
+						(*item)->initial_pos = new float3( matrix[12], matrix[13], matrix[14] );
+					}
+					else
+					{
+						float3 local_pos = { matrix[12], matrix[13], matrix[14] };
+						pos = local_pos - *(*item)->initial_pos;
+					}
+					
 					//Matrix Translation and size
-					//float3 pos = float3(matrix[12], matrix[13], matrix[14]);
+
 
 
 					float final_pos[3];
@@ -210,9 +226,9 @@ void ModulePhysics3D::UpdatePhysics()
 							updateoncecollider = true;
 						}
 						user_offset = (*item)->owner->GetColliderCube()->center_offset;		
-						final_pos[0] = pos.x - user_offset[0];
-						final_pos[1] = pos.y - user_offset[1];
-						final_pos[2] = pos.z - user_offset[2];
+						final_pos[0] = pos.x ;//- user_offset[0];
+						final_pos[1] = pos.y ;//- user_offset[1];
+						final_pos[2] = pos.z ;//- user_offset[2];
 					}
 					else
 					{
@@ -266,6 +282,7 @@ bool ModulePhysics3D::CleanUp()
 {
 	CONSOLE_LOG_INFO("Destroying 3D Physics simulation");
 	// Remove from the world all collision bodies
+	
 	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
 	{
 		btCollisionObject* obj = world->getCollisionObjectArray()[i];

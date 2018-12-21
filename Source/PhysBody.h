@@ -56,6 +56,7 @@ public:
 	bool const_rz;
 
 	float3 dimensions = { 1,1,1 };
+	float3* initial_pos = nullptr;
 	bool dead = false;
 	GameObject* owner = nullptr;
 	Primitive* primitive_ptr = nullptr;
