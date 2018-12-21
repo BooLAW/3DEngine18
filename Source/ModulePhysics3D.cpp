@@ -172,7 +172,7 @@ void ModulePhysics3D::UpdatePhysics()
 	}
 
 	for (int i = 0; i < primitive_list.size(); i++)
-	{
+	{		
 		primitive_list[i]->Render();
 	}
 
@@ -200,21 +200,9 @@ void ModulePhysics3D::UpdatePhysics()
 					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
 					final_matrix4x4.Transpose();
 
-					float3 pos = float3(0, 0, 0);
-					if ((*item)->initial_pos == nullptr)
-					{
-						(*item)->initial_pos = new float3( matrix[12], matrix[13], matrix[14] );
-					}
-					else
-					{
-						float3 local_pos = { matrix[12], matrix[13], matrix[14] };
-						pos = local_pos - *(*item)->initial_pos;
-					}
-					
+					float3 pos = { matrix[12], matrix[13], matrix[14] };
+										
 					//Matrix Translation and size
-
-
-
 					float final_pos[3];
 					float* user_offset = new float[3];
 
@@ -226,9 +214,9 @@ void ModulePhysics3D::UpdatePhysics()
 							updateoncecollider = true;
 						}
 						user_offset = (*item)->owner->GetColliderCube()->center_offset;		
-						final_pos[0] = pos.x ;//- user_offset[0];
-						final_pos[1] = pos.y ;//- user_offset[1];
-						final_pos[2] = pos.z ;//- user_offset[2];
+						final_pos[0] = pos.x - user_offset[0];
+						final_pos[1] = pos.y - user_offset[1];
+						final_pos[2] = pos.z - user_offset[2];
 					}
 					else
 					{
@@ -261,6 +249,10 @@ void ModulePhysics3D::UpdatePhysics()
 		int i2 = 0;
 		for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
 		{
+			if ((*item2)->has_primitive_render == false)
+			{
+				primitive_list.erase(item2);
+			}
 			(*item2)->transform.Set(matrix_list[i2]);
 			i2++;
 		}
@@ -364,7 +356,7 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			//Store Position of GO and set it to primitive
 			float* transform_matrix = new float[16];
 			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
-			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
+			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);			
 			
 			//Remove Rigid Body
 			world->removeRigidBody(body_to_switch->GetRigidBody());		
@@ -499,6 +491,8 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 	if (isCollider)
 	{
 		pbody->has_primitive_render = false;
+		primitive_list.push_back((Primitive*)&sphere);
+		pbody->primitive_ptr = &sphere;
 	}
 	else
 	{
