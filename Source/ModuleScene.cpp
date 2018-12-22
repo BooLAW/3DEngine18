@@ -76,7 +76,6 @@ bool ModuleScene::Start()
 	//Creating Editor Camera
 	App->camera->StartEditorCamera();
 	//Init Controller Settings
-	settings = new ControllerSettings();
 	//Creating Game Camera
 	NewMainCamera();
 
@@ -1195,7 +1194,14 @@ void ModuleScene::NewMainCamera()
 	App->camera->StartNewCamera();
 	//create Player Controller
 	CrateBasePlayerController(main_camera_go);
-	
+	settings = new ControllerSettings();
+
+	settings->bullet_radius = main_camera_go->GetController()->GetBulletRadius();
+	settings->jump_force = main_camera_go->GetController()->GetJumpForce();
+	settings->game_cam_speed = main_camera_go->GetController()->GetSpeed();
+	settings->sensitivity = main_camera_go->GetController()->GetPlayerSensitivity();
+	settings->force = main_camera_go->GetController()->GetShootForce();
+
 }
 
 void ModuleScene::MoveCurrentCamera()
@@ -1210,6 +1216,15 @@ void ModuleScene::MoveCurrentCamera()
 		if (main_camera_go->HasCam())
 			main_camera_go->GetCCamera()->Update();
 		App->physics->ShootSphere(settings->force,settings->bullet_radius);
+		if (update_settings)
+		{
+			settings->bullet_radius = main_camera_go->GetController()->GetBulletRadius();
+			settings->jump_force = main_camera_go->GetController()->GetJumpForce();
+			settings->game_cam_speed = main_camera_go->GetController()->GetSpeed();
+			settings->sensitivity = main_camera_go->GetController()->GetPlayerSensitivity();
+			settings->force = main_camera_go->GetController()->GetShootForce();
+			update_settings = false;
+		}
 	}
 }
 
@@ -1217,66 +1232,55 @@ void ModuleScene::MoveCameraGO()
 {
 	Camera* curr_cam = main_camera_go->GetCamera();
 	Transform* curr_trans = main_camera_go->comp_transform->GetTransform();
-	bool cam_moved = false;
+	
+	float3 newPos(0, 0, 0);
+
 	//Z
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		float new_z = curr_trans->pos.z;
-		new_z -= settings->game_cam_speed;
-		curr_trans->SetPosition(curr_trans->pos.x, curr_trans->pos.y, new_z);
-		cam_moved = true;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		float new_z = curr_trans->pos.z;
-		new_z += settings->game_cam_speed;
-		curr_trans->SetPosition(curr_trans->pos.x, curr_trans->pos.y, new_z);
-		cam_moved = true;
+		newPos += curr_cam->frustum.front * settings->game_cam_speed;
 
-	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		newPos -= curr_cam->frustum.front * settings->game_cam_speed;
+
+	
 	//X														
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		float new_x = curr_trans->pos.x;
-		new_x -= settings->game_cam_speed;
-		curr_trans->SetPosition(new_x, curr_trans->pos.y, curr_trans->pos.z);
-		cam_moved = true;
-
-	}
+		newPos -= curr_cam->frustum.WorldRight() * settings->game_cam_speed;
+	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		float new_x = curr_trans->pos.x;
-		new_x += settings->game_cam_speed;
-		curr_trans->SetPosition(new_x, curr_trans->pos.y, curr_trans->pos.z);
-		cam_moved = true;
+		newPos += curr_cam->frustum.WorldRight() * settings->game_cam_speed;
 
-	}
+	
 	//JUMP
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		float new_y = curr_trans->pos.y;
-		new_y += settings->jump_force;
-		curr_trans->SetPosition(curr_trans->pos.x, new_y, curr_trans->pos.z);
-		cam_moved = true;
-	}
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+		newPos.y += settings->jump_force;
+
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
+		newPos.y -= settings->jump_force;
+
 	
-	if (cam_moved || main_camera_go->GetFirstUpdate())
-	{
-		main_camera_go->comp_transform->UpdateTransformValues();
-		if (main_camera_go->HasPhysBody())
+
+		if (!newPos.IsZero() || main_camera_go->GetFirstUpdate())
 		{
-			if (main_camera_go->HasColliderSphere())
+			curr_cam->frustum.Translate(newPos);
+			curr_trans->SetPosition(curr_cam->frustum.pos.x, curr_cam->frustum.pos.y, curr_cam->frustum.pos.z);
+			if (main_camera_go->HasPhysBody())
 			{
-				main_camera_go->GetColliderSphere()->Update();
+				if (main_camera_go->HasColliderSphere())
+				{
+					main_camera_go->GetColliderSphere()->Update();
+				}
+				if (main_camera_go->HasColliderCube())
+				{
+					main_camera_go->GetColliderCube()->Update();
+				}
+
 			}
-			if (main_camera_go->HasColliderCube())
-			{
-				main_camera_go->GetColliderCube()->Update();
-			}
-	
+			main_camera_go->SetFirstUpdate(false);
 		}
-		main_camera_go->SetFirstUpdate(false);
-	}
+
+		
+	
 	
 
 }
@@ -1285,7 +1289,7 @@ void ModuleScene::RotateCameraGO()
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
-		main_camera_go->GetCamera()->HandleMouse(settings->sensitivity);
+		main_camera_go->GetCamera()->HandleMouse(settings->sensitivity*0.1);
 		main_camera_go->GetCCamera()->user_rotate = true;
 	}
 	

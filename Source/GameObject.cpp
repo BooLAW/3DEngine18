@@ -3,6 +3,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+#include "ComponentPlayerController.h"
 #include "Material.h"
 #include "OpenGL.h"
 #include "DebugDraw.h"
@@ -408,6 +409,16 @@ void GameObject::SetParentUID(UINT32 id)
 void GameObject::SetUID(UINT32 id)
 {
 	uid = id;
+}
+
+ComponentPlayerController * GameObject::GetController()
+{
+
+	ComponentPlayerController* aux = (ComponentPlayerController*)this->GetComponent(ComponentType::CONTROLLER);
+	if (aux != nullptr)
+		return aux;
+
+	return nullptr;
 }
 
 Camera * GameObject::GetCamera()
