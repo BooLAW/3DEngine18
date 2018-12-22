@@ -44,6 +44,18 @@ ComponentColliderCube::ComponentColliderCube(GameObject * owner)
 	Update();
 }
 
+ComponentColliderCube::ComponentColliderCube(GameObject * owner, PCube * pcube)
+{
+	this->SetOwner(owner);
+	this->SetActive(true);
+	SetName("Component Collider");
+	type = ComponentType::COLLIDERCUBE;
+	if (owner->physbody == nullptr)
+	{
+		new PhysBody(owner, pcube);
+	}
+}
+
 ComponentColliderCube::~ComponentColliderCube()
 {
 }
@@ -116,12 +128,9 @@ void ComponentColliderCube::DrawInspectorInfo()
 	{
 		btVector3 scaling = { dimensions_component.x,dimensions_component.y,dimensions_component.z };
 		owner->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(scaling);
-		owner->physbody->primitive_ptr->transform.SetCol3(3, float3(2,2,2));
+		owner->physbody->primitive_ptr->scale = dimensions_component;
 		
 	}
-
-
-
 }
 
 void ComponentColliderCube::UpdateTransform()

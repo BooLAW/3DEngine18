@@ -5,11 +5,12 @@
 
 class GameObject;
 class PhysBody;
-
+class PCube;
 class ComponentColliderCube : public Component
 {
 public:
 	ComponentColliderCube(GameObject* owner);
+	ComponentColliderCube(GameObject* owner,PCube* pcube);
 	virtual ~ComponentColliderCube();
 	
 	bool Update()override;
@@ -24,6 +25,7 @@ public:
 	float center_offset[3] = { 0.0f,0.0f,0.0f };
 	float3 dimensions_component = { 1,1,1 };
 	float final_pmatrix[16];
+	float3 cmp_scaling;
 
 };
 

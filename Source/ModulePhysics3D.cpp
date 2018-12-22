@@ -145,12 +145,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 
 void ModulePhysics3D::UpdatePhysics()
 {
-	static float step = 0;
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_UP)
-	{
-		step = 1;
-	}
-	world->stepSimulation(App->dt, step);
+	world->stepSimulation(App->dt, App->time_manager->time_scale);
 	std::vector<float*> matrix_list;
 	float *matrix = new float[16];
 	int i = 0;
@@ -160,23 +155,8 @@ void ModulePhysics3D::UpdatePhysics()
 		{
 			(*item)->GetTransform(matrix);
 			if ((*item)->primitive_ptr != nullptr)
-			{
-				//if ((*item)->owner->HasColliderCube())
-				//{
-				//	matrix[0] = (*item)->owner->GetColliderCube()->dimensions_component.x;
-				//	matrix[5] = (*item)->owner->GetColliderCube()->dimensions_component.y;
-				//	matrix[10] = (*item)->owner->GetColliderCube()->dimensions_component.z;
-				//}
-				//else if ((*item)->owner->HasColliderSphere())
-				//{
-				//	matrix[0] = (*item)->owner->GetColliderSphere()->radius;
-				//	matrix[5] = (*item)->owner->GetColliderSphere()->radius;
-				//	matrix[10] = (*item)->owner->GetColliderSphere()->radius;
-				//}
-				
-				(*item)->primitive_ptr->transform.Set(matrix);
-				
-				
+			{				
+				(*item)->primitive_ptr->transform.Set(matrix);							
 			}						
 			i++;
 		}	
@@ -447,8 +427,11 @@ std::list<float2> ModulePhysics3D::GetCubeCollisions()
 
 PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 {
+
+	float3 total_dimension = cube.dimensions; 
+	total_dimension.Add(cube.scale);
 	PCube aux = cube;
-	btCollisionShape* colShape = new btBoxShape(btVector3(cube.dimensions.x*0.5f, cube.dimensions.y*0.5f, cube.dimensions.z*0.5f));
+	btCollisionShape* colShape = new btBoxShape(btVector3(total_dimension.x, total_dimension.y, total_dimension.z));
 	shapes.push_back(colShape);
 
 	btTransform startTransform;

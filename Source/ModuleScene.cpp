@@ -755,6 +755,9 @@ void ModuleScene::LoadScene(const char* path)
 
 						float pcubematrix[16] = {};
 						float offset[3] = { 0,0,0 };
+						float3 dimension = { 0,0,0 };
+						float3 dimension_scale = { 0,0,0 };
+						PCube* aux_cube = nullptr;						
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
 							if (m_cmp_itr2->value.IsArray())
@@ -778,10 +781,38 @@ void ModuleScene::LoadScene(const char* path)
 							{
 								offset[2] = m_cmp_itr2->value.GetFloat();
 							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "dimensionx") == 0)
+							{
+								dimension.x = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "dimensiony") == 0)
+							{
+								dimension.y = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "dimensionz") == 0)
+							{
+								dimension.z = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "scalex") == 0)
+							{
+								dimension_scale.x = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "scaley") == 0)
+							{
+								dimension_scale.y = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "scalez") == 0)
+							{
+								dimension_scale.z = m_cmp_itr2->value.GetFloat();
+							}
 							else
 							{
-								ComponentColliderCube* aux_comp = new ComponentColliderCube(new_go);
-								
+								aux_cube = new PCube();
+								aux_cube->dimensions = dimension;								
+								ComponentColliderCube* aux_comp = new ComponentColliderCube(new_go, aux_cube);
+								aux_comp->dimensions_component = dimension_scale;
+								btVector3 aux_vec3(dimension_scale.x, dimension_scale.y, dimension_scale.z);
+								new_go->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(aux_vec3);
 								
 								aux_comp->center_offset[0] = offset[0];
 								aux_comp->center_offset[1] = offset[1];
@@ -799,6 +830,7 @@ void ModuleScene::LoadScene(const char* path)
 
 								new_go->PushComponent((Component*)aux_comp);
 								new_go->physbody->SetTransform(pcubematrix);
+								new_go->physbody->primitive_ptr->scale = dimension_scale;
 							}
 						}
 					}
@@ -996,10 +1028,22 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 					obj_ptransform_collider.PushBack(phy_matrix[i], allocator);
 				}
 
-				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider, allocator);				
+				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider, allocator);		
+
 				obj_comp_collider.AddMember("offsetx", com_collider_aux->center_offset[0], allocator);
 				obj_comp_collider.AddMember("offsety", com_collider_aux->center_offset[1], allocator);
 				obj_comp_collider.AddMember("offsetz", com_collider_aux->center_offset[2], allocator);
+
+				PCube* aux_cube_data = (PCube*)go->physbody->primitive_ptr;
+				
+				obj_comp_collider.AddMember("dimensionx", aux_cube_data->dimensions.x, allocator);
+				obj_comp_collider.AddMember("dimensiony", aux_cube_data->dimensions.y, allocator);
+				obj_comp_collider.AddMember("dimensionz", aux_cube_data->dimensions.z, allocator);
+
+				obj_comp_collider.AddMember("scalex", aux_cube_data->scale.x, allocator);
+				obj_comp_collider.AddMember("scaley", aux_cube_data->scale.y, allocator);
+				obj_comp_collider.AddMember("scalez", aux_cube_data->scale.z, allocator);
+
 				obj_comp_collider.AddMember("render", aux_phybody->primitive_ptr->has_primitive_render, allocator);
 				//shall never have rigid body
 

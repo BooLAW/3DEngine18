@@ -126,9 +126,10 @@ void PCube::InnerRender() const
 	float3 inner_scale = { transform[0][3],transform[1][3],transform[2][3] };
 	
 	//draw direct mode cube
-	float sx = dimensions.x * 0.5f ;
-	float sy = dimensions.y * 0.5f ;
-	float sz = dimensions.z * 0.5f ;
+	float sx = dimensions.x * scale.x;
+	float sy = dimensions.y * scale.y;
+	float sz = dimensions.z * scale.z;
+
 	glLineWidth(5.0f);
 	glBegin(GL_QUADS);
 
