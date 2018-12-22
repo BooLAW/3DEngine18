@@ -738,6 +738,7 @@ void ModuleScene::LoadScene(const char* path)
 								if (m_cmp_itr2->value.IsBool())
 								{
 									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
+									
 								}
 								else
 								{
@@ -745,7 +746,7 @@ void ModuleScene::LoadScene(const char* path)
 								}
 								new_go->PushComponent((Component*)aux_comp);								
 								new_go->physbody->SetTransform(pspherematrix);
-								
+								new_go->physbody->primitive_ptr->scale = { radius_scale,radius_scale,radius_scale };
 							}
 						}
 					}
