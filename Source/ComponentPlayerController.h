@@ -8,6 +8,7 @@ class ComponentPlayerController : public Component
 public:
 	ComponentPlayerController();
 	ComponentPlayerController(GameObject* owner);
+	ComponentPlayerController(GameObject* owner,float* values);
 
 	virtual ~ComponentPlayerController();
 	void DrawInspectorInfo()override;
@@ -23,6 +24,8 @@ public:
 
 	float GetPlayerSensitivity()const;
 	void SetPlayerSensitivity(float sens);
+
+	float GetJumpForce()const;	
 
 
 private:

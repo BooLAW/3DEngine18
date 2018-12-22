@@ -23,6 +23,17 @@ ComponentPlayerController::ComponentPlayerController(GameObject* owner)
 	jump_force = 10.0f;
 }
 
+ComponentPlayerController::ComponentPlayerController(GameObject * owner, float* values)
+{
+	type = CONTROLLER;
+	SetOwner(owner);
+	speed = values[0];
+	sensitivity = values[1];
+	bullet_radius = values[2];
+	shoot_force = values[3];
+	jump_force = values[4];
+}
+
 ComponentPlayerController::~ComponentPlayerController()
 {
 }
@@ -47,7 +58,7 @@ void ComponentPlayerController::SetSpeed(float speed)
 {
 	if (speed < 0)
 	{
-		CONSOLE_LOG_WARNING("Can'tset a negativy speed to player controlelr");
+		CONSOLE_LOG_WARNING("Can't set a negativy speed to player controlelr");
 		return;
 	}
 		this->speed = speed;
@@ -87,4 +98,9 @@ void ComponentPlayerController::SetPlayerSensitivity(float sens)
 	if (sens <= 0)
 		return;
 	sensitivity = sens;
+}
+
+float ComponentPlayerController::GetJumpForce() const
+{
+	return jump_force;
 }

@@ -835,8 +835,7 @@ void ModuleScene::LoadScene(const char* path)
 						}
 					}
 					else if (strcmp(m_cmp_itr->name.GetString(), "RIGIDBODY") == 0)
-					{
-						;
+					{						
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
 							if (m_cmp_itr2->value.IsFloat())
@@ -848,6 +847,36 @@ void ModuleScene::LoadScene(const char* path)
 								new_go->physbody->ActivateGravity(m_cmp_itr2->value.GetBool());
 								ComponentRigidBody* aux_comp = new ComponentRigidBody(new_go);
 								new_go->PushComponent((Component*)aux_comp);								
+							}
+						}
+					}
+					else if (strcmp(m_cmp_itr->name.GetString(), "CONTROLLER") == 0)
+					{						 
+						float* values = new float[5];
+						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
+						{
+							if (strcmp(m_cmp_itr2->name.GetString(), "speed") == 0)
+							{
+								values[0] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (strcmp(m_cmp_itr2->name.GetString(), "shoot_force") == 0)
+							{
+								values[1] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (strcmp(m_cmp_itr2->name.GetString(), "jump_force") == 0)
+							{
+								values[2] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (strcmp(m_cmp_itr2->name.GetString(), "bullet_radius") == 0)
+							{
+								values[3] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (strcmp(m_cmp_itr2->name.GetString(), "sensitivity") == 0)
+							{
+								values[4] = m_cmp_itr2->value.GetFloat();
+								ComponentPlayerController* aux_cmp = new ComponentPlayerController(new_go, values);
+								new_go->PushComponent((Component*)aux_cmp);
+
 							}
 						}
 					}
@@ -1064,6 +1093,22 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 
 				//Adding data to the component
 				arr_comp.AddMember("RIGIDBODY", obj_comp_rigidbody, allocator);
+				data_go.AddMember(v_comp_name, arr_comp, allocator);
+				break;
+			}
+			case CONTROLLER:
+			{
+				Value obj_comp_playercontroller(kObjectType);
+				ComponentPlayerController* com_rigidbody_aux = (ComponentPlayerController*)go->components_list[i];
+				
+				obj_comp_playercontroller.AddMember("speed", com_rigidbody_aux->GetSpeed(), allocator);
+				obj_comp_playercontroller.AddMember("shoot_force", com_rigidbody_aux->GetShootForce(), allocator);
+				obj_comp_playercontroller.AddMember("jump_force", com_rigidbody_aux->GetJumpForce(), allocator);
+				obj_comp_playercontroller.AddMember("bullet_radius", com_rigidbody_aux->GetBulletRadius(), allocator);
+				obj_comp_playercontroller.AddMember("sensitivity", com_rigidbody_aux->GetPlayerSensitivity(), allocator);
+
+				//Adding data to the component
+				arr_comp.AddMember("CONTROLLER", obj_comp_playercontroller, allocator);
 				data_go.AddMember(v_comp_name, arr_comp, allocator);
 				break;
 			}
