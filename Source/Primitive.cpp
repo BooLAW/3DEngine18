@@ -122,13 +122,11 @@ PCube::PCube(float x, float y, float z) :Primitive(), dimensions(x, y, z)
 }
 
 void PCube::InnerRender() const
-{
-	float3 inner_scale = { transform[0][3],transform[1][3],transform[2][3] };
-	
+{	
 	//draw direct mode cube
-	float sx = dimensions.x * scale.x;
-	float sy = dimensions.y * scale.y;
-	float sz = dimensions.z * scale.z;
+	float sx = dimensions.x * scale.x * 0.25f;
+	float sy = dimensions.y * scale.y * 0.25f;
+	float sz = dimensions.z * scale.z * 0.25f;
 
 	glLineWidth(5.0f);
 	glBegin(GL_QUADS);

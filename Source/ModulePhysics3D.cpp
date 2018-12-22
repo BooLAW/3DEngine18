@@ -430,6 +430,7 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 
 	float3 total_dimension = cube.dimensions; 
 	total_dimension.Add(cube.scale);
+	total_dimension *= 0.25f;
 	PCube aux = cube;
 	btCollisionShape* colShape = new btBoxShape(btVector3(total_dimension.x, total_dimension.y, total_dimension.z));
 	shapes.push_back(colShape);

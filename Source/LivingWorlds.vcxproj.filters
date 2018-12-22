@@ -97,9 +97,6 @@
     <Filter Include="Sources\External Tools\Dirent">
       <UniqueIdentifier>{8f1c7c98-47e2-47c8-8399-55b59c5bdf17}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\GameObjects\Components\PhysBody">
-      <UniqueIdentifier>{73061ebe-34a2-4acb-adcc-b905f1b70dd2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Modules\GameObjects\BaseClasses\PhysBody">
       <UniqueIdentifier>{6946de2b-72ef-48af-a400-c71f55e598bc}</UniqueIdentifier>
     </Filter>
@@ -114,6 +111,9 @@
     </Filter>
     <Filter Include="Sources\Modules\GameObjects\Components\Constraint">
       <UniqueIdentifier>{4c11646f-1d86-476c-8424-5abe6562126e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\RigidBody">
+      <UniqueIdentifier>{73061ebe-34a2-4acb-adcc-b905f1b70dd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -670,7 +670,7 @@
       <Filter>Sources\Modules\GameObjects\BaseClasses\PhysBody</Filter>
     </ClInclude>
     <ClInclude Include="ComponentRigidBody.h">
-      <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
+      <Filter>Sources\Modules\GameObjects\Components\RigidBody</Filter>
     </ClInclude>
     <ClInclude Include="ComponentPlayerController.h">
       <Filter>Sources\Modules\GameObjects\Components\PlayerController</Filter>
@@ -924,7 +924,7 @@
       <Filter>Sources\Modules\GameObjects\BaseClasses\PhysBody</Filter>
     </ClCompile>
     <ClCompile Include="ComponentRigidBody.cpp">
-      <Filter>Sources\Modules\GameObjects\Components\PhysBody</Filter>
+      <Filter>Sources\Modules\GameObjects\Components\RigidBody</Filter>
     </ClCompile>
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Sources\Modules\GameObjects\Components\Camera</Filter>

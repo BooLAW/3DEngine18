@@ -32,7 +32,7 @@ public:
 	Color color;
 	float4x4 transform;
 	bool axis, wire;
-	float mass = 0;
+	float mass = 1;
 	float3 scale = { 1,1,1 };
 	bool has_primitive_render = true;
 
