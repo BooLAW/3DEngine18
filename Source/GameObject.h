@@ -14,6 +14,7 @@ class ComponentRigidBody;
 class ComponentColliderSphere;
 class ComponentColliderCube;
 class ComponentConstraint;
+class ComponentPlayerController;
 class Camera;
 
 class GameObject
@@ -80,7 +81,7 @@ public:
 	ComponentColliderSphere* GetColliderSphere();
 	ComponentColliderCube* GetColliderCube();
 	ComponentConstraint* GetConstraint();
-
+	ComponentPlayerController* GetController();
 	Camera* GetCamera();
 	Material* GetMaterial();
 	void RecursiveUpdateTransformChilds();

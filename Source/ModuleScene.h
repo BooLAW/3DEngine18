@@ -87,7 +87,7 @@ public:
 	PCube cube2;
 	
 	ControllerSettings* settings;
-
+	bool update_settings;
 	GameObject* scene_root = nullptr;
 	GameObject* imported_go = nullptr;
 	GameObject* main_camera_go = nullptr;
@@ -97,7 +97,6 @@ public:
 	std::string folder_path;
 	
 	//PLAYER CONTROLLER
-	
 	
 	int id_new_go = 0;
 	char scenewriteBuffer[10000];

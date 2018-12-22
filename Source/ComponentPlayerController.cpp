@@ -1,5 +1,7 @@
 #include "ComponentPlayerController.h"
 #include "ModuleSceneImGui.h"
+#include "Application.h"
+#include "ModuleScene.h"
 
 
 
@@ -40,13 +42,21 @@ ComponentPlayerController::~ComponentPlayerController()
 
 void ComponentPlayerController::DrawInspectorInfo()
 {
-	ImGui::InputFloat("Speed", &speed);
+	if (ImGui::SliderFloat("Speed", &speed,5,30))
+		App->scene_intro->update_settings = true;
 
-	ImGui::InputFloat("Sensitivity", &sensitivity);
+	if (ImGui::SliderFloat("Sensitivity", &sensitivity,1,10))
+		App->scene_intro->update_settings = true;
 
-	ImGui::InputFloat("Bullet Radius", &bullet_radius);
+	if (ImGui::SliderFloat("Bullet Radius", &bullet_radius,1,10))
+		App->scene_intro->update_settings = true;
 
-	ImGui::InputFloat("Shoot Force", &shoot_force);
+	if(ImGui::SliderFloat("Shoot Force", &shoot_force,5,50))
+		App->scene_intro->update_settings = true;
+
+	if (ImGui::SliderFloat("Jump Force", &jump_force,5,50))
+		App->scene_intro->update_settings = true;
+
 }
 
 float ComponentPlayerController::GetSpeed() const
