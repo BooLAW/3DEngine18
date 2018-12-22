@@ -692,8 +692,10 @@ void ModuleScene::LoadScene(const char* path)
 					else if (strcmp(m_cmp_itr->name.GetString(), "COLLIDERSPHERE") == 0)
 					{
 						float pspherematrix[16] = {};
+						float offset[3] = { 0,0,0 };
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
+							PSphere aux_sphere;
 							if (m_cmp_itr2->value.IsArray())
 							{
 								int i = 0;
@@ -703,9 +705,34 @@ void ModuleScene::LoadScene(const char* path)
 									i++;
 								}
 							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "offsetx") == 0)
+							{
+								offset[0] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "offsety") == 0)
+							{
+								offset[1] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "offsetz") == 0)
+							{
+								offset[2] = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "radius") == 0)
+							{
+								//aux_sphere.radius = m_cmp_itr2->value.GetFloat();
+							}
 							else
 							{
 								ComponentColliderSphere* aux_comp = new ComponentColliderSphere(new_go);
+								if (m_cmp_itr2->value.IsBool())
+								{
+									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
+								}
+								else
+								{
+									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = false;
+								}
+
 								new_go->PushComponent((Component*)aux_comp);
 								new_go->physbody->SetTransform(pspherematrix);
 							}
@@ -718,7 +745,6 @@ void ModuleScene::LoadScene(const char* path)
 						float offset[3] = { 0,0,0 };
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
-
 							if (m_cmp_itr2->value.IsArray())
 							{
 								int i = 0;
@@ -743,10 +769,12 @@ void ModuleScene::LoadScene(const char* path)
 							else
 							{
 								ComponentColliderCube* aux_comp = new ComponentColliderCube(new_go);
-
+								
+								
 								aux_comp->center_offset[0] = offset[0];
 								aux_comp->center_offset[1] = offset[1];
-								aux_comp->center_offset[2] = offset[2];
+								aux_comp->center_offset[2] = offset[2];		
+				
 								if (m_cmp_itr2->value.IsBool())
 								{
 									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
@@ -925,6 +953,11 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				}
 				
 				obj_comp_collider.AddMember("PTRANSFORM", obj_ptransform_collider,  allocator);
+				obj_comp_collider.AddMember("offsetx", com_collider_aux->center_offset[0], allocator);
+				obj_comp_collider.AddMember("offsety", com_collider_aux->center_offset[1], allocator);
+				obj_comp_collider.AddMember("offsetz", com_collider_aux->center_offset[2], allocator);
+
+				obj_comp_collider.AddMember("radius", com_collider_aux->radius, allocator);				
 				obj_comp_collider.AddMember("render", aux_phybody->GetRender(), allocator);
 				//shall never have rigid body
 

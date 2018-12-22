@@ -54,7 +54,7 @@ void PanelHierarchy::Draw()
 				else if (items[n] == "Sphere")
 				{
 					PSphere* test = new PSphere();
-					test->radius = 3;	
+					test->radius = 1;	
 					test->isCollider = false;
 					test->has_primitive_render = true;
 

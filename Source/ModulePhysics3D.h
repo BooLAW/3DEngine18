@@ -93,11 +93,6 @@ private:
 	std::vector<AABB> pcube_list;
 	std::vector<PCube*> cube_list;
 
-
-
-
-
-
 	//physics
 	btDefaultCollisionConfiguration*	collision_conf;
 	btCollisionDispatcher*				dispatcher;

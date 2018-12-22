@@ -161,18 +161,18 @@ void ModulePhysics3D::UpdatePhysics()
 			(*item)->GetTransform(matrix);
 			if ((*item)->primitive_ptr != nullptr)
 			{
-				if ((*item)->owner->HasColliderCube())
-				{
-					matrix[0] = (*item)->owner->GetColliderCube()->dimensions_component.x;
-					matrix[5] = (*item)->owner->GetColliderCube()->dimensions_component.y;
-					matrix[10] = (*item)->owner->GetColliderCube()->dimensions_component.z;
-				}
-				else if ((*item)->owner->HasColliderSphere())
-				{
-					matrix[0] = (*item)->owner->GetColliderSphere()->radius;
-					matrix[5] = (*item)->owner->GetColliderSphere()->radius;
-					matrix[10] = (*item)->owner->GetColliderSphere()->radius;
-				}
+				//if ((*item)->owner->HasColliderCube())
+				//{
+				//	matrix[0] = (*item)->owner->GetColliderCube()->dimensions_component.x;
+				//	matrix[5] = (*item)->owner->GetColliderCube()->dimensions_component.y;
+				//	matrix[10] = (*item)->owner->GetColliderCube()->dimensions_component.z;
+				//}
+				//else if ((*item)->owner->HasColliderSphere())
+				//{
+				//	matrix[0] = (*item)->owner->GetColliderSphere()->radius;
+				//	matrix[5] = (*item)->owner->GetColliderSphere()->radius;
+				//	matrix[10] = (*item)->owner->GetColliderSphere()->radius;
+				//}
 				
 				(*item)->primitive_ptr->transform.Set(matrix);
 				
@@ -186,10 +186,14 @@ void ModulePhysics3D::UpdatePhysics()
 		}
 	}
 
-	for (int i = 0; i < primitive_list.size(); i++)
-	{		
-		primitive_list[i]->Render();
+	if (primitive_list.size() > 0)
+	{
+		for (int i = 0; i < primitive_list.size(); i++)
+		{
+			primitive_list[i]->Render();
+		}
 	}
+	
 
 	if (App->state == stopped)
 	{
@@ -223,12 +227,14 @@ void ModulePhysics3D::UpdatePhysics()
 
 					if ((*item)->owner->HasColliderCube())
 					{
-						if (updateoncecollider == false)
-						{
-							(*item)->owner->GetColliderCube()->Update();
-							updateoncecollider = true;
-						}
 						user_offset = (*item)->owner->GetColliderCube()->center_offset;		
+						final_pos[0] = pos.x - user_offset[0];
+						final_pos[1] = pos.y - user_offset[1];
+						final_pos[2] = pos.z - user_offset[2];
+					}
+					if ((*item)->owner->HasColliderSphere())
+					{
+						user_offset = (*item)->owner->GetColliderSphere()->center_offset;
 						final_pos[0] = pos.x - user_offset[0];
 						final_pos[1] = pos.y - user_offset[1];
 						final_pos[2] = pos.z - user_offset[2];
@@ -385,16 +391,22 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 		}
 		case 8://Sphere
 		{
-			PSphere* sphere = (PSphere*)body_to_switch->primitive_ptr;
-			body_to_switch->dead = true;
-			world->removeRigidBody(body_to_switch->GetRigidBody());
-
+			//Store Primitive
+			PSphere* sphere = new PSphere();
+			sphere = (PSphere*)body_to_switch->primitive_ptr;
+			
+			//Store Position of GO and set it to primitive
 			float* transform_matrix = new float[16];
 			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
 			sphere->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
 
+			//Remove Rigid Body
+			world->removeRigidBody(body_to_switch->GetRigidBody());
+			
+			//Create New Rigid Body and link it to GO
 			body_to_switch->owner->physbody = AddBody(*sphere, sphere->mass);
 			body_to_switch->owner->physbody->owner = body_to_switch->owner;
+
 			break;
 		}
 	}
@@ -504,22 +516,17 @@ PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider
 		//The spawn position is changed on the Start() method of this module
 	}
 
-	if (isCollider)
-	{
-		pbody->has_primitive_render = false;
-		primitive_list.push_back((Primitive*)&sphere);
-		pbody->primitive_ptr = &sphere;
-	}
-	else
-	{
-		pbody->has_primitive_render = true;
-		primitive_list.push_back((Primitive*)&sphere);
-		pbody->primitive_ptr = &sphere;
-	}
-
+	pbody->use_gravity = true;
+	pbody->dimensions = { sphere.radius,sphere.radius,sphere.radius };
+	pbody->primitive_ptr = &sphere;
 
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
+
+	if (sphere.has_primitive_render)
+	{
+		primitive_list.push_back((Primitive*)&sphere);
+	}
 
 	return pbody;
 }

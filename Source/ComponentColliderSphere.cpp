@@ -20,11 +20,22 @@ ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 	type = ComponentType::COLLIDERSPHERE;
 	PSphere* aux_sphere = new PSphere();
 
-	aux_sphere->radius = 5;
+	float3 diagonal_aabb = { 5,5,5 };
+	float3 position = { 0,0,0 };
+
+	if (owner->HasMesh())
+	{
+		aux_sphere->has_primitive_render = false;
+		AABB aux_bb = owner->GetBB();
+		position = aux_bb.CenterPoint();
+		aux_sphere->radius = aux_bb.maxPoint.y;
+	}
+	
+	aux_sphere->SetPos(position.x, position.y, position.z);
 
 	if (owner->physbody == nullptr)
 	{
-		new PhysBody(owner,aux_sphere);
+		new PhysBody(owner, aux_sphere);
 	}
 
 	Update();
