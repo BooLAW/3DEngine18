@@ -572,14 +572,17 @@ void GameObject::ClearRelations()
 			App->physics->GetWorld()->removeRigidBody(childs_list[i]->physbody->GetRigidBody());
 			childs_list[i]->physbody = nullptr;
 		}
+
 		if (childs_list[i]->HasChilds())
 			childs_list[i]->ClearRelations();
 		else
 		{
 			childs_list[i] = nullptr;
-			
+
 		}
+
 	}
+
 	childs_list.clear();
 }
 

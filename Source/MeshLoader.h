@@ -25,8 +25,7 @@ public:
 	bool SaveMeshBinary(const aiScene* scene, const aiNode* node,int num_mesh, const char* path);
 	Mesh* LoadMeshBinary(const char* file_path);
 	bool SaveMesh(const aiScene* scene, aiNode* node, const char* path);
-	bool SaveMeshJson(const aiScene* scene, aiNode* node, Document* config);
-	Mesh* LoadSceneMeshJson(std::string file_name,const aiNode* node);
+	bool SaveMeshJson(const aiScene* scene, aiNode* node, Document* config);	
 	long fsize(FILE *fp);
 	LineSegment CalculateTriangleNormal(float3 p1, float3 p2, float3 p3);
 	bool InitMesh(std::string lw_path, GameObject* go);
@@ -41,6 +40,7 @@ public:
 private:
 	bool InitMesh(const aiScene* scene, const aiNode* node, GameObject* parent,const char* path);
 	void Absolute(LineSegment& line);
+	
 
 	
 };

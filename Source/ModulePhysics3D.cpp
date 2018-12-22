@@ -157,7 +157,11 @@ void ModulePhysics3D::UpdatePhysics()
 			if ((*item)->primitive_ptr != nullptr)
 			{				
 				(*item)->primitive_ptr->transform.Set(matrix);							
-			}						
+			}	
+			if ((*item)->mesh_ptr != nullptr)
+			{
+				(*item)->mesh_ptr->position.Set(matrix[12], matrix[13], matrix[14]);
+			}
 			i++;
 		}	
 		if (App->state == stopped)
@@ -178,6 +182,11 @@ void ModulePhysics3D::UpdatePhysics()
 	if (App->state == stopped)
 	{
 		updateoncecollider = false;
+	}
+
+	if (bodies.size() > 2)
+	{
+		CONSOLE_LOG_DEBUG("HOLA");
 	}
 
 	if (App->state == playing)
@@ -215,7 +224,7 @@ void ModulePhysics3D::UpdatePhysics()
 					}
 
 					//Matrix Translation and size
-					float final_pos[3];
+					float* final_pos = new float[3];
 
 					if ((*item)->owner->HasColliderCube())
 					{						
@@ -327,6 +336,40 @@ bool ModulePhysics3D::CleanUp()
 	return true;
 }
 
+void ModulePhysics3D::CleanUpWorld()
+{
+	// Remove from the world all collision bodies
+
+	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = world->getCollisionObjectArray()[i];
+		world->removeCollisionObject(obj);
+	}
+
+	for (std::vector<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); item++)
+	{
+		world->removeConstraint((*item));
+		delete (*item);
+	}
+
+	constraints.clear();
+
+	for (std::vector<btDefaultMotionState*>::iterator item = motions.begin(); item != motions.end(); item++)
+		delete (*item);
+
+	motions.clear();
+
+	for (std::vector<btCollisionShape*>::iterator item = shapes.begin(); item != shapes.end(); item++)
+		delete (*item);
+
+	shapes.clear();
+
+	for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+		delete (*item);
+
+	bodies.clear();
+}
+
 void ModulePhysics3D::CreateSphere(float3 position, int radius)
 {
 	PSphere new_sphere;
@@ -343,20 +386,20 @@ void ModulePhysics3D::CreateCube(float3 minPoint, float3 maxPoint)
 }
 
 void ModulePhysics3D::LoadPhysBodies()
-{
+{	
 	for (std::vector<GameObject*>::iterator item = App->scene_intro->go_list.begin(); item != App->scene_intro->go_list.end(); item++)
 	{
 		if ((*item)->HasRigidBody())
 		{
 			SwitchPhysBody((*item)->physbody);			
 		}
-	}
+	}	
 }
 
 void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 {
 	int shape_type = body_to_switch->GetRigidBody()->getCollisionShape()->getShapeType();
-
+		
 	switch (shape_type)
 	{
 		case 0://Cube
@@ -371,12 +414,19 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			
 			cube->SetPos(transform_matrix[3]+ body_to_switch->owner->GetColliderCube()->center_offset[0], transform_matrix[7]+ body_to_switch->owner->GetColliderCube()->center_offset[1], transform_matrix[11]+ body_to_switch->owner->GetColliderCube()->center_offset[2]);
 			
+			GameObject* owner_stored = body_to_switch->owner;
 			//Remove Rigid Body
-			world->removeRigidBody(body_to_switch->GetRigidBody());		
+			world->removeRigidBody(body_to_switch->GetRigidBody());	
+			body_to_switch->dead = true;
+			
 
-			//Create New Rigid Body and link it to GO
+			//Create New Rigid Body and link it to GO			
 			body_to_switch->owner->physbody = AddBody(*cube, cube->mass);
-			body_to_switch->owner->physbody->owner = body_to_switch->owner;
+			body_to_switch->owner->physbody->owner = owner_stored;
+			if (body_to_switch->owner->HasMesh())
+			{
+				body_to_switch->mesh_ptr = body_to_switch->owner->GetMesh();
+			}
 
 			break;
 		}
@@ -389,11 +439,29 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			//Store Position of GO and set it to primitive
 			float* transform_matrix = new float[16];
 			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
-			sphere->SetPos(transform_matrix[3] + body_to_switch->owner->GetColliderCube()->center_offset[0], transform_matrix[7] + body_to_switch->owner->GetColliderCube()->center_offset[1], transform_matrix[11] + body_to_switch->owner->GetColliderCube()->center_offset[2]);
+			
+			sphere->SetPos(transform_matrix[3] + body_to_switch->owner->GetColliderSphere()->center_offset[0], transform_matrix[7] + body_to_switch->owner->GetColliderSphere()->center_offset[1], transform_matrix[11] + body_to_switch->owner->GetColliderSphere()->center_offset[2]);
 
 			//Remove Rigid Body
 			world->removeRigidBody(body_to_switch->GetRigidBody());
-			
+
+			for (std::vector<btCollisionShape*>::iterator item = shapes.begin(); item != shapes.end(); item++)
+			{
+				if ((*item) == body_to_switch->GetRigidBody()->getCollisionShape())
+				{
+					delete (*item);
+				}
+			}
+
+			for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
+			{
+				if ((*item) == body_to_switch)
+				{
+					delete (*item);
+				}
+
+			}
+
 			//Create New Rigid Body and link it to GO
 			body_to_switch->owner->physbody = AddBody(*sphere, sphere->mass);
 			body_to_switch->owner->physbody->owner = body_to_switch->owner;

@@ -181,8 +181,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		glLoadMatrixf(App->camera->GetEditorCam()->GetViewMatrix());
 
 		//Game Objects
-		App->scene_intro->DrawGameObjects();
-		
+		App->scene_intro->DrawGameObjects();		
 	}
 
 	//Bind Game Cam
@@ -200,7 +199,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 		//Gambe Objects
 		App->scene_intro->DrawGameObjects();
+		
 	}
+
+
 
 	//ImGui
 	App->imgui->DrawImGui();

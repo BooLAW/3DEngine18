@@ -217,7 +217,23 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 			parent->AddChild(GO);
 
 		}
-		GO->SetName(node_name.c_str());
+		static int id_fbx;
+		std::string node_name_str = node_name;
+		for (std::vector<GameObject*>::iterator item = App->scene_intro->go_list.begin(); item != App->scene_intro->go_list.end(); item++)
+		{
+			if (strcmp((*item)->GetName(), node_name.c_str()) == 0)
+			{
+				node_name_str = node_name.c_str();
+				node_name_str.append(" (");
+				node_name_str += std::to_string(id_fbx);
+				node_name_str.append(")");
+				id_fbx++;
+
+			}
+			
+		}
+
+		GO->SetName(node_name_str.c_str());
 
 		//Transform
 		if (node != nullptr) {
