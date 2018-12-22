@@ -19,8 +19,7 @@ ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 	SetName("Component Collider");
 	type = ComponentType::COLLIDERSPHERE;
 	PSphere* aux_sphere = new PSphere();
-
-	float3 diagonal_aabb = { 5,5,5 };
+	
 	float3 position = { 0,0,0 };
 
 	if (owner->HasMesh())

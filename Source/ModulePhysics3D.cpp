@@ -192,6 +192,7 @@ void ModulePhysics3D::UpdatePhysics()
 					//Get matrix from bullet physics
 					float4x4 final_matrix4x4;
 					(*item)->GetTransform(matrix);
+					(*item)->owner->comp_transform->GetGlobalMatrix();
 
 					//Set Rotations
 					final_matrix4x4[0][0] = matrix[0];	final_matrix4x4[0][1] = matrix[1];	final_matrix4x4[0][2] = matrix[2];
@@ -199,25 +200,34 @@ void ModulePhysics3D::UpdatePhysics()
 					final_matrix4x4[2][0] = matrix[8];	final_matrix4x4[2][1] = matrix[9];	final_matrix4x4[2][2] = matrix[10];
 					final_matrix4x4.Transpose();
 
-					float3 pos = { matrix[12], matrix[13], matrix[14] };
-										
+					float3 pos = (*item)->owner->comp_transform->GetLocalMatrix().Col3(3);
+					static float3 init_local_pos;
+					if ((*item)->initial_pos == nullptr)
+					{
+						(*item)->initial_pos = new float3(matrix[12], matrix[13], matrix[14]);
+						init_local_pos = pos;
+					}
+					else
+					{
+						
+						float3 local_pos = { matrix[12], matrix[13], matrix[14] };
+						pos = init_local_pos + local_pos - *(*item)->initial_pos;
+					}
+
 					//Matrix Translation and size
 					float final_pos[3];
-					float* user_offset = new float[3];
 
 					if ((*item)->owner->HasColliderCube())
-					{
-						user_offset = (*item)->owner->GetColliderCube()->center_offset;		
-						final_pos[0] = pos.x - user_offset[0];
-						final_pos[1] = pos.y - user_offset[1];
-						final_pos[2] = pos.z - user_offset[2];
+					{						
+						final_pos[0] = pos.x;//- (*item)->owner->GetColliderCube()->center_offset[0];
+						final_pos[1] = pos.y;//- (*item)->owner->GetColliderCube()->center_offset[1];
+						final_pos[2] = pos.z;//- (*item)->owner->GetColliderCube()->center_offset[2];
 					}
 					if ((*item)->owner->HasColliderSphere())
-					{
-						user_offset = (*item)->owner->GetColliderSphere()->center_offset;
-						final_pos[0] = pos.x - user_offset[0];
-						final_pos[1] = pos.y - user_offset[1];
-						final_pos[2] = pos.z - user_offset[2];
+					{						
+						final_pos[0] = pos.x - (*item)->owner->GetColliderSphere()->center_offset[0];
+						final_pos[1] = pos.y - (*item)->owner->GetColliderSphere()->center_offset[1];
+						final_pos[2] = pos.z - (*item)->owner->GetColliderSphere()->center_offset[2];
 					}
 					else
 					{
@@ -358,7 +368,8 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			//Store Position of GO and set it to primitive
 			float* transform_matrix = new float[16];
 			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
-			cube->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);			
+			
+			cube->SetPos(transform_matrix[3]+ body_to_switch->owner->GetColliderCube()->center_offset[0], transform_matrix[7]+ body_to_switch->owner->GetColliderCube()->center_offset[1], transform_matrix[11]+ body_to_switch->owner->GetColliderCube()->center_offset[2]);
 			
 			//Remove Rigid Body
 			world->removeRigidBody(body_to_switch->GetRigidBody());		
@@ -378,7 +389,7 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 			//Store Position of GO and set it to primitive
 			float* transform_matrix = new float[16];
 			transform_matrix = body_to_switch->owner->comp_transform->trans_matrix_g.ptr();
-			sphere->SetPos(transform_matrix[3], transform_matrix[7], transform_matrix[11]);
+			sphere->SetPos(transform_matrix[3] + body_to_switch->owner->GetColliderCube()->center_offset[0], transform_matrix[7] + body_to_switch->owner->GetColliderCube()->center_offset[1], transform_matrix[11] + body_to_switch->owner->GetColliderCube()->center_offset[2]);
 
 			//Remove Rigid Body
 			world->removeRigidBody(body_to_switch->GetRigidBody());
@@ -429,7 +440,9 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 {
 
 	float3 total_dimension = cube.dimensions; 
-	total_dimension.Add(cube.scale);
+	total_dimension.x *= cube.scale.x;
+	total_dimension.y *= cube.scale.y;
+	total_dimension.z *= cube.scale.z;
 	total_dimension *= 0.25f;
 	PCube aux = cube;
 	btCollisionShape* colShape = new btBoxShape(btVector3(total_dimension.x, total_dimension.y, total_dimension.z));

@@ -13,7 +13,7 @@ PhysBody::PhysBody(btRigidBody* body) : body(body)
 
 PhysBody::PhysBody(GameObject * owner, PSphere * primitive)
 {
-	if (owner->HasChilds())
+	if (owner->HasChilds()||owner->HasCam()||owner->HasController())
 	{
 		primitive->has_primitive_render = false;
 	}
@@ -31,7 +31,7 @@ PhysBody::PhysBody(GameObject * owner, PSphere * primitive)
 
 PhysBody::PhysBody(GameObject * owner, PCube * primitive)
 {
-	if (owner->HasChilds())
+	if (owner->HasChilds() || owner->HasCam() || owner->HasController())
 	{
 		primitive->has_primitive_render = false;
 	}

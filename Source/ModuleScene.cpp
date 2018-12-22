@@ -812,6 +812,7 @@ void ModuleScene::LoadScene(const char* path)
 								ComponentColliderCube* aux_comp = new ComponentColliderCube(new_go, aux_cube);
 								aux_comp->dimensions_component = dimension_scale;
 								btVector3 aux_vec3(dimension_scale.x, dimension_scale.y, dimension_scale.z);
+								
 								new_go->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(aux_vec3);
 								
 								aux_comp->center_offset[0] = offset[0];
