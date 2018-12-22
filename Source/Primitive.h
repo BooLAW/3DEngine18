@@ -33,6 +33,7 @@ public:
 	float4x4 transform;
 	bool axis, wire;
 	float mass = 0;
+	float3 scale = { 1,1,1 };
 	bool has_primitive_render = true;
 
 protected:
@@ -77,7 +78,8 @@ public:
 	PSphere(float radius);
 	void InnerRender() const;
 public:
-	float radius = 5;
+	float radius = 1;
+
 	bool dead = false;
 	bool isCollider = true;
 };

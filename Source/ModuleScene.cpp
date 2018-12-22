@@ -693,9 +693,12 @@ void ModuleScene::LoadScene(const char* path)
 					{
 						float pspherematrix[16] = {};
 						float offset[3] = { 0,0,0 };
+						float radius = 1;
+						float radius_scale = 1;
+						PSphere* aux_sphere = nullptr;
 						for (Value::ConstMemberIterator m_cmp_itr2 = m_cmp_itr->value.MemberBegin(); m_cmp_itr2 != m_cmp_itr->value.MemberEnd(); ++m_cmp_itr2)
 						{
-							PSphere aux_sphere;
+							
 							if (m_cmp_itr2->value.IsArray())
 							{
 								int i = 0;
@@ -719,11 +722,19 @@ void ModuleScene::LoadScene(const char* path)
 							}
 							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "radius") == 0)
 							{
-								//aux_sphere.radius = m_cmp_itr2->value.GetFloat();
+								radius = m_cmp_itr2->value.GetFloat();
+							}
+							else if (m_cmp_itr2->value.IsNumber() && strcmp(m_cmp_itr2->name.GetString(), "radius_scale") == 0)
+							{
+								radius_scale = m_cmp_itr2->value.GetFloat();
 							}
 							else
 							{
-								ComponentColliderSphere* aux_comp = new ComponentColliderSphere(new_go);
+								aux_sphere = new PSphere();
+								aux_sphere->radius = radius;
+								ComponentColliderSphere* aux_comp = new ComponentColliderSphere(new_go, aux_sphere);
+								aux_comp->radius = radius_scale;
+								new_go->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(btVector3(radius_scale, radius_scale, radius_scale));
 								if (m_cmp_itr2->value.IsBool())
 								{
 									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = m_cmp_itr2->value.GetBool();
@@ -732,9 +743,9 @@ void ModuleScene::LoadScene(const char* path)
 								{
 									aux_comp->owner->physbody->primitive_ptr->has_primitive_render = false;
 								}
-
-								new_go->PushComponent((Component*)aux_comp);
+								new_go->PushComponent((Component*)aux_comp);								
 								new_go->physbody->SetTransform(pspherematrix);
+								
 							}
 						}
 					}
@@ -956,8 +967,9 @@ Value ModuleScene::SaveGO(GameObject* go, Document::AllocatorType& allocator)
 				obj_comp_collider.AddMember("offsetx", com_collider_aux->center_offset[0], allocator);
 				obj_comp_collider.AddMember("offsety", com_collider_aux->center_offset[1], allocator);
 				obj_comp_collider.AddMember("offsetz", com_collider_aux->center_offset[2], allocator);
-
-				obj_comp_collider.AddMember("radius", com_collider_aux->radius, allocator);				
+				PSphere* aux_sphere_data = (PSphere*)go->physbody->primitive_ptr;
+				obj_comp_collider.AddMember("radius_scale", com_collider_aux->radius, allocator);				
+				obj_comp_collider.AddMember("radius", aux_sphere_data->radius, allocator);
 				obj_comp_collider.AddMember("render", aux_phybody->GetRender(), allocator);
 				//shall never have rigid body
 

@@ -459,7 +459,7 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 		colShape->calculateLocalInertia(mass, localInertia);
 
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	motions.push_back(myMotionState);
+	motions.push_back(myMotionState);	
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
@@ -483,7 +483,8 @@ PhysBody* ModulePhysics3D::AddBody(PCube& cube, float mass)
 
 PhysBody * ModulePhysics3D::AddBody(PSphere& sphere, float mass, bool isCollider, bool addForce, float force)
 {
-	btCollisionShape* colShape = new btSphereShape(sphere.radius);
+	float total_radius = sphere.radius*sphere.scale.x;
+	btCollisionShape* colShape = new btSphereShape(total_radius);
 	shapes.push_back(colShape);
 
 	btTransform startTransform;

@@ -102,6 +102,7 @@ void ComponentColliderSphere::DrawInspectorInfo()
 	if (ImGui::DragFloat("Radius##collider", &radius, 0.01f, 1, 10))
 	{
 		owner->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(btVector3(radius,radius,radius));
+		owner->physbody->primitive_ptr->scale = { radius,radius,radius };
 	}
 
 }
