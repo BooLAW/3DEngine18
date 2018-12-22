@@ -161,7 +161,22 @@ void ModulePhysics3D::UpdatePhysics()
 			(*item)->GetTransform(matrix);
 			if ((*item)->primitive_ptr != nullptr)
 			{
+				if ((*item)->owner->HasColliderCube())
+				{
+					matrix[0] = (*item)->owner->GetColliderCube()->dimensions_component.x;
+					matrix[5] = (*item)->owner->GetColliderCube()->dimensions_component.y;
+					matrix[10] = (*item)->owner->GetColliderCube()->dimensions_component.z;
+				}
+				else if ((*item)->owner->HasColliderSphere())
+				{
+					matrix[0] = (*item)->owner->GetColliderSphere()->radius;
+					matrix[5] = (*item)->owner->GetColliderSphere()->radius;
+					matrix[10] = (*item)->owner->GetColliderSphere()->radius;
+				}
+				
 				(*item)->primitive_ptr->transform.Set(matrix);
+				
+				
 			}						
 			i++;
 		}	
@@ -250,8 +265,9 @@ void ModulePhysics3D::UpdatePhysics()
 		for (std::vector<Primitive*>::iterator item2 = primitive_list.begin(); item2 != primitive_list.end(); item2++)
 		{
 			if ((*item2)->has_primitive_render == false)
-			{
+			{				
 				primitive_list.erase(item2);
+				(*item2) = nullptr;
 			}
 			(*item2)->transform.Set(matrix_list[i2]);
 			i2++;

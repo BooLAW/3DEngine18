@@ -22,8 +22,9 @@ public:
 	virtual void	Render() const;
 	virtual void	InnerRender() const;
 	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const float3 &u);
+	void			SetRotation(float angle, const float3 &u);	
 	void			Scale(float x, float y, float z);
+	float3			GetScale();
 	PrimitiveTypes	GetType() const;
 
 public:
@@ -78,6 +79,7 @@ public:
 public:
 	float radius = 5;
 	bool dead = false;
+	bool isCollider = true;
 };
 #endif
 

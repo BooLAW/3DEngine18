@@ -21,7 +21,6 @@ ComponentColliderSphere::ComponentColliderSphere(GameObject * owner)
 	PSphere* aux_sphere = new PSphere();
 
 	aux_sphere->radius = 5;
-	aux_sphere->has_primitive_render = false;	
 
 	if (owner->physbody == nullptr)
 	{
@@ -88,11 +87,10 @@ void ComponentColliderSphere::DrawInspectorInfo()
 	{
 		Update();
 	}
-
-	static float radius = 1.0f;
+	
 	if (ImGui::DragFloat("Radius##collider", &radius, 0.01f, 1, 10))
 	{
-		
+		owner->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(btVector3(radius,radius,radius));
 	}
 
 }

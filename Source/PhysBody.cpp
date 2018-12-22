@@ -17,7 +17,15 @@ PhysBody::PhysBody(GameObject * owner, PSphere * primitive)
 	{
 		primitive->has_primitive_render = false;
 	}
-	owner->physbody = App->physics->AddBody(*primitive, 0);
+	if (primitive->isCollider)
+	{
+		owner->physbody = App->physics->AddBody(*primitive, 0, true);
+	}
+	else
+	{
+		owner->physbody = App->physics->AddBody(*primitive, 0, false);
+	}
+	
 	owner->physbody->owner = owner;
 }
 

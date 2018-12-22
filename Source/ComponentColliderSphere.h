@@ -1,6 +1,7 @@
 #ifndef __COMPONENT_COLLIDER_SPHERE__
 #define __COMPONENT_COLLIDER_SPHERE__
 #include "Component.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 class GameObject;
 class PhysBody;
@@ -22,6 +23,7 @@ public:
 	bool bullet_trans_updated;
 	bool owner_trans_updated;
 	float center_offset[3] = { 0,0,0 };
+	float radius = 1;
 
 };
 

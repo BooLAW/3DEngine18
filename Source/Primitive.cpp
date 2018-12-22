@@ -98,6 +98,11 @@ void Primitive::Scale(float x, float y, float z)
 	transform.Scale(x, y, z);
 }
 
+float3 Primitive::GetScale()
+{
+	return transform.GetScale();
+}
+
 PrimitiveTypes Primitive::GetType() const
 {
 	return type;
@@ -118,11 +123,12 @@ PCube::PCube(float x, float y, float z) :Primitive(), dimensions(x, y, z)
 
 void PCube::InnerRender() const
 {
+	float3 inner_scale = { transform[0][3],transform[1][3],transform[2][3] };
+	
 	//draw direct mode cube
-
-	float sx = dimensions.x * 0.5f;
-	float sy = dimensions.y * 0.5f;
-	float sz = dimensions.z * 0.5f;
+	float sx = dimensions.x * 0.5f ;
+	float sy = dimensions.y * 0.5f ;
+	float sz = dimensions.z * 0.5f ;
 	glLineWidth(5.0f);
 	glBegin(GL_QUADS);
 

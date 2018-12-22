@@ -54,7 +54,9 @@ void PanelHierarchy::Draw()
 				else if (items[n] == "Sphere")
 				{
 					PSphere* test = new PSphere();
-					test->radius = 3;					
+					test->radius = 3;	
+					test->isCollider = false;
+					test->has_primitive_render = true;
 
 					GameObject* tmp_go = new GameObject();
 					std::string new_name = "Sphere (";
@@ -71,7 +73,7 @@ void PanelHierarchy::Draw()
 					tmp_go->comp_transform->UpdateTransformValues();					
 					
 
-					ComponentColliderSphere* cmp_collider = new ComponentColliderSphere(tmp_go);
+					ComponentColliderSphere* cmp_collider = new ComponentColliderSphere(tmp_go, test);
 					
 					tmp_go->PushComponent((Component*)cmp_collider);
 

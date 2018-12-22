@@ -9,7 +9,7 @@
 #include "PhysBody.h"
 #include "Transform.h"
 #include "ComponentTransform.h"
-#include "MathGeoLib/MathGeoLib.h"
+
 
 
 ComponentColliderCube::ComponentColliderCube(GameObject * owner)
@@ -100,17 +100,24 @@ bool ComponentColliderCube::Update()
 
 void ComponentColliderCube::DrawInspectorInfo()
 {
+
+	
 	
 	if (ImGui::DragFloat3("Center##collider", center_offset, 0.1f, -INFINITY, INFINITY)) 
 	{
 		Update();
 	}
 
-	static float dimensions = 1.0f;
-	if (ImGui::DragFloat("Dimensions##collider", &dimensions, 0.01f, 1, 10))
+
+	if (ImGui::DragFloat3("Dimensions##collider", dimensions_component.ptr(), 0.01f, 1, 10))
 	{
+		btVector3 scaling = { dimensions_component.x,dimensions_component.y,dimensions_component.z };
+		owner->physbody->GetRigidBody()->getCollisionShape()->setLocalScaling(scaling);
+		owner->physbody->primitive_ptr->transform.SetCol3(3, float3(2,2,2));
 		
 	}
+
+
 
 }
 
