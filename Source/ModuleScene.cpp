@@ -90,22 +90,13 @@ bool ModuleScene::Start()
 		}
 	}
 
-	//cube.dimensions = float3(5.0f, 5.0f, 5.0f);
-	//cube.SetPos(0, 10, 10);
-	//cube.mass = 1;
-	//cube.has_primitive_render = true;
-	//App->physics->loading_list.push_back(App->physics->AddBody(cube, 0));
-
-	//cube2.dimensions = float3(5.0f, 5.0f, 5.0f);
-	//cube2.SetPos(0, 30, 7.5f);
-	//cube2.mass = 1;
-	//cube.has_primitive_render = true;
-	//
-	//App->physics->loading_list.push_back(App->physics->AddBody(cube2, 0));
-
 	//Load Str
 	//App->loading_manager->Load(".\\Assets\\Models\\Street.fbx");
 	//App->loading_manager->unique_fbx_path = ".\\Assets\\Models\\Street.fbx";
+
+	//Load Str
+	App->loading_manager->Load(".\\Assets\\Scenes\\scene1.json");
+	App->loading_manager->unique_fbx_path = ".\\Assets\\Scenes\\scene1.json";
 	
 	App->profiler.SaveRunTimeData("Scene");
 	return ret;
