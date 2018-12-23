@@ -53,10 +53,10 @@ and in-game functionality.
 
 <a href="https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341"><img src="https://i.gyazo.com/9aa818ef5e6d4736bec297dab7f65341.gif" alt="Image from Gyazo" width="800"/></a>
 
-[![Image from Gyazo](https://i.gyazo.com/9aa818ef5e6d4736bec297dab7f65341.gif)](https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341)
+<a href="https://gyazo.com/205e9d55517c551cfc0eb8e89430560d"><img src="https://gyazo.com/205e9d55517c551cfc0eb8e89430560d.gif" alt="Image from Gyazo" width="800"/></a>
+
 	
 	
-	[](https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341)
 
 ## Video
 One minute video speed-up that shows the process of authoring scenes in your editor, especially
