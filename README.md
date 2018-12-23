@@ -37,6 +37,8 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 - D = Right
 - R = Down
 - F = Up
+- LeftClick = shoot bullet
+- Shift + Mouse = rotate(like in an FPS)
 
 ### Other Controls
 - Escape = Quit Program
@@ -46,7 +48,8 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 - C: change guizmo to scale mode.
 
 ## Explanation & GIFS
-
+![](https://gyazo.com/205e9d55517c551cfc0eb8e89430560d)
+![](https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341)
 ## Video
 Detailed explanation of last assignment sub-system, containing two animated gif that shows editor
 and in-game functionality.
