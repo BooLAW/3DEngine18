@@ -70,14 +70,14 @@ and in-game functionality.
 
 <a href="https://gyazo.com/205e9d55517c551cfc0eb8e89430560d"><img src="https://gyazo.com/205e9d55517c551cfc0eb8e89430560d.gif" alt="Image from Gyazo" width="800"/></a>
 
-	
+
 	
 
 ## Video
 One minute video speed-up that shows the process of authoring scenes in your editor, especially
 with your core technology from the last assignment (captured from the computer, not mobile).
 
-<a href="https://www.youtube.com/embed/fJ9t72Y9DaE?controls=0">alt="Image from Gyazo" width="560"/></a>
+<a href="https://www.youtube.com/watch?v=fJ9t72Y9DaE&feature=youtu.be"><img src="https://www.youtube.com/watch?v=fJ9t72Y9DaE&feature=youtu.be" width="560"/></a>
 
 ## Last Release
 [link]()
