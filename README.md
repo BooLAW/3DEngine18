@@ -50,7 +50,7 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 ## Explanation & GIFS
 Detailed explanation of last assignment sub-system, containing two animated gif that shows editor
 and in-game functionality.
-<a href="https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341">
+<a href="https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341"><img src="https://i.gyazo.com/9aa818ef5e6d4736bec297dab7f65341.gif" alt="Image from Gyazo" width="800"/></a>
 	
 	
 	[](https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341)
