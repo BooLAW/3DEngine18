@@ -1,14 +1,5 @@
 #ifndef __MODULE_PHYSICS_3D__
 #define __MODULE_PHYSICS_3D__
-//LINKS ----------------------------ç
-//QuickstartGuide: https://github.com/bulletphysics/bullet3/blob/master/docs/BulletQuickstart.pdf
-//Documentation: https://pybullet.org/wordpress/index.php/forum-2/
-//How Unity Does it: https://unity3d.com/learn/tutorials/s/physics
-	//PhysBody: https://docs.unity3d.com/Manual/RigidbodiesOverview.html
-	//Character Controller: 
-		//https://docs.unity3d.com/Manual/CharacterControllers.html
-		// https://docs.unity3d.com/Manual/class-CharacterController.html
-//----------------------
 
 #include "Module.h"
 #include "Globals.h"

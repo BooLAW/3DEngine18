@@ -86,8 +86,6 @@ void ModulePhysics3D::DrawModuleConfig()
 
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
-
-
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for (int i = 0; i<numManifolds; i++)
 	{
@@ -178,15 +176,9 @@ void ModulePhysics3D::UpdatePhysics()
 		}
 	}
 	
-
 	if (App->state == stopped)
 	{
 		updateoncecollider = false;
-	}
-
-	if (bodies.size() > 2)
-	{
-		CONSOLE_LOG_DEBUG("HOLA");
 	}
 
 	if (App->state == playing)
@@ -444,23 +436,6 @@ void ModulePhysics3D::SwitchPhysBody(PhysBody * body_to_switch)
 
 			//Remove Rigid Body
 			world->removeRigidBody(body_to_switch->GetRigidBody());
-
-			for (std::vector<btCollisionShape*>::iterator item = shapes.begin(); item != shapes.end(); item++)
-			{
-				if ((*item) == body_to_switch->GetRigidBody()->getCollisionShape())
-				{
-					delete (*item);
-				}
-			}
-
-			for (std::vector<PhysBody*>::iterator item = bodies.begin(); item != bodies.end(); item++)
-			{
-				if ((*item) == body_to_switch)
-				{
-					delete (*item);
-				}
-
-			}
 
 			//Create New Rigid Body and link it to GO
 			body_to_switch->owner->physbody = AddBody(*sphere, sphere->mass);

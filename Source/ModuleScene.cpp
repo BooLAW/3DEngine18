@@ -266,11 +266,11 @@ void ModuleScene::ClearSceneButton()
 		scene_root->childs_list.clear();
 		go_list.clear();
 		go_list.push_back(scene_root);
-		main_camera_go = nullptr;
+		//main_camera_go = nullptr;
 	}
 	if (main_camera_go == nullptr)
 	{
-		App->camera->current_game_camera = nullptr;
+		//App->camera->current_game_camera = nullptr;
 	}
 
 	App->loading_manager->unique_fbx_path = "";
@@ -1183,8 +1183,7 @@ void ModuleScene::ClickSelection(LineSegment mouse_ray)
 }
 
 void ModuleScene::NewMainCamera()
-{
-	
+{	
 	main_camera_go = CreateMainCamera();
 	go_list.push_back(main_camera_go);
 	scene_root->AddChild(main_camera_go);
@@ -1281,7 +1280,8 @@ void ModuleScene::MoveCameraGO()
 		}
 
 		
-	
+		main_camera_go->comp_transform->UpdateTransformValues();
+		main_camera_go->comp_transform->updated_outside = false;
 	
 
 }

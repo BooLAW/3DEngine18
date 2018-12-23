@@ -77,10 +77,6 @@ void ComponentRigidBody::DrawInspectorInfo()
 
 		}
 	}
-		
-	
-
-
 }
 
 void ComponentRigidBody::UpdateTransform()
@@ -91,13 +87,6 @@ void ComponentRigidBody::UpdateTransform()
 bool ComponentRigidBody::HasMoved()
 {
 	bool ret = false;
-
-	if (!IsBulletStatic())
-	{
-		//PAU WiP
-
-	}
-
 	return ret;
 }
 bool ComponentRigidBody::IsBulletStatic()

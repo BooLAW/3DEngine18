@@ -274,7 +274,7 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				UINT32 mesh_uid = App->loading_manager->Find(node->mName.C_Str());
 				Resource* res = App->loading_manager->resources[mesh_uid];
 				ComponentMesh* mesh_res = (ComponentMesh*)res->GetComponent();
-				Mesh* my_mesh = mesh_res->mesh;
+				Mesh* my_mesh = mesh_res->mesh;				
 
 
 				//Vertices----------------------
@@ -384,10 +384,6 @@ bool MeshLoader::InitMesh(const aiScene* scene, const aiNode* node, GameObject* 
 				new_comp_mesh->UpdateBoundingBox(new_comp_mesh->owner->comp_transform->trans_matrix_g);
 
 				new_child->PushComponent((Component*)new_comp_mesh);
-
-				//ComponentRigidBody* new_comp_rigidbody = new ComponentRigidBody(new_child);
-
-				//new_child->PushComponent((Component*)new_comp_rigidbody);
 				
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
