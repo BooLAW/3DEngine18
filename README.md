@@ -7,7 +7,22 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 # Engine Features
 
 ## Josep Pi Serra
-
+- Physics
+	- Implemented Physics Bullet library
+	- Shooting Balls Mechanic
+	- Component Colliders:		
+		- Cube: Dimensions and Offset
+		- Sphere: Radius and Offset
+	- Component Rigid Body:
+		- Set Gravity
+		- Set Mass
+	- Physics Body Class
+	- Improved Primitives
+	- Basic Primitives
+		- Cubes
+		- Sphere
+	- Module Physics
+	- Save/Load Scene improved for Physics
 
 ## Pau Bonet Vall Llebrera
 - Polish Engine
@@ -61,6 +76,8 @@ and in-game functionality.
 ## Video
 One minute video speed-up that shows the process of authoring scenes in your editor, especially
 with your core technology from the last assignment (captured from the computer, not mobile).
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/z0CdAuWSDC0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Last Release
 [link]()
