@@ -66,7 +66,9 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 Detailed explanation of last assignment sub-system, containing two animated gif that shows editor
 and in-game functionality.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/z0CdAuWSDC0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href="https://gyazo.com/9aa818ef5e6d4736bec297dab7f65341"><img src="https://i.gyazo.com/9aa818ef5e6d4736bec297dab7f65341.gif" alt="Image from Gyazo" width="800"/></a>
+
+<a href="https://gyazo.com/205e9d55517c551cfc0eb8e89430560d"><img src="https://gyazo.com/205e9d55517c551cfc0eb8e89430560d.gif" alt="Image from Gyazo" width="800"/></a>
 
 	
 	
@@ -75,7 +77,7 @@ and in-game functionality.
 One minute video speed-up that shows the process of authoring scenes in your editor, especially
 with your core technology from the last assignment (captured from the computer, not mobile).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/z0CdAuWSDC0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href="https://www.youtube.com/embed/fJ9t72Y9DaE?controls=0">alt="Image from Gyazo" width="560"/></a>
 
 ## Last Release
 [link]()
