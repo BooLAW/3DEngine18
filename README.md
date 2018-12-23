@@ -20,7 +20,7 @@ Link to our repository: [link](https://github.com/BooLAW/3DEngine18)
 
 # Controls
 
-Editor Camera Controls
+### Editor Camera Controls
 
 - W = Forward
 - A = Left
@@ -28,7 +28,8 @@ Editor Camera Controls
 - D = Right
 - Q = Down
 - E = Up
-Game Camera Controls(need to be in Play Mode)
+
+### Game Camera Controls(need to be in Play Mode)
 
 - W = Forward
 - A = Left
@@ -37,12 +38,13 @@ Game Camera Controls(need to be in Play Mode)
 - R = Down
 - F = Up
 
-Other Controls
+### Other Controls
 - Escape = Quit Program
 - F1 = Physics Wireframe.
 - Z: change guizmo to translate mode.
 - X: change guizmo to rotate mode.
 - C: change guizmo to scale mode.
+
 ## Explanation & GIFS
 
 ## Video
