@@ -76,8 +76,7 @@ and in-game functionality.
 ## Video
 One minute video speed-up that shows the process of authoring scenes in your editor, especially
 with your core technology from the last assignment (captured from the computer, not mobile).
-
-<a href="https://www.youtube.com/watch?v=fJ9t72Y9DaE&feature=youtu.be"><img src="https://www.youtube.com/watch?v=fJ9t72Y9DaE&feature=youtu.be" width="560"/></a>
+You can see de video here: [link](https://www.youtube.com/watch?v=fJ9t72Y9DaE&feature=youtu.be)
 
 ## Last Release
 Here you can find the link to the last release of the Physics Engine. [link](https://github.com/BooLAW/3DEngine18/releases/tag/Assignment3.0)
